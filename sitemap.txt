@@ -30,8 +30,10 @@ http://sourcey.com/ffmpeg-avpacket-to-opencv-mat-converter/
 http://sourcey.com/ffmpeg-multiplexing-live-webcam-and-microphone-streams/
 http://sourcey.com/the-art-of-the-internet-aka-attack-of-the-clones/
 http://sourcey.com/symple-webrtc-video-chat-demo/
+http://sourcey.com/migrating-from-wordpress-to-middleman/
 http://sourcey.com/archives/
 http://sourcey.com/CNAME
+http://sourcey.com/favicon.ico
 http://sourcey.com/feed.xml
 http://sourcey.com/
 http://sourcey.com/sitemap.txt

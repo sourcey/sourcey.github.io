@@ -5,16 +5,216 @@
   <id>http://blog.url.com/</id>
   <link href="http://blog.url.com/"/>
   <link href="http://blog.url.com/feed.xml" rel="self"/>
-  <updated>2014-04-03T01:41:32Z</updated>
+  <updated>2014-04-04T10:09:32Z</updated>
   <author>
     <name>Blog Author</name>
   </author>
+  <entry>
+    <title>Migrating from Wordpress to Middleman</title>
+    <link rel="alternate" href="http://blog.url.com/migrating-from-wordpress-to-middleman/"/>
+    <id>http://blog.url.com/migrating-from-wordpress-to-middleman/</id>
+    <published>2014-04-04T10:09:32Z</published>
+    <updated>2014-04-04T20:20:15+10:00</updated>
+    <author>
+      <name>Article Author</name>
+    </author>
+    <content type="html">&lt;h1 id="migrating-from-wordpress-to-middleman"&gt;Migrating from Wordpress to Middleman&lt;/h1&gt;
+
+&lt;p&gt;Sourcey has been running on Wordpress for the better part of year now (2013-2014), but today I decided to take the plunge and convert it to static website. All in all it took me around 10 hours work (including the learning curve), and I sure am glad I went ahead with it. &lt;/p&gt;
+
+&lt;p&gt;Static websites are all the rage recently, and with good reason too! Unless your blog is huge, or you have the need for managed administration, there is really no need for dynamic scripting languages.  There's something satisfying about a static website; one less thing to break, and one less security vulnerability to worry about. Us geeks love optimisation, and when it comes to building websites, you don't just any more optimised than static HTML. &lt;/p&gt;
+
+&lt;p&gt;The two main candidates for porting Sourcey to a static platform were &lt;a href="http://jekyllrb.com"&gt;Jekyll&lt;/a&gt; and &lt;a href="http://middlemanapp.com/"&gt;Middleman&lt;/a&gt;. I have used both in the past, and both are built with Ruby (Jekyll has implementations in other languages too, such as a the &lt;code&gt;grunt-jekyll&lt;/code&gt; plugin), but due to my love affair with Rails and Sinatra I went with Middleman because the similarities in architecture and it's superior flexibility.&lt;/p&gt;
+
+&lt;p&gt;If you're intersted in setting up or converting to a static website then keep on reading, because I will sharing the whole process.&lt;/p&gt;
+
+&lt;h2 id="installing-dependencies"&gt;Installing Dependencies&lt;/h2&gt;
+
+&lt;p&gt;Go ahead and install the following dependencies.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;ruby&lt;/li&gt;
+  &lt;li&gt;git&lt;/li&gt;
+  &lt;li&gt;middleman ($ &lt;code&gt;gem install middleman&lt;/code&gt;)&lt;/li&gt;
+  &lt;li&gt;bower ($ &lt;code&gt;npm install -g bower&lt;/code&gt;)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Now setup your Middleman application using &lt;a href="http://middlemanapp.com/basics/getting-started/"&gt;the official guide&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id="installing-zurb-foundation-5"&gt;Installing Zurb Foundation 5&lt;/h2&gt;
+
+&lt;p&gt;For the CSS framework I went with Zurb Foundation 5. I'll admit this is the first time I have used Foundation, but since I have been using Bootstrap a lot recently I thought it might be nice to experiment with a new technology. Setting up Foundation to play nicely with Middleman is pretty straight forward, just follow the steps below:&lt;/p&gt;
+
+&lt;p&gt;Add the &lt;code&gt;bower.json&lt;/code&gt; and &lt;code&gt;.bowerrc&lt;/code&gt; files to your middleman folder.&lt;/p&gt;
+
+&lt;h5 id="bowerjson"&gt;bower.json&lt;/h5&gt;
+
+&lt;pre class="highlight json"&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;
+  &lt;/span&gt;&lt;span class="s2"&gt;"name"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"your-app-name"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt;
+  &lt;/span&gt;&lt;span class="s2"&gt;"version"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"0.0.1"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt;
+  &lt;/span&gt;&lt;span class="s2"&gt;"private"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"true"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt;
+  &lt;/span&gt;&lt;span class="s2"&gt;"dependencies"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;
+    &lt;/span&gt;&lt;span class="s2"&gt;"foundation"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"zurb/bower-foundation"&lt;/span&gt;&lt;span class="w"&gt;
+  &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/pre&gt;
+
+&lt;h5 id="bowerrc"&gt;.bowerrc&lt;/h5&gt;
+
+&lt;pre class="highlight json"&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;
+  &lt;/span&gt;&lt;span class="s2"&gt;"directory"&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"source/bower_components"&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/pre&gt;
+
+&lt;p&gt;Don't forget to add bower's directory to the sprockets asset path by adding the following to the end of your &lt;code&gt;config.rb&lt;/code&gt; file:&lt;/p&gt;
+
+&lt;pre class="highlight plaintext"&gt;...
+after_configuration do
+  @bower_config = JSON.parse(IO.read("#{root}/.bowerrc"))
+  sprockets.append_path File.join "#{root}", @bower_config["directory"]
+end
+
+&lt;/pre&gt;
+
+&lt;p&gt;OK, we're ready to run $ &lt;code&gt;bower install&lt;/code&gt; to install Foundation and friends.&lt;/p&gt;
+
+&lt;p&gt;Now go ahead and create the following files:&lt;/p&gt;
+
+&lt;h5 id="sourcejavascriptsmodernizrjs"&gt;source/javascripts/modernizr.js&lt;/h5&gt;
+
+&lt;pre class="highlight plaintext"&gt;//= require modernizr/modernizr
+&lt;/pre&gt;
+
+&lt;h5 id="sourcejavascriptsappjs"&gt;source/javascripts/app.js&lt;/h5&gt;
+
+&lt;pre class="highlight plaintext"&gt;$(document).foundation();
+&lt;/pre&gt;
+
+&lt;h5 id="sourcejavascriptsalljs"&gt;source/javascripts/all.js&lt;/h5&gt;
+
+&lt;pre class="highlight plaintext"&gt;//= require jquery/dist/jquery
+//= require foundation/js/foundation.min
+
+//= require app
+&lt;/pre&gt;
+
+&lt;p&gt;The next step is to setup our stylesheets.&lt;/p&gt;
+
+&lt;p&gt;At this point it's a good idea to copy &lt;code&gt;source/bower_components/foundation/scss/foundation/_settings.scss&lt;/code&gt; to &lt;code&gt;source/stylesheets/_settings.scss&lt;/code&gt; so any canges you make the won't be overwritten. Feel free to modify it as needed.&lt;/p&gt;
+
+&lt;h5 id="sourcestylesheetsappcssscss"&gt;source/stylesheets/app.css.scss&lt;/h5&gt;
+
+&lt;pre class="highlight plaintext"&gt;@import "settings";
+@import "foundation.scss";
+&lt;/pre&gt;
+
+&lt;p&gt;Now to update our HTML layout file to work with Zurb and the changes we have made:&lt;/p&gt;
+
+&lt;pre class="highlight html"&gt;&lt;span class="cp"&gt;&amp;lt;!doctype html&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;html&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;"no-js"&lt;/span&gt; &lt;span class="na"&gt;lang=&lt;/span&gt;&lt;span class="s"&gt;"en"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;meta&lt;/span&gt; &lt;span class="na"&gt;charset=&lt;/span&gt;&lt;span class="s"&gt;"utf-8"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;meta&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;"viewport"&lt;/span&gt; &lt;span class="na"&gt;content=&lt;/span&gt;&lt;span class="s"&gt;"width=device-width, initial-scale=1.0"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;title&amp;gt;&lt;/span&gt;&lt;span class="err"&gt;&amp;lt;&lt;/span&gt;%= data.page.title || "The Middleman" %&amp;gt;&lt;span class="nt"&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
+    
+    &lt;span class="err"&gt;&amp;lt;&lt;/span&gt;%= stylesheet_link_tag "app" %&amp;gt;
+    &lt;span class="err"&gt;&amp;lt;&lt;/span&gt;%= javascript_include_tag "modernizr" %&amp;gt;
+  &lt;span class="nt"&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
+  
+  &lt;span class="nt"&gt;&amp;lt;body&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;"&amp;lt;%= page_classes %&amp;gt;"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="err"&gt;&amp;lt;&lt;/span&gt;%= yield %&amp;gt;
+
+    &lt;span class="err"&gt;&amp;lt;&lt;/span&gt;%= javascript_include_tag  "all" %&amp;gt;
+  &lt;span class="nt"&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;
+
+&lt;h2 id="migrating-from-wordpress"&gt;Migrating from Wordpress&lt;/h2&gt;
+
+&lt;p&gt;Migrating from Wordpress to Middleman wasn't too painful with the help of the &lt;code&gt;wp2middleman&lt;/code&gt; gem, which can be installed as follows:&lt;/p&gt;
+
+&lt;pre class="highlight plaintext"&gt;git clone http://github.com/mdb/wp2middleman
+cd wp2middleman
+bundle install
+rake install
+&lt;/pre&gt;
+
+&lt;p&gt;If you havent exported your Wordpress posts yet do so now as per &lt;a href="http://en.support.wordpress.com/export/"&gt;the official guide&lt;/a&gt;. &lt;/p&gt;
+
+&lt;p&gt;Now to export your Wordpress XML file just use the &lt;code&gt;wp2mm&lt;/code&gt; command. &lt;/p&gt;
+
+&lt;pre class="highlight plaintext"&gt;wp2mm your_wordpress_export.xml
+&lt;/pre&gt;
+
+&lt;p&gt;Be sure to check out the Github page for export configuration options: https://github.com/mdb/wp2middleman&lt;/p&gt;
+
+&lt;h2 id="deploying-on-gitbub-pages"&gt;Deploying on Gitbub Pages&lt;/h2&gt;
+
+&lt;p&gt;I chose to deploy sourcey.com on Github pages since it is free and easy. &lt;/p&gt;
+
+&lt;p&gt;If you haven't already created your git Github repository, do that now. If you're using User Pages like the repository must be named &lt;em&gt;username.github.io&lt;/em&gt;. I actually created two seperate repositories; one for hosting the Middleman installation (https://github.com/sourcey/sourcey.com), and one for hosting the static github pages (https://github.com/sourcey/sourcey.github.io). Why did I use separate repositories when most people generally use branches? Simple really, I don't want my project repository to be reliant on the Github Pages workflow, just incase I need to switch for whatever reason down the track.&lt;/p&gt;
+
+&lt;p&gt;Initially I went with the &lt;code&gt;middleman-deploy&lt;/code&gt; gem to automate deployment since it seemed like the popular choice, but it screwed up my site and all my pages started returning 404. Joy. Since I wasn't in any modd for more debugging I decided to check the alternative &lt;code&gt;middleman-gh-pages&lt;/code&gt; gem, which as it turned out I also had problems of its own. I decided to get my hands dirty this time and ended up submitting a bugfix: https://github.com/neo/middleman-gh-pages/pull/21.&lt;/p&gt;
+
+&lt;p&gt;At the end of the day though I ended up ditching both gems. The main reason was that &lt;code&gt;middleman-gh-pages&lt;/code&gt; is designed for use with Github Project Pages, not User Pages. Incase you don't already know, GitHub offers two types of Pages; User Pages, and Project Pages. Each GitHub account can host a single User Page and an unlimited amount of Project Pages. Basically they are identical to the end-user and differ only in their configuration and the way it's accessed. User Pages are accessed via &lt;em&gt;username.github.io&lt;/em&gt; and exist in the &lt;code&gt;master&lt;/code&gt; branch, and Project Pages are accessed via &lt;em&gt;username.github.io/projectname&lt;/em&gt; and exist in the &lt;code&gt;gh-pages&lt;/code&gt; branch or the proejct repo.&lt;/p&gt;
+
+&lt;p&gt;All I really need is a simple Rake task to automate building the static files locally, and deploying them to Github, so that's exactly what I went with. If you want to use my solution, then just add these two files to your application:&lt;/p&gt;
+
+&lt;h5 id="rakefile"&gt;Rakefile&lt;/h5&gt;
+
+&lt;pre class="highlight plaintext"&gt;import 'deploy.rake'
+&lt;/pre&gt;
+
+&lt;h5 id="deployrake"&gt;deploy.rake&lt;/h5&gt;
+
+&lt;pre class="highlight ruby"&gt;&lt;span class="n"&gt;desc&lt;/span&gt; &lt;span class="s2"&gt;"build static pages"&lt;/span&gt;
+&lt;span class="n"&gt;task&lt;/span&gt; &lt;span class="ss"&gt;:build&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+  &lt;span class="nb"&gt;p&lt;/span&gt; &lt;span class="s2"&gt;"## Compiling static pages"&lt;/span&gt;
+  &lt;span class="nb"&gt;system&lt;/span&gt; &lt;span class="s2"&gt;"bundle exec middleman build"&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+
+&lt;span class="n"&gt;desc&lt;/span&gt; &lt;span class="s2"&gt;"deploy to github pages"&lt;/span&gt;
+&lt;span class="n"&gt;task&lt;/span&gt; &lt;span class="ss"&gt;:deploy&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+  &lt;span class="nb"&gt;p&lt;/span&gt; &lt;span class="s2"&gt;"## Deploying to Github Pages"&lt;/span&gt;
+  &lt;span class="n"&gt;cp_r&lt;/span&gt; &lt;span class="s2"&gt;".nojekyll"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;"build/.nojekyll"&lt;/span&gt;
+  &lt;span class="n"&gt;cd&lt;/span&gt; &lt;span class="s2"&gt;"build"&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="nb"&gt;system&lt;/span&gt; &lt;span class="s2"&gt;"git add ."&lt;/span&gt;
+    &lt;span class="nb"&gt;system&lt;/span&gt; &lt;span class="s2"&gt;"git add -u"&lt;/span&gt;
+    &lt;span class="n"&gt;message&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"Site updated at &lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="no"&gt;Time&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;now&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;utc&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+    &lt;span class="nb"&gt;p&lt;/span&gt; &lt;span class="s2"&gt;"## Commiting: &lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+    &lt;span class="nb"&gt;system&lt;/span&gt; &lt;span class="s2"&gt;"git commit -m &lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+    &lt;span class="nb"&gt;p&lt;/span&gt; &lt;span class="s2"&gt;"## Pushing generated website"&lt;/span&gt;
+    &lt;span class="nb"&gt;system&lt;/span&gt; &lt;span class="s2"&gt;"git push origin master"&lt;/span&gt;
+    &lt;span class="nb"&gt;p&lt;/span&gt; &lt;span class="s2"&gt;"## Github Pages deploy complete"&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+
+&lt;span class="n"&gt;desc&lt;/span&gt; &lt;span class="s2"&gt;"build and deploy to github pages"&lt;/span&gt;
+&lt;span class="n"&gt;task&lt;/span&gt; &lt;span class="ss"&gt;:build_and_deploy&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+  &lt;span class="n"&gt;build&lt;/span&gt;
+  &lt;span class="n"&gt;deploy&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;
+
+&lt;p&gt;Now you can use the following commands to update your Github Pages:&lt;/p&gt;
+
+&lt;pre class="highlight plaintext"&gt;rake build    # Compile all static files into the build directory
+rake deploy   # Deploy the build directory to Github Pages
+rake build_and_deploy # One task for both
+&lt;/pre&gt;
+
+&lt;h2 id="static-bliss"&gt;Static Bliss&lt;/h2&gt;
+
+&lt;p&gt;Hopefully there are some crazy web developers out there will find this post useful, and if you're like me and derive pleaseure from the zen of simplification, then welcome to static website bliss! A big thanks to the wonderful devs behind the Middleman project, and if you have any questions or comments then just drop me a line ;)&lt;/p&gt;
+
+</content>
+  </entry>
   <entry>
     <title>Symple WebRTC Video Chat Demo</title>
     <link rel="alternate" href="http://blog.url.com/symple-webrtc-video-chat-demo/"/>
     <id>http://blog.url.com/symple-webrtc-video-chat-demo/</id>
     <published>2014-04-03T01:41:32Z</published>
-    <updated>2014-04-04T17:17:56+10:00</updated>
+    <updated>2014-04-04T19:02:45+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -27,7 +227,7 @@
 &lt;p&gt;So without further ado, check out the live demo, and by all means keep reading to find out more about what's happening under the hood. If you're into code geekery, the entire source code is available on Github. Enjoy!&lt;/p&gt;
 
 &lt;center&gt;
-&lt;a href="http://symple.sourcey.com" class="button success radius" style="margin:20px auto;display:inline-block" target="_blank"&gt;View the demo&lt;/a&gt;
+&lt;a href="http://symple.sourcey.com" class="button success radius" style="margin:20px auto;display:inline-block" target="_blank"&gt;view the demo&lt;/a&gt;
 &lt;/center&gt;
 
 &lt;h2 id="using-the-demo"&gt;Using the Demo&lt;/h2&gt;
@@ -568,281 +768,6 @@ The good news is you don't need to look any further because it's all contained w
 &lt;span class="cp"&gt;#endif
 #endif
 &lt;/span&gt;&lt;/pre&gt;
-</content>
-  </entry>
-  <entry>
-    <title>JavaScript Object to Flash SWF ExternalInterface Bridge</title>
-    <link rel="alternate" href="http://blog.url.com/javascript-object-to-flash-swf-externalinterface-bridge/"/>
-    <id>http://blog.url.com/javascript-object-to-flash-swf-externalinterface-bridge/</id>
-    <published>2014-03-27T08:54:36Z</published>
-    <updated>2014-04-04T16:27:21+10:00</updated>
-    <author>
-      <name>Article Author</name>
-    </author>
-    <content type="html">&lt;h1 id="javascript-object-to-flash-swf-externalinterface-bridge"&gt;JavaScript Object to Flash SWF ExternalInterface Bridge&lt;/h1&gt;
-
-&lt;p&gt;Have you ever wanted to bind your ActionScript ExternalInterface callbacks to JavaScript object methods, rather than use free functions? We has need of this the other day when adding Flash video streaming to Symple, so we came up with a simple solution that helped us reduce clutter and write better code.&lt;/p&gt;
-
-&lt;p&gt;To get started include the JFlashBridge object somewhere in your JavaScript.&lt;/p&gt;
-
-&lt;pre class="highlight javascript"&gt;&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;JFlashBridge&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="na"&gt;items&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{},&lt;/span&gt;
-
-    &lt;span class="na"&gt;bind&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;klass&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'JFlashBridge: Bind: '&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;klass&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-        &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;items&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;id&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;klass&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="p"&gt;},&lt;/span&gt;
-
-    &lt;span class="na"&gt;unbind&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;id&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-       &lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'JFlashBridge: Unbind: '&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;id&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-       &lt;span class="k"&gt;delete&lt;/span&gt; &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;items&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;id&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-    &lt;span class="p"&gt;},&lt;/span&gt;
-
-    &lt;span class="na"&gt;call&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'JFlashBridge: Call: '&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;arguments&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-        &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;klass&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;items&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;arguments&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]];&lt;/span&gt;
-        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;klass&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-            &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;method&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;klass&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;arguments&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]];&lt;/span&gt;
-            &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;method&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-                &lt;span class="nx"&gt;method&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;apply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;klass&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;Array&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;prototype&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;slice&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;arguments&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
-            &lt;span class="k"&gt;else&lt;/span&gt;
-                &lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'JFlashBridge: No method: '&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;arguments&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]);&lt;/span&gt;
-        &lt;span class="p"&gt;}&lt;/span&gt;
-        &lt;span class="k"&gt;else&lt;/span&gt;
-            &lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'JFlashBridge: No binding: '&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;arguments&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-    &lt;span class="p"&gt;},&lt;/span&gt;
-
-    &lt;span class="na"&gt;getSWF&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;movieName&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;navigator&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;appName&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;indexOf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"Microsoft"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;window&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;movieName&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
-        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;document&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;movieName&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="p"&gt;};&lt;/span&gt;
-&lt;/pre&gt;
-
-&lt;p&gt;And include this ActionScript file in your Flash project (SWF):&lt;/p&gt;
-
-&lt;pre class="highlight javascript"&gt;&lt;span class="kr"&gt;package&lt;/span&gt; &lt;span class="nx"&gt;sourcey&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;util&lt;/span&gt;
-&lt;span class="p"&gt;{&lt;/span&gt;
-	&lt;span class="kr"&gt;import&lt;/span&gt; &lt;span class="nx"&gt;flash&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;events&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;TimerEvent&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-	&lt;span class="kr"&gt;import&lt;/span&gt; &lt;span class="nx"&gt;flash&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;external&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;ExternalInterface&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-	&lt;span class="kr"&gt;import&lt;/span&gt; &lt;span class="nx"&gt;flash&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;utils&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Timer&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-	
-	&lt;span class="kr"&gt;public&lt;/span&gt; &lt;span class="kr"&gt;class&lt;/span&gt; &lt;span class="nx"&gt;JFlashBridge&lt;/span&gt;
-	&lt;span class="p"&gt;{&lt;/span&gt;
-		&lt;span class="kr"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nl"&gt;objectName&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nb"&gt;String&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;""&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-		&lt;span class="kr"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nl"&gt;jsReadyFuncName&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nb"&gt;String&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"isJSReady"&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;     &lt;span class="c1"&gt;// optional
-&lt;/span&gt;		&lt;span class="kr"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nl"&gt;swfLoadedFuncName&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nb"&gt;String&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"onSWFLoaded"&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// optional
-&lt;/span&gt;		
-		&lt;span class="kr"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;JFlashBridge&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-		&lt;span class="p"&gt;{&lt;/span&gt;
-		&lt;span class="p"&gt;}&lt;/span&gt;
-		
-		&lt;span class="kr"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;initialize&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt;&lt;span class="k"&gt;void&lt;/span&gt; 
-		&lt;span class="p"&gt;{&lt;/span&gt;
-			&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;ExternalInterface&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;available&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-				&lt;span class="nx"&gt;objectName&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;getSWFObjectName&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
-				&lt;span class="k"&gt;try&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-					&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;checkReady&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-						&lt;span class="nx"&gt;available&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-					&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-						&lt;span class="nx"&gt;trace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"JavaScript is not ready yet, creating timer."&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-						&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nl"&gt;readyTimer&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nx"&gt;Timer&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="nx"&gt;Timer&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-						&lt;span class="nx"&gt;readyTimer&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;addEventListener&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;TimerEvent&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;TIMER&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;onReadyTimer&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-						&lt;span class="nx"&gt;readyTimer&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;start&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
-					&lt;span class="p"&gt;}&lt;/span&gt;
-				&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;catch&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nl"&gt;error&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nx"&gt;SecurityError&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-					&lt;span class="nx"&gt;trace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"A SecurityError occurred: "&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nx"&gt;error&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;message&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-				&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;catch&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nl"&gt;error&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nb"&gt;Error&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-					&lt;span class="nx"&gt;trace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"An Error occurred: "&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nx"&gt;error&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;message&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-				&lt;span class="p"&gt;}&lt;/span&gt;
-			&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-				&lt;span class="nx"&gt;trace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"JavaScript external interface is not available."&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-			&lt;span class="p"&gt;}&lt;/span&gt;
-		&lt;span class="p"&gt;}&lt;/span&gt;
-		
-		&lt;span class="c1"&gt;//
-&lt;/span&gt;		&lt;span class="c1"&gt;// Adds a callback for receiving method calls from our
-&lt;/span&gt;		&lt;span class="c1"&gt;// external JavaScript interface.
-&lt;/span&gt;		&lt;span class="c1"&gt;//
-&lt;/span&gt;		&lt;span class="kr"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;addMethod&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nl"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nb"&gt;String&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nl"&gt;callback&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nb"&gt;Function&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt;&lt;span class="k"&gt;void&lt;/span&gt; 
-		&lt;span class="p"&gt;{&lt;/span&gt;
-			&lt;span class="nx"&gt;ExternalInterface&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;addCallback&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;callback&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;				
-		&lt;span class="p"&gt;}&lt;/span&gt;		
-		
-		&lt;span class="c1"&gt;//
-&lt;/span&gt;		&lt;span class="c1"&gt;// Calls an external JavaScript method.
-&lt;/span&gt;		&lt;span class="c1"&gt;//
-&lt;/span&gt;		&lt;span class="kr"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nl"&gt;method&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nb"&gt;String&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt;&lt;span class="nx"&gt;parameters&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-			&lt;span class="c1"&gt;//if (!available)
-&lt;/span&gt;			&lt;span class="c1"&gt;//	trace("The JavaScript API is unavailable.");
-&lt;/span&gt;			&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nl"&gt;args&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nb"&gt;Array&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[];&lt;/span&gt;
-			&lt;span class="nx"&gt;args&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;push&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"JFlashBridge.call"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-			&lt;span class="nx"&gt;args&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;push&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;objectName&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-			&lt;span class="nx"&gt;args&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;push&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;method&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-			&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;ExternalInterface&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;call&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;apply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;ExternalInterface&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;args&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;concat&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;parameters&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
-		&lt;span class="p"&gt;}&lt;/span&gt;		
-		
-		&lt;span class="kr"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;getSWFObjectName&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt;&lt;span class="nb"&gt;String&lt;/span&gt; 
-		&lt;span class="p"&gt;{&lt;/span&gt;
-			&lt;span class="c1"&gt;// Returns the SWF's object name for getElementById
-&lt;/span&gt;			
-			&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nl"&gt;js&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nx"&gt;XML&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-			&lt;span class="nx"&gt;js&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;script&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;lt;!&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;CDATA&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;
-				&lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;__randomFunction&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-					&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;check&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;objects&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
-							&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="nx"&gt;objects&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;length&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
-								&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;objects&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="nx"&gt;__randomFunction&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;objects&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="nx"&gt;id&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-							&lt;span class="p"&gt;}&lt;/span&gt;
-							&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="kc"&gt;undefined&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-						&lt;span class="p"&gt;};&lt;/span&gt;
-		
-						&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;check&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;document&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;getElementsByTagName&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"object"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="nx"&gt;check&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;document&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;getElementsByTagName&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"embed"&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
-				&lt;span class="p"&gt;}&lt;/span&gt;
-			&lt;span class="p"&gt;]]&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;lt;&lt;/span&gt;&lt;span class="sr"&gt;/&lt;/span&gt;&lt;span class="err"&gt;script&amp;gt;;&lt;/span&gt;
-			
-			&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nl"&gt;__randomFunction&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nb"&gt;String&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"checkFunction_"&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nb"&gt;Math&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;floor&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;Math&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;random&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="mi"&gt;99999&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;// Something random just so it's safer
-&lt;/span&gt;			&lt;span class="nx"&gt;ExternalInterface&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;addCallback&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;__randomFunction&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;getSWFObjectName&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;// The second parameter can be anything, just passing a function that exists
-&lt;/span&gt;			
-			&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;ExternalInterface&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;js&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;__randomFunction&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-		&lt;span class="p"&gt;}&lt;/span&gt;
-		
-		&lt;span class="c1"&gt;//
-&lt;/span&gt;		&lt;span class="c1"&gt;// Protected
-&lt;/span&gt;		&lt;span class="c1"&gt;//
-&lt;/span&gt;		
-		&lt;span class="kr"&gt;private&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;checkReady&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt;&lt;span class="nb"&gt;Boolean&lt;/span&gt; 
-		&lt;span class="p"&gt;{&lt;/span&gt;			
-			&lt;span class="nx"&gt;trace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"JavaScript ready status: "&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;isReady&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-			&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nl"&gt;res&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;jsReadyFuncName&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-			&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;res&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="kc"&gt;undefined&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt;
-				&lt;span class="nx"&gt;res&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="kc"&gt;null&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-				&lt;span class="c1"&gt;// If no function exists then we return ready.
-&lt;/span&gt;				&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-			&lt;span class="p"&gt;}&lt;/span&gt;			
-			&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;Boolean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;res&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-		&lt;span class="p"&gt;}&lt;/span&gt;
-		
-		&lt;span class="kr"&gt;private&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;onReadyTimer&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nl"&gt;event&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nx"&gt;TimerEvent&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt;&lt;span class="k"&gt;void&lt;/span&gt; 
-		&lt;span class="p"&gt;{&lt;/span&gt;
-			&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nl"&gt;isReady&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nb"&gt;Boolean&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;checkReady&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
-			&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;isReady&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-				&lt;span class="nx"&gt;Timer&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;event&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;target&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;stop&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
-				&lt;span class="nx"&gt;available&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-			&lt;span class="p"&gt;}&lt;/span&gt;
-		&lt;span class="p"&gt;}&lt;/span&gt;	
-		
-		&lt;span class="c1"&gt;//
-&lt;/span&gt;		&lt;span class="c1"&gt;// Accessors
-&lt;/span&gt;		&lt;span class="c1"&gt;//		
-&lt;/span&gt;		
-		&lt;span class="kr"&gt;private&lt;/span&gt; &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nl"&gt;_available&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nb"&gt;Boolean&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;	
-		&lt;span class="kr"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;get&lt;/span&gt; &lt;span class="nx"&gt;available&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt;&lt;span class="nb"&gt;Boolean&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;_available&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;			
-		&lt;span class="kr"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;set&lt;/span&gt; &lt;span class="nx"&gt;available&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nl"&gt;value&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nb"&gt;Boolean&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt;&lt;span class="k"&gt;void&lt;/span&gt;
-		&lt;span class="p"&gt;{&lt;/span&gt;
-			&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;_available&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="nx"&gt;value&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-				&lt;span class="nx"&gt;_available&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;value&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-				&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;_available&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-					&lt;span class="nx"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;swfLoadedFuncName&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;					
-				&lt;span class="p"&gt;}&lt;/span&gt;
-			&lt;span class="p"&gt;}&lt;/span&gt;
-		&lt;span class="p"&gt;}&lt;/span&gt;
-	&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/pre&gt;
-
-&lt;p&gt;Add the following lines to your main ActionScript class:&lt;/p&gt;
-
-&lt;pre class="highlight javascript"&gt;&lt;span class="kr"&gt;package&lt;/span&gt;
-&lt;span class="p"&gt;{&lt;/span&gt;
-	&lt;span class="kr"&gt;import&lt;/span&gt; &lt;span class="nx"&gt;sourcey&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;util&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;JFlashBridge&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-
-	&lt;span class="kr"&gt;public&lt;/span&gt; &lt;span class="kr"&gt;class&lt;/span&gt; &lt;span class="nx"&gt;MySWF&lt;/span&gt;
-	&lt;span class="p"&gt;{&lt;/span&gt;
-		&lt;span class="kr"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nl"&gt;jsBridge&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nx"&gt;JFlashBridge&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;	
-
-		&lt;span class="kr"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;SymplePlayer&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-		&lt;span class="p"&gt;{&lt;/span&gt;
-			&lt;span class="nx"&gt;jsBridge&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="nx"&gt;JFlashBridge&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
-			&lt;span class="nx"&gt;jsBridge&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;addMethod&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"someMethod"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;someMethod&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-			
-			&lt;span class="kr"&gt;super&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
-			
-			&lt;span class="nx"&gt;jsBridge&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;initialize&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;	
-		&lt;span class="p"&gt;}&lt;/span&gt;
-		
-                &lt;span class="c1"&gt;// This is an internal callback that passes data to
-&lt;/span&gt;                &lt;span class="c1"&gt;// the JavaScript application
-&lt;/span&gt;		&lt;span class="kr"&gt;private&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;onCallback&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nl"&gt;data&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nb"&gt;String&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt;&lt;span class="k"&gt;void&lt;/span&gt; 
-		&lt;span class="p"&gt;{&lt;/span&gt;	
-			&lt;span class="nx"&gt;trace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"MySWF: onCallback"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;data&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;	
-			&lt;span class="nx"&gt;jsBridge&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"onCallback"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;data&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-		&lt;span class="p"&gt;}&lt;/span&gt;
-
-                &lt;span class="c1"&gt;// This method is bound to the ExternalInterface to 
-&lt;/span&gt;                &lt;span class="c1"&gt;// receive data from the JavaScript application
-&lt;/span&gt;		&lt;span class="kr"&gt;private&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;someMethod&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nl"&gt;data&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nb"&gt;String&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt;&lt;span class="nb"&gt;Object&lt;/span&gt;
-		&lt;span class="p"&gt;{&lt;/span&gt;
-			&lt;span class="nx"&gt;trace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"MySWF: someMethod"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;data&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-                        &lt;span class="nx"&gt;onCallback&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;data&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-                &lt;span class="p"&gt;}&lt;/span&gt;
-        &lt;span class="p"&gt;}&lt;/span&gt;		
-&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/pre&gt;
-
-&lt;p&gt;Below is the JavaScript object that will be communicating with your SWF.
-Be sure to change the path member to point to your SWF location on the server.&lt;/p&gt;
-
-&lt;pre class="highlight javascript"&gt;&lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;MyClass&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;path&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"/my-swf.swf"&lt;/span&gt; &lt;span class="c1"&gt;// The SWF path
-&lt;/span&gt;    &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;id&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"my-swf"&lt;/span&gt;        &lt;span class="c1"&gt;// The SWF ID
-&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
-
-&lt;span class="nx"&gt;MyClass&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;prototype&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-
-    &lt;span class="c1"&gt;// Embeds and binds the SWF
-&lt;/span&gt;    &lt;span class="nl"&gt;setup&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="c1"&gt;// Embed the SWF 
-&lt;/span&gt;        &lt;span class="nx"&gt;swfobject&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;embedSWF&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;path&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'100%'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'100%'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'10.0.0'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'/playerProductInstall.swf'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;{},&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-            &lt;span class="na"&gt;quality&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'high'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-            &lt;span class="na"&gt;wmode&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'transparent'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-            &lt;span class="na"&gt;allowScriptAccess&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'sameDomain'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-            &lt;span class="na"&gt;allowFullScreen&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'true'&lt;/span&gt;
-         &lt;span class="p"&gt;},&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-           &lt;span class="na"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;id&lt;/span&gt;
-         &lt;span class="p"&gt;});&lt;/span&gt;  
-
-        &lt;span class="c1"&gt;// Bind the current object to the SWF for callbacks.
-&lt;/span&gt;        &lt;span class="nx"&gt;JFlashBridge&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;bind&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-    &lt;span class="p"&gt;},&lt;/span&gt;
-
-    &lt;span class="c1"&gt;// Returns the SWF instance
-&lt;/span&gt;    &lt;span class="nl"&gt;swf&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;JFlashBridge&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;getSWF&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;id&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-    &lt;span class="p"&gt;},&lt;/span&gt;
-
-    &lt;span class="c1"&gt;// Calls a Flash method
-&lt;/span&gt;    &lt;span class="nl"&gt;someMethod&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="c1"&gt;// Note: SWF must be ready
-&lt;/span&gt;        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;swf&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="nx"&gt;someMethod&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;data&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-    &lt;span class="p"&gt;},&lt;/span&gt;
-
-    &lt;span class="c1"&gt;// Receives a callback from Flash
-&lt;/span&gt;    &lt;span class="nl"&gt;onCallback&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"onCallback: "&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;data&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/pre&gt;
-
-&lt;p&gt;The implementation would look something like this:&lt;/p&gt;
-
-&lt;pre class="highlight javascript"&gt;&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;obj&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="nx"&gt;MyClass&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;span class="nx"&gt;obj&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;setup&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-
-&lt;span class="c1"&gt;// Call obj.someMethod and "hello flash" will be echoed 
-// back via the onCallback method of the MyClass instance
-&lt;/span&gt;&lt;span class="nx"&gt;obj&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;someMethod&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"hello flash"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;
 </content>
   </entry>
 </feed>

@@ -1,0 +1,328 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Migrating from Wordpress to Middleman</title>
+    <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+    
+    <link href="/stylesheets/app.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="/stylesheets/style.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="/stylesheets/highlight/monokai.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/modernizr.js" type="text/javascript"></script>
+  </head>
+      
+  <body class="blog migrating-from-wordpress-to-middleman migrating-from-wordpress-to-middleman_index">
+      <nav class="top-bar" data-topbar="">
+    <div id="social">
+      <a href="https://plus.google.com/+SourceyDevel"><i class="fi-social-google-plus large"></i></a>
+      <a href="https://facebook.com/sourceydevel"><i class="fi-social-facebook large"></i></a>
+      <a href="https://twitter.com/sourceydevel"><i class="fi-social-twitter large"></i></a>
+      <a href="https://github.com/sourcey"><i class="fi-social-github large"></i></a>    
+    </div>
+      
+    <ul class="title-area">
+      <li class="name"></li>
+      <li class="toggle-topbar menu-icon"><a href="" class="left"><!--Menu--></a></li>
+    </ul>
+    
+    <section class="top-bar-section" style="left: 0%;">      
+      <ul class="left">
+        <li class="has-dropdown not-click"><a href="/">Menu</a>
+          <ul class="dropdown"><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li>
+            <!--<li><label>Menu</label></li>-->
+            <li><a href="/#blog">Blog</a></li>
+            <li class="has-dropdown not-click"><a href="/#projects">Projects</a>
+              <ul class="dropdown"><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li>
+                <li><label>Projects</label></li>
+                <li><a href="/libsourcey">LibSourcey</a></li>
+                <li><a href="/anionu">Anionu</a></li>
+                <li><a href="/symple">Symple</a></li>
+                <li><a href="/mesh">Mesh</a></li>
+                <li><a href="/pacman">Pacman</a></li>
+              </ul>
+            </li>
+            <li class="divider"></li>
+            <li><a href="/archives">Archives</a></li>
+            <li><a href="/feed.xml">Feed</a></li>
+            <li class="divider"></li>
+            <li><a href="mailto:hello@sourcey.com">Contact</a></li>
+          </ul>
+        </li>
+        <li class="divider"></li>
+      </ul>
+    </section></nav>
+    
+    <header id="header">
+      <h1 id="logo">
+        <a title="Sourcey" rel="home" href="http://sourcey.com"><img height="150" width="150" title="Sourcey" alt="Sourcey" src="/images/logo-250.png" /></a>
+      </h1>
+      <!--<h2 class="site-description">Open Source Developer Collective</h2>-->
+    </header>    
+    <div id="main" role="main">
+      <div id="rotate-article">
+        
+        
+          <a class="prev" href="/symple-webrtc-video-chat-demo/">&larr; previous article</a>
+        
+      </div>
+      <h1 id="migrating-from-wordpress-to-middleman">Migrating from Wordpress to Middleman</h1>
+
+<p>Sourcey has been running on Wordpress for the better part of year now (2013-2014), but today I decided to take the plunge and convert it to static website. All in all it took me around 10 hours work (including the learning curve), and I sure am glad I went ahead with it. </p>
+
+<p>Static websites are all the rage recently, and with good reason too! Unless your blog is huge, or you have the need for managed administration, there is really no need for dynamic scripting languages.  There's something satisfying about a static website; one less thing to break, and one less security vulnerability to worry about. Us geeks love optimisation, and when it comes to building websites, you don't just any more optimised than static HTML. </p>
+
+<p>The two main candidates for porting Sourcey to a static platform were <a href="http://jekyllrb.com">Jekyll</a> and <a href="http://middlemanapp.com/">Middleman</a>. I have used both in the past, and both are built with Ruby (Jekyll has implementations in other languages too, such as a the <code>grunt-jekyll</code> plugin), but due to my love affair with Rails and Sinatra I went with Middleman because the similarities in architecture and it's superior flexibility.</p>
+
+<p>If you're intersted in setting up or converting to a static website then keep on reading, because I will sharing the whole process.</p>
+
+<h2 id="installing-dependencies">Installing Dependencies</h2>
+
+<p>Go ahead and install the following dependencies.</p>
+
+<ol>
+  <li>ruby</li>
+  <li>git</li>
+  <li>middleman ($ <code>gem install middleman</code>)</li>
+  <li>bower ($ <code>npm install -g bower</code>)</li>
+</ol>
+
+<p>Now setup your Middleman application using <a href="http://middlemanapp.com/basics/getting-started/">the official guide</a>.</p>
+
+<h2 id="installing-zurb-foundation-5">Installing Zurb Foundation 5</h2>
+
+<p>For the CSS framework I went with Zurb Foundation 5. I'll admit this is the first time I have used Foundation, but since I have been using Bootstrap a lot recently I thought it might be nice to experiment with a new technology. Setting up Foundation to play nicely with Middleman is pretty straight forward, just follow the steps below:</p>
+
+<p>Add the <code>bower.json</code> and <code>.bowerrc</code> files to your middleman folder.</p>
+
+<h5 id="bowerjson">bower.json</h5>
+
+<pre class="highlight json"><span class="p">{</span><span class="w">
+  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"your-app-name"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.0.1"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"private"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"dependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"foundation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"zurb/bower-foundation"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
+
+<h5 id="bowerrc">.bowerrc</h5>
+
+<pre class="highlight json"><span class="p">{</span><span class="w">
+  </span><span class="s2">"directory"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"source/bower_components"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
+
+<p>Don't forget to add bower's directory to the sprockets asset path by adding the following to the end of your <code>config.rb</code> file:</p>
+
+<pre class="highlight plaintext">...
+after_configuration do
+  @bower_config = JSON.parse(IO.read("#{root}/.bowerrc"))
+  sprockets.append_path File.join "#{root}", @bower_config["directory"]
+end
+
+</pre>
+
+<p>OK, we're ready to run $ <code>bower install</code> to install Foundation and friends.</p>
+
+<p>Now go ahead and create the following files:</p>
+
+<h5 id="sourcejavascriptsmodernizrjs">source/javascripts/modernizr.js</h5>
+
+<pre class="highlight plaintext">//= require modernizr/modernizr
+</pre>
+
+<h5 id="sourcejavascriptsappjs">source/javascripts/app.js</h5>
+
+<pre class="highlight plaintext">$(document).foundation();
+</pre>
+
+<h5 id="sourcejavascriptsalljs">source/javascripts/all.js</h5>
+
+<pre class="highlight plaintext">//= require jquery/dist/jquery
+//= require foundation/js/foundation.min
+
+//= require app
+</pre>
+
+<p>The next step is to setup our stylesheets.</p>
+
+<p>At this point it's a good idea to copy <code>source/bower_components/foundation/scss/foundation/_settings.scss</code> to <code>source/stylesheets/_settings.scss</code> so any canges you make the won't be overwritten. Feel free to modify it as needed.</p>
+
+<h5 id="sourcestylesheetsappcssscss">source/stylesheets/app.css.scss</h5>
+
+<pre class="highlight plaintext">@import "settings";
+@import "foundation.scss";
+</pre>
+
+<p>Now to update our HTML layout file to work with Zurb and the changes we have made:</p>
+
+<pre class="highlight html"><span class="cp">&lt;!doctype html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">class=</span><span class="s">"no-js"</span> <span class="na">lang=</span><span class="s">"en"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"viewport"</span> <span class="na">content=</span><span class="s">"width=device-width, initial-scale=1.0"</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;title&gt;</span><span class="err">&lt;</span>%= data.page.title || "The Middleman" %&gt;<span class="nt">&lt;/title&gt;</span>
+    
+    <span class="err">&lt;</span>%= stylesheet_link_tag "app" %&gt;
+    <span class="err">&lt;</span>%= javascript_include_tag "modernizr" %&gt;
+  <span class="nt">&lt;/head&gt;</span>
+  
+  <span class="nt">&lt;body</span> <span class="na">class=</span><span class="s">"&lt;%= page_classes %&gt;"</span><span class="nt">&gt;</span>
+    <span class="err">&lt;</span>%= yield %&gt;
+
+    <span class="err">&lt;</span>%= javascript_include_tag  "all" %&gt;
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</pre>
+
+<h2 id="migrating-from-wordpress">Migrating from Wordpress</h2>
+
+<p>Migrating from Wordpress to Middleman wasn't too painful with the help of the <code>wp2middleman</code> gem, which can be installed as follows:</p>
+
+<pre class="highlight plaintext">git clone http://github.com/mdb/wp2middleman
+cd wp2middleman
+bundle install
+rake install
+</pre>
+
+<p>If you havent exported your Wordpress posts yet do so now as per <a href="http://en.support.wordpress.com/export/">the official guide</a>. </p>
+
+<p>Now to export your Wordpress XML file just use the <code>wp2mm</code> command. </p>
+
+<pre class="highlight plaintext">wp2mm your_wordpress_export.xml
+</pre>
+
+<p>Be sure to check out the Github page for export configuration options: https://github.com/mdb/wp2middleman</p>
+
+<h2 id="deploying-on-gitbub-pages">Deploying on Gitbub Pages</h2>
+
+<p>I chose to deploy sourcey.com on Github pages since it is free and easy. </p>
+
+<p>If you haven't already created your git Github repository, do that now. If you're using User Pages like the repository must be named <em>username.github.io</em>. I actually created two seperate repositories; one for hosting the Middleman installation (https://github.com/sourcey/sourcey.com), and one for hosting the static github pages (https://github.com/sourcey/sourcey.github.io). Why did I use separate repositories when most people generally use branches? Simple really, I don't want my project repository to be reliant on the Github Pages workflow, just incase I need to switch for whatever reason down the track.</p>
+
+<p>Initially I went with the <code>middleman-deploy</code> gem to automate deployment since it seemed like the popular choice, but it screwed up my site and all my pages started returning 404. Joy. Since I wasn't in any modd for more debugging I decided to check the alternative <code>middleman-gh-pages</code> gem, which as it turned out I also had problems of its own. I decided to get my hands dirty this time and ended up submitting a bugfix: https://github.com/neo/middleman-gh-pages/pull/21.</p>
+
+<p>At the end of the day though I ended up ditching both gems. The main reason was that <code>middleman-gh-pages</code> is designed for use with Github Project Pages, not User Pages. Incase you don't already know, GitHub offers two types of Pages; User Pages, and Project Pages. Each GitHub account can host a single User Page and an unlimited amount of Project Pages. Basically they are identical to the end-user and differ only in their configuration and the way it's accessed. User Pages are accessed via <em>username.github.io</em> and exist in the <code>master</code> branch, and Project Pages are accessed via <em>username.github.io/projectname</em> and exist in the <code>gh-pages</code> branch or the proejct repo.</p>
+
+<p>All I really need is a simple Rake task to automate building the static files locally, and deploying them to Github, so that's exactly what I went with. If you want to use my solution, then just add these two files to your application:</p>
+
+<h5 id="rakefile">Rakefile</h5>
+
+<pre class="highlight plaintext">import 'deploy.rake'
+</pre>
+
+<h5 id="deployrake">deploy.rake</h5>
+
+<pre class="highlight ruby"><span class="n">desc</span> <span class="s2">"build static pages"</span>
+<span class="n">task</span> <span class="ss">:build</span> <span class="k">do</span>
+  <span class="nb">p</span> <span class="s2">"## Compiling static pages"</span>
+  <span class="nb">system</span> <span class="s2">"bundle exec middleman build"</span>
+<span class="k">end</span>
+
+<span class="n">desc</span> <span class="s2">"deploy to github pages"</span>
+<span class="n">task</span> <span class="ss">:deploy</span> <span class="k">do</span>
+  <span class="nb">p</span> <span class="s2">"## Deploying to Github Pages"</span>
+  <span class="n">cp_r</span> <span class="s2">".nojekyll"</span><span class="p">,</span> <span class="s2">"build/.nojekyll"</span>
+  <span class="n">cd</span> <span class="s2">"build"</span> <span class="k">do</span>
+    <span class="nb">system</span> <span class="s2">"git add ."</span>
+    <span class="nb">system</span> <span class="s2">"git add -u"</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="s2">"Site updated at </span><span class="si">#{</span><span class="no">Time</span><span class="p">.</span><span class="nf">now</span><span class="p">.</span><span class="nf">utc</span><span class="si">}</span><span class="s2">"</span>
+    <span class="nb">p</span> <span class="s2">"## Commiting: </span><span class="si">#{</span><span class="n">message</span><span class="si">}</span><span class="s2">"</span>
+    <span class="nb">system</span> <span class="s2">"git commit -m </span><span class="se">\"</span><span class="si">#{</span><span class="n">message</span><span class="si">}</span><span class="se">\"</span><span class="s2">"</span>
+    <span class="nb">p</span> <span class="s2">"## Pushing generated website"</span>
+    <span class="nb">system</span> <span class="s2">"git push origin master"</span>
+    <span class="nb">p</span> <span class="s2">"## Github Pages deploy complete"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">desc</span> <span class="s2">"build and deploy to github pages"</span>
+<span class="n">task</span> <span class="ss">:build_and_deploy</span> <span class="k">do</span>
+  <span class="n">build</span>
+  <span class="n">deploy</span>
+<span class="k">end</span>
+</pre>
+
+<p>Now you can use the following commands to update your Github Pages:</p>
+
+<pre class="highlight plaintext">rake build    # Compile all static files into the build directory
+rake deploy   # Deploy the build directory to Github Pages
+rake build_and_deploy # One task for both
+</pre>
+
+<h2 id="static-bliss">Static Bliss</h2>
+
+<p>Hopefully there are some crazy web developers out there will find this post useful, and if you're like me and derive pleaseure from the zen of simplification, then welcome to static website bliss! A big thanks to the wonderful devs behind the Middleman project, and if you have any questions or comments then just drop me a line ;)</p>
+
+    
+      
+      <ul class="social-buttons">
+        <li>
+          <a href="http://twitter.com/share" class="socialite twitter-share" data-text="Migrating from Wordpress to Middleman" data-url="http://sourcey.com/migrating-from-wordpress-to-middleman/" data-count="vertical" rel="nofollow" target="_blank"><span class="vhidden">Share on Twitter</span></a>
+        </li>
+        <li>
+          <a href="https://plus.google.com/share?url=http://sourcey.com/migrating-from-wordpress-to-middleman/" class="socialite googleplus-one" data-size="tall" data-href="http://sourcey.com/migrating-from-wordpress-to-middleman/" rel="nofollow" target="_blank"><span class="vhidden">Share on Google+</span></a>
+        </li>
+        <li>
+          <a href="http://www.facebook.com/sharer.php?u=http://sourcey.com/migrating-from-wordpress-to-middleman/&amp;t=Migrating from Wordpress to Middleman" class="socialite facebook-like" data-href="http://sourcey.com/migrating-from-wordpress-to-middleman/" data-send="false" data-layout="box_count" data-width="60" data-show-faces="false" rel="nofollow" target="_blank"><span class="vhidden">Share on Facebook</span></a>
+        </li>
+        <li>
+          <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://sourcey.com/migrating-from-wordpress-to-middleman/&amp;title=Migrating from Wordpress to Middleman" class="socialite linkedin-share" data-url="http://sourcey.com/migrating-from-wordpress-to-middleman/" data-counter="top" rel="nofollow" target="_blank"><span class="vhidden">Share on LinkedIn</span></a>
+        </li>
+      </ul>        
+      <div class="meta">
+        Posted on <time class="updated" datetime="Apr  4 2014">Apr  4 2014</time> by 
+        
+          <a rel="author external" href="https://plus.google.com/+KamLow">Kam Low</a>
+        . Tagged: programming, symple, video, webrtc.
+      </div>       
+      
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+          /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+          var disqus_shortname = 'sourcey'; // required: replace example with your forum shortname
+
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+      <a href="http://disqus.com" rel="nofollow" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>    
+    </div>
+        
+    <!--
+    <div style="text-align: center">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>  -->
+    <!-- Sourcey Small H --><!--
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:468px;height:60px;margin: 30px auto 15px;"
+         data-ad-client="ca-pub-1397369873900370"
+         data-ad-slot="8968503286"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+    </div>
+    -->
+
+    <footer id="footer">
+      <p>
+        As with all business minded artists, we have fought the inevitable battle of conformity vs expression, and have emerged victorious with sanity intact to plunder the digiverse in search of new and interesting challenges. For more information, or a quote, drop us an email and tell us what you're working on.
+      </p>
+      <!--
+      <p>                     
+        Our Kung Fu includes and is not limited to: C++, Ruby, Python, Java, Php, JavaScript, Node.js, ActionScript, HTML, CSS and Photoshop.
+      <p>  
+       -->      	  
+      <p>
+      &copy;2014 Sourcey     
+      <p>  
+    </footer>
+      
+    <script src="/javascripts/all.js" type="text/javascript"></script>
+  </body>
+</html>
