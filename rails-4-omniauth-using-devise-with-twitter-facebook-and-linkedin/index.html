@@ -1,0 +1,371 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rails 4 OmniAuth using Devise with Twitter, Facebook and Linkedin</title>
+    <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+    
+    <link href="/stylesheets/app.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="/stylesheets/style.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="/stylesheets/highlight/monokai.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/modernizr.js" type="text/javascript"></script>
+  </head>
+      
+  <body class="blog rails-4-omniauth-using-devise-with-twitter-facebook-and-linkedin rails-4-omniauth-using-devise-with-twitter-facebook-and-linkedin_index">
+      <nav class="top-bar" data-topbar="">
+    <div id="social">
+      <a href="https://plus.google.com/+SourceyDevel"><i class="fi-social-google-plus large"></i></a>
+      <a href="https://facebook.com/sourceydevel"><i class="fi-social-facebook large"></i></a>
+      <a href="https://twitter.com/sourceydevel"><i class="fi-social-twitter large"></i></a>
+      <a href="https://github.com/sourcey"><i class="fi-social-github large"></i></a>    
+    </div>
+      
+    <ul class="title-area">
+      <li class="name"></li>
+      <li class="toggle-topbar menu-icon"><a href="" class="left"><!--Menu--></a></li>
+    </ul>
+    
+    <section class="top-bar-section" style="left: 0%;">      
+      <ul class="left">
+        <li class="has-dropdown not-click"><a href="/">Menu</a>
+          <ul class="dropdown"><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li>
+            <!--<li><label>Menu</label></li>-->
+            <li><a href="/#blog">Blog</a></li>
+            <li class="has-dropdown not-click"><a href="/#projects">Projects</a>
+              <ul class="dropdown"><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li>
+                <li><label>Projects</label></li>
+                <li><a href="/libsourcey">LibSourcey</a></li>
+                <li><a href="/anionu">Anionu</a></li>
+                <li><a href="/symple">Symple</a></li>
+                <li><a href="/mesh">Mesh</a></li>
+                <li><a href="/pacman">Pacman</a></li>
+              </ul>
+            </li>
+            <li class="divider"></li>
+            <li><a href="/archives">Archives</a></li>
+            <li><a href="/feed.xml">Feed</a></li>
+            <li class="divider"></li>
+            <li><a href="mailto:hello@sourcey.com">Contact</a></li>
+          </ul>
+        </li>
+        <li class="divider"></li>
+      </ul>
+    </section></nav>
+    
+    <header id="header">
+      <h1 id="logo">
+        <a title="Sourcey" rel="home" href="http://sourcey.com"><img height="150" width="150" title="Sourcey" alt="Sourcey" src="/images/logo-250.png" /></a>
+      </h1>
+      <!--<h2 class="site-description">Open Source Developer Collective</h2>-->
+    </header>    
+    <div id="main" role="main">
+      <div id="rotate-article">
+        
+          <a class="next" href="/add-grunt-to-your-javascript-projects/">next article &rarr;</a>
+        
+        
+          <a class="prev" href="/combining-multiple-rss-feeds/">&larr; previous article</a>
+        
+      </div>
+      <p>There are quite a few OAuth solutions out there, but I want to share the one we use, as it allows you to intelligently link multiple OAuth identities with a single user entity. If you use 90% of the code examples on the internet you will wind up with a new user entity each time the user signs in with a different OAuth provider, and a bunch of very confused users.</p>
+
+<p>The OAuth provider that throws a spanner in the works and adds convolution to our code is Twitter. Twitter doesn't share their user's email address, so we need to add an extra step to get it from the user. Note that we do not ask Twitter users to "confirm" their email address, since they have already associated their Twitter account, and we don't want to be too much of a pain in the ass and remove all the joy from OAuth altogether.</p>
+
+<p>So, without further ado, here is the code:</p>
+
+<h4 id="gemfile">Gemfile</h4>
+<pre class="highlight ruby"><span class="n">gem</span> <span class="s1">'cancan'</span>
+<span class="n">gem</span> <span class="s1">'devise'</span>
+<span class="n">gem</span> <span class="s1">'omniauth'</span>
+<span class="n">gem</span> <span class="s1">'omniauth-twitter'</span>
+<span class="n">gem</span> <span class="s1">'omniauth-facebook'</span>
+<span class="n">gem</span> <span class="s1">'omniauth-linkedin'</span>
+</pre>
+
+<h4 id="generate-migrations-and-models">Generate migrations and models</h4>
+
+<pre class="highlight ruby"><span class="n">rails</span> <span class="n">generate</span> <span class="n">devise</span><span class="ss">:install</span>
+<span class="n">rails</span> <span class="n">generate</span> <span class="n">devise</span> <span class="n">user</span>
+<span class="n">rails</span> <span class="n">g</span> <span class="n">migration</span> <span class="n">add_name_to_users</span> <span class="nb">name</span><span class="ss">:string</span>
+<span class="n">rails</span> <span class="n">g</span> <span class="n">model</span> <span class="n">identity</span> <span class="n">user</span><span class="ss">:references</span> <span class="n">provider</span><span class="ss">:string</span> <span class="n">uid</span><span class="ss">:string</span> <span class="n">oauth_token</span><span class="ss">:string</span> <span class="n">oauth_secret</span><span class="ss">:string</span> <span class="n">oauth_expires_at</span><span class="ss">:datetime</span>
+
+<span class="c1"># Modify the db/migrate/[timestamp]_add_devise_to_users.rb to configure the Devise modules you will use.</span>
+<span class="c1"># We usually enable the "confirmable" module when enabling email signups.</span>
+</pre>
+
+<h4 id="appmodelsidentityrb">app/models/identity.rb</h4>
+<p>~~~ rubyclass Identity &lt; ActiveRecord::Base
+  belongs_to :user
+  validates_presence_of :user_id, :uid, :provider
+  validates_uniqueness_of :uid, :scope =&gt; :provider</p>
+
+<p>def self.find_for_oauth(auth)
+    identity = find_by(provider: auth.provider, uid: auth.uid)
+    if identity.nil?
+      identity = create(uid: auth.uid, provider: auth.provider)
+    end
+    identity
+  end
+end
+~~~ </p>
+
+<h4 id="appconfiginitializersdeviserb">app/config/initializers/devise.rb</h4>
+<p>~~~ rubyDevise.setup do |config|
+…
+  config.omniauth :facebook, "KEY", "SECRET"
+  config.omniauth :twitter, "KEY", "SECRET"
+  config.omniauth :linked_in, "KEY", "SECRET"
+…
+end
+~~~ </p>
+
+<h4 id="configenvironmentsenvironmentrb">config/environments/[environment].rb</h4>
+<pre class="highlight ruby"><span class="p">.</span><span class="nf">.</span><span class="o">.</span>
+  <span class="c1"># Email</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">action_mailer</span><span class="p">.</span><span class="nf">delivery_method</span> <span class="o">=</span> <span class="ss">:smtp</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">action_mailer</span><span class="p">.</span><span class="nf">perform_deliveries</span> <span class="o">=</span> <span class="kp">true</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">action_mailer</span><span class="p">.</span><span class="nf">default_url_options</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">:host</span> <span class="o">=&gt;</span> <span class="n">config</span><span class="p">.</span><span class="nf">app_domain</span> <span class="p">}</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">action_mailer</span><span class="p">.</span><span class="nf">smtp_settings</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="ss">address: </span><span class="s1">'smtp.gmail.com'</span><span class="p">,</span> 
+    <span class="ss">port: </span><span class="s1">'587'</span><span class="p">,</span>
+    <span class="ss">enable_starttls_auto: </span><span class="kp">true</span><span class="p">,</span>
+    <span class="ss">user_name: </span><span class="s1">''</span><span class="p">,</span>
+    <span class="ss">password: </span><span class="s1">''</span><span class="p">,</span>
+    <span class="n">authentication</span> <span class="o">=&gt;</span> <span class="ss">:plain</span><span class="p">,</span>
+    <span class="n">domain</span> <span class="o">=&gt;</span> <span class="s1">'somedomain.com'</span>
+  <span class="p">}</span>
+<span class="p">.</span><span class="nf">.</span><span class="o">.</span>
+</pre>
+
+<h4 id="appcontrollersomniauthcallbackscontrollerrb">app/controllers/omniauth_callbacks_controller.rb</h4>
+<pre class="highlight ruby"><span class="k">class</span> <span class="nc">OmniauthCallbacksController</span> <span class="o">&lt;</span> <span class="no">Devise</span><span class="o">::</span><span class="no">OmniauthCallbacksController</span>
+  <span class="k">def</span> <span class="nf">twitter</span>
+    <span class="vi">@user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">find_for_oauth</span><span class="p">(</span><span class="n">env</span><span class="o">[</span><span class="s2">"omniauth.auth"</span><span class="o">]</span><span class="p">,</span> <span class="n">current_user</span><span class="p">)</span>
+    <span class="k">if</span> <span class="vi">@user</span><span class="p">.</span><span class="nf">persisted?</span>
+      <span class="n">sign_in_and_redirect</span> <span class="vi">@user</span><span class="p">,</span> <span class="ss">:event</span> <span class="o">=&gt;</span> <span class="ss">:authentication</span>
+      <span class="n">set_flash_message</span><span class="p">(</span><span class="ss">:notice</span><span class="p">,</span> <span class="ss">:success</span><span class="p">,</span> <span class="ss">:kind</span> <span class="o">=&gt;</span> <span class="s2">"Twitter"</span><span class="p">)</span> <span class="k">if</span> <span class="n">is_navigational_format?</span>
+    <span class="k">else</span>
+      <span class="n">session</span><span class="o">[</span><span class="s2">"devise.twitter_uid"</span><span class="o">]</span> <span class="o">=</span> <span class="n">env</span><span class="o">[</span><span class="s2">"omniauth.auth"</span><span class="o">]</span>
+      <span class="n">redirect_to</span> <span class="n">new_user_registration_url</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">facebook</span>
+    <span class="vi">@user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">find_for_oauth</span><span class="p">(</span><span class="n">env</span><span class="o">[</span><span class="s2">"omniauth.auth"</span><span class="o">]</span><span class="p">,</span> <span class="n">current_user</span><span class="p">)</span>
+    <span class="k">if</span> <span class="vi">@user</span><span class="p">.</span><span class="nf">persisted?</span>
+      <span class="n">sign_in_and_redirect</span> <span class="vi">@user</span><span class="p">,</span> <span class="ss">:event</span> <span class="o">=&gt;</span> <span class="ss">:authentication</span>
+      <span class="n">set_flash_message</span><span class="p">(</span><span class="ss">:notice</span><span class="p">,</span> <span class="ss">:success</span><span class="p">,</span> <span class="ss">:kind</span> <span class="o">=&gt;</span> <span class="s2">"Facebook"</span><span class="p">)</span> <span class="k">if</span> <span class="n">is_navigational_format?</span>
+    <span class="k">else</span>
+      <span class="n">session</span><span class="o">[</span><span class="s2">"devise.facebook_data"</span><span class="o">]</span> <span class="o">=</span> <span class="n">env</span><span class="o">[</span><span class="s2">"omniauth.auth"</span><span class="o">]</span>
+      <span class="n">redirect_to</span> <span class="n">new_user_registration_url</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">linkedin</span>
+    <span class="vi">@user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">find_for_oauth</span><span class="p">(</span><span class="n">env</span><span class="o">[</span><span class="s2">"omniauth.auth"</span><span class="o">]</span><span class="p">,</span> <span class="n">current_user</span><span class="p">)</span>
+    <span class="k">if</span> <span class="vi">@user</span><span class="p">.</span><span class="nf">persisted?</span>
+      <span class="n">sign_in_and_redirect</span> <span class="vi">@user</span><span class="p">,</span> <span class="ss">:event</span> <span class="o">=&gt;</span> <span class="ss">:authentication</span>
+      <span class="n">set_flash_message</span><span class="p">(</span><span class="ss">:notice</span><span class="p">,</span> <span class="ss">:success</span><span class="p">,</span> <span class="ss">:kind</span> <span class="o">=&gt;</span> <span class="s2">"Linkedin"</span><span class="p">)</span> <span class="k">if</span> <span class="n">is_navigational_format?</span>
+    <span class="k">else</span>
+      <span class="n">session</span><span class="o">[</span><span class="s2">"devise.linkedin_data"</span><span class="o">]</span> <span class="o">=</span> <span class="n">env</span><span class="o">[</span><span class="s2">"omniauth.auth"</span><span class="o">]</span>
+      <span class="n">redirect_to</span> <span class="n">new_user_registration_url</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre>
+
+<h4 id="configroutesrb">config/routes.rb</h4>
+<pre class="highlight ruby"><span class="p">.</span><span class="nf">.</span><span class="o">.</span>
+  <span class="n">devise_for</span> <span class="ss">:users</span><span class="p">,</span> <span class="ss">:controllers</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">omniauth_callbacks: </span><span class="s1">'omniauth_callbacks'</span> <span class="p">}</span>
+<span class="p">.</span><span class="nf">.</span><span class="o">.</span>
+</pre>
+
+<h4 id="appmodelsuserrb">app/models/user.rb</h4>
+<pre class="highlight ruby"><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="no">TEMP_EMAIL</span> <span class="o">=</span> <span class="s1">'change@me.com'</span>
+  <span class="no">TEMP_EMAIL_REGEX</span> <span class="o">=</span> <span class="sr">/change@me.com/</span>
+
+  <span class="c1"># Include default devise modules. Others available are:</span>
+  <span class="c1"># :lockable, :timeoutable</span>
+  <span class="n">devise</span> <span class="ss">:database_authenticatable</span><span class="p">,</span> <span class="ss">:registerable</span><span class="p">,</span> <span class="ss">:confirmable</span><span class="p">,</span>
+    <span class="ss">:recoverable</span><span class="p">,</span> <span class="ss">:rememberable</span><span class="p">,</span> <span class="ss">:trackable</span><span class="p">,</span> <span class="ss">:validatable</span><span class="p">,</span> <span class="ss">:omniauthable</span>
+
+  <span class="n">validates_format_of</span> <span class="ss">:email</span><span class="p">,</span> <span class="ss">:without</span> <span class="o">=&gt;</span> <span class="no">TEMP_EMAIL_REGEX</span><span class="p">,</span> <span class="ss">on: :update</span>
+
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">find_for_oauth</span><span class="p">(</span><span class="n">auth</span><span class="p">,</span> <span class="n">signed_in_resource</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">)</span>
+
+    <span class="c1"># Get the identity and user if they exist</span>
+    <span class="n">identity</span> <span class="o">=</span> <span class="no">Identity</span><span class="p">.</span><span class="nf">find_for_oauth</span><span class="p">(</span><span class="n">auth</span><span class="p">)</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">identity</span><span class="p">.</span><span class="nf">user</span>
+    <span class="k">if</span> <span class="n">user</span><span class="p">.</span><span class="nf">nil?</span>
+
+      <span class="c1"># Get the existing user from email if the OAuth provider gives us an email</span>
+      <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">:email</span> <span class="o">=&gt;</span> <span class="n">auth</span><span class="p">.</span><span class="nf">info</span><span class="p">.</span><span class="nf">email</span><span class="p">).</span><span class="nf">first</span> <span class="k">if</span> <span class="n">auth</span><span class="p">.</span><span class="nf">info</span><span class="p">.</span><span class="nf">email</span>
+
+      <span class="c1"># Create the user if it is a new registration</span>
+      <span class="k">if</span> <span class="n">user</span><span class="p">.</span><span class="nf">nil?</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span>
+          <span class="nb">name</span><span class="p">:</span> <span class="n">auth</span><span class="p">.</span><span class="nf">extra</span><span class="p">.</span><span class="nf">raw_info</span><span class="p">.</span><span class="nf">name</span><span class="p">,</span>
+          <span class="c1">#username: auth.info.nickname || auth.uid,</span>
+          <span class="ss">email: </span><span class="n">auth</span><span class="p">.</span><span class="nf">info</span><span class="p">.</span><span class="nf">email</span><span class="p">.</span><span class="nf">blank?</span> <span class="p">?</span> <span class="no">TEMP_EMAIL</span> <span class="p">:</span> <span class="n">auth</span><span class="p">.</span><span class="nf">info</span><span class="p">.</span><span class="nf">email</span><span class="p">,</span>
+          <span class="ss">password: </span><span class="no">Devise</span><span class="p">.</span><span class="nf">friendly_token</span><span class="o">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">20</span><span class="o">]</span>
+        <span class="p">)</span>
+        <span class="n">user</span><span class="p">.</span><span class="nf">skip_confirmation!</span>
+        <span class="n">user</span><span class="p">.</span><span class="nf">save!</span>
+      <span class="k">end</span>
+
+      <span class="c1"># Associate the identity with the user if not already</span>
+      <span class="k">if</span> <span class="n">identity</span><span class="p">.</span><span class="nf">user</span> <span class="o">!=</span> <span class="n">user</span>
+        <span class="n">identity</span><span class="p">.</span><span class="nf">user</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="n">identity</span><span class="p">.</span><span class="nf">save!</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+    <span class="n">user</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre>
+
+<p>The next steps are optional to get an email address from Twitter users.</p>
+
+<h4 id="configroutesrb-1">config/routes.rb</h4>
+<pre class="highlight ruby"><span class="p">.</span><span class="nf">.</span><span class="o">.</span>
+  <span class="n">get</span> <span class="s1">'/users/:id/add_email'</span> <span class="o">=&gt;</span> <span class="s1">'users#add_email'</span><span class="p">,</span> <span class="ss">via: </span><span class="o">[</span><span class="ss">:get</span><span class="p">,</span> <span class="ss">:patch</span><span class="p">,</span> <span class="ss">:post</span><span class="o">]</span><span class="p">,</span> <span class="ss">:as</span> <span class="o">=&gt;</span> <span class="ss">:add_user_email</span>
+<span class="p">.</span><span class="nf">.</span><span class="o">.</span>
+</pre>
+
+<h4 id="appcontrollersapplicationcontrollerrb">app/controllers/application_controller.rb</h4>
+<pre class="highlight ruby">  <span class="c1"># This filter could go anywhere the user needs to have a valid email address to access</span>
+  <span class="n">before_filter</span> <span class="ss">:ensure_valid_email</span>
+
+  <span class="k">def</span> <span class="nf">ensure_valid_email</span>
+    <span class="c1"># Ensure we don't go into an infinite loop</span>
+    <span class="k">return</span> <span class="k">if</span> <span class="n">action_name</span> <span class="o">==</span> <span class="s1">'add_email'</span>
+
+    <span class="c1"># If the email address was the temporarily assigned one, </span>
+    <span class="c1"># redirect the user to the 'add_email' page</span>
+    <span class="k">if</span> <span class="n">current_user</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="o">!</span><span class="n">current_user</span><span class="p">.</span><span class="nf">email</span> <span class="o">||</span> <span class="n">current_user</span><span class="p">.</span><span class="nf">email</span> <span class="o">==</span> <span class="no">User</span><span class="o">::</span><span class="no">TEMP_EMAIL</span><span class="p">)</span>
+      <span class="n">redirect_to</span> <span class="n">add_user_email_path</span><span class="p">(</span><span class="n">current_user</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>  
+</pre>
+
+<h4 id="appcontrollersuserscontrollerrb">app/controllers/users_controller.rb</h4>
+<pre class="highlight ruby"><span class="k">class</span> <span class="nc">UsersController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="n">before_action</span> <span class="ss">:set_user</span><span class="p">,</span> <span class="ss">:add_email</span>
+  <span class="p">.</span><span class="nf">.</span><span class="o">.</span>
+  <span class="k">def</span> <span class="nf">add_email</span>
+    <span class="k">if</span> <span class="n">params</span><span class="o">[</span><span class="ss">:user</span><span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="n">params</span><span class="o">[</span><span class="ss">:user</span><span class="o">][</span><span class="ss">:email</span><span class="o">]</span>
+      <span class="n">current_user</span><span class="p">.</span><span class="nf">email</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:user</span><span class="o">][</span><span class="ss">:email</span><span class="o">]</span>
+      <span class="n">current_user</span><span class="p">.</span><span class="nf">skip_reconfirmation!</span> <span class="c1"># don't forget this if using Devise confirmable</span>
+      <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
+        <span class="k">if</span> <span class="n">current_user</span><span class="p">.</span><span class="nf">save</span>
+          <span class="nb">format</span><span class="p">.</span><span class="nf">html</span> <span class="p">{</span> <span class="n">redirect_to</span> <span class="n">current_user</span><span class="p">,</span> <span class="ss">notice: </span><span class="s1">'Your email address was successfully updated.'</span> <span class="p">}</span>
+          <span class="nb">format</span><span class="p">.</span><span class="nf">json</span> <span class="p">{</span> <span class="n">head</span> <span class="ss">:no_content</span> <span class="p">}</span>
+        <span class="k">else</span>
+          <span class="nb">format</span><span class="p">.</span><span class="nf">html</span> <span class="p">{</span> <span class="vi">@show_errors</span> <span class="o">=</span> <span class="kp">true</span> <span class="p">}</span>
+          <span class="nb">format</span><span class="p">.</span><span class="nf">json</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">json: </span><span class="vi">@user</span><span class="p">.</span><span class="nf">errors</span><span class="p">,</span> <span class="ss">status: :unprocessable_entity</span> <span class="p">}</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre>
+
+<h4 id="appviewsusersadduserhtmlrb">app/views/users/add_user.html.rb</h4>
+<pre class="highlight ruby"><span class="o">&lt;</span><span class="n">div</span> <span class="nb">id</span><span class="o">=</span><span class="s2">"add-email"</span> <span class="k">class</span><span class="o">=</span><span class="s2">"container"</span><span class="o">&gt;</span>
+  <span class="c1">## Add Email</span>
+  <span class="o">&lt;</span><span class="sx">%= form_for(@user, :as =</span><span class="o">&gt;</span> <span class="s1">'user'</span><span class="p">,</span> <span class="ss">:url</span> <span class="o">=&gt;</span> <span class="n">add_user_email_path</span><span class="p">(</span><span class="vi">@user</span><span class="p">),</span> <span class="ss">:html</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">role: </span><span class="s1">'form'</span><span class="p">})</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="sx">%&gt;
+    &lt;% if @show_errors &amp;&amp; @user.errors.any? %&gt;</span>
+      <span class="o">&lt;</span><span class="n">div</span> <span class="nb">id</span><span class="o">=</span><span class="s2">"error_explanation"</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="sx">% @user.errors.full_messages.each </span><span class="k">do</span> <span class="o">|</span><span class="n">msg</span><span class="o">|</span> <span class="sx">%&gt;
+          &lt;%= msg %&gt;</span><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="sx">% end %&gt;
+      &lt;/div&gt;</span>
+    <span class="o">&lt;</span><span class="sx">% end %&gt;
+    &lt;div class="form-group"&gt;</span>
+      <span class="o">&lt;</span><span class="sx">%= f.label :email %&gt;
+      &lt;div class=</span><span class="s2">"controls"</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="sx">%= f.text_field :email, :autofocus =</span><span class="o">&gt;</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">:value</span> <span class="o">=&gt;</span> <span class="s1">''</span><span class="p">,</span> <span class="k">class</span><span class="p">:</span> <span class="s1">'form-control input-lg'</span><span class="p">,</span> <span class="ss">placeholder: </span><span class="s1">'Example: email@me.com'</span> <span class="sx">%&gt;
+        &lt;p class="help-block"&gt;</span><span class="no">Please</span> <span class="n">confirm</span> <span class="n">your</span> <span class="n">email</span> <span class="n">address</span><span class="o">.</span> <span class="no">No</span> <span class="n">spam</span><span class="p">.</span><span class="nf">&lt;</span><span class="sr">/p&gt;
+      &lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="sr">/div&gt;
+    &lt;div class="actions"&gt;
+      &lt;%= f.submit 'Continue', :class =&gt; 'btn btn-primary' %&gt;
+    &lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="sx">% end %&gt;
+&lt;/div&gt;</span>
+</pre>
+
+<p>Well that's pretty much it! If I left anything out please give me a shout and I will update the article. Cheers!</p>
+    
+      
+      <ul class="social-buttons">
+        <li>
+          <a href="http://twitter.com/share" class="socialite twitter-share" data-text="Rails 4 OmniAuth using Devise with Twitter, Facebook and Linkedin" data-url="http://sourcey.com/rails-4-omniauth-using-devise-with-twitter-facebook-and-linkedin/" data-count="vertical" rel="nofollow" target="_blank"><span class="vhidden">Share on Twitter</span></a>
+        </li>
+        <li>
+          <a href="https://plus.google.com/share?url=http://sourcey.com/rails-4-omniauth-using-devise-with-twitter-facebook-and-linkedin/" class="socialite googleplus-one" data-size="tall" data-href="http://sourcey.com/rails-4-omniauth-using-devise-with-twitter-facebook-and-linkedin/" rel="nofollow" target="_blank"><span class="vhidden">Share on Google+</span></a>
+        </li>
+        <li>
+          <a href="http://www.facebook.com/sharer.php?u=http://sourcey.com/rails-4-omniauth-using-devise-with-twitter-facebook-and-linkedin/&amp;t=Rails 4 OmniAuth using Devise with Twitter, Facebook and Linkedin" class="socialite facebook-like" data-href="http://sourcey.com/rails-4-omniauth-using-devise-with-twitter-facebook-and-linkedin/" data-send="false" data-layout="box_count" data-width="60" data-show-faces="false" rel="nofollow" target="_blank"><span class="vhidden">Share on Facebook</span></a>
+        </li>
+        <li>
+          <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://sourcey.com/rails-4-omniauth-using-devise-with-twitter-facebook-and-linkedin/&amp;title=Rails 4 OmniAuth using Devise with Twitter, Facebook and Linkedin" class="socialite linkedin-share" data-url="http://sourcey.com/rails-4-omniauth-using-devise-with-twitter-facebook-and-linkedin/" data-counter="top" rel="nofollow" target="_blank"><span class="vhidden">Share on LinkedIn</span></a>
+        </li>
+      </ul>        
+      <div class="meta">
+        Posted on <time class="updated" datetime="Mar 26 2014">Mar 26 2014</time> by 
+        
+          <a rel="author external" href="https://plus.google.com/+KamLow">Kam Low</a>
+        . Tagged: oauth, programming, rails, ruby.
+      </div>       
+      
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+          /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+          var disqus_shortname = 'sourcey'; // required: replace example with your forum shortname
+
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+      <a href="http://disqus.com" rel="nofollow" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>    
+    </div>
+        
+    <!--
+    <div style="text-align: center">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>  -->
+    <!-- Sourcey Small H --><!--
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:468px;height:60px;margin: 30px auto 15px;"
+         data-ad-client="ca-pub-1397369873900370"
+         data-ad-slot="8968503286"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+    </div>
+    -->
+
+    <footer id="footer">
+      <p>
+        As with all business minded artists, we have fought the inevitable battle of conformity vs expression, and have emerged victorious with sanity intact to plunder the digiverse in search of new and interesting challenges. For more information, or a quote, drop us an email and tell us what you're working on.
+      </p>
+      <!--
+      <p>                     
+        Our Kung Fu includes and is not limited to: C++, Ruby, Python, Java, Php, JavaScript, Node.js, ActionScript, HTML, CSS and Photoshop.
+      <p>  
+       -->      	  
+      <p>
+      &copy;2014 Sourcey     
+      <p>  
+    </footer>
+      
+    <script src="/javascripts/all.js" type="text/javascript"></script>
+  </body>
+</html>

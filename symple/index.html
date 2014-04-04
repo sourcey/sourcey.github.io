@@ -1,0 +1,483 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Symple</title>
+    <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+    
+    <link href="/stylesheets/app.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="/stylesheets/style.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="/stylesheets/highlight/monokai.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/modernizr.js" type="text/javascript"></script>
+  </head>
+      
+  <body class="blog symple symple_index">
+      <nav class="top-bar" data-topbar="">
+    <div id="social">
+      <a href="https://plus.google.com/+SourceyDevel"><i class="fi-social-google-plus large"></i></a>
+      <a href="https://facebook.com/sourceydevel"><i class="fi-social-facebook large"></i></a>
+      <a href="https://twitter.com/sourceydevel"><i class="fi-social-twitter large"></i></a>
+      <a href="https://github.com/sourcey"><i class="fi-social-github large"></i></a>    
+    </div>
+      
+    <ul class="title-area">
+      <li class="name"></li>
+      <li class="toggle-topbar menu-icon"><a href="" class="left"><!--Menu--></a></li>
+    </ul>
+    
+    <section class="top-bar-section" style="left: 0%;">      
+      <ul class="left">
+        <li class="has-dropdown not-click"><a href="/">Menu</a>
+          <ul class="dropdown"><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li>
+            <!--<li><label>Menu</label></li>-->
+            <li><a href="/#blog">Blog</a></li>
+            <li class="has-dropdown not-click"><a href="/#projects">Projects</a>
+              <ul class="dropdown"><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li>
+                <li><label>Projects</label></li>
+                <li><a href="/libsourcey">LibSourcey</a></li>
+                <li><a href="/anionu">Anionu</a></li>
+                <li><a href="/symple">Symple</a></li>
+                <li><a href="/mesh">Mesh</a></li>
+                <li><a href="/pacman">Pacman</a></li>
+              </ul>
+            </li>
+            <li class="divider"></li>
+            <li><a href="/archives">Archives</a></li>
+            <li><a href="/feed.xml">Feed</a></li>
+            <li class="divider"></li>
+            <li><a href="mailto:hello@sourcey.com">Contact</a></li>
+          </ul>
+        </li>
+        <li class="divider"></li>
+      </ul>
+    </section></nav>
+    
+    <header id="header">
+      <h1 id="logo">
+        <a title="Sourcey" rel="home" href="http://sourcey.com"><img height="150" width="150" title="Sourcey" alt="Sourcey" src="/images/logo-250.png" /></a>
+      </h1>
+      <!--<h2 class="site-description">Open Source Developer Collective</h2>-->
+    </header>    
+    <div id="main" role="main">
+      <!--<h1 class="title">Symple</h1>-->
+      <h1 id="symple">Symple</h1>
+
+<div class="status">  
+  <dl>
+    <dt>Repository</dt>
+    <dd>
+      <a class="external" href="https://github.com/sourcey/symple-client">https://github.com/sourcey/symple-client</a><br />
+      <a class="external" href="https://github.com/sourcey/symple-server-node">https://github.com/sourcey/symple-server-node</a><br />
+      <a class="external" href="https://github.com/sourcey/libsourcey">https://github.com/sourcey/libsourcey</a>
+    </dd>
+
+    <dt>Licence</dt>
+    <dd>
+      LGPL, <a href="/licensing">Sourcey Licence</a>
+    </dd> 
+  </dl>           
+</div>
+
+<p><img alt="Symple Logo" title="Symple Logo" class="align-left" src="/images/symple-logo-120.png" /> Symple is a messaging, presence and remoting protocol with implementations in C++ and JavaScript for seamless communication between desktop and browser applications.</p>
+
+<p>Symple is an unrestrictive peer messaging and presence protocol.
+As the name would suggest; Symple is a very minimal and flexible protocol, which is more suited to a "do-it-yourself" developer mentality.   </p>
+
+<p>The message format is closely modelled after XMPP, but uses a vastly simplified syntax, and also uses JSON instead of XML for encoding messages.<br />
+Symple has built-in support signalling support for messages, commands, forms and presence.</p>
+
+<p>The flexible nature of the JSON format also make it great for remoting and serializing data structures such as nested polymorphic objects.</p>
+
+<!-- 
+identified by a "type" attribute.
+in that it supports broadcasting abritraty data structures and nested or polymorphic objects identified by a "type" attribute
+ scalable and 
+
+If you are familiar with XMPP then you have a good head start, 
+Symple uses similar, but simpler semantics, and JSON instead of XML for encoding messages.
+It's no secret, we use JSON for everything.    
+The Symple protocol includes basic specifications for messaging, presence, commands, events and forms. 
+Symple naturally supports broadcasting any data structure to peers, which also makes Symple great for remoting. 
+Nested or polymorphic objects are identified using a message's "type" attribute.
+
+    
+Presently the underlying messaging system.
+,
+and <a class="external" href="https://bitbucket.org/sourcey/libsourcey">LibSourcey</a> includes a native C++ client and samples
+-->
+
+<h2 id="client-implementations">Client implementations</h2>
+
+<p>The <a class="external" href="https://bitbucket.org/sourcey/symple">Symple</a> repository includes client implementations in Ruby and JavaScript.</p>
+
+<p>The Ruby client is a single drop-in module that is perfect for server-side integration with a web framework like Rails or Sinatra.</p>
+
+<p>The JavaScript client provides a flexible interface for receiving standard and arbitrary message types.</p>
+
+<p><a class="external" href="https://bitbucket.org/sourcey/libsourcey">LibSourcey</a> also contains includes a native C++ client and samples. 
+The native client is built on top of LibSourcey and libuv architecture for super fast C++ event-based networking.</p>
+
+<h2 id="server-implementations">Server implementations</h2>
+
+<p>The <a class="external" href="https://bitbucket.org/sourcey/symple">Symple</a> repository includes sample server is implemented on a node.js stack.</p>
+
+<p>The server supports easy SSL configuration, groups, users, x-real-ip detection, and pre-arranged sessions using short-term authentication tokens via Redis.</p>
+
+<h2 id="why-symple">Why Symple</h2>
+
+<p>If you've had the pleasure of building a system to complex specifications then no doubt you'll be familiar with the bloat indicative of such systems.</p>
+
+<p>In some cases it's a necessity, but when it comes to a task like messaging, we prefer freedom of implemention rather than incumbent structure.</p>
+
+<p>Symple was created as a result of our work with Anionu, where the requirement was real-time messaging and presence between the native and web applications.   </p>
+
+<p>Anionu began it's life speaking the XMPP protocol, 
+but while still in it's infancy the child fell terminally ill with a case of unwanted complexity on the client and server sides, and also suffered stiffness from early arthritis attributed to restrictive protocols.    </p>
+
+<p>At this point the need for something Sympler became apparent. Before all hope was lost, and the satisfaction associated with the knowledge that one is creating a streamlined and intuitive system dissolved entirely into the rabbit warrens of unmaintainable code, Symple was given life!</p>
+
+<!--at Sourcey 
+
+, Further extensions may be added tobut the way messages are formed is entirely up to the implementation.
+ 
+JSON is used for encoding messages
+In the messaging world XMPP comes to mind; a solid protocol, 
+
+around XMPP or similar protocols you will no doubt be familiar with the incumbent bloat indicative of systems adherent to complex specifications.
+
+
+If you've had the pleasure of building a system around XMPP or similar protocols you will no doubt be familiar with the incumbent bloat indicative of systems adherent to complex specifications.
+Now there is absolutely nothing wrong with that, and i    determinest reason
+
+at Sourcey we prefer to work with a bare-bones platform that allows for rapid development in any given direction.      
+The end result is generally a more streamlined and intuative application (provided you know what you're doing of course).
+We actually started building 
+thus Symple was given life.
+Anionu with XMPP as the messaging protocol, but it became evident quite early on that we were introducing too much unwanted complexity on the client and server sides, and the feeling of satisfaction 
+associated with the knowledge that one is creating a streamlined and intuitive system dissipaters into the rabbit warrens of unmaintainable code.
+At this point that the need for something sympler became apparent, thus Symple was given life.
+
+
+The choice of JSON as the underlying protocol was natural given our trend towards web centric applications. JSON's smaller message size, reasonably fast processing and vast array of client libraries sealed the deal. 
+It's no secret, we use JSON for just about everything.
+        
+-->
+
+<h2 id="protocol-specifications">Protocol Specifications</h2>
+
+<p>Below are the protocol specifications for Symple's core message types.</p>
+
+<h3 id="address">Address</h3>
+
+<p>A Symple ID is the destination address of a group user or peer node on the server. 
+It consists of 3 namespace segments, each segment that is included in a message's destination address refines the delivery scope for that message.
+The purpose of namespacing peer addresses is so peers can be privately grouped.</p>
+
+<dl>
+  <dt>Group</dt>
+  <dd>Each peer on the Symple server belongs to a group namespace. 
+A message directed to the group namespace will be dispatched to all nodes belonging to that group.
+
+    <p><em>Example:</em> <code>{ to: "group" }</code></p>
+  </dd>
+  <dt>User</dt>
+  <dd>Each peer on the Symple sever has an associated user name for the purposes of authentication and node grouping.
+A message directed to the user namespace will be dispatched to nodes belonging to that user.
+When directing a message to a user namespace, the group namespace MUST be included beforehand.
+
+    <p><em>Example:</em> <code>{ to: "group@user" }</code></p>
+  </dd>
+  <dt>Session ID</dt>
+  <dd>Each peer on the Symple sever has a session ID. The session ID acts is a unique identifier for each peer session.
+Messages may be directed to a specific peer by including the node ID in the destination address.
+When directing a message to a node ID, the node's group and user namespaces MUST be included beforehand.
+
+    <p><em>Example:</em> <code>{ to: "group@user/sessionid" }</code></p>
+  </dd>
+</dl>
+
+<h3 id="message">Message</h3>
+
+<p>A symple message is a JSON object which acts as a container for data that is sent over the wire. 
+There are 3 required message attributes:</p>
+
+<pre class="highlight javascript"><span class="p">{</span>
+  <span class="s2">"to"</span><span class="p">:</span> <span class="s2">"group@recipient/sessionid"</span><span class="p">,</span>      <span class="c1">// Recipient @see Symple ID (may be full or partial ID)
+</span>  <span class="s2">"from"</span><span class="p">:</span> <span class="s2">"group@sender/sessionid"</span><span class="p">,</span>       <span class="c1">// Sender @see Symple ID (always full ID)
+</span>  <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"message"</span><span class="p">,</span>                      <span class="c1">// The type of message being sent, maybe a polymorphic type.
+</span><span class="p">}</span>
+</pre>
+
+<p>Other frequently used but optional attributes include:</p>
+
+<pre class="highlight javascript"><span class="p">{</span>
+  <span class="s2">"data"</span><span class="p">:</span> <span class="p">{},</span>                             <span class="c1">// We recommend placing arbitrary message data inside a "data" attribute, but this is optional.  
+</span>  <span class="s2">"notes"</span><span class="p">:</span> <span class="p">[</span>                              <span class="c1">// Notes can be added to messages like so.
+</span>    <span class="p">{</span>
+      <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"info"</span><span class="p">,</span>                     <span class="c1">// Note types: "info", "warn", "error"
+</span>      <span class="s2">"text"</span><span class="p">:</span> <span class="s2">"ummm..."</span>
+    <span class="p">}</span>
+<span class="p">}</span>          
+</pre>
+
+<p>From these meagre beginnings we can rapidly develop just about any kind of messaging system we want.
+As long as this simple message structure is adhered to data can be broadcast between scoped peers.</p>
+
+<h3 id="command">Command</h3>
+
+<p>Command messages allow us to send arbitrary commands peer. 
+They are suited for sending either short or long running commands, and allow for status callbacks.
+A command request looks like this:</p>
+
+<pre class="highlight javascript"><span class="p">{</span>
+  <span class="s2">"to"</span><span class="p">:</span> <span class="s2">"responder"</span><span class="p">,</span>                      <span class="c1">// Responder
+</span>  <span class="s2">"from"</span><span class="p">:</span> <span class="s2">"initiator"</span><span class="p">,</span>                    <span class="c1">// Initiator
+</span>  <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"command"</span><span class="p">,</span>                      <span class="c1">// Message type
+</span>  <span class="s2">"node"</span><span class="p">:</span> <span class="s2">"some:node"</span><span class="p">,</span>                    <span class="c1">// The target command node or namespace
+</span>  <span class="s2">"action"</span><span class="p">:</span> <span class="s2">"execute"</span>                     <span class="c1">// An optional command action
+</span><span class="p">}</span>
+</pre>
+
+<p>A command response looks like this:</p>
+
+<pre class="highlight javascript"><span class="p">{</span>
+  <span class="s2">"to"</span><span class="p">:</span> <span class="s2">"initiator"</span><span class="p">,</span>                      <span class="c1">// Initiator
+</span>  <span class="s2">"from"</span><span class="p">:</span> <span class="s2">"responder"</span><span class="p">,</span>                    <span class="c1">// Responder
+</span>  <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"command"</span><span class="p">,</span>
+  <span class="s2">"node"</span><span class="p">:</span> <span class="s2">"some:node"</span><span class="p">,</span>
+  <span class="s2">"status"</span><span class="p">:</span> <span class="mi">200</span>                           <span class="c1">// HTTP status codes are employed to describe the status of the command.
+</span><span class="p">}</span>                                         <span class="c1">// HTTP codes are generally 200, 202, 404, 406, 500 *
+</span></pre>
+
+<p class="note">
+* Command status callbacks for long running commands should use status 202 (Accepted) and 406 (Not accepted) to describe the command's running status.
+All other status codes will result in completion and termination of the command session.
+</p>
+
+<h3 id="event">Event</h3>
+
+<p>Events allow peers to broadcast information about their running state to other peers.</p>
+
+<p>~~~ javascript{
+  "to": "recipient",                      // Recipient
+  "from": "sender",                       // Sender
+  "type": "event",
+  "node": "some:node"                     // The target event node
+}
+~~~ </p>
+
+<h3 id="form">Form</h3>
+
+<p>Forms allow for peers to engage in configuration sessions.
+The forms data structure is designed to be easily interpreted by GUI renderers.
+Our JavaScript library includes support for displaying Symple forms as HTML.
+Forms objects generally piggyback on command messages. 
+A basic form session is illustrated below:</p>
+
+<p>A form session is requested by the initiator:</p>
+
+<pre class="highlight javascript"><span class="p">{</span>
+  <span class="s2">"to"</span><span class="p">:</span> <span class="s2">"responder"</span><span class="p">,</span>                      <span class="c1">// Responder
+</span>  <span class="s2">"from"</span><span class="p">:</span> <span class="s2">"initiator"</span><span class="p">,</span>                    <span class="c1">// Initiator
+</span>  <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"command"</span>
+  <span class="s2">"node"</span><span class="p">:</span> <span class="s2">"some:node:config"</span>
+<span class="p">}</span>
+</pre>
+
+<p>The responder returns an empty form.</p>
+
+<pre class="highlight javascript"><span class="p">{</span>
+  <span class="s2">"to"</span><span class="p">:</span> <span class="s2">"initiator"</span><span class="p">,</span>                      <span class="c1">// Initiator
+</span>  <span class="s2">"from"</span><span class="p">:</span> <span class="s2">"responder"</span><span class="p">,</span>                    <span class="c1">// Responder
+</span>  <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"command"</span><span class="p">,</span>
+  <span class="s2">"node"</span><span class="p">:</span> <span class="s2">"some:node:config"</span><span class="p">,</span>
+  <span class="s2">"status"</span><span class="p">:</span> <span class="mi">202</span><span class="p">,</span>                          <span class="c1">// Status 202 indicates the session is in progress
+</span>  <span class="s2">"form"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"form"</span><span class="p">,</span>                       <span class="c1">// Type "forms" identifies the object 
+</span>    <span class="s2">"action"</span><span class="p">:</span> <span class="s2">"form"</span><span class="p">,</span>                     <span class="c1">// Actions: "form", "submit", "result"
+</span>    <span class="s2">"elements"</span><span class="p">:</span> <span class="p">[</span>                         <span class="c1">// Forms support nested element arrays
+</span>      <span class="p">{</span>
+        <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"page"</span><span class="p">,</span>                   <span class="c1">// Form fields optionally belong to a "page" or "section" element 
+</span>        <span class="s2">"label"</span><span class="p">:</span> <span class="s2">"page 1"</span><span class="p">,</span>                <span class="c1">// Every element has a label
+</span>        <span class="s2">"elements"</span><span class="p">:</span> <span class="p">[</span>
+          <span class="p">{</span>
+            <span class="s2">"id"</span><span class="p">:</span> <span class="s2">"field1"</span><span class="p">,</span>               <span class="c1">// Uniquely identified this form field (like HTML's "name" attribute)
+</span>            <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"text"</span><span class="p">,</span>               <span class="c1">// Form field types are as follows: 
+</span>            <span class="s2">"label"</span><span class="p">:</span> <span class="s2">"field 1"</span><span class="p">,</span>           <span class="c1">//  "text", "text-multi", "list", "list-multi", "boolean", "media", "custom"              
+</span>            <span class="s2">"options"</span><span class="p">:</span> <span class="p">{</span>                                            
+              <span class="s2">"key1"</span><span class="p">:</span> <span class="s2">"value1"</span><span class="p">,</span>           <span class="c1">// The options hash holds key value data for "list" and "list-multi" types.             
+</span>              <span class="s2">"key2"</span><span class="p">:</span> <span class="s2">"value2"</span><span class="p">,</span>        
+              <span class="s2">"key3"</span><span class="p">:</span> <span class="s2">"value3"</span><span class="p">,</span>                
+            <span class="p">}</span>
+          <span class="p">}</span>
+        <span class="p">],</span>
+        <span class="s2">"values"</span><span class="p">:</span> <span class="p">[</span> <span class="s2">"key1"</span> <span class="p">]</span>              <span class="c1">// The values array include the current value(s) for this field.
+</span>      <span class="p">}</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+
+<p>The initiator receives and displays the form the responder. 
+Once complete and the form data is updated an submit back to responder for processing and validation.
+Note the only fields that change here are the form's "type" attribute which is set to "submit", status code is removed, and the field value now equals "key2".</p>
+
+<pre class="highlight javascript"><span class="p">{</span>
+  <span class="s2">"to"</span><span class="p">:</span> <span class="s2">"responder"</span><span class="p">,</span>                      <span class="c1">// Responder
+</span>  <span class="s2">"from"</span><span class="p">:</span> <span class="s2">"initiator"</span><span class="p">,</span>                    <span class="c1">// Initiator
+</span>  <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"command"</span><span class="p">,</span>
+  <span class="s2">"node"</span><span class="p">:</span> <span class="s2">"some:node:config"</span><span class="p">,</span>
+  <span class="s2">"status"</span><span class="p">:</span> <span class="mi">202</span><span class="p">,</span>                          <span class="c1">// Status 202 indicates the session is in progress
+</span>  <span class="s2">"form"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"form"</span><span class="p">,</span>
+    <span class="s2">"action"</span><span class="p">:</span> <span class="s2">"submit"</span><span class="p">,</span>
+    <span class="s2">"elements"</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"page"</span><span class="p">,</span>
+        <span class="s2">"label"</span><span class="p">:</span> <span class="s2">"page 1"</span><span class="p">,</span>
+        <span class="s2">"elements"</span><span class="p">:</span> <span class="p">[</span>
+          <span class="p">{</span>
+            <span class="s2">"id"</span><span class="p">:</span> <span class="s2">"field1"</span><span class="p">,</span>
+            <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"text"</span><span class="p">,</span>
+            <span class="s2">"label"</span><span class="p">:</span> <span class="s2">"field 1"</span><span class="p">,</span>
+            <span class="s2">"options"</span><span class="p">:</span> <span class="p">{</span>                                            
+              <span class="s2">"key1"</span><span class="p">:</span> <span class="s2">"value1"</span><span class="p">,</span>
+              <span class="s2">"key2"</span><span class="p">:</span> <span class="s2">"value2"</span><span class="p">,</span>
+              <span class="s2">"key3"</span><span class="p">:</span> <span class="s2">"value3"</span><span class="p">,</span>
+            <span class="p">}</span>
+          <span class="p">}</span>
+        <span class="p">],</span>
+        <span class="s2">"values"</span><span class="p">:</span> <span class="p">[</span> <span class="s2">"key2"</span> <span class="p">]</span>              <span class="c1">// The values now equals "key2".
+</span>      <span class="p">}</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+
+<p>The responder receives and and processes the form data. 
+If any errors are encountered during validation, an error message may added to the field and form returned to the requester for review.</p>
+
+<p>For the purpose of our example validation failed and case the responder was unable to set the value to key2</p>
+
+<pre class="highlight javascript"><span class="p">{</span>
+  <span class="s2">"to"</span><span class="p">:</span> <span class="s2">"initiator"</span><span class="p">,</span>                      <span class="c1">// Initiator
+</span>  <span class="s2">"from"</span><span class="p">:</span> <span class="s2">"responder"</span><span class="p">,</span>                    <span class="c1">// Responder
+</span>  <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"command"</span><span class="p">,</span>
+  <span class="s2">"node"</span><span class="p">:</span> <span class="s2">"some:node:config"</span><span class="p">,</span>
+  <span class="s2">"status"</span><span class="p">:</span> <span class="mi">202</span><span class="p">,</span>                          <span class="c1">// Status 202 indicates the session is in progress
+</span>  <span class="s2">"form"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"form"</span><span class="p">,</span>
+    <span class="s2">"action"</span><span class="p">:</span> <span class="s2">"result"</span><span class="p">,</span>
+    <span class="s2">"elements"</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"page"</span><span class="p">,</span>
+        <span class="s2">"label"</span><span class="p">:</span> <span class="s2">"page 1"</span><span class="p">,</span>
+        <span class="s2">"elements"</span><span class="p">:</span> <span class="p">[</span>
+          <span class="p">{</span>
+            <span class="s2">"id"</span><span class="p">:</span> <span class="s2">"field1"</span><span class="p">,</span>
+            <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"page"</span><span class="p">,</span>
+            <span class="s2">"label"</span><span class="p">:</span> <span class="s2">"text"</span><span class="p">,</span>
+            <span class="s2">"error"</span><span class="p">:</span> <span class="s2">"key2 is invalid"</span><span class="p">,</span>   <span class="c1">// An error message described the problem 
+</span>            <span class="s2">"options"</span><span class="p">:</span> <span class="p">{</span>                                            
+              <span class="s2">"key1"</span><span class="p">:</span> <span class="s2">"value1"</span><span class="p">,</span>
+              <span class="s2">"key2"</span><span class="p">:</span> <span class="s2">"value2"</span><span class="p">,</span>     
+              <span class="s2">"key3"</span><span class="p">:</span> <span class="s2">"value3"</span><span class="p">,</span>                
+            <span class="p">}</span>
+          <span class="p">}</span>
+        <span class="p">],</span>
+        <span class="s2">"values"</span><span class="p">:</span> <span class="p">[</span> <span class="s2">"key1"</span> <span class="p">]</span>              <span class="c1">// The values now equals "key1" again since validation failed.
+</span>      <span class="p">}</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+
+<p>The requester receives the form and displays the errors to the user.
+Once rectified the user submits the form again, this time selecting "key3".</p>
+
+<pre class="highlight javascript"><span class="p">{</span>
+  <span class="s2">"to"</span><span class="p">:</span> <span class="s2">"responder"</span><span class="p">,</span>                      <span class="c1">// Responder
+</span>  <span class="s2">"from"</span><span class="p">:</span> <span class="s2">"initiator"</span><span class="p">,</span>                    <span class="c1">// Initiator
+</span>  <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"command"</span><span class="p">,</span>
+  <span class="s2">"node"</span><span class="p">:</span> <span class="s2">"some:node:config"</span><span class="p">,</span>
+  <span class="s2">"form"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"form"</span><span class="p">,</span>
+    <span class="s2">"action"</span><span class="p">:</span> <span class="s2">"submit"</span><span class="p">,</span>
+    <span class="s2">"elements"</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"page"</span><span class="p">,</span>
+        <span class="s2">"label"</span><span class="p">:</span> <span class="s2">"page 1"</span><span class="p">,</span>
+        <span class="s2">"elements"</span><span class="p">:</span> <span class="p">[</span>
+          <span class="p">{</span>
+            <span class="s2">"id"</span><span class="p">:</span> <span class="s2">"field1"</span><span class="p">,</span>
+            <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"page"</span><span class="p">,</span>
+            <span class="s2">"label"</span><span class="p">:</span> <span class="s2">"text"</span><span class="p">,</span>
+            <span class="s2">"options"</span><span class="p">:</span> <span class="p">{</span>                                            
+              <span class="s2">"key1"</span><span class="p">:</span> <span class="s2">"value1"</span><span class="p">,</span>
+              <span class="s2">"key2"</span><span class="p">:</span> <span class="s2">"value2"</span><span class="p">,</span>
+              <span class="s2">"key3"</span><span class="p">:</span> <span class="s2">"value3"</span><span class="p">,</span>                
+            <span class="p">}</span>
+          <span class="p">}</span>
+        <span class="p">],</span>
+        <span class="s2">"values"</span><span class="p">:</span> <span class="p">[</span> <span class="s2">"key3"</span> <span class="p">]</span>              <span class="c1">// The values now equals "key3"
+</span>      <span class="p">}</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+
+<p>Finally both peers have come to an agreement, the info is valid, contracts are signed, and the data is saved.</p>
+
+<p>The responding peer terminates the session by saying thanks:</p>
+
+<pre class="highlight javascript"><span class="p">{</span>
+  <span class="s2">"to"</span><span class="p">:</span> <span class="s2">"initiator"</span><span class="p">,</span>                      <span class="c1">// Initiator
+</span>  <span class="s2">"from"</span><span class="p">:</span> <span class="s2">"responder"</span><span class="p">,</span>                    <span class="c1">// Responder
+</span>  <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"command"</span><span class="p">,</span>
+  <span class="s2">"node"</span><span class="p">:</span> <span class="s2">"some:node:config"</span><span class="p">,</span>
+  <span class="s2">"form"</span><span class="p">:</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>                         <span class="c1">// Form data is included in the response with "result" action.
+</span>  <span class="s2">"status"</span><span class="p">:</span> <span class="mi">200</span>                           <span class="c1">// Status 200 signifies the session has ended in success. 
+</span>  <span class="s2">"notes"</span><span class="p">:</span> <span class="p">[</span>                              <span class="c1">// Status 404 or 500 would signify an unrecoverable session error.
+</span>    <span class="p">{</span>
+      <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"info"</span><span class="p">,</span>                     
+      <span class="s2">"text"</span><span class="p">:</span> <span class="s2">"Form saved successfully!"</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre>
+ 
+    </div>
+        
+    <!--
+    <div style="text-align: center">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>  -->
+    <!-- Sourcey Small H --><!--
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:468px;height:60px;margin: 30px auto 15px;"
+         data-ad-client="ca-pub-1397369873900370"
+         data-ad-slot="8968503286"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+    </div>
+    -->
+
+    <footer id="footer">
+      <p>
+        As with all business minded artists, we have fought the inevitable battle of conformity vs expression, and have emerged victorious with sanity intact to plunder the digiverse in search of new and interesting challenges. For more information, or a quote, drop us an email and tell us what you're working on.
+      </p>
+      <!--
+      <p>                     
+        Our Kung Fu includes and is not limited to: C++, Ruby, Python, Java, Php, JavaScript, Node.js, ActionScript, HTML, CSS and Photoshop.
+      <p>  
+       -->      	  
+      <p>
+      &copy;2014 Sourcey     
+      <p>  
+    </footer>
+      
+    <script src="/javascripts/all.js" type="text/javascript"></script>
+  </body>
+</html>

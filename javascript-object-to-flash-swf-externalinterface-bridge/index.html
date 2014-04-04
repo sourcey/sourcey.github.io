@@ -1,0 +1,405 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript Object to Flash SWF ExternalInterface Bridge</title>
+    <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+    
+    <link href="/stylesheets/app.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="/stylesheets/style.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="/stylesheets/highlight/monokai.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/modernizr.js" type="text/javascript"></script>
+  </head>
+      
+  <body class="blog javascript-object-to-flash-swf-externalinterface-bridge javascript-object-to-flash-swf-externalinterface-bridge_index">
+      <nav class="top-bar" data-topbar="">
+    <div id="social">
+      <a href="https://plus.google.com/+SourceyDevel"><i class="fi-social-google-plus large"></i></a>
+      <a href="https://facebook.com/sourceydevel"><i class="fi-social-facebook large"></i></a>
+      <a href="https://twitter.com/sourceydevel"><i class="fi-social-twitter large"></i></a>
+      <a href="https://github.com/sourcey"><i class="fi-social-github large"></i></a>    
+    </div>
+      
+    <ul class="title-area">
+      <li class="name"></li>
+      <li class="toggle-topbar menu-icon"><a href="" class="left"><!--Menu--></a></li>
+    </ul>
+    
+    <section class="top-bar-section" style="left: 0%;">      
+      <ul class="left">
+        <li class="has-dropdown not-click"><a href="/">Menu</a>
+          <ul class="dropdown"><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li>
+            <!--<li><label>Menu</label></li>-->
+            <li><a href="/#blog">Blog</a></li>
+            <li class="has-dropdown not-click"><a href="/#projects">Projects</a>
+              <ul class="dropdown"><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li>
+                <li><label>Projects</label></li>
+                <li><a href="/libsourcey">LibSourcey</a></li>
+                <li><a href="/anionu">Anionu</a></li>
+                <li><a href="/symple">Symple</a></li>
+                <li><a href="/mesh">Mesh</a></li>
+                <li><a href="/pacman">Pacman</a></li>
+              </ul>
+            </li>
+            <li class="divider"></li>
+            <li><a href="/archives">Archives</a></li>
+            <li><a href="/feed.xml">Feed</a></li>
+            <li class="divider"></li>
+            <li><a href="mailto:hello@sourcey.com">Contact</a></li>
+          </ul>
+        </li>
+        <li class="divider"></li>
+      </ul>
+    </section></nav>
+    
+    <header id="header">
+      <h1 id="logo">
+        <a title="Sourcey" rel="home" href="http://sourcey.com"><img height="150" width="150" title="Sourcey" alt="Sourcey" src="/images/logo-250.png" /></a>
+      </h1>
+      <!--<h2 class="site-description">Open Source Developer Collective</h2>-->
+    </header>    
+    <div id="main" role="main">
+      <div id="rotate-article">
+        
+          <a class="next" href="/ffmpeg-avpacket-to-opencv-mat-converter/">next article &rarr;</a>
+        
+        
+          <a class="prev" href="/5-tips-to-optimize-for-seo-20-in-2014/">&larr; previous article</a>
+        
+      </div>
+      <h1 id="javascript-object-to-flash-swf-externalinterface-bridge">JavaScript Object to Flash SWF ExternalInterface Bridge</h1>
+
+<p>Have you ever wanted to bind your ActionScript ExternalInterface callbacks to JavaScript object methods, rather than use free functions? We has need of this the other day when adding Flash video streaming to Symple, so we came up with a simple solution that helped us reduce clutter and write better code.</p>
+
+<p>To get started include the JFlashBridge object somewhere in your JavaScript.</p>
+
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">JFlashBridge</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">items</span><span class="p">:</span> <span class="p">{},</span>
+
+    <span class="na">bind</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">klass</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'JFlashBridge: Bind: '</span><span class="p">,</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">klass</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">=</span> <span class="nx">klass</span><span class="p">;</span>
+    <span class="p">},</span>
+
+    <span class="na">unbind</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+       <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'JFlashBridge: Unbind: '</span><span class="p">,</span> <span class="nx">id</span><span class="p">);</span>
+       <span class="k">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="p">[</span><span class="nx">id</span><span class="p">]</span>
+    <span class="p">},</span>
+
+    <span class="na">call</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'JFlashBridge: Call: '</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">klass</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">items</span><span class="p">[</span><span class="nx">arguments</span><span class="p">[</span><span class="mi">0</span><span class="p">]];</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">klass</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">method</span> <span class="o">=</span> <span class="nx">klass</span><span class="p">[</span><span class="nx">arguments</span><span class="p">[</span><span class="mi">1</span><span class="p">]];</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">method</span><span class="p">)</span>
+                <span class="nx">method</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">klass</span><span class="p">,</span> <span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">arguments</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
+            <span class="k">else</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'JFlashBridge: No method: '</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'JFlashBridge: No binding: '</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+    <span class="p">},</span>
+
+    <span class="na">getSWF</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">movieName</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">navigator</span><span class="p">.</span><span class="nx">appName</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">"Microsoft"</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nb">window</span><span class="p">[</span><span class="nx">movieName</span><span class="p">];</span>
+        <span class="k">return</span> <span class="nb">document</span><span class="p">[</span><span class="nx">movieName</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</pre>
+
+<p>And include this ActionScript file in your Flash project (SWF):</p>
+
+<pre class="highlight javascript"><span class="kr">package</span> <span class="nx">sourcey</span><span class="p">.</span><span class="nx">util</span>
+<span class="p">{</span>
+	<span class="kr">import</span> <span class="nx">flash</span><span class="p">.</span><span class="nx">events</span><span class="p">.</span><span class="nx">TimerEvent</span><span class="p">;</span>
+	<span class="kr">import</span> <span class="nx">flash</span><span class="p">.</span><span class="nx">external</span><span class="p">.</span><span class="nx">ExternalInterface</span><span class="p">;</span>
+	<span class="kr">import</span> <span class="nx">flash</span><span class="p">.</span><span class="nx">utils</span><span class="p">.</span><span class="nx">Timer</span><span class="p">;</span>
+	
+	<span class="kr">public</span> <span class="kr">class</span> <span class="nx">JFlashBridge</span>
+	<span class="p">{</span>
+		<span class="kr">public</span> <span class="kd">var</span> <span class="nl">objectName</span><span class="p">:</span><span class="nb">String</span> <span class="o">=</span> <span class="s2">""</span><span class="p">;</span>
+		<span class="kr">public</span> <span class="kd">var</span> <span class="nl">jsReadyFuncName</span><span class="p">:</span><span class="nb">String</span> <span class="o">=</span> <span class="s2">"isJSReady"</span><span class="p">;</span>     <span class="c1">// optional
+</span>		<span class="kr">public</span> <span class="kd">var</span> <span class="nl">swfLoadedFuncName</span><span class="p">:</span><span class="nb">String</span> <span class="o">=</span> <span class="s2">"onSWFLoaded"</span><span class="p">;</span> <span class="c1">// optional
+</span>		
+		<span class="kr">public</span> <span class="kd">function</span> <span class="nx">JFlashBridge</span><span class="p">()</span>
+		<span class="p">{</span>
+		<span class="p">}</span>
+		
+		<span class="kr">public</span> <span class="kd">function</span> <span class="nx">initialize</span><span class="p">()</span><span class="err">:</span><span class="k">void</span> 
+		<span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">ExternalInterface</span><span class="p">.</span><span class="nx">available</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nx">objectName</span> <span class="o">=</span> <span class="nx">getSWFObjectName</span><span class="p">();</span>
+				<span class="k">try</span> <span class="p">{</span>
+					<span class="k">if</span> <span class="p">(</span><span class="nx">checkReady</span><span class="p">())</span> <span class="p">{</span>
+						<span class="nx">available</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+					<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+						<span class="nx">trace</span><span class="p">(</span><span class="s2">"JavaScript is not ready yet, creating timer."</span><span class="p">);</span>
+						<span class="kd">var</span> <span class="nl">readyTimer</span><span class="p">:</span><span class="nx">Timer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Timer</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+						<span class="nx">readyTimer</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="nx">TimerEvent</span><span class="p">.</span><span class="nx">TIMER</span><span class="p">,</span> <span class="nx">onReadyTimer</span><span class="p">);</span>
+						<span class="nx">readyTimer</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+					<span class="p">}</span>
+				<span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nl">error</span><span class="p">:</span><span class="nx">SecurityError</span><span class="p">)</span> <span class="p">{</span>
+					<span class="nx">trace</span><span class="p">(</span><span class="s2">"A SecurityError occurred: "</span> <span class="o">+</span> <span class="nx">error</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
+				<span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nl">error</span><span class="p">:</span><span class="nb">Error</span><span class="p">)</span> <span class="p">{</span>
+					<span class="nx">trace</span><span class="p">(</span><span class="s2">"An Error occurred: "</span> <span class="o">+</span> <span class="nx">error</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
+				<span class="p">}</span>
+			<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+				<span class="nx">trace</span><span class="p">(</span><span class="s2">"JavaScript external interface is not available."</span><span class="p">);</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+		
+		<span class="c1">//
+</span>		<span class="c1">// Adds a callback for receiving method calls from our
+</span>		<span class="c1">// external JavaScript interface.
+</span>		<span class="c1">//
+</span>		<span class="kr">public</span> <span class="kd">function</span> <span class="nx">addMethod</span><span class="p">(</span><span class="nl">name</span><span class="p">:</span><span class="nb">String</span><span class="p">,</span> <span class="nl">callback</span><span class="p">:</span><span class="nb">Function</span><span class="p">)</span><span class="err">:</span><span class="k">void</span> 
+		<span class="p">{</span>
+			<span class="nx">ExternalInterface</span><span class="p">.</span><span class="nx">addCallback</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">callback</span><span class="p">);</span>				
+		<span class="p">}</span>		
+		
+		<span class="c1">//
+</span>		<span class="c1">// Calls an external JavaScript method.
+</span>		<span class="c1">//
+</span>		<span class="kr">public</span> <span class="kd">function</span> <span class="nx">call</span><span class="p">(</span><span class="nl">method</span><span class="p">:</span><span class="nb">String</span><span class="p">,</span> <span class="p">...</span><span class="nx">parameters</span><span class="p">)</span><span class="err">:</span><span class="o">*</span> <span class="p">{</span>
+			<span class="c1">//if (!available)
+</span>			<span class="c1">//	trace("The JavaScript API is unavailable.");
+</span>			<span class="kd">var</span> <span class="nl">args</span><span class="p">:</span><span class="nb">Array</span> <span class="o">=</span> <span class="p">[];</span>
+			<span class="nx">args</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s2">"JFlashBridge.call"</span><span class="p">);</span>
+			<span class="nx">args</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">objectName</span><span class="p">);</span>
+			<span class="nx">args</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">method</span><span class="p">);</span>
+			<span class="k">return</span> <span class="nx">ExternalInterface</span><span class="p">.</span><span class="nx">call</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">ExternalInterface</span><span class="p">,</span> <span class="nx">args</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nx">parameters</span><span class="p">));</span>
+		<span class="p">}</span>		
+		
+		<span class="kr">public</span> <span class="kd">function</span> <span class="nx">getSWFObjectName</span><span class="p">()</span><span class="err">:</span><span class="nb">String</span> 
+		<span class="p">{</span>
+			<span class="c1">// Returns the SWF's object name for getElementById
+</span>			
+			<span class="kd">var</span> <span class="nl">js</span><span class="p">:</span><span class="nx">XML</span><span class="p">;</span>
+			<span class="nx">js</span> <span class="o">=</span> <span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;&lt;!</span><span class="p">[</span><span class="nx">CDATA</span><span class="p">[</span>
+				<span class="kd">function</span><span class="p">(</span><span class="nx">__randomFunction</span><span class="p">)</span> <span class="p">{</span>
+					<span class="kd">var</span> <span class="nx">check</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">objects</span><span class="p">){</span>
+							<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">objects</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+								<span class="k">if</span> <span class="p">(</span><span class="nx">objects</span><span class="p">[</span><span class="nx">i</span><span class="p">][</span><span class="nx">__randomFunction</span><span class="p">])</span> <span class="k">return</span> <span class="nx">objects</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">id</span><span class="p">;</span>
+							<span class="p">}</span>
+							<span class="k">return</span> <span class="kc">undefined</span><span class="p">;</span>
+						<span class="p">};</span>
+		
+						<span class="k">return</span> <span class="nx">check</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s2">"object"</span><span class="p">))</span> <span class="o">||</span> <span class="nx">check</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s2">"embed"</span><span class="p">));</span>
+				<span class="p">}</span>
+			<span class="p">]]</span><span class="o">&gt;&lt;</span><span class="sr">/</span><span class="err">script&gt;;</span>
+			
+			<span class="kd">var</span> <span class="nl">__randomFunction</span><span class="p">:</span><span class="nb">String</span> <span class="o">=</span> <span class="s2">"checkFunction_"</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">99999</span><span class="p">);</span> <span class="c1">// Something random just so it's safer
+</span>			<span class="nx">ExternalInterface</span><span class="p">.</span><span class="nx">addCallback</span><span class="p">(</span><span class="nx">__randomFunction</span><span class="p">,</span> <span class="nx">getSWFObjectName</span><span class="p">);</span> <span class="c1">// The second parameter can be anything, just passing a function that exists
+</span>			
+			<span class="k">return</span> <span class="nx">ExternalInterface</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">js</span><span class="p">,</span> <span class="nx">__randomFunction</span><span class="p">);</span>
+		<span class="p">}</span>
+		
+		<span class="c1">//
+</span>		<span class="c1">// Protected
+</span>		<span class="c1">//
+</span>		
+		<span class="kr">private</span> <span class="kd">function</span> <span class="nx">checkReady</span><span class="p">()</span><span class="err">:</span><span class="nb">Boolean</span> 
+		<span class="p">{</span>			
+			<span class="nx">trace</span><span class="p">(</span><span class="s2">"JavaScript ready status: "</span><span class="p">,</span> <span class="nx">isReady</span><span class="p">);</span>
+			<span class="kd">var</span> <span class="nl">res</span><span class="p">:</span><span class="o">*</span> <span class="o">=</span> <span class="nx">call</span><span class="p">(</span><span class="nx">jsReadyFuncName</span><span class="p">);</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">res</span> <span class="o">==</span> <span class="kc">undefined</span> <span class="o">||</span>
+				<span class="nx">res</span> <span class="o">==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+				<span class="c1">// If no function exists then we return ready.
+</span>				<span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+			<span class="p">}</span>			
+			<span class="k">return</span> <span class="nb">Boolean</span><span class="p">(</span><span class="nx">res</span><span class="p">);</span>
+		<span class="p">}</span>
+		
+		<span class="kr">private</span> <span class="kd">function</span> <span class="nx">onReadyTimer</span><span class="p">(</span><span class="nl">event</span><span class="p">:</span><span class="nx">TimerEvent</span><span class="p">)</span><span class="err">:</span><span class="k">void</span> 
+		<span class="p">{</span>
+			<span class="kd">var</span> <span class="nl">isReady</span><span class="p">:</span><span class="nb">Boolean</span> <span class="o">=</span> <span class="nx">checkReady</span><span class="p">();</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">isReady</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nx">Timer</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">target</span><span class="p">).</span><span class="nx">stop</span><span class="p">();</span>
+				<span class="nx">available</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="p">}</span>	
+		
+		<span class="c1">//
+</span>		<span class="c1">// Accessors
+</span>		<span class="c1">//		
+</span>		
+		<span class="kr">private</span> <span class="kd">var</span> <span class="nl">_available</span><span class="p">:</span><span class="nb">Boolean</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>	
+		<span class="kr">public</span> <span class="kd">function</span> <span class="nx">get</span> <span class="nx">available</span><span class="p">()</span><span class="err">:</span><span class="nb">Boolean</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">_available</span><span class="p">;</span> <span class="p">}</span>			
+		<span class="kr">public</span> <span class="kd">function</span> <span class="nx">set</span> <span class="nx">available</span><span class="p">(</span><span class="nl">value</span><span class="p">:</span><span class="nb">Boolean</span><span class="p">)</span><span class="err">:</span><span class="k">void</span>
+		<span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">_available</span> <span class="o">!=</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nx">_available</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">_available</span><span class="p">)</span> <span class="p">{</span>
+					<span class="nx">call</span><span class="p">(</span><span class="nx">swfLoadedFuncName</span><span class="p">);</span>					
+				<span class="p">}</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</pre>
+
+<p>Add the following lines to your main ActionScript class:</p>
+
+<pre class="highlight javascript"><span class="kr">package</span>
+<span class="p">{</span>
+	<span class="kr">import</span> <span class="nx">sourcey</span><span class="p">.</span><span class="nx">util</span><span class="p">.</span><span class="nx">JFlashBridge</span><span class="p">;</span>
+
+	<span class="kr">public</span> <span class="kr">class</span> <span class="nx">MySWF</span>
+	<span class="p">{</span>
+		<span class="kr">public</span> <span class="kd">var</span> <span class="nl">jsBridge</span><span class="p">:</span><span class="nx">JFlashBridge</span><span class="p">;</span>	
+
+		<span class="kr">public</span> <span class="kd">function</span> <span class="nx">SymplePlayer</span><span class="p">()</span>
+		<span class="p">{</span>
+			<span class="nx">jsBridge</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">JFlashBridge</span><span class="p">();</span>
+			<span class="nx">jsBridge</span><span class="p">.</span><span class="nx">addMethod</span><span class="p">(</span><span class="s2">"someMethod"</span><span class="p">,</span> <span class="nx">someMethod</span><span class="p">);</span>
+			
+			<span class="kr">super</span><span class="p">();</span>
+			
+			<span class="nx">jsBridge</span><span class="p">.</span><span class="nx">initialize</span><span class="p">();</span>	
+		<span class="p">}</span>
+		
+                <span class="c1">// This is an internal callback that passes data to
+</span>                <span class="c1">// the JavaScript application
+</span>		<span class="kr">private</span> <span class="kd">function</span> <span class="nx">onCallback</span><span class="p">(</span><span class="nl">data</span><span class="p">:</span><span class="nb">String</span><span class="p">)</span><span class="err">:</span><span class="k">void</span> 
+		<span class="p">{</span>	
+			<span class="nx">trace</span><span class="p">(</span><span class="s2">"MySWF: onCallback"</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>	
+			<span class="nx">jsBridge</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="s2">"onCallback"</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>
+		<span class="p">}</span>
+
+                <span class="c1">// This method is bound to the ExternalInterface to 
+</span>                <span class="c1">// receive data from the JavaScript application
+</span>		<span class="kr">private</span> <span class="kd">function</span> <span class="nx">someMethod</span><span class="p">(</span><span class="nl">data</span><span class="p">:</span><span class="nb">String</span><span class="p">)</span><span class="err">:</span><span class="nb">Object</span>
+		<span class="p">{</span>
+			<span class="nx">trace</span><span class="p">(</span><span class="s2">"MySWF: someMethod"</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>
+                        <span class="nx">onCallback</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+                <span class="p">}</span>
+        <span class="p">}</span>		
+<span class="p">}</span>
+</pre>
+
+<p>Below is the JavaScript object that will be communicating with your SWF.
+Be sure to change the path member to point to your SWF location on the server.</p>
+
+<pre class="highlight javascript"><span class="kd">function</span> <span class="nx">MyClass</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">path</span> <span class="o">=</span> <span class="s2">"/my-swf.swf"</span> <span class="c1">// The SWF path
+</span>    <span class="k">this</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="s2">"my-swf"</span>        <span class="c1">// The SWF ID
+</span><span class="p">};</span>
+
+<span class="nx">MyClass</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+
+    <span class="c1">// Embeds and binds the SWF
+</span>    <span class="nl">setup</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// Embed the SWF 
+</span>        <span class="nx">swfobject</span><span class="p">.</span><span class="nx">embedSWF</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">path</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="s1">'100%'</span><span class="p">,</span> <span class="s1">'100%'</span><span class="p">,</span> <span class="s1">'10.0.0'</span><span class="p">,</span> <span class="s1">'/playerProductInstall.swf'</span><span class="p">,</span> <span class="p">{},</span> <span class="p">{</span>
+            <span class="na">quality</span><span class="p">:</span> <span class="s1">'high'</span><span class="p">,</span>
+            <span class="na">wmode</span><span class="p">:</span> <span class="s1">'transparent'</span><span class="p">,</span>
+            <span class="na">allowScriptAccess</span><span class="p">:</span> <span class="s1">'sameDomain'</span><span class="p">,</span>
+            <span class="na">allowFullScreen</span><span class="p">:</span> <span class="s1">'true'</span>
+         <span class="p">},</span> <span class="p">{</span>
+           <span class="na">name</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">id</span>
+         <span class="p">});</span>  
+
+        <span class="c1">// Bind the current object to the SWF for callbacks.
+</span>        <span class="nx">JFlashBridge</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="p">},</span>
+
+    <span class="c1">// Returns the SWF instance
+</span>    <span class="nl">swf</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">JFlashBridge</span><span class="p">.</span><span class="nx">getSWF</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
+    <span class="p">},</span>
+
+    <span class="c1">// Calls a Flash method
+</span>    <span class="nl">someMethod</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Note: SWF must be ready
+</span>        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">swf</span><span class="p">().</span><span class="nx">someMethod</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+    <span class="p">},</span>
+
+    <span class="c1">// Receives a callback from Flash
+</span>    <span class="nl">onCallback</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"onCallback: "</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+
+<p>The implementation would look something like this:</p>
+
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyClass</span><span class="p">()</span>
+<span class="nx">obj</span><span class="p">.</span><span class="nx">setup</span><span class="p">()</span>
+
+<span class="c1">// Call obj.someMethod and "hello flash" will be echoed 
+// back via the onCallback method of the MyClass instance
+</span><span class="nx">obj</span><span class="p">.</span><span class="nx">someMethod</span><span class="p">(</span><span class="s2">"hello flash"</span><span class="p">)</span>
+</pre>
+    
+      
+      <ul class="social-buttons">
+        <li>
+          <a href="http://twitter.com/share" class="socialite twitter-share" data-text="JavaScript Object to Flash SWF ExternalInterface Bridge" data-url="http://sourcey.com/javascript-object-to-flash-swf-externalinterface-bridge/" data-count="vertical" rel="nofollow" target="_blank"><span class="vhidden">Share on Twitter</span></a>
+        </li>
+        <li>
+          <a href="https://plus.google.com/share?url=http://sourcey.com/javascript-object-to-flash-swf-externalinterface-bridge/" class="socialite googleplus-one" data-size="tall" data-href="http://sourcey.com/javascript-object-to-flash-swf-externalinterface-bridge/" rel="nofollow" target="_blank"><span class="vhidden">Share on Google+</span></a>
+        </li>
+        <li>
+          <a href="http://www.facebook.com/sharer.php?u=http://sourcey.com/javascript-object-to-flash-swf-externalinterface-bridge/&amp;t=JavaScript Object to Flash SWF ExternalInterface Bridge" class="socialite facebook-like" data-href="http://sourcey.com/javascript-object-to-flash-swf-externalinterface-bridge/" data-send="false" data-layout="box_count" data-width="60" data-show-faces="false" rel="nofollow" target="_blank"><span class="vhidden">Share on Facebook</span></a>
+        </li>
+        <li>
+          <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://sourcey.com/javascript-object-to-flash-swf-externalinterface-bridge/&amp;title=JavaScript Object to Flash SWF ExternalInterface Bridge" class="socialite linkedin-share" data-url="http://sourcey.com/javascript-object-to-flash-swf-externalinterface-bridge/" data-counter="top" rel="nofollow" target="_blank"><span class="vhidden">Share on LinkedIn</span></a>
+        </li>
+      </ul>        
+      <div class="meta">
+        Posted on <time class="updated" datetime="Mar 27 2014">Mar 27 2014</time> by 
+        
+          <a rel="author external" href="https://plus.google.com/+KamLow">Kam Low</a>
+        . Tagged: flash, javascript, oop, programming, swf.
+      </div>       
+      
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+          /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+          var disqus_shortname = 'sourcey'; // required: replace example with your forum shortname
+
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+      <a href="http://disqus.com" rel="nofollow" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>    
+    </div>
+        
+    <!--
+    <div style="text-align: center">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>  -->
+    <!-- Sourcey Small H --><!--
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:468px;height:60px;margin: 30px auto 15px;"
+         data-ad-client="ca-pub-1397369873900370"
+         data-ad-slot="8968503286"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+    </div>
+    -->
+
+    <footer id="footer">
+      <p>
+        As with all business minded artists, we have fought the inevitable battle of conformity vs expression, and have emerged victorious with sanity intact to plunder the digiverse in search of new and interesting challenges. For more information, or a quote, drop us an email and tell us what you're working on.
+      </p>
+      <!--
+      <p>                     
+        Our Kung Fu includes and is not limited to: C++, Ruby, Python, Java, Php, JavaScript, Node.js, ActionScript, HTML, CSS and Photoshop.
+      <p>  
+       -->      	  
+      <p>
+      &copy;2014 Sourcey     
+      <p>  
+    </footer>
+      
+    <script src="/javascripts/all.js" type="text/javascript"></script>
+  </body>
+</html>

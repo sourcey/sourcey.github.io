@@ -1,0 +1,391 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebRTC Custom OpenCV Video Capture</title>
+    <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+    
+    <link href="/stylesheets/app.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="/stylesheets/style.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="/stylesheets/highlight/monokai.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/modernizr.js" type="text/javascript"></script>
+  </head>
+      
+  <body class="blog webrtc-custom-opencv-video-capture webrtc-custom-opencv-video-capture_index">
+      <nav class="top-bar" data-topbar="">
+    <div id="social">
+      <a href="https://plus.google.com/+SourceyDevel"><i class="fi-social-google-plus large"></i></a>
+      <a href="https://facebook.com/sourceydevel"><i class="fi-social-facebook large"></i></a>
+      <a href="https://twitter.com/sourceydevel"><i class="fi-social-twitter large"></i></a>
+      <a href="https://github.com/sourcey"><i class="fi-social-github large"></i></a>    
+    </div>
+      
+    <ul class="title-area">
+      <li class="name"></li>
+      <li class="toggle-topbar menu-icon"><a href="" class="left"><!--Menu--></a></li>
+    </ul>
+    
+    <section class="top-bar-section" style="left: 0%;">      
+      <ul class="left">
+        <li class="has-dropdown not-click"><a href="/">Menu</a>
+          <ul class="dropdown"><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li>
+            <!--<li><label>Menu</label></li>-->
+            <li><a href="/#blog">Blog</a></li>
+            <li class="has-dropdown not-click"><a href="/#projects">Projects</a>
+              <ul class="dropdown"><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li>
+                <li><label>Projects</label></li>
+                <li><a href="/libsourcey">LibSourcey</a></li>
+                <li><a href="/anionu">Anionu</a></li>
+                <li><a href="/symple">Symple</a></li>
+                <li><a href="/mesh">Mesh</a></li>
+                <li><a href="/pacman">Pacman</a></li>
+              </ul>
+            </li>
+            <li class="divider"></li>
+            <li><a href="/archives">Archives</a></li>
+            <li><a href="/feed.xml">Feed</a></li>
+            <li class="divider"></li>
+            <li><a href="mailto:hello@sourcey.com">Contact</a></li>
+          </ul>
+        </li>
+        <li class="divider"></li>
+      </ul>
+    </section></nav>
+    
+    <header id="header">
+      <h1 id="logo">
+        <a title="Sourcey" rel="home" href="http://sourcey.com"><img height="150" width="150" title="Sourcey" alt="Sourcey" src="/images/logo-250.png" /></a>
+      </h1>
+      <!--<h2 class="site-description">Open Source Developer Collective</h2>-->
+    </header>    
+    <div id="main" role="main">
+      <div id="rotate-article">
+        
+          <a class="next" href="/pacman/">next article &rarr;</a>
+        
+        
+          <a class="prev" href="/twitter-follow-unfollow-retweeter-ruby-bot/">&larr; previous article</a>
+        
+      </div>
+      <h1 id="webrtc-custom-opencv-video-capture">WebRTC Custom OpenCV Video Capture</h1>
+
+<p>WebRTC comes with an video device capture implementations for most platforms including Linux, Mac, Windows, iOS and Android, but what if we want to use our own video capture source such as a frame-grabber, or OpenCV or FFmpeg? The good news is that it's quite easy, all you need to do is override the cricket::VideoCapturer class and create a custom cricket::VideoCapturerFactory for attaching to the cricket::DeviceManagerInterface. The code below can be used as a replacement for the default cricket::VideoCapturer that's used by the peerconnection_client example that's distributed with the WebRTC source.</p>
+
+<p>Bear in mind that these classes are just for testing, and are by no means 100% complete. For example pixel format handling and conversion is fixed to I420, but this can be easily implemented as the logic is already in place.</p>
+
+<h3 id="videocapturerocvh">videocapturerocv.h</h3>
+<pre class="highlight cpp"><span class="cp">#ifndef SCY_VideoCaturerOCV_H
+#define SCY_VideoCaturerOCV_H
+</span>
+
+<span class="cp">#include "scy/media/videocapture.h"
+#include "talk/media/base/videocapturer.h"
+</span>
+
+<span class="k">namespace</span> <span class="n">scy</span> <span class="p">{</span> 
+
+
+<span class="k">class</span> <span class="nc">VideoCapturerOCV</span> <span class="o">:</span> 
+    <span class="k">public</span> <span class="n">av</span><span class="o">::</span><span class="n">VideoCapture</span><span class="p">,</span> 
+    <span class="c1">// Extend the LibSourcey av::VideoCapture class, which is a this wrapper  
+</span>    <span class="c1">// around the OpenCV VideoCapture
+</span>    <span class="k">public</span> <span class="n">cricket</span><span class="o">::</span><span class="n">VideoCapturer</span>
+    <span class="c1">// VideoCapturerOCV implements a simple cricket::VideoCapturer which
+</span>    <span class="c1">// gets decoded remote video frames from media channel.
+</span>    <span class="c1">// It's used as the remote video source's VideoCapturer so that the remote 
+</span>    <span class="c1">// video can be used as a cricket::VideoCapturer and in that way a remote
+</span>    <span class="c1">// video stream can implement the MediaStreamSourceInterface.
+</span><span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">VideoCapturerOCV</span><span class="p">(</span><span class="kt">int</span> <span class="n">deviceId</span><span class="p">);</span>
+    <span class="k">virtual</span> <span class="o">~</span><span class="n">VideoCapturerOCV</span><span class="p">();</span>
+
+    <span class="c1">// Overrides from VideoCapture.
+</span>    <span class="kt">void</span> <span class="n">onFrameCaptured</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">sender</span><span class="p">,</span> <span class="n">av</span><span class="o">::</span><span class="n">MatrixPacket</span><span class="o">&amp;</span> <span class="n">packet</span><span class="p">);</span>
+
+    <span class="c1">// cricket::VideoCapturer implementation.
+</span>    <span class="k">virtual</span> <span class="n">cricket</span><span class="o">::</span><span class="n">CaptureState</span> <span class="n">Start</span><span class="p">(</span>
+      <span class="k">const</span> <span class="n">cricket</span><span class="o">::</span><span class="n">VideoFormat</span><span class="o">&amp;</span> <span class="n">capture_format</span><span class="p">)</span> <span class="n">OVERRIDE</span><span class="p">;</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">Stop</span><span class="p">()</span> <span class="n">OVERRIDE</span><span class="p">;</span>
+    <span class="k">virtual</span> <span class="n">bool</span> <span class="n">IsRunning</span><span class="p">()</span> <span class="n">OVERRIDE</span><span class="p">;</span>
+    <span class="k">virtual</span> <span class="n">bool</span> <span class="n">GetPreferredFourccs</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">uint32</span><span class="o">&gt;*</span> <span class="n">fourccs</span><span class="p">)</span> <span class="n">OVERRIDE</span><span class="p">;</span>
+    <span class="k">virtual</span> <span class="n">bool</span> <span class="n">GetBestCaptureFormat</span><span class="p">(</span><span class="k">const</span> <span class="n">cricket</span><span class="o">::</span><span class="n">VideoFormat</span><span class="o">&amp;</span> <span class="n">desired</span><span class="p">,</span>
+      <span class="n">cricket</span><span class="o">::</span><span class="n">VideoFormat</span><span class="o">*</span> <span class="n">best_format</span><span class="p">)</span> <span class="n">OVERRIDE</span><span class="p">;</span>
+    <span class="k">virtual</span> <span class="n">bool</span> <span class="n">IsScreencast</span><span class="p">()</span> <span class="k">const</span> <span class="n">OVERRIDE</span><span class="p">;</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="n">DISALLOW_COPY_AND_ASSIGN</span><span class="p">(</span><span class="n">VideoCapturerOCV</span><span class="p">);</span>
+<span class="p">};</span>
+
+
+<span class="k">class</span> <span class="nc">VideoCapturerFactoryOCV</span> <span class="o">:</span> <span class="k">public</span> <span class="n">cricket</span><span class="o">::</span><span class="n">VideoCapturerFactory</span> 
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">VideoCapturerFactoryOCV</span><span class="p">()</span> <span class="p">{}</span>
+    <span class="k">virtual</span> <span class="o">~</span><span class="n">VideoCapturerFactoryOCV</span><span class="p">()</span> <span class="p">{}</span>
+
+    <span class="k">virtual</span> <span class="n">cricket</span><span class="o">::</span><span class="n">VideoCapturer</span><span class="o">*</span> <span class="n">Create</span><span class="p">(</span><span class="k">const</span> <span class="n">cricket</span><span class="o">::</span><span class="n">Device</span><span class="o">&amp;</span> <span class="n">device</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="c1">// XXX: WebRTC uses device name to instantiate the capture, which is always 0.
+</span>        <span class="k">return</span> <span class="k">new</span> <span class="n">VideoCapturerOCV</span><span class="p">(</span><span class="n">util</span><span class="o">::</span><span class="n">strtoi</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">device</span><span class="p">.</span><span class="n">id</span><span class="p">));</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+
+<span class="p">}</span> <span class="c1">// namespace scy
+</span>
+
+<span class="cp">#endif
+</span></pre>
+
+<h3 id="videocapturerocvcpp">videocapturerocv.cpp</h3>
+<pre class="highlight cpp"><span class="cp">#include "videocapturerocv.h"
+</span>
+
+<span class="k">using</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+
+<span class="k">namespace</span> <span class="n">scy</span> <span class="p">{</span>
+
+
+<span class="n">VideoCapturerOCV</span><span class="o">::</span><span class="n">VideoCapturerOCV</span><span class="p">(</span><span class="kt">int</span> <span class="n">deviceId</span><span class="p">)</span> <span class="o">:</span> <span class="n">av</span><span class="o">::</span><span class="n">VideoCapture</span><span class="p">(</span><span class="n">deviceId</span><span class="p">)</span>
+<span class="p">{</span>	
+    <span class="c1">// Default supported formats. Use ResetSupportedFormats to over write.
+</span>    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">cricket</span><span class="o">::</span><span class="n">VideoFormat</span><span class="o">&gt;</span> <span class="n">formats</span><span class="p">;</span>
+    <span class="n">formats</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">cricket</span><span class="o">::</span><span class="n">VideoFormat</span><span class="p">(</span><span class="mi">1280</span><span class="p">,</span> <span class="mi">720</span><span class="p">,</span>
+        <span class="n">cricket</span><span class="o">::</span><span class="n">VideoFormat</span><span class="o">::</span><span class="n">FpsToInterval</span><span class="p">(</span><span class="mi">30</span><span class="p">),</span> <span class="n">cricket</span><span class="o">::</span><span class="n">FOURCC_I420</span><span class="p">));</span>
+    <span class="n">formats</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">cricket</span><span class="o">::</span><span class="n">VideoFormat</span><span class="p">(</span><span class="mi">640</span><span class="p">,</span> <span class="mi">480</span><span class="p">,</span>
+        <span class="n">cricket</span><span class="o">::</span><span class="n">VideoFormat</span><span class="o">::</span><span class="n">FpsToInterval</span><span class="p">(</span><span class="mi">30</span><span class="p">),</span> <span class="n">cricket</span><span class="o">::</span><span class="n">FOURCC_I420</span><span class="p">));</span>
+    <span class="n">formats</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">cricket</span><span class="o">::</span><span class="n">VideoFormat</span><span class="p">(</span><span class="mi">320</span><span class="p">,</span> <span class="mi">240</span><span class="p">,</span>
+        <span class="n">cricket</span><span class="o">::</span><span class="n">VideoFormat</span><span class="o">::</span><span class="n">FpsToInterval</span><span class="p">(</span><span class="mi">30</span><span class="p">),</span> <span class="n">cricket</span><span class="o">::</span><span class="n">FOURCC_I420</span><span class="p">));</span>
+    <span class="n">formats</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">cricket</span><span class="o">::</span><span class="n">VideoFormat</span><span class="p">(</span><span class="mi">160</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span>
+        <span class="n">cricket</span><span class="o">::</span><span class="n">VideoFormat</span><span class="o">::</span><span class="n">FpsToInterval</span><span class="p">(</span><span class="mi">30</span><span class="p">),</span> <span class="n">cricket</span><span class="o">::</span><span class="n">FOURCC_I420</span><span class="p">));</span>
+<span class="p">}</span>
+
+
+<span class="n">VideoCapturerOCV</span><span class="o">::~</span><span class="n">VideoCapturerOCV</span><span class="p">()</span> 
+<span class="p">{</span>
+<span class="p">}</span>
+
+
+<span class="n">cricket</span><span class="o">::</span><span class="n">CaptureState</span> <span class="n">VideoCapturerOCV</span><span class="o">::</span><span class="n">Start</span><span class="p">(</span><span class="k">const</span> <span class="n">cricket</span><span class="o">::</span><span class="n">VideoFormat</span><span class="o">&amp;</span> <span class="n">capture_format</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">try</span> <span class="p">{</span> 
+        <span class="n">TraceL</span> <span class="o">&lt;&lt;</span> <span class="s">"Start"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">capture_state</span><span class="p">()</span> <span class="o">==</span> <span class="n">cricket</span><span class="o">::</span><span class="n">CS_RUNNING</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">WarnL</span> <span class="o">&lt;&lt;</span> <span class="s">"Start called when it's already started."</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+            <span class="k">return</span> <span class="n">capture_state</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="c1">// TODO: Honour VideoFormat
+</span>
+        <span class="n">av</span><span class="o">::</span><span class="n">VideoCapture</span><span class="o">::</span><span class="n">start</span><span class="p">();</span>
+        <span class="n">av</span><span class="o">::</span><span class="n">VideoCapture</span><span class="o">::</span><span class="n">emitter</span> <span class="o">+=</span> <span class="n">packetDelegate</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">VideoCapturerOCV</span><span class="o">::</span><span class="n">onFrameCaptured</span><span class="p">);</span> 
+
+        <span class="n">SetCaptureFormat</span><span class="p">(</span><span class="o">&amp;</span><span class="n">capture_format</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">cricket</span><span class="o">::</span><span class="n">CS_RUNNING</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(...)</span> <span class="p">{}</span>
+    <span class="k">return</span> <span class="n">cricket</span><span class="o">::</span><span class="n">CS_FAILED</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span> <span class="n">VideoCapturerOCV</span><span class="o">::</span><span class="n">Stop</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">try</span> <span class="p">{</span> 
+        <span class="n">TraceL</span> <span class="o">&lt;&lt;</span> <span class="s">"Stop"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">capture_state</span><span class="p">()</span> <span class="o">==</span> <span class="n">cricket</span><span class="o">::</span><span class="n">CS_STOPPED</span><span class="p">)</span> <span class="p">{</span>
+          <span class="n">WarnL</span> <span class="o">&lt;&lt;</span> <span class="s">"Stop called when it's already stopped."</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+          <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">av</span><span class="o">::</span><span class="n">VideoCapture</span><span class="o">::</span><span class="n">stop</span><span class="p">();</span>
+        <span class="n">SetCaptureFormat</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>
+        <span class="n">SetCaptureState</span><span class="p">(</span><span class="n">cricket</span><span class="o">::</span><span class="n">CS_STOPPED</span><span class="p">);</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(...)</span> <span class="p">{}</span>
+    <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span> <span class="n">VideoCapturerOCV</span><span class="o">::</span><span class="n">onFrameCaptured</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">sender</span><span class="p">,</span> <span class="n">av</span><span class="o">::</span><span class="n">MatrixPacket</span><span class="o">&amp;</span> <span class="n">packet</span><span class="p">)</span> 
+<span class="p">{</span>	
+    <span class="n">cv</span><span class="o">::</span><span class="n">Mat</span> <span class="n">yuv</span><span class="p">(</span><span class="n">packet</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">packet</span><span class="p">.</span><span class="n">height</span><span class="p">,</span> <span class="n">CV_8UC4</span><span class="p">);</span>
+    <span class="n">cv</span><span class="o">::</span><span class="n">cvtColor</span><span class="p">(</span><span class="o">*</span><span class="n">packet</span><span class="p">.</span><span class="n">mat</span><span class="p">,</span> <span class="n">yuv</span><span class="p">,</span> <span class="n">CV_BGR2YUV_I420</span><span class="p">);</span>
+
+    <span class="n">cricket</span><span class="o">::</span><span class="n">CapturedFrame</span> <span class="n">frame</span><span class="p">;</span>
+    <span class="n">frame</span><span class="p">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">packet</span><span class="p">.</span><span class="n">width</span><span class="p">;</span>
+    <span class="n">frame</span><span class="p">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">packet</span><span class="p">.</span><span class="n">height</span><span class="p">;</span>
+    <span class="n">frame</span><span class="p">.</span><span class="n">fourcc</span> <span class="o">=</span> <span class="n">cricket</span><span class="o">::</span><span class="n">FOURCC_I420</span><span class="p">;</span>
+    <span class="n">frame</span><span class="p">.</span><span class="n">data_size</span> <span class="o">=</span> <span class="n">yuv</span><span class="p">.</span><span class="n">rows</span> <span class="o">*</span> <span class="n">yuv</span><span class="p">.</span><span class="n">step</span><span class="p">;</span>
+    <span class="n">frame</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">yuv</span><span class="p">.</span><span class="n">data</span><span class="p">;</span>
+
+    <span class="n">SignalFrameCaptured</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">frame</span><span class="p">);</span>
+<span class="p">}</span>
+
+
+<span class="n">bool</span> <span class="n">VideoCapturerOCV</span><span class="o">::</span><span class="n">IsRunning</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">capture_state</span><span class="p">()</span> <span class="o">==</span> <span class="n">cricket</span><span class="o">::</span><span class="n">CS_RUNNING</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="n">bool</span> <span class="n">VideoCapturerOCV</span><span class="o">::</span><span class="n">GetPreferredFourccs</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">uint32</span><span class="o">&gt;*</span> <span class="n">fourccs</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">fourccs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="n">fourccs</span><span class="o">-&gt;</span><span class="n">push_back</span><span class="p">(</span><span class="n">cricket</span><span class="o">::</span><span class="n">FOURCC_I420</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="n">bool</span> <span class="n">VideoCapturerOCV</span><span class="o">::</span><span class="n">GetBestCaptureFormat</span><span class="p">(</span><span class="k">const</span> <span class="n">cricket</span><span class="o">::</span><span class="n">VideoFormat</span><span class="o">&amp;</span> <span class="n">desired</span><span class="p">,</span> <span class="n">cricket</span><span class="o">::</span><span class="n">VideoFormat</span><span class="o">*</span> <span class="n">best_format</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">best_format</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="c1">// VideoCapturerOCV does not support capability enumeration.
+</span>    <span class="c1">// Use the desired format as the best format.
+</span>    <span class="n">best_format</span><span class="o">-&gt;</span><span class="n">width</span> <span class="o">=</span> <span class="n">desired</span><span class="p">.</span><span class="n">width</span><span class="p">;</span>
+    <span class="n">best_format</span><span class="o">-&gt;</span><span class="n">height</span> <span class="o">=</span> <span class="n">desired</span><span class="p">.</span><span class="n">height</span><span class="p">;</span>
+    <span class="n">best_format</span><span class="o">-&gt;</span><span class="n">fourcc</span> <span class="o">=</span> <span class="n">cricket</span><span class="o">::</span><span class="n">FOURCC_I420</span><span class="p">;</span>
+    <span class="n">best_format</span><span class="o">-&gt;</span><span class="n">interval</span> <span class="o">=</span> <span class="n">desired</span><span class="p">.</span><span class="n">interval</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="n">bool</span> <span class="n">VideoCapturerOCV</span><span class="o">::</span><span class="n">IsScreencast</span><span class="p">()</span> <span class="k">const</span> 
+<span class="p">{</span>
+    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="p">}</span> <span class="c1">// namespace scy
+</span></pre>
+
+<p>The VideoCapturerOCV class can now be used like so:</p>
+
+<pre class="highlight cpp"><span class="n">bool</span> <span class="n">PeerConnectionClient</span><span class="o">::</span><span class="n">InitConnection</span><span class="p">()</span> 
+<span class="p">{</span>
+    <span class="n">peer_connection_</span> <span class="o">=</span> <span class="n">peer_connection_factory_</span><span class="o">-&gt;</span><span class="n">CreatePeerConnection</span><span class="p">(</span>
+      <span class="n">servers_</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">constraints_</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+      
+    <span class="n">talk_base</span><span class="o">::</span><span class="n">scoped_refptr</span><span class="o">&lt;</span><span class="n">webrtc</span><span class="o">::</span><span class="n">AudioTrackInterface</span><span class="o">&gt;</span> <span class="n">audio_track</span><span class="p">(</span>
+      <span class="n">peer_connection_factory_</span><span class="o">-&gt;</span><span class="n">CreateAudioTrack</span><span class="p">(</span><span class="n">kAudioLabel</span><span class="p">,</span> 
+        <span class="n">peer_connection_factory_</span><span class="o">-&gt;</span><span class="n">CreateAudioSource</span><span class="p">(</span><span class="nb">NULL</span><span class="p">)));</span>
+
+    <span class="n">talk_base</span><span class="o">::</span><span class="n">scoped_refptr</span><span class="o">&lt;</span><span class="n">webrtc</span><span class="o">::</span><span class="n">VideoTrackInterface</span><span class="o">&gt;</span> <span class="n">video_track</span><span class="p">(</span>
+      <span class="n">peer_connection_factory_</span><span class="o">-&gt;</span><span class="n">CreateVideoTrack</span><span class="p">(</span><span class="n">kVideoLabel</span><span class="p">,</span> 
+        <span class="n">peer_connection_factory_</span><span class="o">-&gt;</span><span class="n">CreateVideoSource</span><span class="p">(</span><span class="n">OpenVideoCaptureDevice</span><span class="p">(),</span> <span class="nb">NULL</span><span class="p">)));</span>
+
+    <span class="n">stream_</span> <span class="o">=</span> <span class="n">peer_connection_factory_</span><span class="o">-&gt;</span><span class="n">CreateLocalMediaStream</span><span class="p">(</span><span class="n">kStreamLabel</span><span class="p">);</span>
+    <span class="n">stream_</span><span class="o">-&gt;</span><span class="n">AddTrack</span><span class="p">(</span><span class="n">audio_track</span><span class="p">);</span>
+    <span class="n">stream_</span><span class="o">-&gt;</span><span class="n">AddTrack</span><span class="p">(</span><span class="n">video_track</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">peer_connection_</span><span class="o">-&gt;</span><span class="n">AddStream</span><span class="p">(</span><span class="n">stream_</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">constraints_</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">ErrorL</span> <span class="o">&lt;&lt;</span> <span class="s">"Adding stream to PeerConnection failed"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="n">cricket</span><span class="o">::</span><span class="n">VideoCapturer</span><span class="o">*</span> <span class="n">PeerConnectionClient</span><span class="o">::</span><span class="n">OpenVideoCaptureDevice</span><span class="p">()</span> 
+<span class="p">{</span>
+    <span class="n">talk_base</span><span class="o">::</span><span class="n">scoped_ptr</span><span class="o">&lt;</span><span class="n">cricket</span><span class="o">::</span><span class="n">DeviceManagerInterface</span><span class="o">&gt;</span> <span class="n">dev_manager</span><span class="p">(</span>
+      <span class="n">cricket</span><span class="o">::</span><span class="n">DeviceManagerFactory</span><span class="o">::</span><span class="n">Create</span><span class="p">());</span>	
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">dev_manager</span><span class="o">-&gt;</span><span class="n">Init</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">ErrorL</span> <span class="o">&lt;&lt;</span> <span class="s">"Can't create device manager"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Add our OpenCV VideoCapturer factory
+</span>    <span class="n">cricket</span><span class="o">::</span><span class="n">DeviceManager</span><span class="o">*</span> <span class="n">device_manager</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="n">cricket</span><span class="o">::</span><span class="n">DeviceManager</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">dev_manager</span><span class="p">.</span><span class="n">get</span><span class="p">());</span>
+    <span class="n">device_manager</span><span class="o">-&gt;</span><span class="n">set_device_video_capturer_factory</span><span class="p">(</span><span class="k">new</span> <span class="n">VideoCapturerFactoryOCV</span><span class="p">());</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">cricket</span><span class="o">::</span><span class="n">Device</span><span class="o">&gt;</span> <span class="n">devs</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">dev_manager</span><span class="o">-&gt;</span><span class="n">GetVideoCaptureDevices</span><span class="p">(</span><span class="o">&amp;</span><span class="n">devs</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">ErrorL</span> <span class="o">&lt;&lt;</span> <span class="s">"Can't enumerate video devices"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">cricket</span><span class="o">::</span><span class="n">Device</span><span class="o">&gt;::</span><span class="n">iterator</span> <span class="n">dev_it</span> <span class="o">=</span> <span class="n">devs</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+    <span class="n">cricket</span><span class="o">::</span><span class="n">VideoCapturer</span><span class="o">*</span> <span class="n">capturer</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(;</span> <span class="n">dev_it</span> <span class="o">!=</span> <span class="n">devs</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">dev_it</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">capturer</span> <span class="o">=</span> <span class="n">dev_manager</span><span class="o">-&gt;</span><span class="n">CreateVideoCapturer</span><span class="p">(</span><span class="o">*</span><span class="n">dev_it</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">capturer</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span>
+            <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">capturer</span><span class="p">;</span>
+<span class="p">}</span>
+</pre>
+
+<p>Happy coding!</p>
+    
+      
+      <ul class="social-buttons">
+        <li>
+          <a href="http://twitter.com/share" class="socialite twitter-share" data-text="WebRTC Custom OpenCV Video Capture" data-url="http://sourcey.com/webrtc-custom-opencv-video-capture/" data-count="vertical" rel="nofollow" target="_blank"><span class="vhidden">Share on Twitter</span></a>
+        </li>
+        <li>
+          <a href="https://plus.google.com/share?url=http://sourcey.com/webrtc-custom-opencv-video-capture/" class="socialite googleplus-one" data-size="tall" data-href="http://sourcey.com/webrtc-custom-opencv-video-capture/" rel="nofollow" target="_blank"><span class="vhidden">Share on Google+</span></a>
+        </li>
+        <li>
+          <a href="http://www.facebook.com/sharer.php?u=http://sourcey.com/webrtc-custom-opencv-video-capture/&amp;t=WebRTC Custom OpenCV Video Capture" class="socialite facebook-like" data-href="http://sourcey.com/webrtc-custom-opencv-video-capture/" data-send="false" data-layout="box_count" data-width="60" data-show-faces="false" rel="nofollow" target="_blank"><span class="vhidden">Share on Facebook</span></a>
+        </li>
+        <li>
+          <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://sourcey.com/webrtc-custom-opencv-video-capture/&amp;title=WebRTC Custom OpenCV Video Capture" class="socialite linkedin-share" data-url="http://sourcey.com/webrtc-custom-opencv-video-capture/" data-counter="top" rel="nofollow" target="_blank"><span class="vhidden">Share on LinkedIn</span></a>
+        </li>
+      </ul>        
+      <div class="meta">
+        Posted on <time class="updated" datetime="Jan 28 2014">Jan 28 2014</time> by 
+        
+          <a rel="author external" href="https://plus.google.com/+KamLow">Kam Low</a>
+        . Tagged: c++, opencv, programming, video-capture, webrtc.
+      </div>       
+      
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+          /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+          var disqus_shortname = 'sourcey'; // required: replace example with your forum shortname
+
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+      <a href="http://disqus.com" rel="nofollow" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>    
+    </div>
+        
+    <!--
+    <div style="text-align: center">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>  -->
+    <!-- Sourcey Small H --><!--
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:468px;height:60px;margin: 30px auto 15px;"
+         data-ad-client="ca-pub-1397369873900370"
+         data-ad-slot="8968503286"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+    </div>
+    -->
+
+    <footer id="footer">
+      <p>
+        As with all business minded artists, we have fought the inevitable battle of conformity vs expression, and have emerged victorious with sanity intact to plunder the digiverse in search of new and interesting challenges. For more information, or a quote, drop us an email and tell us what you're working on.
+      </p>
+      <!--
+      <p>                     
+        Our Kung Fu includes and is not limited to: C++, Ruby, Python, Java, Php, JavaScript, Node.js, ActionScript, HTML, CSS and Photoshop.
+      <p>  
+       -->      	  
+      <p>
+      &copy;2014 Sourcey     
+      <p>  
+    </footer>
+      
+    <script src="/javascripts/all.js" type="text/javascript"></script>
+  </body>
+</html>

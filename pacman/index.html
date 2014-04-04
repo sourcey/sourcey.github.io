@@ -1,0 +1,260 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pacman</title>
+    <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+    
+    <link href="/stylesheets/app.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="/stylesheets/style.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="/stylesheets/highlight/monokai.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/modernizr.js" type="text/javascript"></script>
+  </head>
+      
+  <body class="blog pacman pacman_index">
+      <nav class="top-bar" data-topbar="">
+    <div id="social">
+      <a href="https://plus.google.com/+SourceyDevel"><i class="fi-social-google-plus large"></i></a>
+      <a href="https://facebook.com/sourceydevel"><i class="fi-social-facebook large"></i></a>
+      <a href="https://twitter.com/sourceydevel"><i class="fi-social-twitter large"></i></a>
+      <a href="https://github.com/sourcey"><i class="fi-social-github large"></i></a>    
+    </div>
+      
+    <ul class="title-area">
+      <li class="name"></li>
+      <li class="toggle-topbar menu-icon"><a href="" class="left"><!--Menu--></a></li>
+    </ul>
+    
+    <section class="top-bar-section" style="left: 0%;">      
+      <ul class="left">
+        <li class="has-dropdown not-click"><a href="/">Menu</a>
+          <ul class="dropdown"><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li>
+            <!--<li><label>Menu</label></li>-->
+            <li><a href="/#blog">Blog</a></li>
+            <li class="has-dropdown not-click"><a href="/#projects">Projects</a>
+              <ul class="dropdown"><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li>
+                <li><label>Projects</label></li>
+                <li><a href="/libsourcey">LibSourcey</a></li>
+                <li><a href="/anionu">Anionu</a></li>
+                <li><a href="/symple">Symple</a></li>
+                <li><a href="/mesh">Mesh</a></li>
+                <li><a href="/pacman">Pacman</a></li>
+              </ul>
+            </li>
+            <li class="divider"></li>
+            <li><a href="/archives">Archives</a></li>
+            <li><a href="/feed.xml">Feed</a></li>
+            <li class="divider"></li>
+            <li><a href="mailto:hello@sourcey.com">Contact</a></li>
+          </ul>
+        </li>
+        <li class="divider"></li>
+      </ul>
+    </section></nav>
+    
+    <header id="header">
+      <h1 id="logo">
+        <a title="Sourcey" rel="home" href="http://sourcey.com"><img height="150" width="150" title="Sourcey" alt="Sourcey" src="/images/logo-250.png" /></a>
+      </h1>
+      <!--<h2 class="site-description">Open Source Developer Collective</h2>-->
+    </header>    
+    <div id="main" role="main">
+      <!--<h1 class="title">Pacman</h1>-->
+      <!-- 
+TODO: compare to current package managers
+ -->
+
+<h1 id="pacman">Pacman</h1>
+
+<div class="status">    
+  <dl>
+    <dt>Repository</dt>
+    <dd>
+      <a class="external" href="https://bitbucket.org/sourcey/libsourcey">https://bitbucket.org/sourcey/libsourcey</a>
+    </dd> 
+    <dt>Licence</dt>
+    <dd>
+      LGPL, <a href="/licensing">Sourcey Licence</a>
+    </dd>         
+    <dt>Dependencies</dt>
+    <dd>
+      LibSourcey (base, uv, net, json, http, archo), libuv, JsonCpp
+    </dd>
+  </dl>             
+</div>
+
+<p><img alt="Pacman Logo" title="Pacman Logo" class="align-left" src="/images/pacman-logo-120.png" /> Pacman is a redistributable package manager written C++ that speaks JSON with the server.
+It is designed to be embedded within an application to make easy work of installing, updating and uninstalling packages and plug-ins.</p>
+
+<p>There are no shortage or open source <a href="http://en.wikipedia.org/wiki/List_of_software_package_management_systems">package managers</a> out there, but none of them quite fit the bill for a simple embeddable package manager that we could integrate with our native and web platform. We have fallen short on this requirement a number of times over the years, so we decided to build Pacman.</p>
+
+<p>Pacman is a default module in the LibSourcey repository. Please download and compile <a class="external" href="/projects/libsourcey">LibSourcey</a> to use Pacman.</p>
+
+<h2 id="usage-examples">Usage examples</h2>
+
+<p>The Pacman API is vey easy use. Some examples are illustrated below:</p>
+
+<pre class="highlight cpp"><span class="err">`</span><span class="n">PackageManager</span><span class="o">::</span><span class="n">Options</span> <span class="n">options</span><span class="p">;</span>
+<span class="c1">// configuration options go here...
+</span><span class="n">PackageManager</span> <span class="n">pacman</span><span class="p">(</span><span class="n">options</span><span class="p">);</span>
+<span class="n">pacman</span><span class="p">.</span><span class="n">initialize</span><span class="p">();</span>
+        
+<span class="c1">// query the server for the latest packages
+</span><span class="n">pacman</span><span class="p">.</span><span class="n">queryRemotePackages</span><span class="p">();</span>                
+        
+<span class="c1">// list local (installed) packages
+</span><span class="k">auto</span> <span class="n">litems</span> <span class="o">=</span> <span class="n">pacman</span><span class="p">.</span><span class="n">localPackages</span><span class="p">().</span><span class="n">items</span><span class="p">();</span>
+<span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">litems</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">litems</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span><span class="p">)</span> <span class="p">{</span>				
+  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Package: "</span> <span class="o">&lt;&lt;</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">first</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// list remote (available) packages
+</span><span class="k">auto</span> <span class="n">ritems</span> <span class="o">=</span> <span class="n">app</span><span class="p">.</span><span class="n">remotePackages</span><span class="p">().</span><span class="n">items</span><span class="p">();</span>
+<span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">ritems</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">ritems</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span><span class="p">)</span> <span class="p">{</span>				
+  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Package: "</span> <span class="o">&lt;&lt;</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">first</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>          
+  
+  <span class="c1">// output the lastest asset information
+</span>  <span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span><span class="o">-&gt;</span><span class="n">latestAsset</span><span class="p">().</span><span class="n">print</span><span class="p">(</span><span class="n">cout</span><span class="p">);</span>	
+<span class="p">}</span>                
+        
+<span class="c1">// install a package
+</span><span class="n">pacman</span><span class="p">.</span><span class="n">installPackage</span><span class="p">(</span><span class="s">"SomePackageName"</span><span class="p">);</span>
+
+<span class="c1">// update a package (will install if it doesn't exist)
+</span><span class="n">pacman</span><span class="p">.</span><span class="n">updatePackage</span><span class="p">(</span><span class="s">"SomePackageName"</span><span class="p">);</span>
+
+<span class="c1">// update / install a list of packages.
+// package states are availalbe via callback events
+</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">packages</span><span class="p">;</span>
+<span class="n">packages</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">"SomePackageName"</span><span class="p">);</span>
+<span class="n">packages</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">"IThoughtPacmanWasAGame"</span><span class="p">);</span>        
+<span class="n">pacman</span><span class="p">.</span><span class="n">installPackages</span><span class="p">(</span><span class="n">packages</span><span class="p">);</span>
+
+<span class="c1">// update all packages
+</span><span class="n">pacman</span><span class="p">.</span><span class="n">updateAllPackages</span><span class="p">();</span>
+
+<span class="c1">// uninstall a package.
+// uninstallPackages() can also be used for multiple packages.
+</span><span class="n">pacman</span><span class="p">.</span><span class="n">uninstallPackage</span><span class="p">(</span><span class="s">"SomePackageName"</span><span class="p">);</span>
+</pre>
+
+<p>Pretty tidy huh? That covers basic Pacman usage. </p>
+
+<p>These are more methods and features available, feel free to use the method definitions in the source as a reference.</p>
+
+<h2 id="client-server-protocol">Client server protocol</h2>
+
+<p>The Pacman core does not include a server module, but it should be easy to implement using your chosen web framework. </p>
+
+<p>We generally use Rails for easy serialization of database objects.
+All that is required on the part of the server is to list packages using Pacman's simple protocol and facilitate downloads. </p>
+
+<p>An example of a server response to a Pacman query is illustrated below. 
+Pacman will send a HTTP GET request to the server which will reply with a JSON response that looks like:</p>
+
+<pre class="highlight javascript"><span class="p">[</span> <span class="p">{</span> <span class="s2">"assets"</span> <span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="s2">"extension"</span> <span class="p">:</span> <span class="s2">"zip"</span><span class="p">,</span>
+          <span class="s2">"file-name"</span> <span class="p">:</span> <span class="s2">"Spot-1.0-win32-bin.zip"</span><span class="p">,</span>
+          <span class="s2">"file-size"</span> <span class="p">:</span> <span class="s2">"3261705"</span><span class="p">,</span>
+          <span class="s2">"mirrors"</span> <span class="p">:</span> <span class="p">[</span> <span class="s2">"http://localhost:3000/archives/417/Spot-1.0-win32-bin.zip"</span> <span class="p">],</span>
+          <span class="s2">"name"</span> <span class="p">:</span> <span class="s2">"Spot"</span><span class="p">,</span>
+          <span class="s2">"platform"</span> <span class="p">:</span> <span class="s2">"win32"</span><span class="p">,</span>
+          <span class="s2">"standalone"</span> <span class="p">:</span> <span class="s2">"true"</span><span class="p">,</span>
+          <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"bin"</span><span class="p">,</span>
+          <span class="s2">"version"</span> <span class="p">:</span> <span class="s2">"1.0"</span>
+        <span class="p">},</span>
+        <span class="p">{</span> <span class="s2">"extension"</span> <span class="p">:</span> <span class="s2">"zip"</span><span class="p">,</span>
+          <span class="s2">"file-name"</span> <span class="p">:</span> <span class="s2">"Spot-1.1-win32-bin.zip"</span><span class="p">,</span>
+          <span class="s2">"file-size"</span> <span class="p">:</span> <span class="s2">"3261705"</span><span class="p">,</span>
+          <span class="s2">"mirrors"</span> <span class="p">:</span> <span class="p">[</span> <span class="s2">"http://localhost:3000/archives/418/Spot-1.1-win32-bin.zip"</span> <span class="p">],</span>
+          <span class="s2">"name"</span> <span class="p">:</span> <span class="s2">"Spot"</span><span class="p">,</span>
+          <span class="s2">"platform"</span> <span class="p">:</span> <span class="s2">"win32"</span><span class="p">,</span>
+          <span class="s2">"standalone"</span> <span class="p">:</span> <span class="s2">"true"</span><span class="p">,</span>
+          <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"bin"</span><span class="p">,</span>
+          <span class="s2">"version"</span> <span class="p">:</span> <span class="s2">"1.1"</span>
+        <span class="p">}</span>
+      <span class="p">],</span>
+    <span class="s2">"author"</span> <span class="p">:</span> <span class="s2">"Sourcey"</span><span class="p">,</span>
+    <span class="s2">"id"</span> <span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
+    <span class="s2">"name"</span> <span class="p">:</span> <span class="s2">"Spot"</span><span class="p">,</span>
+    <span class="s2">"title"</span> <span class="p">:</span> <span class="s2">"Spot"</span><span class="p">,</span>
+    <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"Project"</span>
+  <span class="p">},</span>
+  <span class="p">{</span> <span class="s2">"assets"</span> <span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="s2">"extension"</span> <span class="p">:</span> <span class="s2">"zip"</span><span class="p">,</span>
+          <span class="s2">"file-name"</span> <span class="p">:</span> <span class="s2">"SurveillanceMode-0.9.0-Spot-1.0-win32-bin.zip"</span><span class="p">,</span>
+          <span class="s2">"file-size"</span> <span class="p">:</span> <span class="s2">"761951"</span><span class="p">,</span>
+          <span class="s2">"mirrors"</span> <span class="p">:</span> <span class="p">[</span> <span class="s2">"http://localhost:3000/archives/439/SurveillanceMode-0.9.0-Spot-1.0-win32-bin.zip"</span> <span class="p">],</span>
+          <span class="s2">"name"</span> <span class="p">:</span> <span class="s2">"SurveillanceMode"</span><span class="p">,</span>
+          <span class="s2">"platform"</span> <span class="p">:</span> <span class="s2">"win32"</span><span class="p">,</span>
+          <span class="s2">"project-name"</span> <span class="p">:</span> <span class="s2">"Spot"</span><span class="p">,</span>
+          <span class="s2">"project-version"</span> <span class="p">:</span> <span class="s2">"1.0"</span><span class="p">,</span>
+          <span class="s2">"standalone"</span> <span class="p">:</span> <span class="s2">"false"</span><span class="p">,</span>
+          <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"bin"</span><span class="p">,</span>
+          <span class="s2">"version"</span> <span class="p">:</span> <span class="s2">"0.9.0"</span>
+        <span class="p">}</span> <span class="p">],</span>
+    <span class="s2">"author"</span> <span class="p">:</span> <span class="s2">"Sourcey"</span><span class="p">,</span>
+    <span class="s2">"id"</span> <span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+    <span class="s2">"name"</span> <span class="p">:</span> <span class="s2">"SurveillanceMode"</span><span class="p">,</span>
+    <span class="s2">"title"</span> <span class="p">:</span> <span class="s2">"Surveillance Mode Plugin"</span><span class="p">,</span>
+    <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"Plugin"</span>
+  <span class="p">},</span>
+  <span class="p">{</span> <span class="s2">"assets"</span> <span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="s2">"extension"</span> <span class="p">:</span> <span class="s2">"zip"</span><span class="p">,</span>
+          <span class="s2">"file-name"</span> <span class="p">:</span> <span class="s2">"MediaProvider-0.9.0-Spot-1.0-win32-bin.zip"</span><span class="p">,</span>
+          <span class="s2">"file-size"</span> <span class="p">:</span> <span class="s2">"136459"</span><span class="p">,</span>
+          <span class="s2">"mirrors"</span> <span class="p">:</span> <span class="p">[</span> <span class="s2">"http://localhost:3000/archives/435/MediaProvider-0.9.0-Spot-1.0-win32-bin.zip"</span> <span class="p">],</span>
+          <span class="s2">"name"</span> <span class="p">:</span> <span class="s2">"MediaProvider"</span><span class="p">,</span>
+          <span class="s2">"platform"</span> <span class="p">:</span> <span class="s2">"win32"</span><span class="p">,</span>
+          <span class="s2">"project-name"</span> <span class="p">:</span> <span class="s2">"Spot"</span><span class="p">,</span>
+          <span class="s2">"project-version"</span> <span class="p">:</span> <span class="s2">"1.0"</span><span class="p">,</span>
+          <span class="s2">"standalone"</span> <span class="p">:</span> <span class="s2">"false"</span><span class="p">,</span>
+          <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"bin"</span><span class="p">,</span>
+          <span class="s2">"version"</span> <span class="p">:</span> <span class="s2">"0.9.0"</span>
+        <span class="p">}</span> <span class="p">],</span>
+    <span class="s2">"author"</span> <span class="p">:</span> <span class="s2">"Sourcey"</span><span class="p">,</span>
+    <span class="s2">"id"</span> <span class="p">:</span> <span class="mi">19</span><span class="p">,</span>
+    <span class="s2">"name"</span> <span class="p">:</span> <span class="s2">"MediaProvider"</span><span class="p">,</span>
+    <span class="s2">"title"</span> <span class="p">:</span> <span class="s2">"Media Provider"</span><span class="p">,</span>
+    <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"Plugin"</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre>
+<p>## Things to do</p>
+
+<p>There are a few features we have not had time to implement yet which are listed in the TODO file in the source folder.
+If you're able to implement any of the those features then send a push request our way. </p>
+
+ 
+    </div>
+        
+    <!--
+    <div style="text-align: center">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>  -->
+    <!-- Sourcey Small H --><!--
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:468px;height:60px;margin: 30px auto 15px;"
+         data-ad-client="ca-pub-1397369873900370"
+         data-ad-slot="8968503286"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+    </div>
+    -->
+
+    <footer id="footer">
+      <p>
+        As with all business minded artists, we have fought the inevitable battle of conformity vs expression, and have emerged victorious with sanity intact to plunder the digiverse in search of new and interesting challenges. For more information, or a quote, drop us an email and tell us what you're working on.
+      </p>
+      <!--
+      <p>                     
+        Our Kung Fu includes and is not limited to: C++, Ruby, Python, Java, Php, JavaScript, Node.js, ActionScript, HTML, CSS and Photoshop.
+      <p>  
+       -->      	  
+      <p>
+      &copy;2014 Sourcey     
+      <p>  
+    </footer>
+      
+    <script src="/javascripts/all.js" type="text/javascript"></script>
+  </body>
+</html>

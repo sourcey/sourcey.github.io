@@ -1,0 +1,216 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pinterest API Pinit Button Callback Tracking</title>
+    <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+    
+    <link href="/stylesheets/app.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="/stylesheets/style.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="/stylesheets/highlight/monokai.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/modernizr.js" type="text/javascript"></script>
+  </head>
+      
+  <body class="blog pinterest-api-pinit-button-callback-tracking pinterest-api-pinit-button-callback-tracking_index">
+      <nav class="top-bar" data-topbar="">
+    <div id="social">
+      <a href="https://plus.google.com/+SourceyDevel"><i class="fi-social-google-plus large"></i></a>
+      <a href="https://facebook.com/sourceydevel"><i class="fi-social-facebook large"></i></a>
+      <a href="https://twitter.com/sourceydevel"><i class="fi-social-twitter large"></i></a>
+      <a href="https://github.com/sourcey"><i class="fi-social-github large"></i></a>    
+    </div>
+      
+    <ul class="title-area">
+      <li class="name"></li>
+      <li class="toggle-topbar menu-icon"><a href="" class="left"><!--Menu--></a></li>
+    </ul>
+    
+    <section class="top-bar-section" style="left: 0%;">      
+      <ul class="left">
+        <li class="has-dropdown not-click"><a href="/">Menu</a>
+          <ul class="dropdown"><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li>
+            <!--<li><label>Menu</label></li>-->
+            <li><a href="/#blog">Blog</a></li>
+            <li class="has-dropdown not-click"><a href="/#projects">Projects</a>
+              <ul class="dropdown"><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li>
+                <li><label>Projects</label></li>
+                <li><a href="/libsourcey">LibSourcey</a></li>
+                <li><a href="/anionu">Anionu</a></li>
+                <li><a href="/symple">Symple</a></li>
+                <li><a href="/mesh">Mesh</a></li>
+                <li><a href="/pacman">Pacman</a></li>
+              </ul>
+            </li>
+            <li class="divider"></li>
+            <li><a href="/archives">Archives</a></li>
+            <li><a href="/feed.xml">Feed</a></li>
+            <li class="divider"></li>
+            <li><a href="mailto:hello@sourcey.com">Contact</a></li>
+          </ul>
+        </li>
+        <li class="divider"></li>
+      </ul>
+    </section></nav>
+    
+    <header id="header">
+      <h1 id="logo">
+        <a title="Sourcey" rel="home" href="http://sourcey.com"><img height="150" width="150" title="Sourcey" alt="Sourcey" src="/images/logo-250.png" /></a>
+      </h1>
+      <!--<h2 class="site-description">Open Source Developer Collective</h2>-->
+    </header>    
+    <div id="main" role="main">
+      <div id="rotate-article">
+        
+          <a class="next" href="/installing-trac-with-monit-on-centos/">next article &rarr;</a>
+        
+        
+          <a class="prev" href="/dynamically-rendering-ajax-pinterest-buttons/">&larr; previous article</a>
+        
+      </div>
+      <h1 id="pinterest-api-pinit-button-callback-tracking">Pinterest API Pinit Button Callback Tracking</h1>
+
+<p>Unlike the Facebook and Twitter button APIs, the Pinterest button does not provide us with any callback tracking capabilities. So how do we verify that a user has completed a Pinit action? </p>
+
+<p>The solution is a little trickier than the other buttons, which give us client side callbacks, but it's still pretty straight forward. To track Pinterest action events we need to pass the necessary parameters to the media URL we give to Pinterest, and point it to a server side script for verification. This way when Pinterest makes a request for the media URL, we can track and verify the Pinit action as completed. Get the gist?</p>
+
+<p>To break it down a little more the workflow is like this:</p>
+<ul>
+  <li>User clicks in Pinit button. Event is captures by JS and the initial unvalidated interaction is saved to the database.</li>
+  <li>User creates the pin, and the Pinterest server requests the pinned media from our verification script URL.</li>
+  <li>We ensure the request is authentic, set the interaction as validated, and serve up the image.</li>
+  <li>Voila! We have successfully validated the Pinit action.</li>
+</ul>
+
+<p>Here is some pseudo Ruby code that we have used successfully in a recent Rails project.</p>
+
+<pre class="highlight ruby">  <span class="c1"># routes.rb</span>
+
+  <span class="n">resources</span> <span class="ss">:interactions</span>
+  <span class="n">get</span> <span class="s1">'/interactions/verify/:action_id/:user_id/:entity_id(.:format)'</span> <span class="o">=&gt;</span> <span class="s1">'interactions#verify'</span><span class="p">,</span> <span class="ss">:as</span> <span class="o">=&gt;</span> <span class="ss">:verify_interaction</span>
+</pre>
+
+<pre class="highlight ruby">  <span class="c1"># interactions_controller.rb</span>
+
+  <span class="c1"># POST /interactions</span>
+  <span class="c1"># save the interaction when the client clicks on the pin button</span>
+  <span class="k">def</span> <span class="nf">create</span>
+    <span class="vi">@interaction</span> <span class="o">=</span> <span class="no">Interaction</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">interaction_params</span><span class="p">)</span>
+
+    <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
+      <span class="k">if</span> <span class="vi">@interaction</span><span class="p">.</span><span class="nf">save</span>
+        <span class="nb">format</span><span class="p">.</span><span class="nf">js</span>   <span class="p">{</span> <span class="p">}</span>
+        <span class="nb">format</span><span class="p">.</span><span class="nf">json</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">json: </span><span class="vi">@interaction</span> <span class="p">}</span>
+      <span class="k">else</span>
+        <span class="nb">format</span><span class="p">.</span><span class="nf">js</span>   <span class="p">{</span> <span class="n">flash</span><span class="p">.</span><span class="nf">now</span><span class="o">[</span><span class="ss">:error</span><span class="o">]</span> <span class="o">=</span> <span class="s2">"Failed to save your interaction: </span><span class="si">#{</span><span class="vi">@interaction</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">full_messages</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="s1">'. '</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span> <span class="p">}</span>
+        <span class="nb">format</span><span class="p">.</span><span class="nf">json</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">json: </span><span class="vi">@interaction</span><span class="p">.</span><span class="nf">errors</span><span class="p">,</span> <span class="ss">status: :unprocessable_entity</span> <span class="p">}</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="c1"># GET /interactions/verify/:action_id/:user_id/:entity_id(.:format)  </span>
+  <span class="c1"># verify the interaction when the remote server requests the media entity</span>
+  <span class="k">def</span> <span class="nf">verify</span>
+    <span class="k">case</span> <span class="n">params</span><span class="o">[</span><span class="ss">:action_id</span><span class="o">]</span>
+
+    <span class="c1"># verify the pinit action</span>
+    <span class="k">when</span> <span class="s2">"pinit"</span>
+      <span class="c1">#p "*** pinterest validation from: #{request.env.inspect}"</span>
+
+      <span class="c1"># ensure the request originates from pinterest servers</span>
+      <span class="k">if</span> <span class="n">request</span><span class="p">.</span><span class="nf">env</span><span class="o">[</span><span class="s1">'HTTP_REFERER'</span><span class="o">]</span><span class="p">.</span><span class="nf">starts_with?</span> <span class="s1">'http://www.pinterest.com'</span>
+
+        <span class="c1"># grab the interaction entity </span>
+        <span class="n">o</span> <span class="o">=</span> <span class="no">Interaction</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span>
+          <span class="o">[</span><span class="s1">'user_id = (?) AND entity_id = (?) AND action = (?)'</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">[</span><span class="ss">:user_id</span><span class="o">]</span><span class="p">,</span> <span class="n">params</span><span class="o">[</span><span class="ss">:entity_id</span><span class="o">]</span><span class="p">,</span> <span class="n">params</span><span class="o">[</span><span class="ss">:action_id</span><span class="o">]]</span><span class="p">).</span><span class="nf">first</span>	
+        <span class="k">if</span> <span class="n">o</span>
+          
+          <span class="c1"># verify the action on the first request</span>
+          <span class="n">o</span><span class="p">.</span><span class="nf">update_attribute</span><span class="p">(</span><span class="ss">:verified</span><span class="p">,</span> <span class="kp">true</span><span class="p">)</span> <span class="k">unless</span> <span class="n">o</span><span class="p">.</span><span class="nf">verified?</span>
+
+          <span class="c1"># redirect to the image that is being pinned</span>
+          <span class="c1"># p "*** interaction verified"</span>
+          <span class="n">redirect_to</span> <span class="n">entity_image_url</span><span class="p">(</span><span class="n">o</span><span class="p">.</span><span class="nf">entity</span><span class="p">,</span> <span class="s1">'jpg'</span><span class="p">)</span>
+          <span class="k">return</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="c1"># verify other actions...</span>
+    <span class="k">end</span>
+
+    <span class="c1"># no joy here ...</span>
+    <span class="no">Rails</span><span class="p">.</span><span class="nf">logger</span><span class="p">.</span><span class="nf">info</span> <span class="s2">"*** Interaction not verified: </span><span class="si">#{</span><span class="n">params</span><span class="p">.</span><span class="nf">inspect</span><span class="si">}</span><span class="s2">"</span>
+    <span class="n">render</span> <span class="ss">nothing: </span><span class="kp">true</span><span class="p">,</span> <span class="ss">status: :not_found</span>     
+  <span class="k">end</span>
+</pre>
+    
+      
+      <ul class="social-buttons">
+        <li>
+          <a href="http://twitter.com/share" class="socialite twitter-share" data-text="Pinterest API Pinit Button Callback Tracking" data-url="http://sourcey.com/pinterest-api-pinit-button-callback-tracking/" data-count="vertical" rel="nofollow" target="_blank"><span class="vhidden">Share on Twitter</span></a>
+        </li>
+        <li>
+          <a href="https://plus.google.com/share?url=http://sourcey.com/pinterest-api-pinit-button-callback-tracking/" class="socialite googleplus-one" data-size="tall" data-href="http://sourcey.com/pinterest-api-pinit-button-callback-tracking/" rel="nofollow" target="_blank"><span class="vhidden">Share on Google+</span></a>
+        </li>
+        <li>
+          <a href="http://www.facebook.com/sharer.php?u=http://sourcey.com/pinterest-api-pinit-button-callback-tracking/&amp;t=Pinterest API Pinit Button Callback Tracking" class="socialite facebook-like" data-href="http://sourcey.com/pinterest-api-pinit-button-callback-tracking/" data-send="false" data-layout="box_count" data-width="60" data-show-faces="false" rel="nofollow" target="_blank"><span class="vhidden">Share on Facebook</span></a>
+        </li>
+        <li>
+          <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://sourcey.com/pinterest-api-pinit-button-callback-tracking/&amp;title=Pinterest API Pinit Button Callback Tracking" class="socialite linkedin-share" data-url="http://sourcey.com/pinterest-api-pinit-button-callback-tracking/" data-counter="top" rel="nofollow" target="_blank"><span class="vhidden">Share on LinkedIn</span></a>
+        </li>
+      </ul>        
+      <div class="meta">
+        Posted on <time class="updated" datetime="Mar 16 2014">Mar 16 2014</time> by 
+        
+          <a rel="author external" href="https://plus.google.com/+KamLow">Kam Low</a>
+        . Tagged: api, pinterest, programming, rails.
+      </div>       
+      
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+          /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+          var disqus_shortname = 'sourcey'; // required: replace example with your forum shortname
+
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+      <a href="http://disqus.com" rel="nofollow" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>    
+    </div>
+        
+    <!--
+    <div style="text-align: center">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>  -->
+    <!-- Sourcey Small H --><!--
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:468px;height:60px;margin: 30px auto 15px;"
+         data-ad-client="ca-pub-1397369873900370"
+         data-ad-slot="8968503286"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+    </div>
+    -->
+
+    <footer id="footer">
+      <p>
+        As with all business minded artists, we have fought the inevitable battle of conformity vs expression, and have emerged victorious with sanity intact to plunder the digiverse in search of new and interesting challenges. For more information, or a quote, drop us an email and tell us what you're working on.
+      </p>
+      <!--
+      <p>                     
+        Our Kung Fu includes and is not limited to: C++, Ruby, Python, Java, Php, JavaScript, Node.js, ActionScript, HTML, CSS and Photoshop.
+      <p>  
+       -->      	  
+      <p>
+      &copy;2014 Sourcey     
+      <p>  
+    </footer>
+      
+    <script src="/javascripts/all.js" type="text/javascript"></script>
+  </body>
+</html>

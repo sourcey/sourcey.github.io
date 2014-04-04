@@ -1,0 +1,198 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Generating Website Thumbnails in Rails 4 using Dragonfly and wkhtmltoimage</title>
+    <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+    
+    <link href="/stylesheets/app.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="/stylesheets/style.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="/stylesheets/highlight/monokai.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/modernizr.js" type="text/javascript"></script>
+  </head>
+      
+  <body class="blog generating-website-thumbnails-in-rails-4-using-dragonfly-and-wkhtmltoimage generating-website-thumbnails-in-rails-4-using-dragonfly-and-wkhtmltoimage_index">
+      <nav class="top-bar" data-topbar="">
+    <div id="social">
+      <a href="https://plus.google.com/+SourceyDevel"><i class="fi-social-google-plus large"></i></a>
+      <a href="https://facebook.com/sourceydevel"><i class="fi-social-facebook large"></i></a>
+      <a href="https://twitter.com/sourceydevel"><i class="fi-social-twitter large"></i></a>
+      <a href="https://github.com/sourcey"><i class="fi-social-github large"></i></a>    
+    </div>
+      
+    <ul class="title-area">
+      <li class="name"></li>
+      <li class="toggle-topbar menu-icon"><a href="" class="left"><!--Menu--></a></li>
+    </ul>
+    
+    <section class="top-bar-section" style="left: 0%;">      
+      <ul class="left">
+        <li class="has-dropdown not-click"><a href="/">Menu</a>
+          <ul class="dropdown"><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li>
+            <!--<li><label>Menu</label></li>-->
+            <li><a href="/#blog">Blog</a></li>
+            <li class="has-dropdown not-click"><a href="/#projects">Projects</a>
+              <ul class="dropdown"><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li>
+                <li><label>Projects</label></li>
+                <li><a href="/libsourcey">LibSourcey</a></li>
+                <li><a href="/anionu">Anionu</a></li>
+                <li><a href="/symple">Symple</a></li>
+                <li><a href="/mesh">Mesh</a></li>
+                <li><a href="/pacman">Pacman</a></li>
+              </ul>
+            </li>
+            <li class="divider"></li>
+            <li><a href="/archives">Archives</a></li>
+            <li><a href="/feed.xml">Feed</a></li>
+            <li class="divider"></li>
+            <li><a href="mailto:hello@sourcey.com">Contact</a></li>
+          </ul>
+        </li>
+        <li class="divider"></li>
+      </ul>
+    </section></nav>
+    
+    <header id="header">
+      <h1 id="logo">
+        <a title="Sourcey" rel="home" href="http://sourcey.com"><img height="150" width="150" title="Sourcey" alt="Sourcey" src="/images/logo-250.png" /></a>
+      </h1>
+      <!--<h2 class="site-description">Open Source Developer Collective</h2>-->
+    </header>    
+    <div id="main" role="main">
+      <div id="rotate-article">
+        
+          <a class="next" href="/automatic-escaping-of-html-tags-in-code-elements-for-wordpress/">next article &rarr;</a>
+        
+        
+          <a class="prev" href="/webrtc-port-forwarding-pseudo-turn-proxy/">&larr; previous article</a>
+        
+      </div>
+      <h1 id="generating-website-thumbnails-in-rails-4-using-dragonfly-and-wkhtmltoimage">Generating Website Thumbnails in Rails 4 using Dragonfly and wkhtmltoimage</h1>
+
+<p>I had a joyous time the other day trying to get a new rails app to take thumbnail snapshots of remote websites for http://gardn.net… Actually I lied, it wasn't really that fun, in fact it was a real pain in the ass - but you know how it is being a developer ;)</p>
+
+<p>There are a few third party APIs out there, Bluga.net, Websnapr and ShrinkTheWeb to name a few, but they all cost money - and why pay for it when we can build it ourselves? So the idea is to generate our own thumbnails without using any third party services.</p>
+
+<p>I ended up using a combination of <a href="https://github.com/markevans/dragonfly" target="_blank">Dragonfly</a> and <a href="http://wkhtmltopdf.org" target="_blank">wkhtmltoimage</a> to get the job done. The basic ideas is we use wkhtmltoimage to generate and store the thumbnail it in a temp location, then we pass the file to Dragonfly for processing. I'm currently generating the URL inside a validator, so if it fails then the URL entity will not be saved, and we can say to the user "well what's up with this dodgey URL?". This might not be the most scalable way of handling this (ie. not deferred), but it's OK for now as I'm using a thread based server, and again, because it's validatable! Code follows…</p>
+
+<pre class="highlight ruby"><span class="k">class</span> <span class="nc">MySexyModel</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+
+  <span class="p">.</span><span class="nf">.</span><span class="o">.</span> <span class="n">stuff</span>
+
+  <span class="c1"># Generate the thumbnail on validate so we can return errors on failure</span>
+  <span class="n">validate</span> <span class="ss">:generate_thumbnail_from_url</span>
+
+  <span class="c1"># Cleanup temp files when we are done</span>
+  <span class="n">after_save</span> <span class="ss">:cleanup_temp_thumbnail</span>
+  
+  <span class="c1"># Generate a thumbnail from the remote URL</span>
+  <span class="k">def</span> <span class="nf">generate_thumbnail_from_url</span>
+
+    <span class="c1"># Skip thumbnail generation if:</span>
+    <span class="c1"># a) there are already other validation errors</span>
+    <span class="c1"># b) an image was manually specified</span>
+    <span class="c1"># c) an image is already stored and the URL hasn't changed</span>
+    <span class="n">skip_generate</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">any?</span> <span class="o">||</span> <span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="nf">image_changed?</span> <span class="o">||</span>
+        <span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="nf">image_stored?</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nb">self</span><span class="p">.</span><span class="nf">url_changed?</span><span class="p">))</span>
+    <span class="c1"># p "*** generating thumbnail: #{!skip_generate}"</span>
+    <span class="k">return</span> <span class="k">if</span> <span class="n">skip_generate</span>
+
+    <span class="c1"># Generate and assign an image or set a validation error</span>
+    <span class="k">begin</span>
+      <span class="n">tempfile</span> <span class="o">=</span> <span class="n">temp_thumbnail_path</span>
+      <span class="n">cmd</span> <span class="o">=</span> <span class="s2">"wkhtmltoimage --quality 95 </span><span class="se">\"</span><span class="si">#{</span><span class="nb">self</span><span class="p">.</span><span class="nf">url</span><span class="si">}</span><span class="se">\"</span><span class="s2"> </span><span class="se">\"</span><span class="si">#{</span><span class="n">tempfile</span><span class="si">}</span><span class="se">\"</span><span class="s2">"</span>
+      <span class="c1"># p "*** grabbing thumbnail: #{cmd}"</span>
+      <span class="nb">system</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span> <span class="c1"># sometimes returns false even if image was saved</span>
+      <span class="nb">self</span><span class="p">.</span><span class="nf">image</span> <span class="o">=</span> <span class="no">File</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">tempfile</span><span class="p">)</span> <span class="c1"># will throw if not saved</span>
+    <span class="k">rescue</span> <span class="o">=&gt;</span> <span class="n">e</span>
+      <span class="c1"># p "*** thumbnail error: #{e}"</span>
+      <span class="nb">self</span><span class="p">.</span><span class="nf">errors</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="ss">:base</span><span class="p">,</span> <span class="s2">"Cannot generate thumbnail. Is your URL valid?"</span><span class="p">)</span>
+    <span class="k">ensure</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+  
+  <span class="c1"># Return the absolute path to the temporary thumbnail file</span>
+  <span class="k">def</span> <span class="nf">temp_thumbnail_path</span>
+    <span class="no">File</span><span class="p">.</span><span class="nf">expand_path</span><span class="p">(</span><span class="s2">"</span><span class="si">#{</span><span class="nb">self</span><span class="p">.</span><span class="nf">url</span><span class="p">.</span><span class="nf">parameterize</span><span class="p">.</span><span class="nf">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span><span class="si">}</span><span class="s2">.jpg"</span><span class="p">,</span> <span class="no">Dragonfly</span><span class="p">.</span><span class="nf">app</span><span class="p">.</span><span class="nf">datastore</span><span class="p">.</span><span class="nf">root_path</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="c1"># Cleanup the temporary thumbnail image</span>
+  <span class="k">def</span> <span class="nf">cleanup_temp_thumbnail</span>
+    <span class="no">File</span><span class="p">.</span><span class="nf">delete</span><span class="p">(</span><span class="n">temp_thumbnail_path</span><span class="p">)</span> <span class="k">rescue</span> <span class="mi">0</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre>
+
+<p>And with that we are peachy - no need for any third party services at all! Don't forget to show your love if this helped you.</p>
+    
+      
+      <ul class="social-buttons">
+        <li>
+          <a href="http://twitter.com/share" class="socialite twitter-share" data-text="Generating Website Thumbnails in Rails 4 using Dragonfly and wkhtmltoimage" data-url="http://sourcey.com/generating-website-thumbnails-in-rails-4-using-dragonfly-and-wkhtmltoimage/" data-count="vertical" rel="nofollow" target="_blank"><span class="vhidden">Share on Twitter</span></a>
+        </li>
+        <li>
+          <a href="https://plus.google.com/share?url=http://sourcey.com/generating-website-thumbnails-in-rails-4-using-dragonfly-and-wkhtmltoimage/" class="socialite googleplus-one" data-size="tall" data-href="http://sourcey.com/generating-website-thumbnails-in-rails-4-using-dragonfly-and-wkhtmltoimage/" rel="nofollow" target="_blank"><span class="vhidden">Share on Google+</span></a>
+        </li>
+        <li>
+          <a href="http://www.facebook.com/sharer.php?u=http://sourcey.com/generating-website-thumbnails-in-rails-4-using-dragonfly-and-wkhtmltoimage/&amp;t=Generating Website Thumbnails in Rails 4 using Dragonfly and wkhtmltoimage" class="socialite facebook-like" data-href="http://sourcey.com/generating-website-thumbnails-in-rails-4-using-dragonfly-and-wkhtmltoimage/" data-send="false" data-layout="box_count" data-width="60" data-show-faces="false" rel="nofollow" target="_blank"><span class="vhidden">Share on Facebook</span></a>
+        </li>
+        <li>
+          <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://sourcey.com/generating-website-thumbnails-in-rails-4-using-dragonfly-and-wkhtmltoimage/&amp;title=Generating Website Thumbnails in Rails 4 using Dragonfly and wkhtmltoimage" class="socialite linkedin-share" data-url="http://sourcey.com/generating-website-thumbnails-in-rails-4-using-dragonfly-and-wkhtmltoimage/" data-counter="top" rel="nofollow" target="_blank"><span class="vhidden">Share on LinkedIn</span></a>
+        </li>
+      </ul>        
+      <div class="meta">
+        Posted on <time class="updated" datetime="Mar 15 2014">Mar 15 2014</time> by 
+        
+          <a rel="author external" href="https://plus.google.com/+KamLow">Kam Low</a>
+        . Tagged: programming, rails, ruby, thumbnails.
+      </div>       
+      
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+          /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+          var disqus_shortname = 'sourcey'; // required: replace example with your forum shortname
+
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+      <a href="http://disqus.com" rel="nofollow" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>    
+    </div>
+        
+    <!--
+    <div style="text-align: center">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>  -->
+    <!-- Sourcey Small H --><!--
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:468px;height:60px;margin: 30px auto 15px;"
+         data-ad-client="ca-pub-1397369873900370"
+         data-ad-slot="8968503286"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+    </div>
+    -->
+
+    <footer id="footer">
+      <p>
+        As with all business minded artists, we have fought the inevitable battle of conformity vs expression, and have emerged victorious with sanity intact to plunder the digiverse in search of new and interesting challenges. For more information, or a quote, drop us an email and tell us what you're working on.
+      </p>
+      <!--
+      <p>                     
+        Our Kung Fu includes and is not limited to: C++, Ruby, Python, Java, Php, JavaScript, Node.js, ActionScript, HTML, CSS and Photoshop.
+      <p>  
+       -->      	  
+      <p>
+      &copy;2014 Sourcey     
+      <p>  
+    </footer>
+      
+    <script src="/javascripts/all.js" type="text/javascript"></script>
+  </body>
+</html>

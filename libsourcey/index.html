@@ -1,0 +1,255 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LibSourcey</title>
+    <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+    
+    <link href="/stylesheets/app.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="/stylesheets/style.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="/stylesheets/highlight/monokai.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/modernizr.js" type="text/javascript"></script>
+  </head>
+      
+  <body class="blog libsourcey libsourcey_index">
+      <nav class="top-bar" data-topbar="">
+    <div id="social">
+      <a href="https://plus.google.com/+SourceyDevel"><i class="fi-social-google-plus large"></i></a>
+      <a href="https://facebook.com/sourceydevel"><i class="fi-social-facebook large"></i></a>
+      <a href="https://twitter.com/sourceydevel"><i class="fi-social-twitter large"></i></a>
+      <a href="https://github.com/sourcey"><i class="fi-social-github large"></i></a>    
+    </div>
+      
+    <ul class="title-area">
+      <li class="name"></li>
+      <li class="toggle-topbar menu-icon"><a href="" class="left"><!--Menu--></a></li>
+    </ul>
+    
+    <section class="top-bar-section" style="left: 0%;">      
+      <ul class="left">
+        <li class="has-dropdown not-click"><a href="/">Menu</a>
+          <ul class="dropdown"><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li>
+            <!--<li><label>Menu</label></li>-->
+            <li><a href="/#blog">Blog</a></li>
+            <li class="has-dropdown not-click"><a href="/#projects">Projects</a>
+              <ul class="dropdown"><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li>
+                <li><label>Projects</label></li>
+                <li><a href="/libsourcey">LibSourcey</a></li>
+                <li><a href="/anionu">Anionu</a></li>
+                <li><a href="/symple">Symple</a></li>
+                <li><a href="/mesh">Mesh</a></li>
+                <li><a href="/pacman">Pacman</a></li>
+              </ul>
+            </li>
+            <li class="divider"></li>
+            <li><a href="/archives">Archives</a></li>
+            <li><a href="/feed.xml">Feed</a></li>
+            <li class="divider"></li>
+            <li><a href="mailto:hello@sourcey.com">Contact</a></li>
+          </ul>
+        </li>
+        <li class="divider"></li>
+      </ul>
+    </section></nav>
+    
+    <header id="header">
+      <h1 id="logo">
+        <a title="Sourcey" rel="home" href="http://sourcey.com"><img height="150" width="150" title="Sourcey" alt="Sourcey" src="/images/logo-250.png" /></a>
+      </h1>
+      <!--<h2 class="site-description">Open Source Developer Collective</h2>-->
+    </header>    
+    <div id="main" role="main">
+      <!--<h1 class="title">LibSourcey</h1>-->
+      <h1 id="libsourcey">LibSourcey</h1>
+
+<div class="status">    
+  <dl>
+    <dt>Repository</dt>
+    <dd>
+      <a class="external" href="https://github.com/sourcey/libsourcey">https://github.com/sourcey/libsourcey</a>
+      <!--<a class="external" href="https://bitbucket.org/sourcey/libsourcey">https://bitbucket.org/sourcey/libsourcey</a>-->
+    </dd>     
+    <dt>Licence</dt>
+    <dd>
+      LGPL, <a href="/licence">Sourcey Licence</a>
+    </dd>     
+    <dt>Required Dependencies</dt>
+    <dd>
+      C++11, libuv, cmake
+    </dd>       
+    <dt>Optional Dependencies</dt>
+    <dd>
+      OpenCV, RtAudio, FFmpeg, WebRTC, OpenSSL, JsonCpp
+    </dd>
+  </dl>           
+</div>
+
+<p><img alt="LibSourcey Logo" title="LibSourcey Logo" class="align-left" src="/images/libsourcey-logo-120.png" /> LibSourcey is a collection of open source cross platform C++11 modules and classes which provide developers with a flexible, high performance arsenal for the rapid development of real-time communication and media streaming applications. </p>
+
+<p>Modern design principles and event-based asynchronous IO based on Node.js's underlying libuv library are utilised throughout LibSourcey in to minimise concurrency reliance and increase performance for mission critical server side applications.</p>
+
+<p>LibSourcey currently contains native protocol implementations for TCP, SSL, UDP, HTTP, JSON, WebSockets, STUN, TURN, ICE, SDP, SDP, RTP, XML and XMPP.</p>
+
+<!--
+has been completely ported to C++11, and 
+LibSourcey was been used in private production by Sourcey since 2005, and was open sourced in 2013 under the LGPL licence to promote development in the field of web media for a new era of web applications. Since version 0.92, 
+ LibSourcey in an open source library which includes components and modules for the primary purpose of facilitating communication between cross platform native and browser based web applications. 
+-->
+
+<h2 id="public-modules">Public Modules</h2>
+
+<p>The following modules are included in the public LibSourcey repository:</p>
+
+<h3 id="base">Base</h3>
+<p><strong>dependencies:</strong> libuv
+Re-usable utility classes and interfaces used throughout LibSourcey.</p>
+
+<h3 id="net">Net</h3>
+<p><strong>dependencies:</strong> libuv, OpenSSL
+TCP, SSL and UDL socket implementation build on top of libuv architecture.</p>
+
+<h3 id="http">HTTP</h3>
+<p><strong>dependencies:</strong> libuv, JsonCpp
+HTTP server and client stack including support for WebSockets, multipart streaming, and file transfers.        </p>
+
+<h3 id="media">Media</h3>
+<p><strong>dependencies:</strong> libuv, OpenCV, FFmpeg, RtAudio
+Wrappers around FFmpeg and OpenCV for device capture, encoding, recording and streaming. The Media API makes extensive use of the PacketStream classes so that encoders, processors and packetisers can be dynamically added and removed from a media source.             </p>
+
+<h3 id="stun">STUN</h3>
+<p><a href="http://tools.ietf.org/rfc/rfc5389">RFC 5389</a> implementation which includes support for ICE and TURN and TURN TCP messages. </p>
+
+<h3 id="turn">TURN</h3>
+<p><strong>dependencies:</strong> libuv
+Server and client stack which supports both <a href="http://tools.ietf.org/rfc/rfc5766">RFC 5766 (Traversal Using Relays around NAT)</a> and <a href="http://tools.ietf.org/rfc/rfc6062">RFC 6062 (Traversal Using Relays around NAT Extensions for TCP Allocations)</a> specifications. </p>
+
+<h3 id="sdp">SDP</h3>
+<p><a href="http://tools.ietf.org/rfc/rfc4566">RFC 4566</a> implementation which includes extra support for ICE headers. </p>
+
+<h3 id="socketio">SocketIO</h3>
+<p><strong>dependencies:</strong> libuv, JsonCpp</p>
+
+<p>SocketIO C++ client. Read more about <a href="http://socket.io">SocketIO</a>. </p>
+
+<h3 id="symple">Symple</h3>
+<p><strong>dependencies:</strong> libuv, JsonCpp
+C++ implementation of Sourcey's home grown message protocol for the raid development of real time messaging and presence applications. <a href="/symple">More about Symple</a>. </p>
+
+<h3 id="pacman">Pacman</h3>
+<p><strong>dependencies:</strong> libuv, JsonCpp
+Pacman is an embeddable package manager which speaks JSON with the server. <a href="/pacman">More about Pacman</a>.    </p>
+
+<h3 id="uvpp">UVPP</h3>
+<p><strong>dependencies:</strong> libuv
+UVPP is a set of C++ wrappers for Joyent's fantastic libuv library. </p>
+
+<h3 id="json">JSON</h3>
+<p><strong>dependencies:</strong> JsonCpp
+Thin wrappers around the JsonCpp library. </p>
+
+<h2 id="private-modules">Private Modules</h2>
+
+<p>The following closed source modules are available.
+Please contact us if you are interested in using any of them in your projects.</p>
+
+<h3 id="ice">ICE</h3>
+<p><strong>dependencies:</strong> libuv
+The ICE module is a complete implementation of <a href="http://tools.ietf.org/html/rfc5245">RFC 5245</a> (Interactive Connectivity Establishment) based on LibSourcey architecture.
+ICE is a protocol for Network Address Translator (NAT) Traversal for Offer/Answer protocols.
+This module is currently not open source. Please contact us if you are interested in using it.</p>
+
+<h3 id="rtp">RTP</h3>
+<p><strong>dependencies:</strong> libuv
+Our RTP module is quite basic. At this point it only supports RTP and RTCP packetisation. RTCP session management still needs to implemented.
+If anyone happens to make a project of this we would be very happy to improve our RTP module. </p>
+
+<h3 id="xml">XML</h3>
+<p><strong>dependencies:</strong> pugixml
+Very thin wrappers around the pugixml XML library to better support LibSourcey architecture.</p>
+
+<h3 id="xmpp">XMPP</h3>
+<p><strong>dependencies:</strong> pugixml, libstrophe
+Our XMPP module includes a client with full Jingle session support. 
+This module has been neglected for a while now in favor of other projects. 
+Any bugfixes and improvements are welcome.  </p>
+
+<h2 id="external-modules">External Modules</h2>
+
+<p>The following LibSourcey modules are available in external repositories. </p>
+
+<h3 id="anionu">Anionu</h3>
+<p><strong>dependencies:</strong> libuv, OpevCV
+The Anionu module includes a REST client interface for communicating with the Anionu public API.        </p>
+
+<h3 id="ispot">ISpot</h3>
+<p><strong>dependencies:</strong> JsonCpp
+ISpot is a complete C++ SDK and API for building <a href="http://anionu.com/spot">Spot</a> based applications and plug-ins. 
+Spot is a part of <a href="http://anionu.com/spot">Anionu's</a> surveillance serivice.</p>
+
+<h2 id="install-sdk-libraries-and-tools">Install SDK Libraries and Tools</h2>
+
+<dl>
+  <dt>Install Git</dt>
+  <dd>
+    <ul>
+      <li><em>Windows users</em>: Install <a href="http://code.google.com/p/tortoisegit/" class="external">TortoiseGit</a>, a convenient git front-end, which integrates right into Windows Explorer. MinGW users can take msysgit from <a class="external" href="http://code.google.com/p/msysgit/downloads/list">http://code.google.com/p/msysgit/downloads/list</a>.</li>
+      <li><em>Linux users</em>: Install command-line git utility using your package manager, e.g. `apt-get install git` on Ubuntu and Debian. You can use <a href="http://www.syntevo.com/smartgithg/index.html" class="external">SmartGit</a> as a GUI client. SmartGit is cross-platform, btw.</li>
+      <li><em>Mac users</em>: If you installed Xcode (which you will need anyway), you already have git. You can use <a href="http://www.sourcetreeapp.com/" class="external">SourceTree</a> as a very good GUI client.</li>
+    </ul>
+  </dd>
+
+  <dt>Install CMake</dt>
+  <dd>
+    
+      CMake is the build system which enables the LibSourcey build system to support a wide range of platforms and compilers. CMake is also required to generate makefiles for OpenCV.
+      You can get CMake here: <a class="external" href="http://www.cmake.org/cmake/resources/software.html">http://www.cmake.org/cmake/resources/software.html</a>
+    
+  </dd>
+
+  <dt>Clone the LibSourcey repository</dt>
+  <dd> 
+    
+      LibSourcey can be obtained from our BitBucket repository:
+      `git clone https://bitbucket.org/sourcey/libsourcey.git`
+     
+    
+      If you haven't got Git (for some strange reason), you can download the packages here: <a class="external" href="https://bitbucket.org/sourcey/libsourcey">https://bitbucket.org/sourcey/libsourcey</a>
+    
+  </dd>
+</dl>
+ 
+    </div>
+        
+    <!--
+    <div style="text-align: center">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>  -->
+    <!-- Sourcey Small H --><!--
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:468px;height:60px;margin: 30px auto 15px;"
+         data-ad-client="ca-pub-1397369873900370"
+         data-ad-slot="8968503286"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+    </div>
+    -->
+
+    <footer id="footer">
+      <p>
+        As with all business minded artists, we have fought the inevitable battle of conformity vs expression, and have emerged victorious with sanity intact to plunder the digiverse in search of new and interesting challenges. For more information, or a quote, drop us an email and tell us what you're working on.
+      </p>
+      <!--
+      <p>                     
+        Our Kung Fu includes and is not limited to: C++, Ruby, Python, Java, Php, JavaScript, Node.js, ActionScript, HTML, CSS and Photoshop.
+      <p>  
+       -->      	  
+      <p>
+      &copy;2014 Sourcey     
+      <p>  
+    </footer>
+      
+    <script src="/javascripts/all.js" type="text/javascript"></script>
+  </body>
+</html>
