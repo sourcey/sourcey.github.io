@@ -2,35 +2,34 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Blog Name</title>
   <subtitle>Blog subtitle</subtitle>
-  <id>http://blog.url.com/</id>
-  <link href="http://blog.url.com/"/>
-  <link href="http://blog.url.com/feed.xml" rel="self"/>
+  <id>http://sourcey.com</id>
+  <link href="http://sourcey.com"/>
+  <link href="http://sourcey.com/feed.xml" rel="self"/>
   <updated>2014-04-04T10:09:32Z</updated>
   <author>
     <name>Blog Author</name>
   </author>
   <entry>
     <title>Migrating from Wordpress to Middleman</title>
-    <link rel="alternate" href="http://blog.url.com/migrating-from-wordpress-to-middleman/"/>
-    <id>http://blog.url.com/migrating-from-wordpress-to-middleman/</id>
+    <link rel="alternate" href="http://sourcey.com/migrating-from-wordpress-to-middleman/"/>
+    <id>http://sourcey.com/migrating-from-wordpress-to-middleman/</id>
     <published>2014-04-04T10:09:32Z</published>
-    <updated>2014-04-04T20:20:15+10:00</updated>
+    <updated>2014-04-05T00:13:36+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
     <content type="html">&lt;h1 id="migrating-from-wordpress-to-middleman"&gt;Migrating from Wordpress to Middleman&lt;/h1&gt;
+&lt;p&gt;Today I decided to take the plunge and convert Sourcey into a static website. Sourcey has been running on Wordpress for the better part of year now, and while Wordpress was the duck's nuts back then, todays static website generators just have so much to offer.&lt;/p&gt;
 
-&lt;p&gt;Sourcey has been running on Wordpress for the better part of year now (2013-2014), but today I decided to take the plunge and convert it to static website. All in all it took me around 10 hours work (including the learning curve), and I sure am glad I went ahead with it. &lt;/p&gt;
+&lt;p&gt;Static websites are all the rage, and with good reason too. Unless your blog is huge, or you have the need for managed administration (wp dkz ntz), there is really no need for dynamic scripting languages, right? There's something satisfying and geekishly appealing about a static website; one less thing to break, and one less security vulnerability to worry about. Geeks love optimising stuff, and when it comes to building websites, you just don't get any more optimised than static HTML. &lt;/p&gt;
 
-&lt;p&gt;Static websites are all the rage recently, and with good reason too! Unless your blog is huge, or you have the need for managed administration, there is really no need for dynamic scripting languages.  There's something satisfying about a static website; one less thing to break, and one less security vulnerability to worry about. Us geeks love optimisation, and when it comes to building websites, you don't just any more optimised than static HTML. &lt;/p&gt;
+&lt;p&gt;The two main candidates for porting Sourcey to a static platform were &lt;a href="http://jekyllrb.com"&gt;Jekyll&lt;/a&gt; and &lt;a href="http://middlemanapp.com/"&gt;Middleman&lt;/a&gt;. I have used both in the past, and both are built with Ruby (Jekyll has implementations in other languages too, such as a the &lt;code&gt;grunt-jekyll&lt;/code&gt; plugin), but due to my love affair with Rails and Sinatra I went with Middleman because of the similarities with Rails architecture, and it's superior flexibility.&lt;/p&gt;
 
-&lt;p&gt;The two main candidates for porting Sourcey to a static platform were &lt;a href="http://jekyllrb.com"&gt;Jekyll&lt;/a&gt; and &lt;a href="http://middlemanapp.com/"&gt;Middleman&lt;/a&gt;. I have used both in the past, and both are built with Ruby (Jekyll has implementations in other languages too, such as a the &lt;code&gt;grunt-jekyll&lt;/code&gt; plugin), but due to my love affair with Rails and Sinatra I went with Middleman because the similarities in architecture and it's superior flexibility.&lt;/p&gt;
-
-&lt;p&gt;If you're intersted in setting up or converting to a static website then keep on reading, because I will sharing the whole process.&lt;/p&gt;
+&lt;p&gt;All in all it took around 10 hours work (including the learning curve), and I'm super glad I did it for a number of reasons! If you're intersted in setting up or converting to a static website then keep on reading because I will be sharing some of the key points…&lt;/p&gt;
 
 &lt;h2 id="installing-dependencies"&gt;Installing Dependencies&lt;/h2&gt;
 
-&lt;p&gt;Go ahead and install the following dependencies.&lt;/p&gt;
+&lt;p&gt;Go ahead and install the following dependencies:&lt;/p&gt;
 
 &lt;ol&gt;
   &lt;li&gt;ruby&lt;/li&gt;
@@ -39,46 +38,45 @@
   &lt;li&gt;bower ($ &lt;code&gt;npm install -g bower&lt;/code&gt;)&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;Now setup your Middleman application using &lt;a href="http://middlemanapp.com/basics/getting-started/"&gt;the official guide&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If you haven't already, go and setup your Middleman application using &lt;a href="http://middlemanapp.com/basics/getting-started/"&gt;the official guide&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h2 id="installing-zurb-foundation-5"&gt;Installing Zurb Foundation 5&lt;/h2&gt;
 
-&lt;p&gt;For the CSS framework I went with Zurb Foundation 5. I'll admit this is the first time I have used Foundation, but since I have been using Bootstrap a lot recently I thought it might be nice to experiment with a new technology. Setting up Foundation to play nicely with Middleman is pretty straight forward, just follow the steps below:&lt;/p&gt;
+&lt;p&gt;For the CSS framework I went with minimal installation of Zurb Foundation 5. This is the first time I have used Foundation, and be honest a CSS framework is probably overkill, but the responsive elements and grids have proven very handy already. Anyway, since I've been using Bootstrap quite a bit lately I thought it might be nice to experiment with a new technology. &lt;/p&gt;
 
-&lt;p&gt;Add the &lt;code&gt;bower.json&lt;/code&gt; and &lt;code&gt;.bowerrc&lt;/code&gt; files to your middleman folder.&lt;/p&gt;
+&lt;p&gt;Setting up Foundation to play nicely with Middleman is pretty straight forward, just follow the steps below. First add the below &lt;code&gt;bower.json&lt;/code&gt; and &lt;code&gt;.bowerrc&lt;/code&gt; files to your middleman folder.&lt;/p&gt;
 
 &lt;h5 id="bowerjson"&gt;bower.json&lt;/h5&gt;
 
-&lt;pre class="highlight json"&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;
-  &lt;/span&gt;&lt;span class="s2"&gt;"name"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"your-app-name"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt;
-  &lt;/span&gt;&lt;span class="s2"&gt;"version"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"0.0.1"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt;
-  &lt;/span&gt;&lt;span class="s2"&gt;"private"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"true"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt;
-  &lt;/span&gt;&lt;span class="s2"&gt;"dependencies"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;
-    &lt;/span&gt;&lt;span class="s2"&gt;"foundation"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"zurb/bower-foundation"&lt;/span&gt;&lt;span class="w"&gt;
-  &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;
-&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;
-&lt;/span&gt;&lt;/pre&gt;
+&lt;pre class="highlight javascript"&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="s2"&gt;"name"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;"your-app-name"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="s2"&gt;"version"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;"0.0.1"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="s2"&gt;"private"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;"true"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="s2"&gt;"dependencies"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="s2"&gt;"foundation"&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;"zurb/bower-foundation"&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;
 
 &lt;h5 id="bowerrc"&gt;.bowerrc&lt;/h5&gt;
 
-&lt;pre class="highlight json"&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;
-  &lt;/span&gt;&lt;span class="s2"&gt;"directory"&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;"source/bower_components"&lt;/span&gt;&lt;span class="w"&gt;
-&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;
-&lt;/span&gt;&lt;/pre&gt;
-
-&lt;p&gt;Don't forget to add bower's directory to the sprockets asset path by adding the following to the end of your &lt;code&gt;config.rb&lt;/code&gt; file:&lt;/p&gt;
-
-&lt;pre class="highlight plaintext"&gt;...
-after_configuration do
-  @bower_config = JSON.parse(IO.read("#{root}/.bowerrc"))
-  sprockets.append_path File.join "#{root}", @bower_config["directory"]
-end
-
+&lt;pre class="highlight javascript"&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="s2"&gt;"directory"&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;"source/bower_components"&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/pre&gt;
 
-&lt;p&gt;OK, we're ready to run $ &lt;code&gt;bower install&lt;/code&gt; to install Foundation and friends.&lt;/p&gt;
+&lt;p&gt;Don't forget to expose bower's directory to the sprockets asset path by adding the following somewhere in your &lt;code&gt;config.rb&lt;/code&gt; file:&lt;/p&gt;
 
-&lt;p&gt;Now go ahead and create the following files:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;span class="n"&gt;after_configuration&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+  &lt;span class="vi"&gt;@bower_config&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;JSON&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;parse&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="no"&gt;IO&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;read&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;/.bowerrc"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+  &lt;span class="n"&gt;sprockets&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;append_path&lt;/span&gt; &lt;span class="no"&gt;File&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;join&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="vi"&gt;@bower_config&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"directory"&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;
+
+&lt;p&gt;OK, now run $ &lt;code&gt;bower install&lt;/code&gt; to install Foundation and friends.&lt;/p&gt;
+
+&lt;p&gt;Foundation requires Modernizr and JQuery by default.
+Now go ahead and create the following files:&lt;/p&gt;
 
 &lt;h5 id="sourcejavascriptsmodernizrjs"&gt;source/javascripts/modernizr.js&lt;/h5&gt;
 
@@ -87,7 +85,7 @@ end
 
 &lt;h5 id="sourcejavascriptsappjs"&gt;source/javascripts/app.js&lt;/h5&gt;
 
-&lt;pre class="highlight plaintext"&gt;$(document).foundation();
+&lt;pre class="highlight javascript"&gt;&lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;document&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;foundation&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
 &lt;/pre&gt;
 
 &lt;h5 id="sourcejavascriptsalljs"&gt;source/javascripts/all.js&lt;/h5&gt;
@@ -104,8 +102,8 @@ end
 
 &lt;h5 id="sourcestylesheetsappcssscss"&gt;source/stylesheets/app.css.scss&lt;/h5&gt;
 
-&lt;pre class="highlight plaintext"&gt;@import "settings";
-@import "foundation.scss";
+&lt;pre class="highlight css"&gt;&lt;span class="k"&gt;@import&lt;/span&gt; &lt;span class="s1"&gt;"settings"&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;@import&lt;/span&gt; &lt;span class="s1"&gt;"foundation.scss"&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;/pre&gt;
 
 &lt;p&gt;Now to update our HTML layout file to work with Zurb and the changes we have made:&lt;/p&gt;
@@ -150,19 +148,28 @@ rake install
 
 &lt;h2 id="deploying-on-gitbub-pages"&gt;Deploying on Gitbub Pages&lt;/h2&gt;
 
-&lt;p&gt;I chose to deploy sourcey.com on Github pages since it is free and easy. &lt;/p&gt;
+&lt;p&gt;The beauty of static hosting is its so easy, just whack it on a server and away you go! I love not having to worry about process monitoring and the like. Even better if someone else hosts the content right? Github pages is geat for this since it's free and easy. &lt;/p&gt;
 
-&lt;p&gt;If you haven't already created your git Github repository, do that now. If you're using User Pages like the repository must be named &lt;em&gt;username.github.io&lt;/em&gt;. I actually created two seperate repositories; one for hosting the Middleman installation (https://github.com/sourcey/sourcey.com), and one for hosting the static github pages (https://github.com/sourcey/sourcey.github.io). Why did I use separate repositories when most people generally use branches? Simple really, I don't want my project repository to be reliant on the Github Pages workflow, just incase I need to switch for whatever reason down the track.&lt;/p&gt;
+&lt;p&gt;If you haven't already created your git Github repository, do that now. If you're using User Pages the repository must be named like so: &lt;em&gt;username.github.io&lt;/em&gt;. &lt;/p&gt;
 
-&lt;p&gt;Initially I went with the &lt;code&gt;middleman-deploy&lt;/code&gt; gem to automate deployment since it seemed like the popular choice, but it screwed up my site and all my pages started returning 404. Joy. Since I wasn't in any modd for more debugging I decided to check the alternative &lt;code&gt;middleman-gh-pages&lt;/code&gt; gem, which as it turned out I also had problems of its own. I decided to get my hands dirty this time and ended up submitting a bugfix: https://github.com/neo/middleman-gh-pages/pull/21.&lt;/p&gt;
+&lt;p&gt;I actually created two seperate repositories; one for hosting the Middleman source site, and one for hosting the static github pages. Most people just use a single repository with two brances branches, so why do I do it this way you ask? Mainly because I don't want my project repository to be reliant on the Github Pages workflow, &lt;strike&gt;just incase&lt;/strike&gt; when I need to switch for whatever reason down the track.&lt;/p&gt;
 
-&lt;p&gt;At the end of the day though I ended up ditching both gems. The main reason was that &lt;code&gt;middleman-gh-pages&lt;/code&gt; is designed for use with Github Project Pages, not User Pages. Incase you don't already know, GitHub offers two types of Pages; User Pages, and Project Pages. Each GitHub account can host a single User Page and an unlimited amount of Project Pages. Basically they are identical to the end-user and differ only in their configuration and the way it's accessed. User Pages are accessed via &lt;em&gt;username.github.io&lt;/em&gt; and exist in the &lt;code&gt;master&lt;/code&gt; branch, and Project Pages are accessed via &lt;em&gt;username.github.io/projectname&lt;/em&gt; and exist in the &lt;code&gt;gh-pages&lt;/code&gt; branch or the proejct repo.&lt;/p&gt;
+&lt;p&gt;Both repositories are on github, so go ahead and use them as a reference:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href="https://github.com/sourcey/sourcey.com"&gt;https://github.com/sourcey/sourcey.com&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://github.com/sourcey/sourcey.github.io"&gt;https://github.com/sourcey/sourcey.github.io&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;To automate deployment I initially went with the &lt;code&gt;middleman-deploy&lt;/code&gt; gem since it seemed like the popular choice. For some reason it screwed up my site completely, and all my pages started returning 404. Since I wasn't in any mood for more debugging I decided to check the alternative &lt;code&gt;middleman-gh-pages&lt;/code&gt; gem, which as it turned out I also had problems of its own. This time I decided to get my hands dirty to fix some small issues, and ended up submitting &lt;a href="https://github.com/neo/middleman-gh-pages/pull/21"&gt;neo/middleman-gh-pages#21&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;As it turned out I ended up ditching both gems, mainly because at the end of the day &lt;code&gt;middleman-gh-pages&lt;/code&gt; is designed for Github Project Pages, not User Pages. Incase you don't already know, GitHub offers two types of &lt;a href="https://help.github.com/articles/user-organization-and-project-pages"&gt;Pages&lt;/a&gt;; User Pages, and Project Pages. Each GitHub account can host a single User Page and an unlimited amount of Project Pages. Basically they are identical to the end-user and differ only in their configuration and the way it's accessed. User Pages are accessed via &lt;em&gt;username.github.io&lt;/em&gt; and exist in the &lt;code&gt;master&lt;/code&gt; branch, and Project Pages are accessed via &lt;em&gt;username.github.io/projectname&lt;/em&gt; and exist in the &lt;code&gt;gh-pages&lt;/code&gt; branch or the proejct repo.&lt;/p&gt;
 
 &lt;p&gt;All I really need is a simple Rake task to automate building the static files locally, and deploying them to Github, so that's exactly what I went with. If you want to use my solution, then just add these two files to your application:&lt;/p&gt;
 
 &lt;h5 id="rakefile"&gt;Rakefile&lt;/h5&gt;
 
-&lt;pre class="highlight plaintext"&gt;import 'deploy.rake'
+&lt;pre class="highlight ruby"&gt;&lt;span class="n"&gt;import&lt;/span&gt; &lt;span class="s1"&gt;'deploy.rake'&lt;/span&gt;
 &lt;/pre&gt;
 
 &lt;h5 id="deployrake"&gt;deploy.rake&lt;/h5&gt;
@@ -190,63 +197,68 @@ rake install
 &lt;span class="k"&gt;end&lt;/span&gt;
 
 &lt;span class="n"&gt;desc&lt;/span&gt; &lt;span class="s2"&gt;"build and deploy to github pages"&lt;/span&gt;
-&lt;span class="n"&gt;task&lt;/span&gt; &lt;span class="ss"&gt;:build_and_deploy&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-  &lt;span class="n"&gt;build&lt;/span&gt;
-  &lt;span class="n"&gt;deploy&lt;/span&gt;
+&lt;span class="n"&gt;task&lt;/span&gt; &lt;span class="ss"&gt;:publish&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+  &lt;span class="no"&gt;Rake&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Task&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"build"&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;invoke&lt;/span&gt;
+  &lt;span class="no"&gt;Rake&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Task&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"deploy"&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;invoke&lt;/span&gt;
 &lt;span class="k"&gt;end&lt;/span&gt;
 &lt;/pre&gt;
 
 &lt;p&gt;Now you can use the following commands to update your Github Pages:&lt;/p&gt;
 
-&lt;pre class="highlight plaintext"&gt;rake build    # Compile all static files into the build directory
-rake deploy   # Deploy the build directory to Github Pages
-rake build_and_deploy # One task for both
+&lt;pre class="highlight ruby"&gt;&lt;span class="n"&gt;rake&lt;/span&gt; &lt;span class="n"&gt;build&lt;/span&gt;    &lt;span class="c1"&gt;# Compile all static files into the build directory&lt;/span&gt;
+&lt;span class="n"&gt;rake&lt;/span&gt; &lt;span class="n"&gt;deploy&lt;/span&gt;   &lt;span class="c1"&gt;# Deploy the build directory to Github Pages&lt;/span&gt;
+&lt;span class="n"&gt;rake&lt;/span&gt; &lt;span class="n"&gt;publish&lt;/span&gt;  &lt;span class="c1"&gt;# Build and deploy in one command&lt;/span&gt;
 &lt;/pre&gt;
 
-&lt;h2 id="static-bliss"&gt;Static Bliss&lt;/h2&gt;
+&lt;p&gt;To configure Github pages to point to your custom domain ie &lt;code&gt;example.com&lt;/code&gt;, follow the steps outlined in &lt;a href="https://help.github.com/articles/setting-up-a-custom-domain-with-pages"&gt;this guide&lt;/a&gt; to add a &lt;code&gt;CNAME&lt;/code&gt; file to your reopsitory and setup DNS.&lt;/p&gt;
+
+&lt;h2 id="static-website-bliss"&gt;Static Website Bliss&lt;/h2&gt;
 
 &lt;p&gt;Hopefully there are some crazy web developers out there will find this post useful, and if you're like me and derive pleaseure from the zen of simplification, then welcome to static website bliss! A big thanks to the wonderful devs behind the Middleman project, and if you have any questions or comments then just drop me a line ;)&lt;/p&gt;
-
 </content>
   </entry>
   <entry>
     <title>Symple WebRTC Video Chat Demo</title>
-    <link rel="alternate" href="http://blog.url.com/symple-webrtc-video-chat-demo/"/>
-    <id>http://blog.url.com/symple-webrtc-video-chat-demo/</id>
+    <link rel="alternate" href="http://sourcey.com/symple-webrtc-video-chat-demo/"/>
+    <id>http://sourcey.com/symple-webrtc-video-chat-demo/</id>
     <published>2014-04-03T01:41:32Z</published>
-    <updated>2014-04-04T19:02:45+10:00</updated>
+    <updated>2014-04-05T00:42:32+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
     <content type="html">&lt;h1 id="symple-webrtc-video-chat-demo"&gt;Symple WebRTC Video Chat Demo&lt;/h1&gt;
 
-&lt;p&gt;For those of you that don't know about Symple yet, it's a lightweight messaging and presence protocol for communication between our native and browser based apps. Most of our work with Symple until this point has been with WebRTC native to browser applications, so I thought it would be nice to create a demo which showcases just how easy it is to use Symple for building instant messaging and WebRTC video conferencing applications.&lt;/p&gt;
+&lt;p&gt;For those of you that don't know about Symple yet, it's a lightweight messaging and presence protocol for communication between our native and browser based apps. Most of our work with Symple until this point has been with WebRTC native to browser applications, so I thought it would be nice to create a demo which showcases just how easy it is to use Symple for building WebRTC video conferencing and real-time messaging applications.&lt;/p&gt;
 
-&lt;p&gt;Symple's client side libraries already have most of the functions required to build such an application, including real-time messaging, user presence, WebRTC signalling and HTML5 video embedding. If fact, due to the comprehensiveness of Symple, and the awesomeness of AngularJS, I was able to write the entire application in less than 100 of JavaScript.&lt;/p&gt;
+&lt;p&gt;Symple's client side libraries already implement most of what we need to build such an application; real-time messaging; user presence; WebRTC signalling; and HTML5 video embedding. If fact, due to the comprehensiveness of Symple, and the awesomeness of AngularJS, I was able to write the entire application in less than 100 of JavaScript.&lt;/p&gt;
 
-&lt;p&gt;So without further ado, check out the live demo, and by all means keep reading to find out more about what's happening under the hood. If you're into code geekery, the entire source code is available on Github. Enjoy!&lt;/p&gt;
+&lt;p&gt;So without further ado, have a squiz the live demo, and by all means keep reading to find what's happening under the hood. If you're looking for the source, then thats available on Github too. Enjoy!&lt;/p&gt;
 
 &lt;center&gt;
-&lt;a href="http://symple.sourcey.com" class="button success radius" style="margin:20px auto;display:inline-block" target="_blank"&gt;view the demo&lt;/a&gt;
+&lt;a href="http://symple.sourcey.com" class="button success radius" style="margin:20px auto;display:inline-block" target="_blank"&gt;launch the demo&lt;/a&gt;
 &lt;/center&gt;
 
 &lt;h2 id="using-the-demo"&gt;Using the Demo&lt;/h2&gt;
-&lt;p&gt;For those of you who have used a chat application it should be pretty straight forward. Just choose a handle/username to login. for testing you can just open another browser window and login again to have a conversation with yourself (I'm pretty sure it doesn't mean you're crazy).&lt;/p&gt;
+&lt;p&gt;If you've used any sort of chat application before then this should be easy for you! Choose a handle/username to login, and if you're testing then just open another browser window and login again to have a conversation with yourself (I'm pretty sure it doesn't mean you're crazy).&lt;/p&gt;
 
 &lt;p&gt;A full list of users will be displayed on the left hand sidebar when you have logged in. &lt;/p&gt;
 
 &lt;h3 id="video-chat"&gt;Video Chat&lt;/h3&gt;
-&lt;p&gt;Making a video call is dead easy. This guide assumes you have two browser windows open, and both are logged in. We refer to the client making the call as the 'caller', and the person receiving the call as the 'callee'.&lt;/p&gt;
+&lt;p&gt;This guide assumes you have two browser windows open, and both are logged in. We refer to the client making the call as the 'caller', and the person receiving the call as the 'callee'.&lt;/p&gt;
 
-&lt;p&gt;Note that if you are attempting to make a call to a remote endpoint, and both users are behind a NAT or firewall, then the call will probably fail. In production you would use a TURN relay server which would facilitate a relayed connection between both endpoints, but that is beyond the scope of this demo.&lt;/p&gt;
+&lt;p&gt;To make a video call, just follow these instructions:&lt;/p&gt;
 
 &lt;ol&gt;
-	&lt;li&gt;From the caller window, click open the 'Action' menu beside a handle in the sidebar and select 'Video chat'.&lt;/li&gt;
-	&lt;li&gt;An 'Incoming call...' dialog will be displayed in the callee window. Go ahead and click 'Accept'.&lt;/li&gt;
-	&lt;li&gt;Be sure to enable access the the video capture device in the caller window.&lt;/li&gt;
-	&lt;li&gt;You should now be able to see your beautiful self in the caller window, and the callee should also be able to see the same video feed momentarily. WebRTC FTW!&lt;/li&gt;    
-	&lt;li&gt;When video is flowing from the caller to the callee, the callee can hot the 'Start video' button to start sending video to the caller. Again be sure to enable browser access to the video capture device (as above).&lt;/li&gt;    
+  &lt;li&gt;From the caller window, click open the 'Action' menu beside a handle in the sidebar and select 'Video chat'.&lt;/li&gt;
+  &lt;li&gt;An 'Incoming call…' dialog will be displayed in the callee window. Go ahead and click 'Accept'.&lt;/li&gt;
+  &lt;li&gt;Be sure to enable access the the video capture device in the caller window.&lt;/li&gt;
+  &lt;li&gt;You should now be able to see your beautiful self in the caller window, and the callee should also be able to see the same video feed momentarily. WebRTC FTW!    &lt;/li&gt;
+  &lt;li&gt;When video is flowing from the caller to the callee, the callee can hot the 'Start video' button to start sending video to the caller. Again be sure to enable browser access to the video capture device (as above).&lt;/li&gt;
 &lt;/ol&gt;
+
+&lt;div class="panel callout radius"&gt;
+Note that if you are attempting to make a call to a remote endpoint, and both users are behind a NAT or firewall, then the call will probably fail. In production you would use a TURN relay server which would facilitate a relayed connection between both endpoints, but that is beyond the scope of this demo.
+&lt;/div&gt;
 
 &lt;h3 id="instant-messaging"&gt;Instant Messaging&lt;/h3&gt;
 &lt;p&gt;In order to broadcast messages to everyone who is online, just type something in the message from at the top of the 'Conversation' panel and hit 'Send'. If you want to send a direct message to a specific person, click the 'Action' menu beside their name and select 'Direct message'.&lt;/p&gt;
@@ -254,19 +266,19 @@ rake build_and_deploy # One task for both
 &lt;p&gt;You should see the user handle appears to the lest of the send message form, this means you are now sending direct messages to that user, and only they will see your messages. In order to stop sending direct messages, click the '@' beside the send message form and select 'Send to everyone' from the menu to remove the user scope.&lt;/p&gt;
 
 &lt;h2 id="symple-and-webrtc"&gt;Symple and WebRTC&lt;/h2&gt;
-&lt;p&gt;WebRTC[link] is the new standard for p2p video on the web, and although the spec has not yet reached full maturity, WebRTC already has full support in Firefox, Chrome and Opera. Support for Internet Explorer and Safari is still a ways off due to the h264 vs WebM debacle[link], but many forward thinking online enterprises are already adopting it as a core part of their business model.&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://www.webrtc.org"&gt;WebRTC&lt;/a&gt; is the new standard for p2p video on the web, and although the spec has not yet reached full maturity, WebRTC already has full support in Firefox, Chrome and Opera. Support for Internet Explorer and Safari is still a ways off due to the &lt;a href="http://gigaom.com/2013/10/30/google-sticks-with-vp8-opposes-ciscos-push-for-h-264"&gt;h264 vs WebM debacle&lt;/a&gt;, but many forward thinking online enterprises are already adopting it as part of their core business model.&lt;/p&gt;
 
-&lt;p&gt;WebRTC relies on the ICE[link] specification to determine the best method for endpoints to establish connectivity and data flow, but this functionality is left to the client, which is where Symple comes in. Symple is not only a great way of signalling SDP metadata between clients, but is also handles the tricky work of HTML5 video embedding[link] which is necessary for playback.&lt;/p&gt;
+&lt;p&gt;WebRTC relies on the &lt;a href="https://tools.ietf.org/html/rfc5245"&gt;ICE (Interactive Connectivity Establishment)&lt;/a&gt; protocol to determine the best method for endpoints to establish connectivity and data flow, but the actuall signalling functionality is left to the client, which is where Symple comes in. Symple is not only a great way of signalling SDP metadata between clients, but is also handles the tricky work of HTML5 video embedding which is necessary for playback.&lt;/p&gt;
 
 &lt;p&gt;Symple also has C++ modules which enables WebRTC to be used in native applications, which also make it ideal for real-time remoting between desktop and browser applications, but that is another story for another day :)&lt;/p&gt;
 
-&lt;p&gt;I hope you like the demo, and don't hesitate to drop me a line if you have any questions.&lt;/p&gt;
+&lt;p&gt;Enjoy the demo, and feel free to drop me a line if you have any questions.&lt;/p&gt;
 </content>
   </entry>
   <entry>
     <title>The Art of the Internet AKA. Attack of the Clones</title>
-    <link rel="alternate" href="http://blog.url.com/the-art-of-the-internet-aka-attack-of-the-clones/"/>
-    <id>http://blog.url.com/the-art-of-the-internet-aka-attack-of-the-clones/</id>
+    <link rel="alternate" href="http://sourcey.com/the-art-of-the-internet-aka-attack-of-the-clones/"/>
+    <id>http://sourcey.com/the-art-of-the-internet-aka-attack-of-the-clones/</id>
     <published>2014-03-29T02:23:53Z</published>
     <updated>2014-04-04T16:26:20+10:00</updated>
     <author>
@@ -287,8 +299,8 @@ rake build_and_deploy # One task for both
   </entry>
   <entry>
     <title>Conquering the Internet</title>
-    <link rel="alternate" href="http://blog.url.com/conquering-the-internet/"/>
-    <id>http://blog.url.com/conquering-the-internet/</id>
+    <link rel="alternate" href="http://sourcey.com/conquering-the-internet/"/>
+    <id>http://sourcey.com/conquering-the-internet/</id>
     <published>2014-03-28T15:02:16Z</published>
     <updated>2014-04-04T16:27:17+10:00</updated>
     <author>
@@ -365,8 +377,8 @@ rake build_and_deploy # One task for both
   </entry>
   <entry>
     <title>FFmpeg Multiplexing Live Webcam and Microphone Streams</title>
-    <link rel="alternate" href="http://blog.url.com/ffmpeg-multiplexing-live-webcam-and-microphone-streams/"/>
-    <id>http://blog.url.com/ffmpeg-multiplexing-live-webcam-and-microphone-streams/</id>
+    <link rel="alternate" href="http://sourcey.com/ffmpeg-multiplexing-live-webcam-and-microphone-streams/"/>
+    <id>http://sourcey.com/ffmpeg-multiplexing-live-webcam-and-microphone-streams/</id>
     <published>2014-03-28T10:53:27Z</published>
     <updated>2014-04-04T16:27:05+10:00</updated>
     <author>
@@ -630,8 +642,8 @@ rake build_and_deploy # One task for both
   </entry>
   <entry>
     <title>FFmpeg AVPacket to OpenCV Mat Converter</title>
-    <link rel="alternate" href="http://blog.url.com/ffmpeg-avpacket-to-opencv-mat-converter/"/>
-    <id>http://blog.url.com/ffmpeg-avpacket-to-opencv-mat-converter/</id>
+    <link rel="alternate" href="http://sourcey.com/ffmpeg-avpacket-to-opencv-mat-converter/"/>
+    <id>http://sourcey.com/ffmpeg-avpacket-to-opencv-mat-converter/</id>
     <published>2014-03-28T10:47:46Z</published>
     <updated>2014-04-04T16:27:12+10:00</updated>
     <author>
