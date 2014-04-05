@@ -14,7 +14,7 @@
     <link rel="alternate" href="http://sourcey.com/migrating-from-wordpress-to-middleman/"/>
     <id>http://sourcey.com/migrating-from-wordpress-to-middleman/</id>
     <published>2014-04-04T10:09:32Z</published>
-    <updated>2014-04-05T16:08:18+10:00</updated>
+    <updated>2014-04-05T16:19:36+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -26,7 +26,7 @@
 
 &lt;p&gt;The two main candidates for porting Sourcey to a static platform were &lt;a href="http://jekyllrb.com"&gt;Jekyll&lt;/a&gt; and &lt;a href="http://middlemanapp.com/"&gt;Middleman&lt;/a&gt;. I have used both in the past, and both are built with Ruby (Jekyll has implementations in other languages too, such as a the &lt;code&gt;grunt-jekyll&lt;/code&gt; plugin), but due to my love affair with Rails and Sinatra I went with Middleman because of the similarities with Rails architecture, and it's superior flexibility.&lt;/p&gt;
 
-&lt;p&gt;All in all it took around 10 hours work (including the learning curve), and I'm super glad I did it for a number of reasons! If you're interested in setting up or converting to a static website then keep on reading because I will be sharing some of the key points…&lt;/p&gt;
+&lt;p&gt;All in all it took around 10 hours work (including the learning curve), and I'm super glad I did it for a whole bunch of reasons. If you're interested in setting up or converting to a static website then keep on reading because I will be sharing some of the key points…&lt;/p&gt;
 
 &lt;h2 id="installing-dependencies"&gt;Installing Dependencies&lt;/h2&gt;
 
@@ -43,7 +43,7 @@
 
 &lt;h2 id="installing-zurb-foundation-5"&gt;Installing Zurb Foundation 5&lt;/h2&gt;
 
-&lt;p&gt;For the CSS framework I went with minimal installation of Zurb Foundation 5. This is the first time I have used Foundation, and be honest a CSS framework is probably overkill, but the responsive elements and grids have proven very handy already. Anyway, since I've been using Bootstrap quite a bit lately I thought it might be nice to experiment with a new technology. &lt;/p&gt;
+&lt;p&gt;For the CSS framework I went with minimal installation of &lt;a href="http://foundation.zurb.com"&gt;Zurb Foundation 5&lt;/a&gt;. This is the first time I have used Foundation, and be honest a CSS framework is probably overkill, but the responsive elements and grids have proven very handy already. Anyway, since I've been using Bootstrap quite a bit lately I thought it might be nice to experiment with a new technology. &lt;/p&gt;
 
 &lt;p&gt;Setting up Foundation to play nicely with Middleman is pretty straight forward, just follow the steps below. First add the below &lt;code&gt;bower.json&lt;/code&gt; and &lt;code&gt;.bowerrc&lt;/code&gt; files to your middleman folder.&lt;/p&gt;
 
