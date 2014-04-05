@@ -14,18 +14,19 @@
     <link rel="alternate" href="http://sourcey.com/migrating-from-wordpress-to-middleman/"/>
     <id>http://sourcey.com/migrating-from-wordpress-to-middleman/</id>
     <published>2014-04-04T10:09:32Z</published>
-    <updated>2014-04-05T00:13:36+10:00</updated>
+    <updated>2014-04-05T16:08:18+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
     <content type="html">&lt;h1 id="migrating-from-wordpress-to-middleman"&gt;Migrating from Wordpress to Middleman&lt;/h1&gt;
-&lt;p&gt;Today I decided to take the plunge and convert Sourcey into a static website. Sourcey has been running on Wordpress for the better part of year now, and while Wordpress was the duck's nuts back then, todays static website generators just have so much to offer.&lt;/p&gt;
+
+&lt;p&gt;Today I decided to take the plunge and convert Sourcey into a static website. Sourcey has been running on Wordpress for the better part of year now, and while Wordpress was the duck's nuts back then, today's static website generators just have so much to offer.&lt;/p&gt;
 
 &lt;p&gt;Static websites are all the rage, and with good reason too. Unless your blog is huge, or you have the need for managed administration (wp dkz ntz), there is really no need for dynamic scripting languages, right? There's something satisfying and geekishly appealing about a static website; one less thing to break, and one less security vulnerability to worry about. Geeks love optimising stuff, and when it comes to building websites, you just don't get any more optimised than static HTML. &lt;/p&gt;
 
 &lt;p&gt;The two main candidates for porting Sourcey to a static platform were &lt;a href="http://jekyllrb.com"&gt;Jekyll&lt;/a&gt; and &lt;a href="http://middlemanapp.com/"&gt;Middleman&lt;/a&gt;. I have used both in the past, and both are built with Ruby (Jekyll has implementations in other languages too, such as a the &lt;code&gt;grunt-jekyll&lt;/code&gt; plugin), but due to my love affair with Rails and Sinatra I went with Middleman because of the similarities with Rails architecture, and it's superior flexibility.&lt;/p&gt;
 
-&lt;p&gt;All in all it took around 10 hours work (including the learning curve), and I'm super glad I did it for a number of reasons! If you're intersted in setting up or converting to a static website then keep on reading because I will be sharing some of the key points…&lt;/p&gt;
+&lt;p&gt;All in all it took around 10 hours work (including the learning curve), and I'm super glad I did it for a number of reasons! If you're interested in setting up or converting to a static website then keep on reading because I will be sharing some of the key points…&lt;/p&gt;
 
 &lt;h2 id="installing-dependencies"&gt;Installing Dependencies&lt;/h2&gt;
 
@@ -98,7 +99,7 @@ Now go ahead and create the following files:&lt;/p&gt;
 
 &lt;p&gt;The next step is to setup our stylesheets.&lt;/p&gt;
 
-&lt;p&gt;At this point it's a good idea to copy &lt;code&gt;source/bower_components/foundation/scss/foundation/_settings.scss&lt;/code&gt; to &lt;code&gt;source/stylesheets/_settings.scss&lt;/code&gt; so any canges you make the won't be overwritten. Feel free to modify it as needed.&lt;/p&gt;
+&lt;p&gt;At this point it's a good idea to copy &lt;code&gt;source/bower_components/foundation/scss/foundation/_settings.scss&lt;/code&gt; to &lt;code&gt;source/stylesheets/_settings.scss&lt;/code&gt; so any changes you make the won't be overwritten. Feel free to modify it as needed.&lt;/p&gt;
 
 &lt;h5 id="sourcestylesheetsappcssscss"&gt;source/stylesheets/app.css.scss&lt;/h5&gt;
 
@@ -137,7 +138,7 @@ bundle install
 rake install
 &lt;/pre&gt;
 
-&lt;p&gt;If you havent exported your Wordpress posts yet do so now as per &lt;a href="http://en.support.wordpress.com/export/"&gt;the official guide&lt;/a&gt;. &lt;/p&gt;
+&lt;p&gt;If you haven't exported your Wordpress posts yet do so now as per &lt;a href="http://en.support.wordpress.com/export/"&gt;the official guide&lt;/a&gt;. &lt;/p&gt;
 
 &lt;p&gt;Now to export your Wordpress XML file just use the &lt;code&gt;wp2mm&lt;/code&gt; command. &lt;/p&gt;
 
@@ -148,11 +149,11 @@ rake install
 
 &lt;h2 id="deploying-on-gitbub-pages"&gt;Deploying on Gitbub Pages&lt;/h2&gt;
 
-&lt;p&gt;The beauty of static hosting is its so easy, just whack it on a server and away you go! I love not having to worry about process monitoring and the like. Even better if someone else hosts the content right? Github pages is geat for this since it's free and easy. &lt;/p&gt;
+&lt;p&gt;The beauty of static hosting is its so easy, just whack it on a server and away you go! I love not having to worry about process monitoring and the like. Even better if someone else hosts the content right? Github pages is great for this since it's free and easy. &lt;/p&gt;
 
 &lt;p&gt;If you haven't already created your git Github repository, do that now. If you're using User Pages the repository must be named like so: &lt;em&gt;username.github.io&lt;/em&gt;. &lt;/p&gt;
 
-&lt;p&gt;I actually created two seperate repositories; one for hosting the Middleman source site, and one for hosting the static github pages. Most people just use a single repository with two brances branches, so why do I do it this way you ask? Mainly because I don't want my project repository to be reliant on the Github Pages workflow, &lt;strike&gt;just incase&lt;/strike&gt; when I need to switch for whatever reason down the track.&lt;/p&gt;
+&lt;p&gt;I actually created two separate repositories; one for hosting the Middleman source site, and one for hosting the static Github pages. Most people just use a single repository with two branches, so why do I do it this way you ask? Mainly because I don't want my project repository to be reliant on the Github Pages work flow, &lt;strike&gt;just in case&lt;/strike&gt; when I need to switch for whatever reason down the track.&lt;/p&gt;
 
 &lt;p&gt;Both repositories are on github, so go ahead and use them as a reference:&lt;/p&gt;
 
@@ -163,7 +164,7 @@ rake install
 
 &lt;p&gt;To automate deployment I initially went with the &lt;code&gt;middleman-deploy&lt;/code&gt; gem since it seemed like the popular choice. For some reason it screwed up my site completely, and all my pages started returning 404. Since I wasn't in any mood for more debugging I decided to check the alternative &lt;code&gt;middleman-gh-pages&lt;/code&gt; gem, which as it turned out I also had problems of its own. This time I decided to get my hands dirty to fix some small issues, and ended up submitting &lt;a href="https://github.com/neo/middleman-gh-pages/pull/21"&gt;neo/middleman-gh-pages#21&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;As it turned out I ended up ditching both gems, mainly because at the end of the day &lt;code&gt;middleman-gh-pages&lt;/code&gt; is designed for Github Project Pages, not User Pages. Incase you don't already know, GitHub offers two types of &lt;a href="https://help.github.com/articles/user-organization-and-project-pages"&gt;Pages&lt;/a&gt;; User Pages, and Project Pages. Each GitHub account can host a single User Page and an unlimited amount of Project Pages. Basically they are identical to the end-user and differ only in their configuration and the way it's accessed. User Pages are accessed via &lt;em&gt;username.github.io&lt;/em&gt; and exist in the &lt;code&gt;master&lt;/code&gt; branch, and Project Pages are accessed via &lt;em&gt;username.github.io/projectname&lt;/em&gt; and exist in the &lt;code&gt;gh-pages&lt;/code&gt; branch or the proejct repo.&lt;/p&gt;
+&lt;p&gt;As it turned out I ended up ditching both gems, mainly because at the end of the day &lt;code&gt;middleman-gh-pages&lt;/code&gt; is designed for Github Project Pages, not User Pages. Incase you don't already know, GitHub offers two types of &lt;a href="https://help.github.com/articles/user-organization-and-project-pages"&gt;Pages&lt;/a&gt;; User Pages, and Project Pages. Each GitHub account can host a single User Page and an unlimited amount of Project Pages. Basically they are identical to the end-user and differ only in their configuration and the way it's accessed. User Pages are accessed via &lt;em&gt;username.github.io&lt;/em&gt; and exist in the &lt;code&gt;master&lt;/code&gt; branch, and Project Pages are accessed via &lt;em&gt;username.github.io/projectname&lt;/em&gt; and exist in the &lt;code&gt;gh-pages&lt;/code&gt; branch or the project repo.&lt;/p&gt;
 
 &lt;p&gt;All I really need is a simple Rake task to automate building the static files locally, and deploying them to Github, so that's exactly what I went with. If you want to use my solution, then just add these two files to your application:&lt;/p&gt;
 
@@ -210,11 +211,11 @@ rake install
 &lt;span class="n"&gt;rake&lt;/span&gt; &lt;span class="n"&gt;publish&lt;/span&gt;  &lt;span class="c1"&gt;# Build and deploy in one command&lt;/span&gt;
 &lt;/pre&gt;
 
-&lt;p&gt;To configure Github pages to point to your custom domain ie &lt;code&gt;example.com&lt;/code&gt;, follow the steps outlined in &lt;a href="https://help.github.com/articles/setting-up-a-custom-domain-with-pages"&gt;this guide&lt;/a&gt; to add a &lt;code&gt;CNAME&lt;/code&gt; file to your reopsitory and setup DNS.&lt;/p&gt;
+&lt;p&gt;To configure Github pages to point to your custom domain ie &lt;code&gt;example.com&lt;/code&gt;, follow the steps outlined in &lt;a href="https://help.github.com/articles/setting-up-a-custom-domain-with-pages"&gt;this guide&lt;/a&gt; to add a &lt;code&gt;CNAME&lt;/code&gt; file to your repository and setup DNS.&lt;/p&gt;
 
 &lt;h2 id="static-website-bliss"&gt;Static Website Bliss&lt;/h2&gt;
 
-&lt;p&gt;Hopefully there are some crazy web developers out there will find this post useful, and if you're like me and derive pleaseure from the zen of simplification, then welcome to static website bliss! A big thanks to the wonderful devs behind the Middleman project, and if you have any questions or comments then just drop me a line ;)&lt;/p&gt;
+&lt;p&gt;Hopefully there are some crazy web developers out there will find this post useful, and if you're like me and derive pleasure from the zen of simplification, then welcome to static website bliss! A big thanks to the wonderful devs behind the Middleman project, and if you have any questions or comments then just drop me a line ;)&lt;/p&gt;
 </content>
   </entry>
   <entry>
@@ -222,7 +223,7 @@ rake install
     <link rel="alternate" href="http://sourcey.com/symple-webrtc-video-chat-demo/"/>
     <id>http://sourcey.com/symple-webrtc-video-chat-demo/</id>
     <published>2014-04-03T01:41:32Z</published>
-    <updated>2014-04-05T00:42:32+10:00</updated>
+    <updated>2014-04-05T16:09:41+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -268,7 +269,7 @@ Note that if you are attempting to make a call to a remote endpoint, and both us
 &lt;h2 id="symple-and-webrtc"&gt;Symple and WebRTC&lt;/h2&gt;
 &lt;p&gt;&lt;a href="http://www.webrtc.org"&gt;WebRTC&lt;/a&gt; is the new standard for p2p video on the web, and although the spec has not yet reached full maturity, WebRTC already has full support in Firefox, Chrome and Opera. Support for Internet Explorer and Safari is still a ways off due to the &lt;a href="http://gigaom.com/2013/10/30/google-sticks-with-vp8-opposes-ciscos-push-for-h-264"&gt;h264 vs WebM debacle&lt;/a&gt;, but many forward thinking online enterprises are already adopting it as part of their core business model.&lt;/p&gt;
 
-&lt;p&gt;WebRTC relies on the &lt;a href="https://tools.ietf.org/html/rfc5245"&gt;ICE (Interactive Connectivity Establishment)&lt;/a&gt; protocol to determine the best method for endpoints to establish connectivity and data flow, but the actuall signalling functionality is left to the client, which is where Symple comes in. Symple is not only a great way of signalling SDP metadata between clients, but is also handles the tricky work of HTML5 video embedding which is necessary for playback.&lt;/p&gt;
+&lt;p&gt;WebRTC relies on the &lt;a href="https://tools.ietf.org/html/rfc5245"&gt;ICE (Interactive Connectivity Establishment)&lt;/a&gt; protocol to determine the best method for endpoints to establish connectivity and data flow, but the actually signalling functionality is left to the client, which is where Symple comes in. Symple is not only a great way of signalling SDP metadata between clients, but is also handles the tricky work of HTML5 video embedding which is necessary for playback.&lt;/p&gt;
 
 &lt;p&gt;Symple also has C++ modules which enables WebRTC to be used in native applications, which also make it ideal for real-time remoting between desktop and browser applications, but that is another story for another day :)&lt;/p&gt;
 
@@ -280,7 +281,7 @@ Note that if you are attempting to make a call to a remote endpoint, and both us
     <link rel="alternate" href="http://sourcey.com/the-art-of-the-internet-aka-attack-of-the-clones/"/>
     <id>http://sourcey.com/the-art-of-the-internet-aka-attack-of-the-clones/</id>
     <published>2014-03-29T02:23:53Z</published>
-    <updated>2014-04-04T16:26:20+10:00</updated>
+    <updated>2014-04-05T16:11:47+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -290,11 +291,11 @@ Note that if you are attempting to make a call to a remote endpoint, and both us
 
 &lt;p&gt;Pretty much anyone can be a builder, but not everyone can be an artist. It's important to realise that artists are not just people who build stuff, they are able to channel real creative inspiration and express it using their medium. &lt;/p&gt;
 
-&lt;p&gt;True artists are few and far between in the professional IT world, probably due to the logic driven paradigm in which we work. Everyone has their strengths and weaknesses, and scientests say this is related to their predominant functional lateralisation ie. weather they predominantly use the right (intuitive) and the left(logical) hemispheres of their brain. A person who is "left-brained" is often said to be more logical, analytical, and objective, while a person who is "right-brained" is said to be more intuitive, thoughtful, and subjective.&lt;/p&gt;
+&lt;p&gt;True artists are few and far between in the professional IT world, probably due to the logic driven paradigm in which we work. Everyone has their strengths and weaknesses, and some say this is related to their predominant functional lateralisation ie. weather they predominantly use the right (intuitive) and the left(logical) hemispheres of their brain. A person who is "left-brained" is often said to be more logical, analytical, and objective, while a person who is "right-brained" is said to be more intuitive, thoughtful, and subjective. Personally I believe this is a myth, but it serves well to describe the point.&lt;/p&gt;
 
 &lt;p&gt;Given this basis, it would be safe to assume that the Internet is a very "left-brained" phenomenon. The problem here, is that left brained thinking is fundamentally restrictive; it is calculated, rigid, and lacks abstract dimension. Despite this however, even fundamentally "left-brained" thinkers can appreciate fine art. They might not completely understand it, and their conscious brain is probably full of questions like "how long it took to paint" and "how much is it worth", but it still speaks to them on a primal, subconscious level. This is the kind of psychological connection you should be making when you design our next project. Every day I see new startups being released, and I look at their websites and I see clones of whatever design is trending. How many other people out there must be in the same boat (especially in the tech industry), how many of their potential customers!? &lt;/p&gt;
 
-&lt;p&gt;It's time to look deeper folks, I don't believe that we can't balance our logical and intuitive brains to compliment eachother - in fact I believe it's the mark of genius when it can be achieved. The more clones that saturate the internet and media worldwide, the more people will be recognize that point-of-difference that makes them feel something. I recommend that all you IT professionals master your trade thoroughly before expecting success, and also mingle with real artists to learn how they think. Unless you have it natural, artists are the ones that will teach you to create with with passion and inspiration. Think like an artist and work like a machine!&lt;/p&gt;
+&lt;p&gt;It's time to look deeper folks, I don't believe that we can't balance our logical and intuitive brains to compliment each other - in fact I believe it's the mark of genius when it can be achieved. The more clones that saturate the internet and media worldwide, the more people will be recognize that point-of-difference that makes them feel something. I recommend that all you IT professionals master your trade thoroughly before expecting success, and also mingle with real artists to learn how they think. Unless you have it natural, artists are the ones that will teach you to create with with passion and inspiration. Think like an artist and work like a machine!&lt;/p&gt;
 </content>
   </entry>
   <entry>
@@ -302,7 +303,7 @@ Note that if you are attempting to make a call to a remote endpoint, and both us
     <link rel="alternate" href="http://sourcey.com/conquering-the-internet/"/>
     <id>http://sourcey.com/conquering-the-internet/</id>
     <published>2014-03-28T15:02:16Z</published>
-    <updated>2014-04-04T16:27:17+10:00</updated>
+    <updated>2014-04-05T01:48:36+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -316,13 +317,15 @@ Note that if you are attempting to make a call to a remote endpoint, and both us
 &lt;p&gt;Before you set out your hero's journey, you would be well served to calm and prepare your mind and prepare for what's coming, and what you will have to give and take. In the early stages it's easy to be blinded by entrepreneurial passion, and be sure not to overlook the long term effects of your undertaking.&lt;/p&gt;
 
 &lt;p&gt;Take the time to detach yourself, and view your project with an objective and critical mind. Ask yourself the difficult questions, and if you can't be 100% honest, then find someone who will.&lt;/p&gt;
+
 &lt;ul&gt;
-	&lt;li&gt;Do I have the manpower and resources?&lt;/li&gt;
-	&lt;li&gt;Have I researched the market properly?&lt;/li&gt;
-	&lt;li&gt;Is my project worthy of financial investment?&lt;/li&gt;
-	&lt;li&gt;Am I ready to spend the next few years doing this?&lt;/li&gt;
-	&lt;li&gt;Have I spoken to the right people?&lt;/li&gt;
+  &lt;li&gt;Do I have the manpower and resources?&lt;/li&gt;
+  &lt;li&gt;Have I researched the market properly?&lt;/li&gt;
+  &lt;li&gt;Is my project worthy of financial investment?&lt;/li&gt;
+  &lt;li&gt;Am I ready to spend the next few years doing this?&lt;/li&gt;
+  &lt;li&gt;Have I spoken to the right people?&lt;/li&gt;
 &lt;/ul&gt;
+
 &lt;p&gt;Remember that in this world full by quick fix pop culture and black-hat morals, genuine quality has become something of a rarity. Rather than be guiled into believing their hollow promises, remember that genuine quality is treasured, now more than ever.&lt;/p&gt;
 
 &lt;p&gt;Stay true to your purpose, and eventually you will cultivate a loyal and credible following in your niche. Your success won't be instantaneous, but it will be hard earned and well rewarded. &lt;/p&gt;

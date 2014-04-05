@@ -68,13 +68,14 @@
         
       </div>
       <h1 id="migrating-from-wordpress-to-middleman">Migrating from Wordpress to Middleman</h1>
-<p>Today I decided to take the plunge and convert Sourcey into a static website. Sourcey has been running on Wordpress for the better part of year now, and while Wordpress was the duck's nuts back then, todays static website generators just have so much to offer.</p>
+
+<p>Today I decided to take the plunge and convert Sourcey into a static website. Sourcey has been running on Wordpress for the better part of year now, and while Wordpress was the duck's nuts back then, today's static website generators just have so much to offer.</p>
 
 <p>Static websites are all the rage, and with good reason too. Unless your blog is huge, or you have the need for managed administration (wp dkz ntz), there is really no need for dynamic scripting languages, right? There's something satisfying and geekishly appealing about a static website; one less thing to break, and one less security vulnerability to worry about. Geeks love optimising stuff, and when it comes to building websites, you just don't get any more optimised than static HTML. </p>
 
 <p>The two main candidates for porting Sourcey to a static platform were <a href="http://jekyllrb.com">Jekyll</a> and <a href="http://middlemanapp.com/">Middleman</a>. I have used both in the past, and both are built with Ruby (Jekyll has implementations in other languages too, such as a the <code>grunt-jekyll</code> plugin), but due to my love affair with Rails and Sinatra I went with Middleman because of the similarities with Rails architecture, and it's superior flexibility.</p>
 
-<p>All in all it took around 10 hours work (including the learning curve), and I'm super glad I did it for a number of reasons! If you're intersted in setting up or converting to a static website then keep on reading because I will be sharing some of the key points…</p>
+<p>All in all it took around 10 hours work (including the learning curve), and I'm super glad I did it for a number of reasons! If you're interested in setting up or converting to a static website then keep on reading because I will be sharing some of the key points…</p>
 
 <h2 id="installing-dependencies">Installing Dependencies</h2>
 
@@ -147,7 +148,7 @@ Now go ahead and create the following files:</p>
 
 <p>The next step is to setup our stylesheets.</p>
 
-<p>At this point it's a good idea to copy <code>source/bower_components/foundation/scss/foundation/_settings.scss</code> to <code>source/stylesheets/_settings.scss</code> so any canges you make the won't be overwritten. Feel free to modify it as needed.</p>
+<p>At this point it's a good idea to copy <code>source/bower_components/foundation/scss/foundation/_settings.scss</code> to <code>source/stylesheets/_settings.scss</code> so any changes you make the won't be overwritten. Feel free to modify it as needed.</p>
 
 <h5 id="sourcestylesheetsappcssscss">source/stylesheets/app.css.scss</h5>
 
@@ -186,7 +187,7 @@ bundle install
 rake install
 </pre>
 
-<p>If you havent exported your Wordpress posts yet do so now as per <a href="http://en.support.wordpress.com/export/">the official guide</a>. </p>
+<p>If you haven't exported your Wordpress posts yet do so now as per <a href="http://en.support.wordpress.com/export/">the official guide</a>. </p>
 
 <p>Now to export your Wordpress XML file just use the <code>wp2mm</code> command. </p>
 
@@ -197,11 +198,11 @@ rake install
 
 <h2 id="deploying-on-gitbub-pages">Deploying on Gitbub Pages</h2>
 
-<p>The beauty of static hosting is its so easy, just whack it on a server and away you go! I love not having to worry about process monitoring and the like. Even better if someone else hosts the content right? Github pages is geat for this since it's free and easy. </p>
+<p>The beauty of static hosting is its so easy, just whack it on a server and away you go! I love not having to worry about process monitoring and the like. Even better if someone else hosts the content right? Github pages is great for this since it's free and easy. </p>
 
 <p>If you haven't already created your git Github repository, do that now. If you're using User Pages the repository must be named like so: <em>username.github.io</em>. </p>
 
-<p>I actually created two seperate repositories; one for hosting the Middleman source site, and one for hosting the static github pages. Most people just use a single repository with two brances branches, so why do I do it this way you ask? Mainly because I don't want my project repository to be reliant on the Github Pages workflow, <strike>just incase</strike> when I need to switch for whatever reason down the track.</p>
+<p>I actually created two separate repositories; one for hosting the Middleman source site, and one for hosting the static Github pages. Most people just use a single repository with two branches, so why do I do it this way you ask? Mainly because I don't want my project repository to be reliant on the Github Pages work flow, <strike>just in case</strike> when I need to switch for whatever reason down the track.</p>
 
 <p>Both repositories are on github, so go ahead and use them as a reference:</p>
 
@@ -212,7 +213,7 @@ rake install
 
 <p>To automate deployment I initially went with the <code>middleman-deploy</code> gem since it seemed like the popular choice. For some reason it screwed up my site completely, and all my pages started returning 404. Since I wasn't in any mood for more debugging I decided to check the alternative <code>middleman-gh-pages</code> gem, which as it turned out I also had problems of its own. This time I decided to get my hands dirty to fix some small issues, and ended up submitting <a href="https://github.com/neo/middleman-gh-pages/pull/21">neo/middleman-gh-pages#21</a>.</p>
 
-<p>As it turned out I ended up ditching both gems, mainly because at the end of the day <code>middleman-gh-pages</code> is designed for Github Project Pages, not User Pages. Incase you don't already know, GitHub offers two types of <a href="https://help.github.com/articles/user-organization-and-project-pages">Pages</a>; User Pages, and Project Pages. Each GitHub account can host a single User Page and an unlimited amount of Project Pages. Basically they are identical to the end-user and differ only in their configuration and the way it's accessed. User Pages are accessed via <em>username.github.io</em> and exist in the <code>master</code> branch, and Project Pages are accessed via <em>username.github.io/projectname</em> and exist in the <code>gh-pages</code> branch or the proejct repo.</p>
+<p>As it turned out I ended up ditching both gems, mainly because at the end of the day <code>middleman-gh-pages</code> is designed for Github Project Pages, not User Pages. Incase you don't already know, GitHub offers two types of <a href="https://help.github.com/articles/user-organization-and-project-pages">Pages</a>; User Pages, and Project Pages. Each GitHub account can host a single User Page and an unlimited amount of Project Pages. Basically they are identical to the end-user and differ only in their configuration and the way it's accessed. User Pages are accessed via <em>username.github.io</em> and exist in the <code>master</code> branch, and Project Pages are accessed via <em>username.github.io/projectname</em> and exist in the <code>gh-pages</code> branch or the project repo.</p>
 
 <p>All I really need is a simple Rake task to automate building the static files locally, and deploying them to Github, so that's exactly what I went with. If you want to use my solution, then just add these two files to your application:</p>
 
@@ -259,11 +260,11 @@ rake install
 <span class="n">rake</span> <span class="n">publish</span>  <span class="c1"># Build and deploy in one command</span>
 </pre>
 
-<p>To configure Github pages to point to your custom domain ie <code>example.com</code>, follow the steps outlined in <a href="https://help.github.com/articles/setting-up-a-custom-domain-with-pages">this guide</a> to add a <code>CNAME</code> file to your reopsitory and setup DNS.</p>
+<p>To configure Github pages to point to your custom domain ie <code>example.com</code>, follow the steps outlined in <a href="https://help.github.com/articles/setting-up-a-custom-domain-with-pages">this guide</a> to add a <code>CNAME</code> file to your repository and setup DNS.</p>
 
 <h2 id="static-website-bliss">Static Website Bliss</h2>
 
-<p>Hopefully there are some crazy web developers out there will find this post useful, and if you're like me and derive pleaseure from the zen of simplification, then welcome to static website bliss! A big thanks to the wonderful devs behind the Middleman project, and if you have any questions or comments then just drop me a line ;)</p>
+<p>Hopefully there are some crazy web developers out there will find this post useful, and if you're like me and derive pleasure from the zen of simplification, then welcome to static website bliss! A big thanks to the wonderful devs behind the Middleman project, and if you have any questions or comments then just drop me a line ;)</p>
     
       
       <ul class="social-buttons">
