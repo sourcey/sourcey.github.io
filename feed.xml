@@ -223,7 +223,7 @@ rake install
     <link rel="alternate" href="http://sourcey.com/symple-webrtc-video-chat-demo/"/>
     <id>http://sourcey.com/symple-webrtc-video-chat-demo/</id>
     <published>2014-04-03T01:41:32Z</published>
-    <updated>2014-04-05T16:09:41+10:00</updated>
+    <updated>2014-04-05T21:44:57+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -236,7 +236,7 @@ rake install
 &lt;p&gt;So without further ado, have a squiz the live demo, and by all means keep reading to find what's happening under the hood. If you're looking for the source, then thats available on Github too. Enjoy!&lt;/p&gt;
 
 &lt;center&gt;
-&lt;a href="http://symple.sourcey.com" class="button success radius" style="margin:20px auto;display:inline-block" target="_blank"&gt;launch the demo&lt;/a&gt;
+&lt;a href="http://symple.sourcey.com" class="action-button button success radius" style="margin:20px auto;display:inline-block" target="_blank"&gt;launch the demo&lt;/a&gt;
 &lt;/center&gt;
 
 &lt;h2 id="using-the-demo"&gt;Using the Demo&lt;/h2&gt;
@@ -278,8 +278,8 @@ Note that if you are attempting to make a call to a remote endpoint, and both us
   </entry>
   <entry>
     <title>The Art of the Internet AKA. Attack of the Clones</title>
-    <link rel="alternate" href="http://sourcey.com/the-art-of-the-internet-aka-attack-of-the-clones/"/>
-    <id>http://sourcey.com/the-art-of-the-internet-aka-attack-of-the-clones/</id>
+    <link rel="alternate" href="http://sourcey.com/the-art-of-the-internet/"/>
+    <id>http://sourcey.com/the-art-of-the-internet/</id>
     <published>2014-03-29T02:23:53Z</published>
     <updated>2014-04-05T16:11:47+10:00</updated>
     <author>

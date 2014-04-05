@@ -76,37 +76,46 @@
       <!--<h1 class="title">LibSourcey</h1>-->
       <h1 id="libsourcey">LibSourcey</h1>
 
-<div class="status">    
-  <dl>
-    <dt>Repository</dt>
-    <dd>
-      <a class="external" href="https://github.com/sourcey/libsourcey">https://github.com/sourcey/libsourcey</a>
-      <!--<a class="external" href="https://bitbucket.org/sourcey/libsourcey">https://bitbucket.org/sourcey/libsourcey</a>-->
-    </dd>     
-    <dt>Licence</dt>
-    <dd>
-      LGPL, <a href="/licence">Sourcey Licence</a>
-    </dd>     
-    <dt>Required Dependencies</dt>
-    <dd>
-      C++11, libuv, cmake
-    </dd>       
-    <dt>Optional Dependencies</dt>
-    <dd>
-      OpenCV, RtAudio, FFmpeg, WebRTC, OpenSSL, JsonCpp
-    </dd>
-  </dl>           
-</div>
+<dl class="status">
+  <dt>Repository</dt>
+  <dd><a href="https://github.com/sourcey/libsourcey">https://github.com/sourcey/libsourcey</a>
+<!--<a class="external" href="https://github.com/sourcey/libsourcey">https://github.com/sourcey/libsourcey</a>--></dd>
+  <dt>Licence</dt>
+  <dd>LGPL, <a href="/licence">Pro Licence</a></dd>
+  <dt>Required Dependencies</dt>
+  <dd>libuv, cmake, C++11 compiler</dd>
+  <dt>Optional Dependencies</dt>
+  <dd>FFmpeg, OpenCV, WebRTC, OpenSSL, RtAudio, JsonCpp</dd>
+</dl>
 
-<p><img alt="LibSourcey Logo" title="LibSourcey Logo" class="align-left" src="/images/libsourcey-logo-120.png" /> LibSourcey is a collection of open source cross platform C++11 modules and classes which provide developers with a flexible, high performance arsenal for the rapid development of real-time communication and media streaming applications. </p>
+<p><img alt="LibSourcey Logo" title="LibSourcey Logo" class="align-left" src="/images/libsourcey-logo-120.png" /> LibSourcey is a collection of open source cross platform C++11 modules and classes which provide developers with a flexible high performance arsenal for the rapid development of real-time messaging and live media streaming applications. </p>
 
-<p>Modern design principles and event-based asynchronous IO based on Node.js's underlying libuv library are utilised throughout LibSourcey in to minimise concurrency reliance and increase performance for mission critical server side applications.</p>
+<p>LibSourcey was been used in private production by Sourcey since 2005, and was open sourced in 2013 under the LGPL licence to promote development of real-time native and web applications.</p>
 
-<p>LibSourcey currently contains native protocol implementations for TCP, SSL, UDP, HTTP, JSON, WebSockets, STUN, TURN, ICE, SDP, SDP, RTP, XML and XMPP.</p>
+<p>Since version 0.92, C++11 and event-based asynchronous IO powered by Node.js's underlying libuv library are utilised throughout LibSourcey in to maximise performance and minimise concurrency reliance for building mission critical server side applications.</p>
+
+<p>LibSourcey provides a simple and flexible method of capturing live audio/video streams (<em>OpenCV/FFmpeg</em>), processing, filtering and encoding them to any video format (<em>FFmpeg</em>), and broadcasting the result over the Internet (<em>libuv</em>). This is made possible by providing a thin unified layer over the top of FFmpeg, OpenCV and libuv. </p>
+
+<p>The only true third-party dependency LibSourcey relies on is libuv, and that is included in the local source and compiled automatically. All others dependencies are optional. Check out the <a href="libsourcey-packetstream-api">PacketStream API</a> article to get an idea for the LibSourcey way of doing things.</p>
+
+<p>LibSourcey has full support for the following protocols: <strong>TCP</strong>, <strong>SSL</strong>, <strong>UDP</strong>, <strong>HTTP</strong>, <strong>JSON</strong>, <strong>XML</strong>, <strong>STUN</strong>, <strong>SDP</strong>, <strong>SocketIO</strong>. </p>
+
+<p>Partial or non-standard support is implemented for the following porotcols: <strong>WebSockets</strong>, <strong>TURN</strong>, <strong>ICE</strong>, <strong>RTP</strong>, and <strong>XMPP</strong>.</p>
+
+<center>
+<a href="#install-libsourcey" class="action-button button radius" style="margin:20px auto;display:inline-block">install libsourcey</a>
+</center>
 
 <!--
-has been completely ported to C++11, and 
-LibSourcey was been used in private production by Sourcey since 2005, and was open sourced in 2013 under the LGPL licence to promote development in the field of web media for a new era of web applications. Since version 0.92, 
+1. Install CMake and Git
+2. 
+
+```
+git clone https://sourcey@github.com/sourcey/libsourcey.git
+```
+
+currentlyimplementations
+has been completely ported to C++11, and native
  LibSourcey in an open source library which includes components and modules for the primary purpose of facilitating communication between cross platform native and browser based web applications. 
 -->
 
@@ -115,51 +124,50 @@ LibSourcey was been used in private production by Sourcey since 2005, and was op
 <p>The following modules are included in the public LibSourcey repository:</p>
 
 <h3 id="base">Base</h3>
-<p><strong>dependencies:</strong> libuv
+<p><em>dependencies:</em> libuv<br />
 Re-usable utility classes and interfaces used throughout LibSourcey.</p>
 
 <h3 id="net">Net</h3>
-<p><strong>dependencies:</strong> libuv, OpenSSL
+<p><em>dependencies:</em> libuv, OpenSSL<br />
 TCP, SSL and UDL socket implementation build on top of libuv architecture.</p>
 
 <h3 id="http">HTTP</h3>
-<p><strong>dependencies:</strong> libuv, JsonCpp
+<p><em>dependencies:</em> libuv, JsonCpp<br />
 HTTP server and client stack including support for WebSockets, multipart streaming, and file transfers.        </p>
 
 <h3 id="media">Media</h3>
-<p><strong>dependencies:</strong> libuv, OpenCV, FFmpeg, RtAudio
+<p><em>dependencies:</em> libuv, OpenCV, FFmpeg, RtAudio<br />
 Wrappers around FFmpeg and OpenCV for device capture, encoding, recording and streaming. The Media API makes extensive use of the PacketStream classes so that encoders, processors and packetisers can be dynamically added and removed from a media source.             </p>
 
 <h3 id="stun">STUN</h3>
 <p><a href="http://tools.ietf.org/rfc/rfc5389">RFC 5389</a> implementation which includes support for ICE and TURN and TURN TCP messages. </p>
 
 <h3 id="turn">TURN</h3>
-<p><strong>dependencies:</strong> libuv
+<p><em>dependencies:</em> libuv<br />
 Server and client stack which supports both <a href="http://tools.ietf.org/rfc/rfc5766">RFC 5766 (Traversal Using Relays around NAT)</a> and <a href="http://tools.ietf.org/rfc/rfc6062">RFC 6062 (Traversal Using Relays around NAT Extensions for TCP Allocations)</a> specifications. </p>
 
 <h3 id="sdp">SDP</h3>
 <p><a href="http://tools.ietf.org/rfc/rfc4566">RFC 4566</a> implementation which includes extra support for ICE headers. </p>
 
 <h3 id="socketio">SocketIO</h3>
-<p><strong>dependencies:</strong> libuv, JsonCpp</p>
-
-<p>SocketIO C++ client. Read more about <a href="http://socket.io">SocketIO</a>. </p>
+<p><em>dependencies:</em> libuv, JsonCpp<br />
+SocketIO C++ client. Read more about <a href="http://socketIO">SocketIO</a>. </p>
 
 <h3 id="symple">Symple</h3>
-<p><strong>dependencies:</strong> libuv, JsonCpp
-C++ implementation of Sourcey's home grown message protocol for the raid development of real time messaging and presence applications. <a href="/symple">More about Symple</a>. </p>
+<p><em>dependencies:</em> libuv, JsonCpp<br />
+Client implementation of Sourcey's home grown real time messaging and presence protocol. <a href="/symple">More about Symple</a>. </p>
 
 <h3 id="pacman">Pacman</h3>
-<p><strong>dependencies:</strong> libuv, JsonCpp
+<p><em>dependencies:</em> libuv, JsonCpp<br />
 Pacman is an embeddable package manager which speaks JSON with the server. <a href="/pacman">More about Pacman</a>.    </p>
 
 <h3 id="uvpp">UVPP</h3>
-<p><strong>dependencies:</strong> libuv
+<p><em>dependencies:</em> libuv<br />
 UVPP is a set of C++ wrappers for Joyent's fantastic libuv library. </p>
 
 <h3 id="json">JSON</h3>
-<p><strong>dependencies:</strong> JsonCpp
-Thin wrappers around the JsonCpp library. </p>
+<p><em>dependencies:</em> JsonCpp<br />
+Thin wrappers and helper functions for the JsonCpp library. </p>
 
 <h2 id="private-modules">Private Modules</h2>
 
@@ -167,22 +175,22 @@ Thin wrappers around the JsonCpp library. </p>
 Please contact us if you are interested in using any of them in your projects.</p>
 
 <h3 id="ice">ICE</h3>
-<p><strong>dependencies:</strong> libuv
+<p><em>dependencies:</em> libuv<br />
 The ICE module is a complete implementation of <a href="http://tools.ietf.org/html/rfc5245">RFC 5245</a> (Interactive Connectivity Establishment) based on LibSourcey architecture.
 ICE is a protocol for Network Address Translator (NAT) Traversal for Offer/Answer protocols.
 This module is currently not open source. Please contact us if you are interested in using it.</p>
 
 <h3 id="rtp">RTP</h3>
-<p><strong>dependencies:</strong> libuv
+<p><em>dependencies:</em> libuv<br />
 Our RTP module is quite basic. At this point it only supports RTP and RTCP packetisation. RTCP session management still needs to implemented.
 If anyone happens to make a project of this we would be very happy to improve our RTP module. </p>
 
 <h3 id="xml">XML</h3>
-<p><strong>dependencies:</strong> pugixml
+<p><em>dependencies:</em> pugixml<br />
 Very thin wrappers around the pugixml XML library to better support LibSourcey architecture.</p>
 
 <h3 id="xmpp">XMPP</h3>
-<p><strong>dependencies:</strong> pugixml, libstrophe
+<p><em>dependencies:</em> pugixml, libstrophe<br />
 Our XMPP module includes a client with full Jingle session support. 
 This module has been neglected for a while now in favor of other projects. 
 Any bugfixes and improvements are welcome.  </p>
@@ -192,45 +200,122 @@ Any bugfixes and improvements are welcome.  </p>
 <p>The following LibSourcey modules are available in external repositories. </p>
 
 <h3 id="anionu">Anionu</h3>
-<p><strong>dependencies:</strong> libuv, OpevCV
+<p><em>dependencies:</em> libuv, OpevCV
 The Anionu module includes a REST client interface for communicating with the Anionu public API.        </p>
 
 <h3 id="ispot">ISpot</h3>
-<p><strong>dependencies:</strong> JsonCpp
+<p><em>dependencies:</em> JsonCpp
 ISpot is a complete C++ SDK and API for building <a href="http://anionu.com/spot">Spot</a> based applications and plug-ins. 
 Spot is a part of <a href="http://anionu.com/spot">Anionu's</a> surveillance serivice.</p>
 
-<h2 id="install-sdk-libraries-and-tools">Install SDK Libraries and Tools</h2>
+<h2 id="install-libsourcey">Install LibSourcey</h2>
+
+<div class="panel callout radius">
+If you are deploying server side on Ubuntu 12.04 then you're in luck, we have created `Capistrano` deploy recipies which make it a sinch to automate the LibSourcey build process including FFmpeg and OpenCV dependencies. Clone this [this repository](#) to download the scripts.
+</div>
 
 <dl>
   <dt>Install Git</dt>
   <dd>
     <ul>
-      <li><em>Windows users</em>: Install <a href="http://code.google.com/p/tortoisegit/" class="external">TortoiseGit</a>, a convenient git front-end, which integrates right into Windows Explorer. MinGW users can take msysgit from <a class="external" href="http://code.google.com/p/msysgit/downloads/list">http://code.google.com/p/msysgit/downloads/list</a>.</li>
-      <li><em>Linux users</em>: Install command-line git utility using your package manager, e.g. `apt-get install git` on Ubuntu and Debian. You can use <a href="http://www.syntevo.com/smartgithg/index.html" class="external">SmartGit</a> as a GUI client. SmartGit is cross-platform, btw.</li>
-      <li><em>Mac users</em>: If you installed Xcode (which you will need anyway), you already have git. You can use <a href="http://www.sourcetreeapp.com/" class="external">SourceTree</a> as a very good GUI client.</li>
+      <li><em>Windows users</em>: Install <a href="http://code.google.com/p/tortoisegit/">TortoiseGit</a>, a convenient git front-end, which integrates right into Windows Explorer. MinGW users can use <a href="from%20&amp;lt;a%20class=&amp;quot;external&amp;quot;%20href=&amp;quot;http://code.google.com/p/msysgit/downloads/list&amp;quot;&amp;gt;&amp;lt;/a&amp;gt;">msysgit</a>.</li>
+      <li><em>Linux users</em>: Install command-line git utility using your package manager, e.g. <code>apt-get install git</code> on Ubuntu and Debian. You can use <a href="http://www.syntevo.com/smartgithg/index.html" class="external">SmartGit</a> as a GUI client. SmartGit is cross-platform, btw.</li>
+      <li><em>Mac users</em>: If you installed Xcode (which you will need anyway) then you already have git. You can use <a href="http://www.sourcetreeapp.com/">SourceTree</a>, which is a very good GUI client.</li>
     </ul>
   </dd>
-
   <dt>Install CMake</dt>
+  <dd>CMake generates the LibSourcey project files so you can build on most platforms and compilers. CMake is also required to generate makefiles for OpenCV. <a href="http://www.cmake.org/cmake/resources/software.html">Download CMake</a></dd>
+  <dt>Install OpenSSL</dt>
   <dd>
-    
-      CMake is the build system which enables the LibSourcey build system to support a wide range of platforms and compilers. CMake is also required to generate makefiles for OpenCV.
-      You can get CMake here: <a class="external" href="http://www.cmake.org/cmake/resources/software.html">http://www.cmake.org/cmake/resources/software.html</a>
-    
+    <ul>
+      <li><em>Windows users</em>: download and install the <a href="http://slproweb.com/products/Win32OpenSSL.html">Windows OpenSSL binaries</a>.  </li>
+      <li><em>Linux users</em>: Install the openssl package (if you don't already have it), ensuring the get the libssl-dev package which contains the developemnt headers: <code>apt-get install openssl libssl-dev</code></li>
+    </ul>
   </dd>
-
-  <dt>Clone the LibSourcey repository</dt>
-  <dd> 
-    
-      LibSourcey can be obtained from our BitBucket repository:
-      `git clone https://bitbucket.org/sourcey/libsourcey.git`
-     
-    
-      If you haven't got Git (for some strange reason), you can download the packages here: <a class="external" href="https://bitbucket.org/sourcey/libsourcey">https://bitbucket.org/sourcey/libsourcey</a>
-    
-  </dd>
+  <dt>Download LibSourcey</dt>
+  <dd>Clone the repository: <code>git clone https://github.com/sourcey/libsourcey.git</code>.<br />
+If you haven't got Git for some reason you can download and extract the <a href="https://github.com/sourcey/libsourcey">package archive</a> from Github.</dd>
 </dl>
+
+<h3 id="generating-project-files">Generating Project Files</h3>
+
+<p>Depending on your platform, you may choose run CMake from the command line, or use the CMake GUI.</p>
+
+<h4 id="cmake-command-line-linux">CMake Command Line (Linux)</h4>
+
+<pre class="highlight shell"><span class="c"># dependencies: openssl libssl-dev cmake pkg-config </span>
+<span class="c"># optional: libjack-jackd2-dev</span>
+
+git clone https://github.com/sourcey/libsourcey.git
+<span class="nb">cd </span>libsourcey
+mkdir -p build
+cmake .. -DCMAKE_BUILD_TYPE<span class="o">=</span>RELEASE <span class="c"># extra cmake commands here...</span>
+make
+make install
+</pre>
+
+<h4 id="cmake-gui-windowsmac">CMake GUI (Windows/Mac)</h4>
+
+<p>If you use CMake GUI, execute "Configure" to do the initial configuration, then adjust any options, then press "Configure" again and then press "Generate".</p>
+
+<h4 id="cmake-options">CMake Options</h4>
+
+<p>The main build options you will want to configure are as follows:</p>
+
+<ul>
+  <li><code>BUILD_SHARED_LIBS</code>: Build shared libraries (.dll/.so) instead of static ones (.lib/.a). <em>default: NOT (WIN32 OR ANDROID OR IOS)</em>  </li>
+  <li><code>BUILD_DEPENDENCIES</code>: Build LibSourcey in source third-party dependencies. <em>default: ON</em>  </li>
+  <li><code>BUILD_MODULES</code>: Build LibSourcey modules. <em>default: ON</em>  </li>
+  <li><code>BUILD_MODULE_xxx</code>: Enable or disable a specific module replacing <em>xxx</em> with the module name.  </li>
+  <li><code>BUILD_APPLICATIONS</code>: Build LibSourcey modules <em>default: ON</em>  </li>
+  <li><code>BUILD_APPLICATION_xxx</code>: Enable or disable a specific applications replacing <em>xxx</em> with the module name.  </li>
+  <li><code>BUILD_MODULE_TESTS</code>: Build module test applications <em>default: OFF</em>  </li>
+  <li><code>BUILD_MODULES_xxx</code>: Enable or disable a specific module replacing xxx with the module name.  </li>
+  <li><code>BUILD_MODULE_SAMPLES</code>: Build module sample applications <em>default: OFF</em>  </li>
+</ul>
+
+<p>If you are using third-party libraries is custom locations then make sure you update the CMake include paths: <code>CMAKE_SYSTEM_PREFIX_PATH</code> and <code>CMAKE_LIBRARY_PATH</code>.
+The only third-party libraries that may need configuring if you're using them are FFmpeg, OpenCV and WebRTC.</p>
+
+<p>For an exhaustive list of options check the <code>CMakeLists.txt</code> in the main directory. </p>
+
+<h3 id="building-and-compiling">Building And Compiling</h3>
+
+<h4 id="compiling-with-visual-studio">Compiling with Visual Studio</h4>
+<ol>
+  <li>Generate solutions using CMake, as described above. Make sure, you chose the proper generator (32-bit or 64-bit)</li>
+  <li>Launch Visual Studio, locate and open the "LibSourcey.sln" solution file in your generated build folder (eg: <code>C:\LibSourcey\build\LibSourcey.sln)</code>. Select "Debug" configuration, build the solution (Ctrl-Shift-B), and/or select "Release" and build it.</li>
+  <li>Add <code>{CMAKE_BINARY_DIR}\bin\Release</code>, <code>{CMAKE_BINARY_DIR}\bin\Debug</code> (containing "LibSourcey<em>.dll" and "LibSourcey</em>d.dll", respectively) to the system path (My Computer–[Right button click]-&gt;Properties-&gt;Advanced-&gt;Environment Variables-&gt;Path)</li>
+</ol>
+
+<h4 id="compiling-with-gcc-mingw-msys-linux">Compiling with GCC (MinGW, MSYS, Linux)</h4>
+
+<ul>
+  <li>Generate makefiles using CMake (choose "MinGW Makefiles" generator on Windows, "Unix Makefiles" on other OSes) as described above.</li>
+  <li>Enter the output CMake directory (denoted as <code>{CMAKE_BINARY_DIR}</code> further) and type <code>make -j [optional_number_of_threads]</code> on Unix, or <code>mingw32-make</code>on for MinGW. Windows users can also run parallel build of LibSourcey. To do that, please, define "SHELL" environment variable (My Computer–[Right button click]-&gt;Properties-&gt;Advanced-&gt;Environment Variables-&gt;Path) and set it to "cmd.exe" (without quotes). Then you can run <code>mingw32-make -j</code> (note that "-j" must go without any numerical parameter).</li>
+  <li><em>Linux, MacOSX</em> Then you can optionally run <code>sudo make install</code> (on Linux or MacOSX). Note, that if you are using CMake for your projects, it is not necessary to run <code>make install</code>. Just use LibSourcey from where you built it. This is actually the recommended approach, since it does not pollute system directories with potentially conflicting LibSourcey versions.</li>
+  <li><em>Windows</em> If you built LibSourcey as dynamic libraries (DLLs), you may want to add {CMAKE_BINARY_DIR}\bin to the system path (My Computer–[Right button click]-&gt;Properties-&gt;Advanced-&gt;Environment Variables-&gt;Path) to let Windows find "scy*.dll" etc.)</li>
+</ul>
+
+<h4 id="compile-with-xcode">Compile with Xcode</h4>
+<ul>
+  <li>Generate Xcode project using CMake, as described above.</li>
+  <li>Launch Xcode, locate and open LibSourcey.xcodeproj. Select "Debug", build the BUILD_ALL target (Cmd-B), select "Release" and build it too.</li>
+</ul>
+
+<h2 id="contributing">Contributing</h2>
+
+<ol>
+  <li><a href="https://github.com/sourcey/libsourcey">Fork LibSourcey on Github</a></li>
+  <li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li>
+  <li>Commit your changes (<code>git commit -am 'Add some feature'</code>)</li>
+  <li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
+  <li>Create new Pull Request</li>
+</ol>
+
+<h2 id="issues">Issues</h2>
+
+<p>If you come across any bugs or issues then please use the new Github issue tracker: <a href="https://github.com/sourcey/libsourcey/issues">https://github.com/sourcey/libsourcey/issues</a></p>
  
     </div>
         

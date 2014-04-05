@@ -1,5 +1,4 @@
 http://sourcey.com/initial-commit/
-http://sourcey.com/webrtc-native-to-browser-video-streaming-example/peerconnection.zip
 http://sourcey.com/webrtc-native-to-browser-video-streaming-example/
 http://sourcey.com/twitter-follow-unfollow-retweeter-ruby-bot/
 http://sourcey.com/webrtc-custom-opencv-video-capture/
@@ -28,7 +27,7 @@ http://sourcey.com/javascript-object-to-flash-swf-externalinterface-bridge/
 http://sourcey.com/conquering-the-internet/
 http://sourcey.com/ffmpeg-avpacket-to-opencv-mat-converter/
 http://sourcey.com/ffmpeg-multiplexing-live-webcam-and-microphone-streams/
-http://sourcey.com/the-art-of-the-internet-aka-attack-of-the-clones/
+http://sourcey.com/the-art-of-the-internet/
 http://sourcey.com/symple-webrtc-video-chat-demo/
 http://sourcey.com/migrating-from-wordpress-to-middleman/
 http://sourcey.com/archives/
