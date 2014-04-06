@@ -47,7 +47,7 @@ http://sourcey.com/tags/gem/
 http://sourcey.com/tags/ruby/
 http://sourcey.com/tags/twitter/
 http://sourcey.com/tags/opencv/
-http://sourcey.com/tags/video-capture/
+http://sourcey.com/tags/video/
 http://sourcey.com/tags/css3/
 http://sourcey.com/tags/html5/
 http://sourcey.com/tags/symple/
@@ -92,4 +92,6 @@ http://sourcey.com/tags/art/
 http://sourcey.com/tags/internet/
 http://sourcey.com/tags/psychology/
 http://sourcey.com/tags/startups/
-http://sourcey.com/tags/video/
+http://sourcey.com/tags/real-time/
+http://sourcey.com/tags/streaming/
+http://sourcey.com/tags/demo/

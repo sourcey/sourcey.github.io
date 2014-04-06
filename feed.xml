@@ -223,7 +223,7 @@ rake install
     <link rel="alternate" href="http://sourcey.com/symple-webrtc-video-chat-demo/"/>
     <id>http://sourcey.com/symple-webrtc-video-chat-demo/</id>
     <published>2014-04-03T01:41:32Z</published>
-    <updated>2014-04-05T21:44:57+10:00</updated>
+    <updated>2014-04-06T22:29:10+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -233,28 +233,31 @@ rake install
 
 &lt;p&gt;Symple's client side libraries already implement most of what we need to build such an application; real-time messaging; user presence; WebRTC signalling; and HTML5 video embedding. If fact, due to the comprehensiveness of Symple, and the awesomeness of AngularJS, I was able to write the entire application in less than 100 of JavaScript.&lt;/p&gt;
 
-&lt;p&gt;So without further ado, have a squiz the live demo, and by all means keep reading to find what's happening under the hood. If you're looking for the source, then thats available on Github too. Enjoy!&lt;/p&gt;
+&lt;p&gt;Check out the live demo, and if you want to find what's happening under the hood then just keep on reading. If you're looking for the source, then you can find it on &lt;a href="https://github.com/sourcey/symple-client-webrtc-demo"&gt;Github&lt;/a&gt;. Enjoy!&lt;/p&gt;
 
 &lt;center&gt;
-&lt;a href="http://symple.sourcey.com" class="action-button button success radius" style="margin:20px auto;display:inline-block" target="_blank"&gt;launch the demo&lt;/a&gt;
+&lt;a href="http://symple.sourcey.com" class="action-button button success radius" target="_blank"&gt;launch the demo&lt;/a&gt;
 &lt;/center&gt;
 
 &lt;h2 id="using-the-demo"&gt;Using the Demo&lt;/h2&gt;
-&lt;p&gt;If you've used any sort of chat application before then this should be easy for you! Choose a handle/username to login, and if you're testing then just open another browser window and login again to have a conversation with yourself (I'm pretty sure it doesn't mean you're crazy).&lt;/p&gt;
+
+&lt;p&gt;If you've used any sort of chat application before then this should be super easy for you! From the 'Login' panel just choose a handle/username to login. If you're testing then open another browser window and login again in order to have a conversation with yourself (I'm pretty sure it doesn't mean you're crazy).&lt;/p&gt;
 
 &lt;p&gt;A full list of users will be displayed on the left hand sidebar when you have logged in. &lt;/p&gt;
 
 &lt;h3 id="video-chat"&gt;Video Chat&lt;/h3&gt;
-&lt;p&gt;This guide assumes you have two browser windows open, and both are logged in. We refer to the client making the call as the 'caller', and the person receiving the call as the 'callee'.&lt;/p&gt;
 
-&lt;p&gt;To make a video call, just follow these instructions:&lt;/p&gt;
+&lt;p&gt;This guide assumes you have two browser windows open, and you have logged in with both. We refer to the client making the call as the 'caller', and the person receiving the call as the 'callee'.&lt;/p&gt;
+
+&lt;p&gt;Follow these steps to make a video call:&lt;/p&gt;
 
 &lt;ol&gt;
   &lt;li&gt;From the caller window, click open the 'Action' menu beside a handle in the sidebar and select 'Video chat'.&lt;/li&gt;
   &lt;li&gt;An 'Incoming call…' dialog will be displayed in the callee window. Go ahead and click 'Accept'.&lt;/li&gt;
   &lt;li&gt;Be sure to enable access the the video capture device in the caller window.&lt;/li&gt;
-  &lt;li&gt;You should now be able to see your beautiful self in the caller window, and the callee should also be able to see the same video feed momentarily. WebRTC FTW!    &lt;/li&gt;
+  &lt;li&gt;You should now be able to see your beautiful self in the caller window, and the callee should also be able to see the same video feed momentarily. &lt;/li&gt;
   &lt;li&gt;When video is flowing from the caller to the callee, the callee can hot the 'Start video' button to start sending video to the caller. Again be sure to enable browser access to the video capture device (as above).&lt;/li&gt;
+  &lt;li&gt;WebRTC FTW!&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;div class="panel callout radius"&gt;
@@ -262,18 +265,22 @@ Note that if you are attempting to make a call to a remote endpoint, and both us
 &lt;/div&gt;
 
 &lt;h3 id="instant-messaging"&gt;Instant Messaging&lt;/h3&gt;
+
 &lt;p&gt;In order to broadcast messages to everyone who is online, just type something in the message from at the top of the 'Conversation' panel and hit 'Send'. If you want to send a direct message to a specific person, click the 'Action' menu beside their name and select 'Direct message'.&lt;/p&gt;
 
 &lt;p&gt;You should see the user handle appears to the lest of the send message form, this means you are now sending direct messages to that user, and only they will see your messages. In order to stop sending direct messages, click the '@' beside the send message form and select 'Send to everyone' from the menu to remove the user scope.&lt;/p&gt;
 
 &lt;h2 id="symple-and-webrtc"&gt;Symple and WebRTC&lt;/h2&gt;
-&lt;p&gt;&lt;a href="http://www.webrtc.org"&gt;WebRTC&lt;/a&gt; is the new standard for p2p video on the web, and although the spec has not yet reached full maturity, WebRTC already has full support in Firefox, Chrome and Opera. Support for Internet Explorer and Safari is still a ways off due to the &lt;a href="http://gigaom.com/2013/10/30/google-sticks-with-vp8-opposes-ciscos-push-for-h-264"&gt;h264 vs WebM debacle&lt;/a&gt;, but many forward thinking online enterprises are already adopting it as part of their core business model.&lt;/p&gt;
 
-&lt;p&gt;WebRTC relies on the &lt;a href="https://tools.ietf.org/html/rfc5245"&gt;ICE (Interactive Connectivity Establishment)&lt;/a&gt; protocol to determine the best method for endpoints to establish connectivity and data flow, but the actually signalling functionality is left to the client, which is where Symple comes in. Symple is not only a great way of signalling SDP metadata between clients, but is also handles the tricky work of HTML5 video embedding which is necessary for playback.&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://www.webrtc.org"&gt;WebRTC&lt;/a&gt; is the new standard for p2p video on the web, and although the spec has not yet reached full maturity, WebRTC already has full support in Firefox, Chrome and Opera. Support for Internet Explorer and Safari is still a way off due to the never ending &lt;a href="http://gigaom.com/2013/10/30/google-sticks-with-vp8-opposes-ciscos-push-for-h-264"&gt;h264 vs WebM debacle&lt;/a&gt;, but many forward thinking online enterprises are already adopting it as part of their core business model.&lt;/p&gt;
 
-&lt;p&gt;Symple also has C++ modules which enables WebRTC to be used in native applications, which also make it ideal for real-time remoting between desktop and browser applications, but that is another story for another day :)&lt;/p&gt;
+&lt;p&gt;WebRTC relies on the &lt;a href="https://tools.ietf.org/html/rfc5245"&gt;ICE (Interactive Connectivity Establishment)&lt;/a&gt; protocol to determine the best method for endpoints to establish connectivity and data flow, but the actually signalling functionality is left to the client. This is where Symple comes in. Symple is not only a great way of signalling SDP metadata between clients, but is also handles cross-browser HTML5 &lt;code&gt;video&lt;/code&gt; tag embedding which is necessary for WebRTC playback.&lt;/p&gt;
 
-&lt;p&gt;Enjoy the demo, and feel free to drop me a line if you have any questions.&lt;/p&gt;
+&lt;h2 id="open-source-repositories"&gt;Open Source Repositories&lt;/h2&gt;
+
+&lt;p&gt;Symple and it's client/server implementations are open source, so feel free to grab them from Github and use them in your projects. For a full list of projects and the protocol specification see the Symple homepage: http://sourcey.com/symple &lt;/p&gt;
+
+&lt;p&gt;I hope you enjoy the demo, and feel free to drop me a line if you have any questions.&lt;/p&gt;
 </content>
   </entry>
   <entry>
@@ -281,7 +288,7 @@ Note that if you are attempting to make a call to a remote endpoint, and both us
     <link rel="alternate" href="http://sourcey.com/the-art-of-the-internet/"/>
     <id>http://sourcey.com/the-art-of-the-internet/</id>
     <published>2014-03-29T02:23:53Z</published>
-    <updated>2014-04-05T16:11:47+10:00</updated>
+    <updated>2014-04-06T23:12:59+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -289,13 +296,21 @@ Note that if you are attempting to make a call to a remote endpoint, and both us
 
 &lt;p&gt;Many of the programmers and designers I know consider themselves to be artists, but as in the art world, there are good artists, and well … not so good artists. &lt;/p&gt;
 
-&lt;p&gt;Pretty much anyone can be a builder, but not everyone can be an artist. It's important to realise that artists are not just people who build stuff, they are able to channel real creative inspiration and express it using their medium. &lt;/p&gt;
+&lt;p&gt;It's important to realise that artists are not just people who build stuff, they are able to channel real creative inspiration and express it using their medium. How many so called 'entrepreneurs' or 'gurus' can claim this? Most are just churning out the same old stale crap. Remember people, its easy to be a builder, but not many people can be an artist. &lt;/p&gt;
 
-&lt;p&gt;True artists are few and far between in the professional IT world, probably due to the logic driven paradigm in which we work. Everyone has their strengths and weaknesses, and some say this is related to their predominant functional lateralisation ie. weather they predominantly use the right (intuitive) and the left(logical) hemispheres of their brain. A person who is "left-brained" is often said to be more logical, analytical, and objective, while a person who is "right-brained" is said to be more intuitive, thoughtful, and subjective. Personally I believe this is a myth, but it serves well to describe the point.&lt;/p&gt;
+&lt;p&gt;The truth is artists (and women to a lesser extent &lt;em&gt;slap&lt;/em&gt;) are few and far between in the professional IT world, but thats most likely due to the logic driven paradigm in which we work. Everyone has their strengths and weaknesses; and some say this is related to their predominant functional lateralisation ie. weather they predominantly use the right (intuitive) and the left(logical) hemispheres of their brain. A person who is "left-brained" is often said to be more logical, analytical, and objective, while a person who is "right-brained" is said to be more intuitive, thoughtful, and subjective. Personally, I believe this concept to be a total myth, but people's tendency to believe in absurd ideas that adequately describe the unknown should never be underestimated!&lt;/p&gt;
 
-&lt;p&gt;Given this basis, it would be safe to assume that the Internet is a very "left-brained" phenomenon. The problem here, is that left brained thinking is fundamentally restrictive; it is calculated, rigid, and lacks abstract dimension. Despite this however, even fundamentally "left-brained" thinkers can appreciate fine art. They might not completely understand it, and their conscious brain is probably full of questions like "how long it took to paint" and "how much is it worth", but it still speaks to them on a primal, subconscious level. This is the kind of psychological connection you should be making when you design our next project. Every day I see new startups being released, and I look at their websites and I see clones of whatever design is trending. How many other people out there must be in the same boat (especially in the tech industry), how many of their potential customers!? &lt;/p&gt;
+&lt;p&gt;Lets say for arguments sake that functional lateralisation was a real thing, then it would be safe to assume that the Internet is a predominantly "left-brained" phenomenon. The problem here, is that left brained thinking is fundamentally restrictive; it's calculated, rigid, and lacks abstract dimension. Despite this however, even "left-brained" thinkers have the ability to appreciate fine art. They might not truly understand it, but it still speaks to them on a primal level, which tells me the ability is there, but the connection has been lost.&lt;/p&gt;
 
-&lt;p&gt;It's time to look deeper folks, I don't believe that we can't balance our logical and intuitive brains to compliment each other - in fact I believe it's the mark of genius when it can be achieved. The more clones that saturate the internet and media worldwide, the more people will be recognize that point-of-difference that makes them feel something. I recommend that all you IT professionals master your trade thoroughly before expecting success, and also mingle with real artists to learn how they think. Unless you have it natural, artists are the ones that will teach you to create with with passion and inspiration. Think like an artist and work like a machine!&lt;/p&gt;
+&lt;p&gt;Every day I look at new startups being released, and its rare that I don't look at their websites and see a clone of whatever design is currently trending. It's almost like sitting through a Hollywood movie; the formulaic predictability detracts from any substance that might be lurking beneath the surface. How many other people out there must be in the same boat, especially in gen Y, how many potential customers!? &lt;/p&gt;
+
+&lt;p&gt;It's time to look deeper folks. It's time to let our logical and intuitive brains compliment each other, in fact this kind of genius thats within all of our grasp. The more clones that saturate the Internet and media worldwide, the more people will be recognize the genuine point-of-difference that makes them feel something. Try to make a genuine psychological and emotional connection with your clients when planning your next project, and if they ain't feelin' it like you are, then your idea might not be as good as you think.&lt;/p&gt;
+
+&lt;p&gt;To all of you IT professionals out there, take the time to thoroughly master your trade before expecting success, and don't forget to mingle with real artists because they will teach you to create with passion and inspiration. Think like an artist and work like a machine!
+&lt;!--
+teach you how to think (oh the irony). Unless you have it naturally, artists are the ones that will 
+ --&gt; &lt;/p&gt;
+
 </content>
   </entry>
   <entry>
@@ -303,79 +318,89 @@ Note that if you are attempting to make a call to a remote endpoint, and both us
     <link rel="alternate" href="http://sourcey.com/conquering-the-internet/"/>
     <id>http://sourcey.com/conquering-the-internet/</id>
     <published>2014-03-28T15:02:16Z</published>
-    <updated>2014-04-05T01:48:36+10:00</updated>
+    <updated>2014-04-07T00:00:38+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
     <content type="html">&lt;h1 id="conquering-the-internet"&gt;Conquering the Internet&lt;/h1&gt;
 
-&lt;p&gt;Everyone is trying to steak their claim to a piece of internet glory, but not many will succeed. To conquer the Internet is a dream held by many, yet its easy to forget what's important along the treacherous path to victory. &lt;/p&gt;
+&lt;p&gt;Everyone with an entrepreneurial spark is trying to claim their piece of Internet glory, yet only a select few will have any measure of success. &lt;/p&gt;
 
-&lt;p&gt;When a warlord conquers a country, he not only does so with supreme force of will, he does so with an army. The Internet differs from the battlefield because of the enormous potential for anonymous cloak and dagger, but victory is with the internet warrior who succeeds with honour and dignity in this brave new world of Internet marketing.&lt;/p&gt;
+&lt;p&gt;When a warlord conquers a country, he not only does so with supreme force of will, he does so with an army. Despite his brutality, the warlords also has a certain kind of honour. The Internet differs from the battlefield in this respect, because of the enormous potential for cloak and dagger. In this brave new world of Internet marketing, it's the Internet warrior who succeeds with honour and dignity who's the real victor.&lt;/p&gt;
+
+&lt;!--
+To conquer the Internet is a dream held by many, yet its easy to forget what's important along the treacherous path to victory. 
+, and what you will have to give and take.
+--&gt;
 
 &lt;h2 id="meditation"&gt;Meditation&lt;/h2&gt;
-&lt;p&gt;Before you set out your hero's journey, you would be well served to calm and prepare your mind and prepare for what's coming, and what you will have to give and take. In the early stages it's easy to be blinded by entrepreneurial passion, and be sure not to overlook the long term effects of your undertaking.&lt;/p&gt;
 
-&lt;p&gt;Take the time to detach yourself, and view your project with an objective and critical mind. Ask yourself the difficult questions, and if you can't be 100% honest, then find someone who will.&lt;/p&gt;
+&lt;p&gt;Before you set out your hero's journey, you would be well served to calm and prepare your mind for what's coming. It's easy to be blinded by the entrepreneurial fervour, so most have unrealistic expectations of success. Make sure you know what you're in for, and that you're willing to accept the long term effects and responsibilities of your undertaking. &lt;/p&gt;
+
+&lt;p&gt;Take the time to detach yourself, and view your goals with an objective and critical mind. Ask yourself the difficult questions, and if you can't be 100% honest, then find someone who will.&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;Do I have the manpower and resources?&lt;/li&gt;
-  &lt;li&gt;Have I researched the market properly?&lt;/li&gt;
-  &lt;li&gt;Is my project worthy of financial investment?&lt;/li&gt;
+  &lt;li&gt;Have I researched the market properly?&lt;/li&gt;
+  &lt;li&gt;Is my project worthy of financial investment?&lt;/li&gt;
   &lt;li&gt;Am I ready to spend the next few years doing this?&lt;/li&gt;
   &lt;li&gt;Have I spoken to the right people?&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;Remember that in this world full by quick fix pop culture and black-hat morals, genuine quality has become something of a rarity. Rather than be guiled into believing their hollow promises, remember that genuine quality is treasured, now more than ever.&lt;/p&gt;
-
-&lt;p&gt;Stay true to your purpose, and eventually you will cultivate a loyal and credible following in your niche. Your success won't be instantaneous, but it will be hard earned and well rewarded. &lt;/p&gt;
+&lt;p&gt;In this world full by quick fix pop culture and black-hat morals, genuine quality has become something of a rarity. Stay true to your purpose, don't be guiled into believing the hollow promises and hype, and eventually you will cultivate a loyal and credible following. What's rare is also valuable. Your success won't be instantaneous, but it will be hard earned and well rewarded. &lt;/p&gt;
 
 &lt;h2 id="building-your-castle"&gt;Building your Castle&lt;/h2&gt;
-&lt;p&gt;In the game of the internet, you should first concentrate on building your castle, which your primary domain.&lt;/p&gt;
 
-&lt;p&gt;Forget about the crappy minisites and backlink spam - shortcuts will get you killed. You are establishing an online economy and you don't want to spread yourself thin with too many towns and villages early on in the piece. Consolidate your resources, and focus on your primary domain. Castles, people!&lt;/p&gt;
+&lt;p&gt;In the game of the Internet, you should first concentrate on building your castle, which your primary domain.&lt;/p&gt;
+
+&lt;p&gt;Forget about the crappy minisites and backlink spam - shortcuts will get you killed. You are establishing an online economy and you don't want to spread yourself thin with too many towns and villages early on in the piece. Consolidate your resources, and focus on your primary domain.&lt;/p&gt;
 
 &lt;h2 id="rallying-the-troops"&gt;Rallying the Troops&lt;/h2&gt;
-&lt;p&gt;To consolidate your vision, you need to rally the troops. Working as a solopreneur is a tough gig - so why not make life easy on yourself? The internet is a hive of people, and everyone is looking for something, so why not use it to connect with people! Check meetup.com for local meetups with people of similar interests. Talk about and develop your ideas with other people, and pretty soon your talent, conviction and passion will begin to attract an army.&lt;/p&gt;
 
-&lt;p&gt;A warlord rallies his troops with fear and promise of spoils untold, but as entrepreneurs we can offer each other friendship and success.&lt;/p&gt;
+&lt;p&gt;To consolidate your vision, you need to rally the troops. Working as a solopreneur is a tough gig - so why not make life easy on yourself? The Internet is a hive of people, and everyone is looking for something, so why not use it to connect with people! Check meetup.com for local meetups with people of similar interests. Talk about and develop your ideas with other people, and pretty soon your talent, conviction and passion will begin to attract an army.&lt;/p&gt;
+
+&lt;p&gt;A warlord rallies his troops with fear and promise of spoils untold, but as entrepreneurs preffer to offer each other friendship and success.&lt;/p&gt;
 
 &lt;p&gt;Some good places are Meetup, Facebook, Github - whatever floats your boat.&lt;/p&gt;
 
 &lt;h2 id="going-to-war"&gt;Going to War&lt;/h2&gt;
-&lt;p&gt;On the internet, the success is measured in terms of conversions, revenue and real estate - total annihilation of the competition is just a bonus!&lt;/p&gt;
 
-&lt;p&gt;Developing a sound Marketing Strategy and sticking to is key, as well as knowing how to use the internet as a weapon.&lt;/p&gt;
+&lt;p&gt;On the Internet, the success is measured in terms of conversions, revenue and real estate. Total annihilation of the competition is just a bonus!&lt;/p&gt;
 
-&lt;p&gt;Without going into extreme detail, here are some factors to consider when implementing your strategy.&lt;/p&gt;
+&lt;p&gt;Developing a sound Marketing Strategy and sticking to is key, as well as knowing how to use the Internet as a weapon.&lt;/p&gt;
+
+&lt;p&gt;Without going into extreme detail, here are some factors to consider when educating yourself and planning your strategy.&lt;/p&gt;
 
 &lt;h3 id="content"&gt;Content&lt;/h3&gt;
+
 &lt;p&gt;Google's algorithm changes have made it easier than ever to rank for genuine quality original content, so get writing! Write natural content covering all aspects of your market and profession. Careful not to repost or duplicate your content on other sites. Guest post if you have to, but remember, &lt;strong&gt;your&lt;/strong&gt; content is always more valuable on &lt;strong&gt;YOUR&lt;/strong&gt; domain.&lt;/p&gt;
 
 &lt;p&gt;Because of this, it follows that you should store your blog of your own domain. Try to stay clear of cloud blogging platforms (Wordpress/Tumblr) for your primary content, but by all means use them to aggregate excerpts from your blog feed.&lt;/p&gt;
 
 &lt;h3 id="social-media"&gt;Social Media&lt;/h3&gt;
+
 &lt;p&gt;Social media mastery is vital to your online success. Learn to balance the right amount of interaction and automation to ensure rapid growth. &lt;/p&gt;
 
-&lt;p&gt;Using and understanding the right tools for the job will save you precious time. Tools you should be using are: &lt;a href="http://bufferapp.com" title="Buffer" target="_blank"&gt;Buffer&lt;/a&gt; to automate your content syndication, and &lt;a href="http://gardn.net" title="Gerdn" target="_blank"&gt;Gardn &lt;/a&gt;to ensure your content is shared far and wide via your social networks.&lt;/p&gt;
+&lt;p&gt;Using and understanding the right tools for the job will save you precious time. Tools you should be using are: &lt;a href="http://bufferapp.com" title="Buffer" target="_blank"&gt;Buffer&lt;/a&gt; to automate your content syndication, and &lt;a href="http://gardn.net" title="Gardn" target="_blank"&gt;Gardn&lt;/a&gt; to ensure your content is shared far and wide via your social networks.&lt;/p&gt;
 
 &lt;h3 id="seo"&gt;SEO&lt;/h3&gt;
 
-&lt;p&gt;Things are changing fast in the SEO world, so its a good idea to stay informed about the latest SEO trends - just be sure you don't caught up in the hype.&lt;/p&gt;
+&lt;p&gt;Things are changing fast in the SEO world, so it's a good idea to stay informed about the latest SEO trends - just don't caught up in the hype.&lt;/p&gt;
 
-&lt;p&gt;Spend time creating regular content and reputable backlinks, and be sure to optimize your site for page speed and cross platform devices. Use pretty URLs wherever possible.&lt;/p&gt;
+&lt;p&gt;Spend time creating regular content and reputable backlinks, and be sure to optimize your site for page speed and cross platform devices. Educate yourself about static websites (Middleman, Jekyll), and responsive design (Bootstrap, Zerb Foundation), and use pretty URLs wherever possible.&lt;/p&gt;
 
 &lt;h3 id="advertising"&gt;Advertising&lt;/h3&gt;
+
 &lt;p&gt;Your best source of traffic is going to be organic search traffic, so pool your resources and focus on the search engines. If you have the budget for it, then by all means advertise the best of your content and products.&lt;/p&gt;
 
 &lt;p&gt;PPC advertising is expensive, and can be hit and miss depending on your product and presentation. The best success I have had is with more expensive items due to the increased the conversion ratio.&lt;/p&gt;
 
 &lt;p&gt;You might also consider paid directories. DMOZ is free but hard to get in, and Best of the Web and Yahoo are well known paid directories. Directories will give you credibility, but bear in mind they aren't cheap, and many consider them to be redundant.&lt;/p&gt;
 
-&lt;h2 id="prepearing-for-victory"&gt;Prepearing for Victory&lt;/h2&gt;
-&lt;p&gt;The way one handles victory says a lot about the character of a person or business. You may be tempted by the bright lights and fat stacks, but in the end the greatest reward you can expect is to succeed while conducting your dealings with integrity. A victor has certain obligations, the least of which is to set the standard for those to come.&lt;/p&gt;
+&lt;h2 id="preparing-for-victory"&gt;Preparing for Victory&lt;/h2&gt;
+&lt;p&gt;The way one handles victory says a lot about the character of a person or business. You may be tempted by the bright lights and fat stacks, but in the end the greatest reward you can expect is to succeed while having a good time and conducting yourself with integrity.&lt;/p&gt;
 
-&lt;p&gt;As your business grows, so must you. Be consistent with your training, meditation and relaxation, and free yourself from gloating and arrogant expression. Keep developing your mind and body so that your vision and creativity will continue to evolve your endeavours in new and incredible ways.&lt;/p&gt;
+&lt;p&gt;The victor has certain obligations, least of which is to set the standard for those to come. As your business grows, so must you. Be consistent with your training, meditation and relaxation, and free yourself from gloating and arrogant expression. Keep developing your mind and body so that your endeavours may continue to evolve alongside your vision and creativity.&lt;/p&gt;
 </content>
   </entry>
   <entry>
@@ -383,7 +408,7 @@ Note that if you are attempting to make a call to a remote endpoint, and both us
     <link rel="alternate" href="http://sourcey.com/ffmpeg-multiplexing-live-webcam-and-microphone-streams/"/>
     <id>http://sourcey.com/ffmpeg-multiplexing-live-webcam-and-microphone-streams/</id>
     <published>2014-03-28T10:53:27Z</published>
-    <updated>2014-04-04T16:27:05+10:00</updated>
+    <updated>2014-04-06T23:14:12+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -391,7 +416,7 @@ Note that if you are attempting to make a call to a remote endpoint, and both us
 
 &lt;p&gt;The other day I had a tough time trying to get multiple FFmpeg codecs to behave consistently with live variable framerate stream sources, such as a microphone and a webcam. It didn't take too long before I realised that the encoder was not multiplexing properly when fed frames at irregular intervals, even when specifying the correct PTS (presentation timestamp). &lt;/p&gt;
 
-&lt;p&gt;Some of the affects were crackly audio and sped up video (when not enough frames, even with correct timestamp) - from memory h264 was especially touchy.&lt;/p&gt;
+&lt;p&gt;Some of the effects were crackly audio and sped up video (when not enough frames, even with correct timestamp) - from memory h264 was especially touchy.&lt;/p&gt;
 
 &lt;p&gt;Anyway, I decided to mirror the behaviour of FFmpeg's output-example.c (which is now &lt;a href="https://github.com/FFmpeg/FFmpeg/blob/master/doc/examples/transcoding.c" target="_blank"&gt;transcoding.c&lt;/a&gt;), and try buffering and doubling up video frames (video is most unreliable, and often slower than the audio) to ensure consistency, and bam, problem solved!&lt;/p&gt;
 
@@ -648,12 +673,14 @@ Note that if you are attempting to make a call to a remote endpoint, and both us
     <link rel="alternate" href="http://sourcey.com/ffmpeg-avpacket-to-opencv-mat-converter/"/>
     <id>http://sourcey.com/ffmpeg-avpacket-to-opencv-mat-converter/</id>
     <published>2014-03-28T10:47:46Z</published>
-    <updated>2014-04-04T16:27:12+10:00</updated>
+    <updated>2014-04-06T23:15:44+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
-    <content type="html">&lt;p&gt;When building computer vision projects in C++, you may find yourself in need for an FFmpeg to OpenCV packet converter. 
-The good news is you don't need to look any further because it's all contained within this open source header file, which is a included in &lt;a href="http://sourcey.com/libsourcey/" title="LibSourcey"&gt;LibSourcey&lt;/a&gt;.&lt;/p&gt;
+    <content type="html">&lt;h1 id="ffmpeg-avpacket-to-opencv-mat-converter"&gt;FFmpeg AVPacket to OpenCV Mat Converter&lt;/h1&gt;
+
+&lt;p&gt;When building computer vision projects in C++, you may find yourself in need for an FFmpeg to OpenCV packet converter. 
+The good news is that you don't need to look any further. because it's all contained within this open source header file:&lt;/p&gt;
 
 &lt;pre class="highlight cpp"&gt;&lt;span class="c1"&gt;//
 // LibSourcey
@@ -783,6 +810,8 @@ The good news is you don't need to look any further because it's all contained w
 &lt;span class="cp"&gt;#endif
 #endif
 &lt;/span&gt;&lt;/pre&gt;
+
+&lt;p&gt;This file is now a part of &lt;a href="http://sourcey.com/libsourcey/" title="LibSourcey"&gt;LibSourcey&lt;/a&gt;.&lt;/p&gt;
 </content>
   </entry>
 </feed>
