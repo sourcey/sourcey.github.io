@@ -81,15 +81,16 @@
           <a class="prev" href="/combining-multiple-rss-feeds/">&larr; previous article</a>
         
       </div>
-      <p>There are quite a few OAuth solutions out there, but I want to share the one we use, as it allows you to intelligently link multiple OAuth identities with a single user entity. If you use 90% of the code examples on the internet you will wind up with a new user entity each time the user signs in with a different OAuth provider, and a bunch of very confused users.</p>
+      <h1 id="rails-4-omniauth-using-devise-with-twitter-facebook-and-linkedin">Rails 4 OmniAuth using Devise with Twitter, Facebook and Linkedin</h1>
+
+<p>There are quite a few OAuth solutions out there, but I want to share the one we use, as it allows you to intelligently link multiple OAuth identities with a single user entity. If you use 90% of the code examples on the internet you will wind up with a new user entity each time the user signs in with a different OAuth provider, and a bunch of very confused users.</p>
 
 <p>The OAuth provider that throws a spanner in the works and adds convolution to our code is Twitter. Twitter doesn't share their user's email address, so we need to add an extra step to get it from the user. Note that we do not ask Twitter users to "confirm" their email address, since they have already associated their Twitter account, and we don't want to be too much of a pain in the ass and remove all the joy from OAuth altogether.</p>
 
 <p>So, without further ado, here is the code:</p>
 
 <h4 id="gemfile">Gemfile</h4>
-<pre class="highlight ruby"><span class="n">gem</span> <span class="s1">'cancan'</span>
-<span class="n">gem</span> <span class="s1">'devise'</span>
+<pre class="highlight ruby"><span class="n">gem</span> <span class="s1">'devise'</span>
 <span class="n">gem</span> <span class="s1">'omniauth'</span>
 <span class="n">gem</span> <span class="s1">'omniauth-twitter'</span>
 <span class="n">gem</span> <span class="s1">'omniauth-facebook'</span>
@@ -108,6 +109,7 @@
 </pre>
 
 <h4 id="appmodelsidentityrb">app/models/identity.rb</h4>
+
 <p>~~~ rubyclass Identity &lt; ActiveRecord::Base
   belongs_to :user
   validates_presence_of :user_id, :uid, :provider
@@ -124,6 +126,7 @@ end
 ~~~ </p>
 
 <h4 id="appconfiginitializersdeviserb">app/config/initializers/devise.rb</h4>
+
 <p>~~~ rubyDevise.setup do |config|
 …
   config.omniauth :facebook, "KEY", "SECRET"
@@ -134,6 +137,7 @@ end
 ~~~ </p>
 
 <h4 id="configenvironmentsenvironmentrb">config/environments/[environment].rb</h4>
+
 <pre class="highlight ruby"><span class="p">.</span><span class="nf">.</span><span class="o">.</span>
   <span class="c1"># Email</span>
   <span class="n">config</span><span class="p">.</span><span class="nf">action_mailer</span><span class="p">.</span><span class="nf">delivery_method</span> <span class="o">=</span> <span class="ss">:smtp</span>
@@ -152,6 +156,7 @@ end
 </pre>
 
 <h4 id="appcontrollersomniauthcallbackscontrollerrb">app/controllers/omniauth_callbacks_controller.rb</h4>
+
 <pre class="highlight ruby"><span class="k">class</span> <span class="nc">OmniauthCallbacksController</span> <span class="o">&lt;</span> <span class="no">Devise</span><span class="o">::</span><span class="no">OmniauthCallbacksController</span>
   <span class="k">def</span> <span class="nf">twitter</span>
     <span class="vi">@user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">find_for_oauth</span><span class="p">(</span><span class="n">env</span><span class="o">[</span><span class="s2">"omniauth.auth"</span><span class="o">]</span><span class="p">,</span> <span class="n">current_user</span><span class="p">)</span>
@@ -189,12 +194,14 @@ end
 </pre>
 
 <h4 id="configroutesrb">config/routes.rb</h4>
+
 <pre class="highlight ruby"><span class="p">.</span><span class="nf">.</span><span class="o">.</span>
   <span class="n">devise_for</span> <span class="ss">:users</span><span class="p">,</span> <span class="ss">:controllers</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">omniauth_callbacks: </span><span class="s1">'omniauth_callbacks'</span> <span class="p">}</span>
 <span class="p">.</span><span class="nf">.</span><span class="o">.</span>
 </pre>
 
 <h4 id="appmodelsuserrb">app/models/user.rb</h4>
+
 <pre class="highlight ruby"><span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
   <span class="no">TEMP_EMAIL</span> <span class="o">=</span> <span class="s1">'change@me.com'</span>
   <span class="no">TEMP_EMAIL_REGEX</span> <span class="o">=</span> <span class="sr">/change@me.com/</span>
@@ -242,12 +249,14 @@ end
 <p>The next steps are optional to get an email address from Twitter users.</p>
 
 <h4 id="configroutesrb-1">config/routes.rb</h4>
+
 <pre class="highlight ruby"><span class="p">.</span><span class="nf">.</span><span class="o">.</span>
   <span class="n">get</span> <span class="s1">'/users/:id/add_email'</span> <span class="o">=&gt;</span> <span class="s1">'users#add_email'</span><span class="p">,</span> <span class="ss">via: </span><span class="o">[</span><span class="ss">:get</span><span class="p">,</span> <span class="ss">:patch</span><span class="p">,</span> <span class="ss">:post</span><span class="o">]</span><span class="p">,</span> <span class="ss">:as</span> <span class="o">=&gt;</span> <span class="ss">:add_user_email</span>
 <span class="p">.</span><span class="nf">.</span><span class="o">.</span>
 </pre>
 
 <h4 id="appcontrollersapplicationcontrollerrb">app/controllers/application_controller.rb</h4>
+
 <pre class="highlight ruby">  <span class="c1"># This filter could go anywhere the user needs to have a valid email address to access</span>
   <span class="n">before_filter</span> <span class="ss">:ensure_valid_email</span>
 
@@ -264,6 +273,7 @@ end
 </pre>
 
 <h4 id="appcontrollersuserscontrollerrb">app/controllers/users_controller.rb</h4>
+
 <pre class="highlight ruby"><span class="k">class</span> <span class="nc">UsersController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
   <span class="n">before_action</span> <span class="ss">:set_user</span><span class="p">,</span> <span class="ss">:add_email</span>
   <span class="p">.</span><span class="nf">.</span><span class="o">.</span>
@@ -286,6 +296,7 @@ end
 </pre>
 
 <h4 id="appviewsusersadduserhtmlrb">app/views/users/add_user.html.rb</h4>
+
 <pre class="highlight ruby"><span class="o">&lt;</span><span class="n">div</span> <span class="nb">id</span><span class="o">=</span><span class="s2">"add-email"</span> <span class="k">class</span><span class="o">=</span><span class="s2">"container"</span><span class="o">&gt;</span>
   <span class="c1">## Add Email</span>
   <span class="o">&lt;</span><span class="sx">%= form_for(@user, :as =</span><span class="o">&gt;</span> <span class="s1">'user'</span><span class="p">,</span> <span class="ss">:url</span> <span class="o">=&gt;</span> <span class="n">add_user_email_path</span><span class="p">(</span><span class="vi">@user</span><span class="p">),</span> <span class="ss">:html</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">role: </span><span class="s1">'form'</span><span class="p">})</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="sx">%&gt;
