@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="google-site-verification" content="lC7-hHwqtiRqo7YTHc1fJ6t8ie-Hs7J4o5u3XRIF9Vw" />
-    <title>Pacman</title>
+    <title>Pacm</title>
     <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
     
     <link href="/stylesheets/app.css" media="screen" rel="stylesheet" type="text/css" />
@@ -26,7 +26,7 @@
     </script>
   </head>
       
-  <body class="blog pacman pacman_index">
+  <body class="blog pacm pacm_index">
       <nav class="top-bar" data-topbar="">
     <div id="social">
       <a href="https://plus.google.com/+SourceyDevel"><i class="fi-social-google-plus large"></i></a>
@@ -52,7 +52,7 @@
                 <li><a href="/anionu">Anionu</a></li>
                 <li><a href="/symple">Symple</a></li>
                 <li><a href="/mesh">Mesh</a></li>
-                <li><a href="/pacman">Pacman</a></li>
+                <li><a href="/pacm">Pacm</a></li>
               </ul>
             </li>
             <li class="divider"></li>
@@ -74,12 +74,12 @@
       <!--<h2 class="site-description">Open Source Developer Collective</h2>-->
     </header>    
     <div id="main" role="main">
-      <!--<h1 class="title">Pacman</h1>-->
+      <!--<h1 class="title">Pacm</h1>-->
       <!-- 
 TODO: compare to current package managers
  -->
 
-<h1 id="pacman">Pacman</h1>
+<h1 id="pacm">Pacm</h1>
 
 <dl class="status">
   <dt>Repository</dt>
@@ -90,27 +90,27 @@ TODO: compare to current package managers
   <dd>LibSourcey (base, uv, net, json, http, archo), libuv, JsonCpp</dd>
 </dl>
 
-<p><img alt="Pacman Logo" title="Pacman Logo" class="align-left" src="/images/pacman-logo-120.png" /> Pacman is a redistributable package manager written C++ that speaks JSON with the server.
+<p><img alt="Pacm Logo" title="Pacm Logo" class="align-left" src="/images/pacm-logo-120.png" /> Pacm is a redistributable package manager written C++ that speaks JSON with the server.
 It is designed to be embedded within an application to make easy work of installing, updating and uninstalling packages and plug-ins.</p>
 
 <p>There is no shortage or open source <a href="http://en.wikipedia.org/wiki/List_of_software_package_management_systems">package managers</a> out there, but none of them quite fit the bill for an embeddable native package manager that could be controlled from the cloud. Rather than continue building with a square wheel, we decided to build a new one.</p>
 
-<p>Pacman is included a default module in the LibSourcey repository, so please download and compile <a href="libsourcey">LibSourcey</a> in order to use Pacman.</p>
+<p>Pacm is included a default module in the LibSourcey repository, so please download and compile <a href="libsourcey">LibSourcey</a> in order to use Pacm.</p>
 
 <h2 id="usage-examples">Usage examples</h2>
 
-<p>The Pacman API is vey easy use. Some examples are illustrated below:</p>
+<p>The Pacm API is vey easy use. Some examples are illustrated below:</p>
 
 <pre class="highlight cpp"><span class="n">PackageManager</span><span class="o">::</span><span class="n">Options</span> <span class="n">options</span><span class="p">;</span>
 <span class="c1">// configuration options go here...
-</span><span class="n">PackageManager</span> <span class="n">pacman</span><span class="p">(</span><span class="n">options</span><span class="p">);</span>
-<span class="n">pacman</span><span class="p">.</span><span class="n">initialize</span><span class="p">();</span>
+</span><span class="n">PackageManager</span> <span class="n">pacm</span><span class="p">(</span><span class="n">options</span><span class="p">);</span>
+<span class="n">pacm</span><span class="p">.</span><span class="n">initialize</span><span class="p">();</span>
         
 <span class="c1">// query the server for the latest packages
-</span><span class="n">pacman</span><span class="p">.</span><span class="n">queryRemotePackages</span><span class="p">();</span>                
+</span><span class="n">pacm</span><span class="p">.</span><span class="n">queryRemotePackages</span><span class="p">();</span>                
         
 <span class="c1">// list local (installed) packages
-</span><span class="k">auto</span> <span class="n">litems</span> <span class="o">=</span> <span class="n">pacman</span><span class="p">.</span><span class="n">localPackages</span><span class="p">().</span><span class="n">items</span><span class="p">();</span>
+</span><span class="k">auto</span> <span class="n">litems</span> <span class="o">=</span> <span class="n">pacm</span><span class="p">.</span><span class="n">localPackages</span><span class="p">().</span><span class="n">items</span><span class="p">();</span>
 <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">litems</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">litems</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span><span class="p">)</span> <span class="p">{</span>				
   <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Package: "</span> <span class="o">&lt;&lt;</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">first</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
 <span class="p">}</span>
@@ -125,35 +125,35 @@ It is designed to be embedded within an application to make easy work of install
 <span class="p">}</span>                
         
 <span class="c1">// install a package
-</span><span class="n">pacman</span><span class="p">.</span><span class="n">installPackage</span><span class="p">(</span><span class="s">"SomePackageName"</span><span class="p">);</span>
+</span><span class="n">pacm</span><span class="p">.</span><span class="n">installPackage</span><span class="p">(</span><span class="s">"SomePackageName"</span><span class="p">);</span>
 
 <span class="c1">// update a package (will install if it doesn't exist)
-</span><span class="n">pacman</span><span class="p">.</span><span class="n">updatePackage</span><span class="p">(</span><span class="s">"SomePackageName"</span><span class="p">);</span>
+</span><span class="n">pacm</span><span class="p">.</span><span class="n">updatePackage</span><span class="p">(</span><span class="s">"SomePackageName"</span><span class="p">);</span>
 
 <span class="c1">// update / install a list of packages.
 // package states are availalbe via callback events
 </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">packages</span><span class="p">;</span>
 <span class="n">packages</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">"SomePackageName"</span><span class="p">);</span>
-<span class="n">packages</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">"IThoughtPacmanWasAGame"</span><span class="p">);</span>        
-<span class="n">pacman</span><span class="p">.</span><span class="n">installPackages</span><span class="p">(</span><span class="n">packages</span><span class="p">);</span>
+<span class="n">packages</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">"IThoughtPacmWasAGame"</span><span class="p">);</span>        
+<span class="n">pacm</span><span class="p">.</span><span class="n">installPackages</span><span class="p">(</span><span class="n">packages</span><span class="p">);</span>
 
 <span class="c1">// update all packages
-</span><span class="n">pacman</span><span class="p">.</span><span class="n">updateAllPackages</span><span class="p">();</span>
+</span><span class="n">pacm</span><span class="p">.</span><span class="n">updateAllPackages</span><span class="p">();</span>
 
 <span class="c1">// uninstall a package.
 // uninstallPackages() can also be used for multiple packages.
-</span><span class="n">pacman</span><span class="p">.</span><span class="n">uninstallPackage</span><span class="p">(</span><span class="s">"SomePackageName"</span><span class="p">);</span>
+</span><span class="n">pacm</span><span class="p">.</span><span class="n">uninstallPackage</span><span class="p">(</span><span class="s">"SomePackageName"</span><span class="p">);</span>
 </pre>
 
-<p>Pretty tidy huh? That covers basic Pacman usage. </p>
+<p>Pretty tidy huh? That covers basic Pacm usage. </p>
 
-<p>These are mplenty ore methods and features available, just check out the documentation for the method definitions in the <a href="https://github.com/sourcey/libsourcey/blob/master/src/pacman/include/scy/pacman/packagemanager.h">source code</a> for a reference.</p>
+<p>These are mplenty ore methods and features available, just check out the documentation for the method definitions in the <a href="https://github.com/sourcey/libsourcey/blob/master/src/pacm/include/scy/pacm/packagemanager.h">source code</a> for a reference.</p>
 
 <h2 id="client-server-protocol">Client server protocol</h2>
 
-<p>The Pacman core does not include a server module, but it should be easy to implement using your chosen web framework. All that is required on the server side is to list packages using Pacman's simple JSON protocol. We generally use Rails for easy serialization of database objects. </p>
+<p>The Pacm core does not include a server module, but it should be easy to implement using your chosen web framework. All that is required on the server side is to list packages using Pacm's simple JSON protocol. We generally use Rails for easy serialization of database objects. </p>
 
-<p>An example of a server response to a Pacman query is illustrated below. Pacman will send a HTTP GET request to the server which will reply with a JSON response that looks like:</p>
+<p>An example of a server response to a Pacm query is illustrated below. Pacm will send a HTTP GET request to the server which will reply with a JSON response that looks like:</p>
 
 <pre class="highlight javascript"><span class="p">[</span> <span class="p">{</span> <span class="s2">"assets"</span> <span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="s2">"extension"</span> <span class="p">:</span> <span class="s2">"zip"</span><span class="p">,</span>
           <span class="s2">"file-name"</span> <span class="p">:</span> <span class="s2">"Spot-1.0-win32-bin.zip"</span><span class="p">,</span>

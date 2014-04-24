@@ -335,8 +335,8 @@ body.index #projects a.anionu .icon {
   background: url(/images/anionu-logo.png) no-repeat; }
 
 /* line 337, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
-body.index #projects a.pacman .icon {
-  background: url(/images/pacman-logo.png) no-repeat; }
+body.index #projects a.pacm .icon {
+  background: url(/images/pacm-logo.png) no-repeat; }
 
 /* line 340, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 body.index #projects a.libsourcey .icon {
