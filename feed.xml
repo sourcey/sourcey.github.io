@@ -14,27 +14,27 @@
     <link rel="alternate" href="http://sourcey.com/password-free-signup-and-authentication/"/>
     <id>http://sourcey.com/password-free-signup-and-authentication/</id>
     <published>2014-04-25T00:00:00Z</published>
-    <updated>2014-04-25T13:05:24+10:00</updated>
+    <updated>2014-04-25T23:36:27+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
     <content type="html">&lt;h1 id="password-free-signup-and-authentication"&gt;Password Free Signup and Authentication&lt;/h1&gt;
 
-&lt;p&gt;Signup and authentication is probably the first interaction a customer will have with your product or service, which makes it a vital part of the user experience. Let's face it, reentering your information each time you signup for a new service is a pain the the butt, so anything we can do to reduce the déjà vu is a good thing.&lt;/p&gt;
+&lt;p&gt;Signup and authentication is a vital part of the user experience since it is probably the first interaction a customer has with your product or service. Let's face it, reentering your information each time you signup for a new service gets to be a real pain the the butt, so anything we can do to reduce the déjà vu is a good thing.&lt;/p&gt;
 
-&lt;p&gt;Anyone who is dabbled with web services will be familiar with the &lt;a href="http://tools.ietf.org/html/rfc6749"&gt;OmniAuth&lt;/a&gt; specification. OmniAuth enables your customers to signup and login to your service with their existing third-party accounts such as Google, Facebook, Twitter etc. &lt;/p&gt;
+&lt;p&gt;Anyone who is dabbled with web services will be familiar with the &lt;a href="http://tools.ietf.org/html/rfc6749"&gt;OAuth&lt;/a&gt; specification. OAuth enables your customers to signup and login to your service with their existing third-party accounts such as Google, Facebook, Twitter etc. &lt;/p&gt;
 
-&lt;p&gt;In fact, with a good OmniAuth implementation you can alleviate the need for passwords, and even the entire signup process. The beauty here is that there is more pesky passwords for your customers to remember, and one less security concern for you.&lt;/p&gt;
+&lt;p&gt;In fact, with a good OAuth implementation you can remove the need for passwords and even the entire signup process completely. The beauty here is that your customers don't have to remember any pesky passwords, and there's one less security concern for the developer.&lt;/p&gt;
 
-&lt;h2 id="choosing-an-omniauth-provider"&gt;Choosing an OmniAuth Provider&lt;/h2&gt;
+&lt;h2 id="choosing-an-oauth-provider"&gt;Choosing an OAuth Provider&lt;/h2&gt;
 
-&lt;p&gt;There are a number of big players in the industry who provide OAuth APIs. Choosing the right one for you really comes down to the nature of your product or service. More important than the actual OAuth provider is the API services on offer once authenticated.&lt;/p&gt;
+&lt;p&gt;Choosing the right OAuth provider will come down to the nature of your product or service. Most big players in the industry provide OAuth APIs, so onless you are just looking for social login convenience, your decision will probably hinge on the other services offered by the provider.&lt;/p&gt;
 
 &lt;h3 id="facebook"&gt;Facebook&lt;/h3&gt;
 
-&lt;p&gt;The largest social network in the world is not surprisingly the &lt;a href="http://techcrunch.com/2013/04/08/report-46-of-social-login-users-still-choose-facebook-but-google-is-quickly-gaining-ground/"&gt;favourite OAuth provider&lt;/a&gt; for many users. Facebook has a very well rounded API and developer SDK. One of the more powerful features is the &lt;a href="https://developers.facebook.com/docs/reference/fql/"&gt;FQL&lt;/a&gt; language which enables you to query almost any social metadata on the network.&lt;/p&gt;
+&lt;p&gt;The largest social network in the world is not surprisingly the &lt;a href="http://techcrunch.com/2013/04/08/report-46-of-social-login-users-still-choose-facebook-but-google-is-quickly-gaining-ground/"&gt;favourite OAuth provider&lt;/a&gt; for many users. Facebook has a very well rounded API and developer SDK. One of the more powerful features is the &lt;a href="https://developers.facebook.com/docs/reference/fql/"&gt;FQL&lt;/a&gt; language which enables you to query almost any social metadata on Facebook.&lt;/p&gt;
 
-&lt;p&gt;One gotcha to be aware of when using the JavaScript SDK is the "channelUrl" parameter. Without it set the SDK is &lt;strong&gt;ridiculously&lt;/strong&gt; slow, so be sure that it points to a valid file on your server. Also be sure to cache the remote .js files or its can really slow down your pages.&lt;/p&gt;
+&lt;p&gt;One gotcha to be aware of when using the JavaScript SDK is the "channelUrl" parameter. Without it set the SDK is &lt;strong&gt;ridiculously&lt;/strong&gt; slow, so be sure that it points to a valid file on your server.&lt;/p&gt;
 
 &lt;h3 id="google"&gt;Google&lt;/h3&gt;
 
@@ -63,20 +63,21 @@ There is merit in &lt;a href="http://blog.codinghorror.com/how-to-be-lazy-dumb-a
 
 &lt;h2 id="security-considerations"&gt;Security Considerations&lt;/h2&gt;
 
-&lt;p&gt;Make sure you educate yourself on OAuth best practices before getting started. For all intents and purposes, the OAuth tokens you store are just like passwords, so the same cautions should be observed. Some points to consider are:&lt;/p&gt;
+&lt;p&gt;Make sure you educate yourself on OAuth best practices before getting started. For all intents and purposes, the OAuth tokens you store are just like passwords, so the same cautions should be observed. Some implementation points to consider are:&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;Using CSRF validation to verify OAuth callbacks. Most providers allow you to specify extra parameters with your initial OAuth request. This should contain a CSRF token, and be verified on response.&lt;/li&gt;
   &lt;li&gt;Encrypt OAuth tokens in the database. You wouldn't store a clear text password now, would you?&lt;/li&gt;
+  &lt;li&gt;Social network SDKs are notoriously slow, especially when using a few of them! Don't forget to cache the remote .js files.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;The obvious red flag for using OAuth is reliance on a third-party service, which we all want to keep to a minimum. The worst case scenario here is that the provider goes out of business; Google, not likely; Facebook, maybe given Zuckerberg's spending habits! As long as basic user information is retained locally there is no real risk to your business.&lt;/p&gt;
 
 &lt;h2 id="conclusion"&gt;Conclusion&lt;/h2&gt;
 
-&lt;p&gt;Users are becoming increasingly wary of who they share heir information with online, and with &lt;a href="http://gigaom.com/2013/12/31/snapchat-hacked-4-6-million-usernames-and-phone-numbers-lifted/"&gt;good reason&lt;/a&gt;. Password free signup is a great incentive to offer lazy and/or security conscious customers.&lt;/p&gt;
+&lt;p&gt;Users are becoming increasingly wary of who they share their information with, and with &lt;a href="http://gigaom.com/2013/12/31/snapchat-hacked-4-6-million-usernames-and-phone-numbers-lifted/"&gt;good reason&lt;/a&gt; too. This makes "password free signup" a great incentive to offer lazy and wary, security conscious, customers.&lt;/p&gt;
 
-&lt;p&gt;It's an exciting technological era we live in, but as the big players claim more of the market share it is becoming increasingly necessary for new and smaller startups to effectively use and integrate with the more established players in order to gain traction and build a solid customer base.&lt;/p&gt;
+&lt;p&gt;It's an exciting technological era we live in, and as the big players claim more of the market share it's becoming more necessary for new and smaller startups to effectively use and integrate with the more established players in order to gain traction and build a solid customer base.&lt;/p&gt;
 </content>
   </entry>
   <entry>
@@ -84,17 +85,17 @@ There is merit in &lt;a href="http://blog.codinghorror.com/how-to-be-lazy-dumb-a
     <link rel="alternate" href="http://sourcey.com/guest-posting-opportunities/"/>
     <id>http://sourcey.com/guest-posting-opportunities/</id>
     <published>2014-04-24T00:00:00Z</published>
-    <updated>2014-04-25T13:19:26+10:00</updated>
+    <updated>2014-04-25T23:39:25+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
     <content type="html">&lt;h1 id="guest-posting-opportunities"&gt;Guest Posting Opportunities&lt;/h1&gt;
 
-&lt;p&gt;We work tirelessly to create quality code and startups, and as such we are intersted in working with other companies who are in the same boat.&lt;/p&gt;
+&lt;p&gt;If you are promoting a brilliant open soruce project, or a new technology startup, then you may be interested in guest posting on Sourcey.com. Naturally only the highest quality original content will be considered.&lt;/p&gt;
 
-&lt;p&gt;If you want to promote your brilliant open soruce project, or a new technology startup, then you may be interested in guest posting on Sourcey.com. Naturally only the highest quality original content will be considered.&lt;/p&gt;
+&lt;p&gt;We work tirelessly to create quality code and startups ourselves, and as such we are intersted in hearing from other companies who are in the same boat.&lt;/p&gt;
 
-&lt;p&gt;For guest posting opportunities and other forms of affiliation and collaboration please drop us a line on &lt;a href="&amp;#109;&amp;#097;&amp;#105;&amp;#108;&amp;#116;&amp;#111;:&amp;#104;&amp;#101;&amp;#108;&amp;#108;&amp;#111;&amp;#064;&amp;#115;&amp;#111;&amp;#117;&amp;#114;&amp;#099;&amp;#101;&amp;#121;&amp;#046;&amp;#099;&amp;#111;&amp;#109;"&gt;&amp;#104;&amp;#101;&amp;#108;&amp;#108;&amp;#111;&amp;#064;&amp;#115;&amp;#111;&amp;#117;&amp;#114;&amp;#099;&amp;#101;&amp;#121;&amp;#046;&amp;#099;&amp;#111;&amp;#109;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;For guest posting opportunities and other forms of affiliation and collaboration please drop us a line on &lt;a href="&amp;#109;&amp;#097;&amp;#105;&amp;#108;&amp;#116;&amp;#111;:&amp;#104;&amp;#101;&amp;#108;&amp;#108;&amp;#111;&amp;#064;&amp;#115;&amp;#111;&amp;#117;&amp;#114;&amp;#099;&amp;#101;&amp;#121;&amp;#046;&amp;#099;&amp;#111;&amp;#109;"&gt;&amp;#104;&amp;#101;&amp;#108;&amp;#108;&amp;#111;&amp;#064;&amp;#115;&amp;#111;&amp;#117;&amp;#114;&amp;#099;&amp;#101;&amp;#121;&amp;#046;&amp;#099;&amp;#111;&amp;#109;&lt;/a&gt;. &lt;/p&gt;
 </content>
   </entry>
   <entry>
@@ -406,36 +407,40 @@ teach you how to think (oh the irony). Unless you have it naturally, artists are
     <link rel="alternate" href="http://sourcey.com/conquering-the-internet/"/>
     <id>http://sourcey.com/conquering-the-internet/</id>
     <published>2014-03-28T15:02:16Z</published>
-    <updated>2014-04-07T00:00:38+10:00</updated>
+    <updated>2014-04-25T23:56:37+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
     <content type="html">&lt;h1 id="conquering-the-internet"&gt;Conquering the Internet&lt;/h1&gt;
 
-&lt;p&gt;Everyone with an entrepreneurial spark is trying to claim their piece of Internet glory, yet only a select few will have any measure of success. &lt;/p&gt;
+&lt;p&gt;Everyone with an entrepreneurial spark is trying to claim their piece of Internet glory, yet only a small number will have any measure of success. &lt;/p&gt;
 
 &lt;p&gt;When a warlord conquers a country, he not only does so with supreme force of will, he does so with an army. Despite his brutality, the warlords also has a certain kind of honour. The Internet differs from the battlefield in this respect, because of the enormous potential for cloak and dagger. In this brave new world of Internet marketing, it's the Internet warrior who succeeds with honour and dignity who's the real victor.&lt;/p&gt;
 
 &lt;!--
 To conquer the Internet is a dream held by many, yet its easy to forget what's important along the treacherous path to victory. 
 , and what you will have to give and take.
+
+and build unrealistic expectations of success. 
 --&gt;
 
 &lt;h2 id="meditation"&gt;Meditation&lt;/h2&gt;
 
-&lt;p&gt;Before you set out your hero's journey, you would be well served to calm and prepare your mind for what's coming. It's easy to be blinded by the entrepreneurial fervour, so most have unrealistic expectations of success. Make sure you know what you're in for, and that you're willing to accept the long term effects and responsibilities of your undertaking. &lt;/p&gt;
+&lt;p&gt;When launching a new enterprise it's your entrepreneurial passion that will drive you, and delude you from the truth. This is why its important to calm and prepare your mind for what's coming before you setting out on your hero's journey. &lt;/p&gt;
+
+&lt;p&gt;Don't be blinded by the entrepreneurial fervour, and or loose sight of the reality of your choices. Make sure you know what you're in for, and that you're willing to accept the long term effects and responsibilities of your undertaking. &lt;/p&gt;
 
 &lt;p&gt;Take the time to detach yourself, and view your goals with an objective and critical mind. Ask yourself the difficult questions, and if you can't be 100% honest, then find someone who will.&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Do I have the manpower and resources?&lt;/li&gt;
   &lt;li&gt;Have I researched the market properly?&lt;/li&gt;
+  &lt;li&gt;Do I have the manpower and resources?&lt;/li&gt;
   &lt;li&gt;Is my project worthy of financial investment?&lt;/li&gt;
   &lt;li&gt;Am I ready to spend the next few years doing this?&lt;/li&gt;
   &lt;li&gt;Have I spoken to the right people?&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;In this world full by quick fix pop culture and black-hat morals, genuine quality has become something of a rarity. Stay true to your purpose, don't be guiled into believing the hollow promises and hype, and eventually you will cultivate a loyal and credible following. What's rare is also valuable. Your success won't be instantaneous, but it will be hard earned and well rewarded. &lt;/p&gt;
+&lt;p&gt;In this world full by quick fix pop culture and black-hat morals, genuine quality has become something of a rarity. Stay true to your purpose, don't be guiled into believing the hollow promises and hype, and eventually you will cultivate a loyal and credible following. What's rare is also valuable, and even though your success won't be instantaneous, it will be well earned and rewarded. &lt;/p&gt;
 
 &lt;h2 id="building-your-castle"&gt;Building your Castle&lt;/h2&gt;
 

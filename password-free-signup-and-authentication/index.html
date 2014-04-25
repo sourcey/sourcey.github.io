@@ -82,21 +82,21 @@
       </div>
       <h1 id="password-free-signup-and-authentication">Password Free Signup and Authentication</h1>
 
-<p>Signup and authentication is probably the first interaction a customer will have with your product or service, which makes it a vital part of the user experience. Let's face it, reentering your information each time you signup for a new service is a pain the the butt, so anything we can do to reduce the déjà vu is a good thing.</p>
+<p>Signup and authentication is a vital part of the user experience since it is probably the first interaction a customer has with your product or service. Let's face it, reentering your information each time you signup for a new service gets to be a real pain the the butt, so anything we can do to reduce the déjà vu is a good thing.</p>
 
-<p>Anyone who is dabbled with web services will be familiar with the <a href="http://tools.ietf.org/html/rfc6749">OmniAuth</a> specification. OmniAuth enables your customers to signup and login to your service with their existing third-party accounts such as Google, Facebook, Twitter etc. </p>
+<p>Anyone who is dabbled with web services will be familiar with the <a href="http://tools.ietf.org/html/rfc6749">OAuth</a> specification. OAuth enables your customers to signup and login to your service with their existing third-party accounts such as Google, Facebook, Twitter etc. </p>
 
-<p>In fact, with a good OmniAuth implementation you can alleviate the need for passwords, and even the entire signup process. The beauty here is that there is more pesky passwords for your customers to remember, and one less security concern for you.</p>
+<p>In fact, with a good OAuth implementation you can remove the need for passwords and even the entire signup process completely. The beauty here is that your customers don't have to remember any pesky passwords, and there's one less security concern for the developer.</p>
 
-<h2 id="choosing-an-omniauth-provider">Choosing an OmniAuth Provider</h2>
+<h2 id="choosing-an-oauth-provider">Choosing an OAuth Provider</h2>
 
-<p>There are a number of big players in the industry who provide OAuth APIs. Choosing the right one for you really comes down to the nature of your product or service. More important than the actual OAuth provider is the API services on offer once authenticated.</p>
+<p>Choosing the right OAuth provider will come down to the nature of your product or service. Most big players in the industry provide OAuth APIs, so onless you are just looking for social login convenience, your decision will probably hinge on the other services offered by the provider.</p>
 
 <h3 id="facebook">Facebook</h3>
 
-<p>The largest social network in the world is not surprisingly the <a href="http://techcrunch.com/2013/04/08/report-46-of-social-login-users-still-choose-facebook-but-google-is-quickly-gaining-ground/">favourite OAuth provider</a> for many users. Facebook has a very well rounded API and developer SDK. One of the more powerful features is the <a href="https://developers.facebook.com/docs/reference/fql/">FQL</a> language which enables you to query almost any social metadata on the network.</p>
+<p>The largest social network in the world is not surprisingly the <a href="http://techcrunch.com/2013/04/08/report-46-of-social-login-users-still-choose-facebook-but-google-is-quickly-gaining-ground/">favourite OAuth provider</a> for many users. Facebook has a very well rounded API and developer SDK. One of the more powerful features is the <a href="https://developers.facebook.com/docs/reference/fql/">FQL</a> language which enables you to query almost any social metadata on Facebook.</p>
 
-<p>One gotcha to be aware of when using the JavaScript SDK is the "channelUrl" parameter. Without it set the SDK is <strong>ridiculously</strong> slow, so be sure that it points to a valid file on your server. Also be sure to cache the remote .js files or its can really slow down your pages.</p>
+<p>One gotcha to be aware of when using the JavaScript SDK is the "channelUrl" parameter. Without it set the SDK is <strong>ridiculously</strong> slow, so be sure that it points to a valid file on your server.</p>
 
 <h3 id="google">Google</h3>
 
@@ -125,20 +125,21 @@ There is merit in <a href="http://blog.codinghorror.com/how-to-be-lazy-dumb-and-
 
 <h2 id="security-considerations">Security Considerations</h2>
 
-<p>Make sure you educate yourself on OAuth best practices before getting started. For all intents and purposes, the OAuth tokens you store are just like passwords, so the same cautions should be observed. Some points to consider are:</p>
+<p>Make sure you educate yourself on OAuth best practices before getting started. For all intents and purposes, the OAuth tokens you store are just like passwords, so the same cautions should be observed. Some implementation points to consider are:</p>
 
 <ul>
   <li>Using CSRF validation to verify OAuth callbacks. Most providers allow you to specify extra parameters with your initial OAuth request. This should contain a CSRF token, and be verified on response.</li>
   <li>Encrypt OAuth tokens in the database. You wouldn't store a clear text password now, would you?</li>
+  <li>Social network SDKs are notoriously slow, especially when using a few of them! Don't forget to cache the remote .js files.</li>
 </ul>
 
 <p>The obvious red flag for using OAuth is reliance on a third-party service, which we all want to keep to a minimum. The worst case scenario here is that the provider goes out of business; Google, not likely; Facebook, maybe given Zuckerberg's spending habits! As long as basic user information is retained locally there is no real risk to your business.</p>
 
 <h2 id="conclusion">Conclusion</h2>
 
-<p>Users are becoming increasingly wary of who they share heir information with online, and with <a href="http://gigaom.com/2013/12/31/snapchat-hacked-4-6-million-usernames-and-phone-numbers-lifted/">good reason</a>. Password free signup is a great incentive to offer lazy and/or security conscious customers.</p>
+<p>Users are becoming increasingly wary of who they share their information with, and with <a href="http://gigaom.com/2013/12/31/snapchat-hacked-4-6-million-usernames-and-phone-numbers-lifted/">good reason</a> too. This makes "password free signup" a great incentive to offer lazy and wary, security conscious, customers.</p>
 
-<p>It's an exciting technological era we live in, but as the big players claim more of the market share it is becoming increasingly necessary for new and smaller startups to effectively use and integrate with the more established players in order to gain traction and build a solid customer base.</p>
+<p>It's an exciting technological era we live in, and as the big players claim more of the market share it's becoming more necessary for new and smaller startups to effectively use and integrate with the more established players in order to gain traction and build a solid customer base.</p>
     
       
       <ul class="social-buttons">
@@ -159,7 +160,7 @@ There is merit in <a href="http://blog.codinghorror.com/how-to-be-lazy-dumb-and-
         Posted on <time class="updated" datetime="Apr 25 2014">Apr 25 2014</time> by 
         
           <a rel="author external" href="https://plus.google.com/+KamLow">Kam Low</a>
-        . Tagged: omniauth, authentication, security.
+        . Tagged: oauth, authentication, security.
       </div>       
       
       <div id="disqus_thread"></div>
