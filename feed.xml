@@ -5,10 +5,98 @@
   <id>http://sourcey.com</id>
   <link href="http://sourcey.com"/>
   <link href="http://sourcey.com/feed.xml" rel="self"/>
-  <updated>2014-04-04T10:09:32Z</updated>
+  <updated>2014-04-25T00:00:00Z</updated>
   <author>
     <name>Blog Author</name>
   </author>
+  <entry>
+    <title>Password Free Signup and Authentication</title>
+    <link rel="alternate" href="http://sourcey.com/password-free-signup-and-authentication/"/>
+    <id>http://sourcey.com/password-free-signup-and-authentication/</id>
+    <published>2014-04-25T00:00:00Z</published>
+    <updated>2014-04-25T13:05:24+10:00</updated>
+    <author>
+      <name>Article Author</name>
+    </author>
+    <content type="html">&lt;h1 id="password-free-signup-and-authentication"&gt;Password Free Signup and Authentication&lt;/h1&gt;
+
+&lt;p&gt;Signup and authentication is probably the first interaction a customer will have with your product or service, which makes it a vital part of the user experience. Let's face it, reentering your information each time you signup for a new service is a pain the the butt, so anything we can do to reduce the déjà vu is a good thing.&lt;/p&gt;
+
+&lt;p&gt;Anyone who is dabbled with web services will be familiar with the &lt;a href="http://tools.ietf.org/html/rfc6749"&gt;OmniAuth&lt;/a&gt; specification. OmniAuth enables your customers to signup and login to your service with their existing third-party accounts such as Google, Facebook, Twitter etc. &lt;/p&gt;
+
+&lt;p&gt;In fact, with a good OmniAuth implementation you can alleviate the need for passwords, and even the entire signup process. The beauty here is that there is more pesky passwords for your customers to remember, and one less security concern for you.&lt;/p&gt;
+
+&lt;h2 id="choosing-an-omniauth-provider"&gt;Choosing an OmniAuth Provider&lt;/h2&gt;
+
+&lt;p&gt;There are a number of big players in the industry who provide OAuth APIs. Choosing the right one for you really comes down to the nature of your product or service. More important than the actual OAuth provider is the API services on offer once authenticated.&lt;/p&gt;
+
+&lt;h3 id="facebook"&gt;Facebook&lt;/h3&gt;
+
+&lt;p&gt;The largest social network in the world is not surprisingly the &lt;a href="http://techcrunch.com/2013/04/08/report-46-of-social-login-users-still-choose-facebook-but-google-is-quickly-gaining-ground/"&gt;favourite OAuth provider&lt;/a&gt; for many users. Facebook has a very well rounded API and developer SDK. One of the more powerful features is the &lt;a href="https://developers.facebook.com/docs/reference/fql/"&gt;FQL&lt;/a&gt; language which enables you to query almost any social metadata on the network.&lt;/p&gt;
+
+&lt;p&gt;One gotcha to be aware of when using the JavaScript SDK is the "channelUrl" parameter. Without it set the SDK is &lt;strong&gt;ridiculously&lt;/strong&gt; slow, so be sure that it points to a valid file on your server. Also be sure to cache the remote .js files or its can really slow down your pages.&lt;/p&gt;
+
+&lt;h3 id="google"&gt;Google&lt;/h3&gt;
+
+&lt;p&gt;Probably the best IMO, especially for professional services. Google is a close second behind Facebook with regards to user adoption, and is ever increasing in popularity. Every professional on the Internet has a Google account, and there's a good chance they already use GMail and other Google services regularly. &lt;/p&gt;
+
+&lt;p&gt;The real advantage of using Google however, is their &lt;a href="https://developers.google.com/products/"&gt;developer services&lt;/a&gt;. You can integrate your applications with Cloud Storage, Google Drive, YouTube, GMail and more, and it works seamlessly if your customers login with Google OAuth. &lt;/p&gt;
+
+&lt;h3 id="twitter"&gt;Twitter&lt;/h3&gt;
+
+&lt;p&gt;Twitter is good, but I would only recommend it when creating applications that integrate specifically with Twitter. The reason for this is that Twitter doesn't provide you with a valid user email address like the other providers do. As a developer this means implementing another step to get an email address from the user, which adds complexity and kind of defeats the purpose of using OAuth to begin with. &lt;/p&gt;
+
+&lt;h3 id="linkedin"&gt;LinkedIn&lt;/h3&gt;
+
+&lt;p&gt;The social network for professionals is good when building services for web professionals. LinkedIn traffic is considered to be higher quality and have &lt;a href="http://blog.hubspot.com/blog/tabid/6307/bid/30030/LinkedIn-277-More-Effective-for-Lead-Generation-Than-Facebook-Twitter-New-Data.aspx"&gt;higher conversions&lt;/a&gt; compared to other networks. Again it depends on your niche.&lt;/p&gt;
+
+&lt;p&gt;Personally, I'm not a great fan of LinkedIn. I find their pushy business model and dated interface detract from the experience and drive me to interact elsewhere.&lt;/p&gt;
+
+&lt;h2 id="going-all-the-way"&gt;Going All The Way&lt;/h2&gt;
+
+&lt;p&gt;It's often tempting for developers to get carried away and build the entire kitchen sink, and once you've finished theres always more to do.
+There is merit in &lt;a href="http://blog.codinghorror.com/how-to-be-lazy-dumb-and-successful/"&gt;keeping things simple&lt;/a&gt;, which is why I subscribe to the belief that the best kind of code is code that you don't write yourself.&lt;/p&gt;
+
+&lt;p&gt;If you have a niche product or service, you may consider restricting access to a single OAuth provider. While this method may ostracise certain customers, it will give you credibility and traction with the die-hards in your chosen network.&lt;/p&gt;
+
+&lt;p&gt;For example, we are using Google authentication exclusively for our cloud video surveillance service, &lt;a href="https://anionu.com"&gt;Anionu&lt;/a&gt;. This means no passwords, and greater security for users, and access to their Google Drive for storing videos in the cloud. As well as the convenience of using familiar technology, Googlers have 15GB of free storage in their Google Drive which is a pretty solid incentive to signup. Nice!&lt;/p&gt;
+
+&lt;h2 id="security-considerations"&gt;Security Considerations&lt;/h2&gt;
+
+&lt;p&gt;Make sure you educate yourself on OAuth best practices before getting started. For all intents and purposes, the OAuth tokens you store are just like passwords, so the same cautions should be observed. Some points to consider are:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Using CSRF validation to verify OAuth callbacks. Most providers allow you to specify extra parameters with your initial OAuth request. This should contain a CSRF token, and be verified on response.&lt;/li&gt;
+  &lt;li&gt;Encrypt OAuth tokens in the database. You wouldn't store a clear text password now, would you?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The obvious red flag for using OAuth is reliance on a third-party service, which we all want to keep to a minimum. The worst case scenario here is that the provider goes out of business; Google, not likely; Facebook, maybe given Zuckerberg's spending habits! As long as basic user information is retained locally there is no real risk to your business.&lt;/p&gt;
+
+&lt;h2 id="conclusion"&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Users are becoming increasingly wary of who they share heir information with online, and with &lt;a href="http://gigaom.com/2013/12/31/snapchat-hacked-4-6-million-usernames-and-phone-numbers-lifted/"&gt;good reason&lt;/a&gt;. Password free signup is a great incentive to offer lazy and/or security conscious customers.&lt;/p&gt;
+
+&lt;p&gt;It's an exciting technological era we live in, but as the big players claim more of the market share it is becoming increasingly necessary for new and smaller startups to effectively use and integrate with the more established players in order to gain traction and build a solid customer base.&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <title>Guest Posting Opportunities</title>
+    <link rel="alternate" href="http://sourcey.com/guest-posting-opportunities/"/>
+    <id>http://sourcey.com/guest-posting-opportunities/</id>
+    <published>2014-04-24T00:00:00Z</published>
+    <updated>2014-04-25T13:19:26+10:00</updated>
+    <author>
+      <name>Article Author</name>
+    </author>
+    <content type="html">&lt;h1 id="guest-posting-opportunities"&gt;Guest Posting Opportunities&lt;/h1&gt;
+
+&lt;p&gt;We work tirelessly to create quality code and startups, and as such we are intersted in working with other companies who are in the same boat.&lt;/p&gt;
+
+&lt;p&gt;If you want to promote your brilliant open soruce project, or a new technology startup, then you may be interested in guest posting on Sourcey.com. Naturally only the highest quality original content will be considered.&lt;/p&gt;
+
+&lt;p&gt;For guest posting opportunities and other forms of affiliation and collaboration please drop us a line on &lt;a href="&amp;#109;&amp;#097;&amp;#105;&amp;#108;&amp;#116;&amp;#111;:&amp;#104;&amp;#101;&amp;#108;&amp;#108;&amp;#111;&amp;#064;&amp;#115;&amp;#111;&amp;#117;&amp;#114;&amp;#099;&amp;#101;&amp;#121;&amp;#046;&amp;#099;&amp;#111;&amp;#109;"&gt;&amp;#104;&amp;#101;&amp;#108;&amp;#108;&amp;#111;&amp;#064;&amp;#115;&amp;#111;&amp;#117;&amp;#114;&amp;#099;&amp;#101;&amp;#121;&amp;#046;&amp;#099;&amp;#111;&amp;#109;&lt;/a&gt;.&lt;/p&gt;
+</content>
+  </entry>
   <entry>
     <title>Migrating from Wordpress to Middleman</title>
     <link rel="alternate" href="http://sourcey.com/migrating-from-wordpress-to-middleman/"/>
@@ -401,417 +489,6 @@ To conquer the Internet is a dream held by many, yet its easy to forget what's i
 &lt;p&gt;The way one handles victory says a lot about the character of a person or business. You may be tempted by the bright lights and fat stacks, but in the end the greatest reward you can expect is to succeed while having a good time and conducting yourself with integrity.&lt;/p&gt;
 
 &lt;p&gt;The victor has certain obligations, least of which is to set the standard for those to come. As your business grows, so must you. Be consistent with your training, meditation and relaxation, and free yourself from gloating and arrogant expression. Keep developing your mind and body so that your endeavours may continue to evolve alongside your vision and creativity.&lt;/p&gt;
-</content>
-  </entry>
-  <entry>
-    <title>FFmpeg Multiplexing Live Webcam and Microphone Streams</title>
-    <link rel="alternate" href="http://sourcey.com/ffmpeg-multiplexing-live-webcam-and-microphone-streams/"/>
-    <id>http://sourcey.com/ffmpeg-multiplexing-live-webcam-and-microphone-streams/</id>
-    <published>2014-03-28T10:53:27Z</published>
-    <updated>2014-04-06T23:14:12+10:00</updated>
-    <author>
-      <name>Article Author</name>
-    </author>
-    <content type="html">&lt;h1 id="ffmpeg-multiplexing-live-webcam-and-microphone-streams"&gt;FFmpeg Multiplexing Live Webcam and Microphone Streams&lt;/h1&gt;
-
-&lt;p&gt;The other day I had a tough time trying to get multiple FFmpeg codecs to behave consistently with live variable framerate stream sources, such as a microphone and a webcam. It didn't take too long before I realised that the encoder was not multiplexing properly when fed frames at irregular intervals, even when specifying the correct PTS (presentation timestamp). &lt;/p&gt;
-
-&lt;p&gt;Some of the effects were crackly audio and sped up video (when not enough frames, even with correct timestamp) - from memory h264 was especially touchy.&lt;/p&gt;
-
-&lt;p&gt;Anyway, I decided to mirror the behaviour of FFmpeg's output-example.c (which is now &lt;a href="https://github.com/FFmpeg/FFmpeg/blob/master/doc/examples/transcoding.c" target="_blank"&gt;transcoding.c&lt;/a&gt;), and try buffering and doubling up video frames (video is most unreliable, and often slower than the audio) to ensure consistency, and bam, problem solved!&lt;/p&gt;
-
-&lt;p&gt;As with all my C++ media encoding goodies, they end up in LibSourcey. The solution looks like this (See &lt;code&gt;LiveStreamEncoder::process&lt;/code&gt; for the nitty gritty):&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;livestreamencoder.cpp&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre class="highlight cpp"&gt;&lt;span class="c1"&gt;//
-// LibSourcey
-// Copyright (C) 2005, Sourcey &amp;lt;http://sourcey.com&amp;gt;
-//
-// LibSourcey is free software; you can redistribute it and/or
-// modify it under the terms of the GNU Lesser General Public
-// License as published by the Free Software Foundation; either
-// version 2.1 of the License, or (at your option) any later version.
-//
-// LibSourcey is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program. If not, see &amp;lt;http://www.gnu.org/licenses/&amp;gt;.
-//
-&lt;/span&gt;
-
-&lt;span class="cp"&gt;#include "scy/media/livestreamencoder.h"
-#ifdef HAVE_FFMPEG
-&lt;/span&gt;
-
-&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-
-
-&lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;scy&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;av&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-
-
-&lt;span class="n"&gt;LiveStreamEncoder&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;LiveStreamEncoder&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;EncoderOptions&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;bool&lt;/span&gt; &lt;span class="n"&gt;muxLiveStreams&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt;
-	&lt;span class="n"&gt;AVEncoder&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; 
-	&lt;span class="n"&gt;PacketProcessor&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;AVEncoder&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;emitter&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; 
-	&lt;span class="n"&gt;_muxStreams&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;muxLiveStreams&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; 
-	&lt;span class="n"&gt;_lastVideoPacket&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;nullptr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-
-
-&lt;span class="n"&gt;LiveStreamEncoder&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;LiveStreamEncoder&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;bool&lt;/span&gt; &lt;span class="n"&gt;muxLiveStreams&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt;
-	&lt;span class="n"&gt;AVEncoder&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; 
-	&lt;span class="n"&gt;PacketProcessor&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;AVEncoder&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;emitter&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; 
-	&lt;span class="n"&gt;_muxStreams&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;muxLiveStreams&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; 
-	&lt;span class="n"&gt;_lastVideoPacket&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;nullptr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-
-
-&lt;span class="n"&gt;LiveStreamEncoder&lt;/span&gt;&lt;span class="o"&gt;::~&lt;/span&gt;&lt;span class="n"&gt;LiveStreamEncoder&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-
-
-&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;LiveStreamEncoder&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;process&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;IPacket&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;packet&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="p"&gt;{&lt;/span&gt;	
-	&lt;span class="n"&gt;Mutex&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;ScopedLock&lt;/span&gt; &lt;span class="n"&gt;lock&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_mutex&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-
-	&lt;span class="c1"&gt;// We may be receiving either audio or video packets	
-&lt;/span&gt;	&lt;span class="n"&gt;VideoPacket&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;vPacket&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;dynamic_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;VideoPacket&lt;/span&gt;&lt;span class="o"&gt;*&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;packet&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-	&lt;span class="n"&gt;AudioPacket&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;aPacket&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;vPacket&lt;/span&gt; &lt;span class="o"&gt;?&lt;/span&gt; &lt;span class="n"&gt;nullptr&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;dynamic_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;AudioPacket&lt;/span&gt;&lt;span class="o"&gt;*&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;packet&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-	&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;vPacket&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;aPacket&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-		&lt;span class="k"&gt;throw&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;invalid_argument&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Unknown media packet type."&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-
-	&lt;span class="c1"&gt;// Do some special synchronizing for muxing live variable framerate streams
-&lt;/span&gt;	&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_muxStreams&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-		&lt;span class="n"&gt;VideoEncoderContext&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;video&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;AVEncoder&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;video&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
-		&lt;span class="n"&gt;AudioEncoderContext&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;audio&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;AVEncoder&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;audio&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
-		&lt;span class="n"&gt;assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;audio&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;video&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-		&lt;span class="kt"&gt;double&lt;/span&gt; &lt;span class="n"&gt;audioPts&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;videoPts&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-		&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;times&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-		&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="p"&gt;(;;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-			&lt;span class="n"&gt;times&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-			&lt;span class="n"&gt;assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;times&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;			
-			&lt;span class="n"&gt;audioPts&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;audio&lt;/span&gt; &lt;span class="o"&gt;?&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;double&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="n"&gt;audio&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;stream&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;pts&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;val&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;audio&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;stream&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;time_base&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="n"&gt;audio&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;stream&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;time_base&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;den&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;0.0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-			&lt;span class="n"&gt;videoPts&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;video&lt;/span&gt; &lt;span class="o"&gt;?&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;double&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="n"&gt;video&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;stream&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;pts&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;val&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;video&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;stream&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;time_base&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;num&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="n"&gt;video&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;stream&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;time_base&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;den&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;0.0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;			
-			&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;aPacket&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-				&lt;span class="c1"&gt;// Write the audio packet when the encoder is ready
-&lt;/span&gt;				&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;video&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="n"&gt;audioPts&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;videoPts&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-					&lt;span class="n"&gt;encode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;aPacket&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-					&lt;span class="k"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-				&lt;span class="p"&gt;}&lt;/span&gt;
-
-				&lt;span class="c1"&gt;// Write dummy video frames until we can encode the audio
-&lt;/span&gt;				&lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-					&lt;span class="c1"&gt;// May be null if the first packet was audio, skip...
-&lt;/span&gt;					&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;_lastVideoPacket&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-						&lt;span class="k"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-
-					&lt;span class="n"&gt;encode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;_lastVideoPacket&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-				&lt;span class="p"&gt;}&lt;/span&gt;
-			&lt;span class="p"&gt;}&lt;/span&gt;
-			&lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;vPacket&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-				&lt;span class="c1"&gt;// Write the video packet if the encoder is ready
-&lt;/span&gt;				&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;audio&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="n"&gt;audioPts&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;videoPts&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-					&lt;span class="n"&gt;encode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;vPacket&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-				
-				&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;audio&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-					&lt;span class="c1"&gt;// Clone and buffer the last video packet it can be used
-&lt;/span&gt;					&lt;span class="c1"&gt;// as soon as we need an available frame.
-&lt;/span&gt;					&lt;span class="c1"&gt;// used as a filler if the source framerate is inconstant.
-&lt;/span&gt;					&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_lastVideoPacket&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-						&lt;span class="k"&gt;delete&lt;/span&gt; &lt;span class="n"&gt;_lastVideoPacket&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-					&lt;span class="n"&gt;_lastVideoPacket&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;reinterpret_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;scy&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;av&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;VideoPacket&lt;/span&gt;&lt;span class="o"&gt;*&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;vPacket&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;clone&lt;/span&gt;&lt;span class="p"&gt;());&lt;/span&gt;
-				&lt;span class="p"&gt;}&lt;/span&gt;
-				&lt;span class="k"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-			&lt;span class="p"&gt;}&lt;/span&gt;
-		&lt;span class="p"&gt;}&lt;/span&gt;
-	&lt;span class="p"&gt;}&lt;/span&gt;
-	&lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;vPacket&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-		&lt;span class="n"&gt;encode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;vPacket&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-	&lt;span class="p"&gt;}&lt;/span&gt;
-	&lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;aPacket&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-		&lt;span class="n"&gt;encode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;aPacket&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-	&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-
-
-&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;LiveStreamEncoder&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;encode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;VideoPacket&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;packet&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="p"&gt;{&lt;/span&gt;
-	&lt;span class="n"&gt;encodeVideo&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="n"&gt;packet&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="n"&gt;packet&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="n"&gt;packet&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;width&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;packet&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;height&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;UInt64&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="n"&gt;packet&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;time&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-
-
-&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;LiveStreamEncoder&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;encode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;AudioPacket&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;packet&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="p"&gt;{&lt;/span&gt;
-	&lt;span class="n"&gt;encodeAudio&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="n"&gt;packet&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="n"&gt;packet&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;());&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-
-
-&lt;span class="n"&gt;bool&lt;/span&gt; &lt;span class="n"&gt;LiveStreamEncoder&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;accepts&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;IPacket&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;packet&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; 
-&lt;span class="p"&gt;{&lt;/span&gt; 
-	&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="k"&gt;dynamic_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;av&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;MediaPacket&lt;/span&gt;&lt;span class="o"&gt;*&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;packet&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; 
-&lt;span class="p"&gt;}&lt;/span&gt;
-
-					
-&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;LiveStreamEncoder&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;onStreamStateChange&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;PacketStreamState&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;state&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; 
-&lt;span class="p"&gt;{&lt;/span&gt; 
-	&lt;span class="n"&gt;TraceLS&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;"On stream state change: "&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;state&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-	
-	&lt;span class="n"&gt;Mutex&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;ScopedLock&lt;/span&gt; &lt;span class="n"&gt;lock&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_mutex&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-
-	&lt;span class="k"&gt;switch&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;state&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-	&lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="n"&gt;PacketStreamState&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;Active&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-		&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;isActive&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-			&lt;span class="n"&gt;TraceLS&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;"Initializing"&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-			&lt;span class="c1"&gt;//if (AVEncoder::options().oformat.video.enabled &amp;amp;&amp;amp; 
-&lt;/span&gt;			&lt;span class="c1"&gt;//	AVEncoder::options().oformat.audio.enabled)
-&lt;/span&gt;			&lt;span class="c1"&gt;//	_muxStreams = true;
-&lt;/span&gt;			&lt;span class="n"&gt;AVEncoder&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;initialize&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
-		&lt;span class="p"&gt;}&lt;/span&gt;
-		&lt;span class="k"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-		
-	&lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="n"&gt;PacketStreamState&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;Resetting&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-	&lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="n"&gt;PacketStreamState&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;Stopping&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-		&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;isActive&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-			&lt;span class="n"&gt;TraceLS&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;"Uninitializing"&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-			&lt;span class="n"&gt;AVEncoder&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;uninitialize&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
-		&lt;span class="p"&gt;}&lt;/span&gt;
-		&lt;span class="k"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-	&lt;span class="c1"&gt;//case PacketStreamState::Stopped:
-&lt;/span&gt;	&lt;span class="c1"&gt;//case PacketStreamState::Error:
-&lt;/span&gt;	&lt;span class="c1"&gt;//case PacketStreamState::None:
-&lt;/span&gt;	&lt;span class="c1"&gt;//case PacketStreamState::Closed:
-&lt;/span&gt;	&lt;span class="p"&gt;}&lt;/span&gt;
-
-	&lt;span class="n"&gt;TraceLS&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;"Stream state change: OK: "&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;state&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-
-
-&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="c1"&gt;// namespace scy::av
-&lt;/span&gt;
-
-&lt;span class="cp"&gt;#endif
-&lt;/span&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;strong&gt;livestreamencoder.h&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre class="highlight cpp"&gt;&lt;span class="c1"&gt;//
-// LibSourcey
-// Copyright (C) 2005, Sourcey &amp;lt;http://sourcey.com&amp;gt;
-//
-// LibSourcey is free software; you can redistribute it and/or
-// modify it under the terms of the GNU Lesser General Public
-// License as published by the Free Software Foundation; either
-// version 2.1 of the License, or (at your option) any later version.
-//
-// LibSourcey is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program. If not, see &amp;lt;http://www.gnu.org/licenses/&amp;gt;.
-//
-&lt;/span&gt;
-
-&lt;span class="cp"&gt;#ifndef SCY_AV_LiveStreamEncoder_H
-#define SCY_AV_LiveStreamEncoder_H
-&lt;/span&gt;
-
-&lt;span class="cp"&gt;#include "scy/base.h"
-#ifdef HAVE_FFMPEG
-#include "scy/packetstream.h"
-#include "scy/media/avencoder.h"
-&lt;/span&gt;
-
-&lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;scy&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; 
-&lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;av&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-
-
-&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;LiveStreamEncoder&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="n"&gt;AVEncoder&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="n"&gt;PacketProcessor&lt;/span&gt;
-	&lt;span class="c1"&gt;/// Encodes and multiplexes a realtime video stream form 
-&lt;/span&gt;	&lt;span class="c1"&gt;/// audio / video capture sources.
-&lt;/span&gt;	&lt;span class="c1"&gt;/// FFmpeg is used for encoding.
-&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-	&lt;span class="n"&gt;LiveStreamEncoder&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;EncoderOptions&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;bool&lt;/span&gt; &lt;span class="n"&gt;muxLiveStreams&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-	&lt;span class="n"&gt;LiveStreamEncoder&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;bool&lt;/span&gt; &lt;span class="n"&gt;muxLiveStreams&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-	&lt;span class="k"&gt;virtual&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="n"&gt;LiveStreamEncoder&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
-	
-	&lt;span class="k"&gt;virtual&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;encode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;VideoPacket&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;packet&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-	&lt;span class="k"&gt;virtual&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;encode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;AudioPacket&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;packet&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-
-&lt;span class="k"&gt;protected&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;		
-	&lt;span class="k"&gt;virtual&lt;/span&gt; &lt;span class="n"&gt;bool&lt;/span&gt; &lt;span class="n"&gt;accepts&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;IPacket&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;packet&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-	&lt;span class="k"&gt;virtual&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;process&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;IPacket&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;packet&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;	
-	&lt;span class="k"&gt;virtual&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;onStreamStateChange&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;PacketStreamState&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;state&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-
-	&lt;span class="k"&gt;friend&lt;/span&gt; &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;PacketStream&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-			
-	&lt;span class="k"&gt;mutable&lt;/span&gt; &lt;span class="n"&gt;Mutex&lt;/span&gt; &lt;span class="n"&gt;_mutex&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-	&lt;span class="n"&gt;bool&lt;/span&gt; &lt;span class="n"&gt;_muxStreams&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-	&lt;span class="n"&gt;VideoPacket&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;_lastVideoPacket&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="p"&gt;};&lt;/span&gt;
-
-
-&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="c1"&gt;// namespace scy::av
-&lt;/span&gt;
-
-&lt;span class="cp"&gt;#endif
-#endif
-&lt;/span&gt;&lt;/pre&gt;
-</content>
-  </entry>
-  <entry>
-    <title>FFmpeg AVPacket to OpenCV Mat Converter</title>
-    <link rel="alternate" href="http://sourcey.com/ffmpeg-avpacket-to-opencv-mat-converter/"/>
-    <id>http://sourcey.com/ffmpeg-avpacket-to-opencv-mat-converter/</id>
-    <published>2014-03-28T10:47:46Z</published>
-    <updated>2014-04-06T23:15:44+10:00</updated>
-    <author>
-      <name>Article Author</name>
-    </author>
-    <content type="html">&lt;h1 id="ffmpeg-avpacket-to-opencv-mat-converter"&gt;FFmpeg AVPacket to OpenCV Mat Converter&lt;/h1&gt;
-
-&lt;p&gt;When building computer vision projects in C++, you may find yourself in need for an FFmpeg to OpenCV packet converter. 
-The good news is that you don't need to look any further. because it's all contained within this open source header file:&lt;/p&gt;
-
-&lt;pre class="highlight cpp"&gt;&lt;span class="c1"&gt;//
-// LibSourcey
-// Copyright (C) 2005, Sourcey &amp;lt;http://sourcey.com&amp;gt;
-//
-// LibSourcey is free software; you can redistribute it and/or
-// modify it under the terms of the GNU Lesser General Public
-// License as published by the Free Software Foundation; either
-// version 2.1 of the License, or (at your option) any later version.
-//
-// LibSourcey is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program. If not, see &amp;lt;http://www.gnu.org/licenses/&amp;gt;.
-//
-&lt;/span&gt;
-
-&lt;span class="cp"&gt;#ifndef SCY_AV_MatrixConverter_H
-#define SCY_AV_MatrixConverter_H
-&lt;/span&gt;
-&lt;span class="cp"&gt;#include "scy/packetstream.h"
-#include "scy/signal.h"
-&lt;/span&gt;
-&lt;span class="cp"&gt;#if defined(HAVE_OPENCV) &amp;amp;&amp;amp; defined(HAVE_FFMPEG)
-&lt;/span&gt;
-&lt;span class="k"&gt;extern&lt;/span&gt; &lt;span class="s"&gt;"C"&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="cp"&gt;#include &amp;lt;libavcodec/avcodec.h&amp;gt;
-#include &amp;lt;libswscale/swscale.h&amp;gt;
-&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
-
-&lt;span class="cp"&gt;#include &amp;lt;opencv/cv.h&amp;gt;
-&lt;/span&gt;
-
-&lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;scy&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; 
-&lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;av&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-
-
-&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;MatrixConverter&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="n"&gt;IPacketizer&lt;/span&gt;
-	&lt;span class="c1"&gt;/// This class provides the ability to convert decoded
-&lt;/span&gt;	&lt;span class="c1"&gt;/// video stream frames to OpenCV matrix images.
-&lt;/span&gt;	&lt;span class="c1"&gt;/// Input packets must pass a VideoDecoderContext pointer
-&lt;/span&gt;	&lt;span class="c1"&gt;/// as client data.
-&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-	&lt;span class="n"&gt;MatrixConverter&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; 
-		&lt;span class="n"&gt;_convCtx&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;nullptr&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
-		&lt;span class="n"&gt;_oframe&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;nullptr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-	&lt;span class="p"&gt;{&lt;/span&gt;
-	&lt;span class="p"&gt;}&lt;/span&gt;
-
-	&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="n"&gt;MatrixConverter&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-	&lt;span class="p"&gt;{&lt;/span&gt;
-		&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_convCtx&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-			&lt;span class="n"&gt;sws_freeContext&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_convCtx&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-
-		&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_oframe&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-			&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_oframe&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-				&lt;span class="n"&gt;av_free&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_oframe&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]);&lt;/span&gt;
-			&lt;span class="n"&gt;av_free&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_oframe&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-		&lt;span class="p"&gt;}&lt;/span&gt;
-	&lt;span class="p"&gt;}&lt;/span&gt;
-	
-	&lt;span class="k"&gt;virtual&lt;/span&gt; &lt;span class="n"&gt;bool&lt;/span&gt; &lt;span class="n"&gt;accepts&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;IPacket&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;packet&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; 
-	&lt;span class="p"&gt;{&lt;/span&gt; 
-		&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="k"&gt;dynamic_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;av&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;VideoPacket&lt;/span&gt;&lt;span class="o"&gt;*&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;packet&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; 
-	&lt;span class="p"&gt;}&lt;/span&gt;
-
-	&lt;span class="k"&gt;virtual&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;process&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;IPacket&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;packet&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-	&lt;span class="p"&gt;{&lt;/span&gt;
-		&lt;span class="n"&gt;VideoPacket&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;vpacket&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;reinterpret_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;VideoPacket&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;packet&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-		&lt;span class="n"&gt;VideoDecoderContext&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;video&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;reinterpret_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;VideoDecoderContext&lt;/span&gt;&lt;span class="o"&gt;*&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;packet&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;opaque&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;	
-		&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;video&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;nullptr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-			&lt;span class="k"&gt;throw&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;runtime_error&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Matrix Converter: Video packets must contain a VideoDecoderContext pointer."&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;	
-		
-		&lt;span class="c1"&gt;// Create and allocate the conversion frame.
-&lt;/span&gt;		&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_oframe&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;nullptr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-			&lt;span class="n"&gt;_oframe&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;avcodec_alloc_frame&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;	
-			&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_oframe&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;nullptr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-				&lt;span class="k"&gt;throw&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;runtime_error&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Matrix Converter: Could not allocate the output frame."&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-
-			&lt;span class="n"&gt;avpicture_alloc&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;reinterpret_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;AVPicture&lt;/span&gt;&lt;span class="o"&gt;*&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_oframe&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; 
-				&lt;span class="n"&gt;PIX_FMT_BGR24&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;video&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;ctx&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;width&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;video&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;ctx&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;height&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-		&lt;span class="p"&gt;}&lt;/span&gt;
-	
-		&lt;span class="c1"&gt;// Convert the image from its native format to BGR.
-&lt;/span&gt;		&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_convCtx&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;nullptr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-			&lt;span class="n"&gt;_convCtx&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sws_getContext&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
-				&lt;span class="n"&gt;video&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;ctx&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;width&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;video&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;ctx&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;height&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;video&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;ctx&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;pix_fmt&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
-				&lt;span class="n"&gt;video&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;ctx&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;width&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;video&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;ctx&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;height&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;PIX_FMT_BGR24&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
-				&lt;span class="n"&gt;SWS_BICUBIC&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;nullptr&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;nullptr&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;nullptr&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-			&lt;span class="n"&gt;_mat&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;create&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;video&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;ctx&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;height&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;video&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;ctx&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;width&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;CV_8UC&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
-		&lt;span class="p"&gt;}&lt;/span&gt;
-		&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_convCtx&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;nullptr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-			&lt;span class="k"&gt;throw&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;runtime_error&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Matrix Converter: Unable to initialize the conversion context."&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;	
-			
-		&lt;span class="c1"&gt;// Scales the source data according to our SwsContext settings.
-&lt;/span&gt;		&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sws_scale&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_convCtx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-			&lt;span class="n"&gt;video&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;frame&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;video&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;frame&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;linesize&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;video&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;ctx&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;height&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-			&lt;span class="n"&gt;_oframe&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;_oframe&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;linesize&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-			&lt;span class="k"&gt;throw&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;runtime_error&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Matrix Converter: Pixel format conversion not supported."&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-
-		&lt;span class="c1"&gt;// Populate the OpenCV Matrix.
-&lt;/span&gt;		&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;video&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;ctx&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;height&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-			&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;video&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;ctx&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;width&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-				&lt;span class="n"&gt;_mat&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;at&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;cv&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;Vec3b&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;_oframe&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;_oframe&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;linesize&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
-				&lt;span class="n"&gt;_mat&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;at&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;cv&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;Vec3b&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;_oframe&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;_oframe&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;linesize&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
-				&lt;span class="n"&gt;_mat&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;at&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;cv&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;Vec3b&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;_oframe&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;_oframe&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;linesize&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
-			&lt;span class="p"&gt;}&lt;/span&gt;
-		&lt;span class="p"&gt;}&lt;/span&gt;
-
-		&lt;span class="n"&gt;vpacket&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;mat&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;_mat&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-		&lt;span class="n"&gt;emit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;vpacket&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-	&lt;span class="p"&gt;}&lt;/span&gt;
-
-	&lt;span class="n"&gt;cv&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;Mat&lt;/span&gt; &lt;span class="n"&gt;_mat&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-	&lt;span class="n"&gt;AVFrame&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;_oframe&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-	&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;SwsContext&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;_convCtx&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="p"&gt;};&lt;/span&gt;
-
-
-&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="c1"&gt;// namespace scy::av
-&lt;/span&gt;
-
-&lt;span class="cp"&gt;#endif
-#endif
-&lt;/span&gt;&lt;/pre&gt;
-
-&lt;p&gt;This file is now a part of &lt;a href="http://sourcey.com/libsourcey/" title="LibSourcey"&gt;LibSourcey&lt;/a&gt;.&lt;/p&gt;
 </content>
   </entry>
 </feed>
