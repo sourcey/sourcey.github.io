@@ -218,38 +218,28 @@ body.index #blog li {
   padding: 25px 15px; }
 
 /* line 220, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
-body.index #blog li h2 {
+body.index #blog li .title {
   font-size: 24px;
   margin: 15px 0 10px; }
 
-/*
-body.index #blog li h2.entry-title a {
-  color: black;
-}
-
-
-body.index #blog .entry-summary {
-  padding-top: 1em;
-}
-*/
-/* line 235, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 224, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 body.index #blog li p {
   color: #666;
   font-size: 13px; }
 
 /* Showcase */
-/* line 244, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 233, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 body.index #projects {
   text-align: center;
   margin: 0 auto 20px;
   padding: 0;
   font-size: 0; }
 
-/* line 251, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 240, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 body.index #projects .columns {
   padding: 0; }
 
-/* line 254, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 243, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 body.index #projects a {
   text-decoration: none;
   font-size: 14px;
@@ -272,12 +262,7 @@ body.index #projects a {
   
    */ }
 
-/* line 278, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
-body.index #projects .faux {
-  display: block;
-  padding: 20px; }
-
-/* line 283, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 268, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 body.index #projects a:hover {
   background: transparent;
   -moz-box-shadow: 0 0 50px rgba(0, 0, 0, 0.1) inset;
@@ -285,13 +270,13 @@ body.index #projects a:hover {
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.1) inset;
   box-shadow: 2px 2px 6px #ccc, 0 0 50px #eee inset; }
 
-/* line 291, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 276, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 body.index #projects a:focus {
   -moz-box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.25), 0 0 50px rgba(0, 0, 0, 0.1) inset;
   -webkit-box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.25), 0 0 50px rgba(0, 0, 0, 0.1) inset;
   box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.25), 0 0 50px rgba(0, 0, 0, 0.1) inset; }
 
-/* line 297, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 282, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 body.index #projects a .icon {
   float: left;
   margin-right: 15px;
@@ -299,7 +284,7 @@ body.index #projects a .icon {
   width: 80px;
   height: 80px; }
 
-/* line 306, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 291, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 body.index #projects a span.title {
   display: block;
   /* font-family: Georgia;
@@ -309,7 +294,7 @@ body.index #projects a span.title {
   line-height: 1.5;
   text-transform: lowercase; }
 
-/* line 315, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 300, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 body.index #projects a span.strap {
   display: block;
   font-size: 13px;
@@ -318,54 +303,59 @@ body.index #projects a span.strap {
   margin-bottom: 6px;
   text-transform: lowercase; }
 
-/* line 323, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 308, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 body.index #projects a span.intro {
   display: block;
   font-size: 14px;
   color: #666; }
 
 /* Icons */
-/* line 330, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 315, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 body.index #projects a.symple .icon {
   background: url(/images/symple-logo.png) no-repeat; }
 
-/* line 333, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 318, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 body.index #projects a.anionu .icon {
   width: 100px;
   background: url(/images/anionu-logo.png) no-repeat; }
 
-/* line 337, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 322, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 body.index #projects a.pacm .icon {
   background: url(/images/pacm-logo.png) no-repeat; }
 
-/* line 340, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 325, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 body.index #projects a.libsourcey .icon {
   background: url(/images/libsourcey-logo.png) no-repeat; }
 
-/* line 343, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 328, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 body.index #projects a.mesh .icon {
   background: url(/images/mesh-logo.png) no-repeat; }
 
-/* line 346, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 331, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 body.index #projects a.stompstart .icon {
   background: url(/images/stompstart-logo.png) no-repeat; }
 
-/* line 349, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 334, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 body.index #projects a.gardn .icon {
   background: url(/images/gardn-logo.png) no-repeat; }
 
-/* line 352, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 337, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 body.index #projects a.budokin .icon {
   background: url(/images/budokin-logo.png) no-repeat; }
 
 @media only screen and (min-width: 64.063em) {
-  /* line 357, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+  /* line 342, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
   .columns a {
-    height: 190px; } }
+    height: 190px; }
+
+  /* line 346, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+  body.index #projects .faux {
+    display: block;
+    padding: 20px; } }
 /*
   Styles 
 */
-/* line 371, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 361, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 #main h1,
 #main h2,
 #main h3,
@@ -377,19 +367,19 @@ body.index #projects a.budokin .icon {
   padding-bottom: .3em;
   text-transform: lowercase; }
 
-/* line 379, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 369, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 #main dl {
   margin-left: 1em; }
 
-/* line 382, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 372, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 #main dl dt {
   text-transform: lowercase; }
 
-/* line 385, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 375, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 #main dl dd {
   margin-bottom: 1.625em; }
 
-/* line 389, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 379, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 #main h1:first-of-type {
   text-align: center;
   color: #000;
@@ -398,57 +388,57 @@ body.index #projects a.budokin .icon {
   line-height: 42px;
   margin-bottom: 25px; }
 
-/* line 398, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 388, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 #main h2 {
   font-size: 24px;
   margin: 35px 0 15px; }
 
-/* line 403, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 393, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 #main h3 {
   color: #b00;
   font-size: 22px;
   margin: 35px 0 15px;
   margin: 25px 0 0px; }
 
-/* line 410, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 400, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 #main h4 {
   /* color: #b00; font-size: 22px;
   font-weight: bold; */
   font-size: 20px;
   margin: 15px 0 0px; }
 
-/* line 417, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 407, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 #main .status {
   margin-bottom: 35px;
   border-bottom: 1px solid #ddd;
   border-top: 1px solid #ddd;
   padding-top: 1.625em; }
 
-/* line 424, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 414, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 #main .action-button {
   margin: 20px auto;
   display: inline-block; }
 
-/* line 431, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 421, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 #main .align-left {
   float: left;
   margin-right: 1.625em;
   margin-bottom: 0.625em; }
 
-/* line 437, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 427, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 #main .align-right {
   float: right;
   margin-left: 1.625em;
   margin-bottom: 0.625em; }
 
-/* line 445, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 435, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 #main h1 a,
 #main h2 a,
 #main h3 a {
   color: #000;
   text-decoration: none; }
 
-/* line 449, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 439, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 #main .meta {
   color: #888;
   clear: both;
@@ -456,14 +446,14 @@ body.index #projects a.budokin .icon {
   font-size: 12px;
   text-align: center; }
 
-/* line 457, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
-.entry-title time {
+/* line 447, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+.title time {
   display: none;
   font-size: 14px;
   color: #999;
   margin-left: 10px; }
 
-/* line 463, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 453, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 .entry-meta {
   color: #888;
   clear: both;
@@ -476,13 +466,13 @@ body.index #projects a.budokin .icon {
 	*/
   font-size: 11px; }
 
-/* line 476, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 466, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 pre, code {
   font-family: 'Monaco', courier, monospace;
   font-family: Consolas, "Liberation Mono", Courier, monospace;
   font-size: 12px; }
 
-/* line 481, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 471, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 code {
   color: inherit;
   margin: 0;
@@ -499,13 +489,13 @@ code {
   line-height: 1.3; */
   padding: 0; }
 
-/* line 498, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 488, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 code:before,
 code:after {
   content: "\00a0";
   letter-spacing: -0.2em; }
 
-/* line 502, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
+/* line 492, D:/dev/projects/Sourcey/sourcey.com/source/stylesheets/style.css.scss */
 pre {
   background: #272822;
   word-wrap: break-word;

@@ -345,6 +345,18 @@
     <lastmod>2014-04-26T00:00:00+10:00</lastmod>
   </url>
   <url>
+    <loc>http://sourcey.com/tags/surveillance/</loc>
+    <lastmod>2014-04-26T00:00:00+10:00</lastmod>
+  </url>
+  <url>
+    <loc>http://sourcey.com/tags/cloud/</loc>
+    <lastmod>2014-04-26T00:00:00+10:00</lastmod>
+  </url>
+  <url>
+    <loc>http://sourcey.com/tags/security/</loc>
+    <lastmod>2014-04-26T00:00:00+10:00</lastmod>
+  </url>
+  <url>
     <loc>http://sourcey.com/tags/css3/</loc>
     <lastmod>2014-04-26T00:00:00+10:00</lastmod>
   </url>
@@ -534,10 +546,6 @@
   </url>
   <url>
     <loc>http://sourcey.com/tags/authentication/</loc>
-    <lastmod>2014-04-26T00:00:00+10:00</lastmod>
-  </url>
-  <url>
-    <loc>http://sourcey.com/tags/security/</loc>
     <lastmod>2014-04-26T00:00:00+10:00</lastmod>
   </url>
 </urlset>
