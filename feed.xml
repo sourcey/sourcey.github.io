@@ -14,7 +14,7 @@
     <link rel="alternate" href="http://sourcey.com/html5-video-streaming-from-google-drive/"/>
     <id>http://sourcey.com/html5-video-streaming-from-google-drive/</id>
     <published>2014-05-04T00:00:00Z</published>
-    <updated>2014-05-05T00:42:07+10:00</updated>
+    <updated>2014-05-05T00:43:35+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -32,7 +32,7 @@
 Please note that this page has received a LOT of traffic, so if the video isn't displaying then Drive may have temporarily restricted access to the file.
 &lt;/div&gt;
 
-&lt;video controls="controls" style="margin-bottom:20px;width:640px"&gt;
+&lt;video controls="controls" style="margin-bottom:20px;width:590px"&gt;
     &lt;source src="https://drive.google.com/uc?export=download&amp;amp;id=0B0JMGMGgxp9WMEdWb1hyQUhlOWs" type="video/mp4" /&gt;
     &lt;source src="https://drive.google.com/uc?export=download&amp;amp;id=0B0JMGMGgxp9WMEdWb1hyQUhlOWs" type="video/webm" /&gt;
 &lt;/video&gt;
@@ -61,7 +61,7 @@ Please note that this page has received a LOT of traffic, so if the video isn't 
     <link rel="alternate" href="http://sourcey.com/html5-video-is-finally-ready/"/>
     <id>http://sourcey.com/html5-video-is-finally-ready/</id>
     <published>2014-05-03T00:00:00Z</published>
-    <updated>2014-05-05T00:38:36+10:00</updated>
+    <updated>2014-05-05T00:43:40+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -74,7 +74,7 @@ Here's the trick though, both Chrome and Firefox will play the &lt;strong&gt;sam
 
 &lt;p&gt;Here is the proof of concept. Try it out in Chrome, Firefox and Safari:&lt;/p&gt;
 
-&lt;video controls="controls" style="margin-bottom:20px;width:640px"&gt;
+&lt;video controls="controls" style="margin-bottom:20px;width:590px"&gt;
     &lt;source src="http://media.sourcey.com/big_buck_bunny.mp4" type="video/mp4" /&gt;
     &lt;source src="http://media.sourcey.com/big_buck_bunny.mp4" type="video/webm" /&gt;
 &lt;/video&gt;
