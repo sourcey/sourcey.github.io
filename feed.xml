@@ -14,7 +14,7 @@
     <link rel="alternate" href="http://sourcey.com/html5-video-streaming-from-google-drive/"/>
     <id>http://sourcey.com/html5-video-streaming-from-google-drive/</id>
     <published>2014-05-04T00:00:00Z</published>
-    <updated>2014-05-04T21:35:52+10:00</updated>
+    <updated>2014-05-04T21:54:13+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -41,7 +41,7 @@
 &lt;span class="nt"&gt;&amp;lt;/video&amp;gt;&lt;/span&gt;
 &lt;/pre&gt;
 
-&lt;p&gt;In order to be completely cross browser then we can't forget about the browser world's reject child; Internet Explorer. &lt;/p&gt;
+&lt;p&gt;In order to be completely cross browser then we can't forget about the browser world's geriatric father; Internet Explorer. &lt;/p&gt;
 
 &lt;p&gt;As you may already know, Google automatically encodes uploaded videos into lower bitrate FLV files for playback using Flash via the Google Drive Viewer, so your best bet is to access the raw FLV stream using a custom player of some kind. &lt;/p&gt;
 
