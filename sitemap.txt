@@ -38,7 +38,6 @@ http://sourcey.com/archives/
 http://sourcey.com/CNAME
 http://sourcey.com/favicon.ico
 http://sourcey.com/feed.xml
-http://sourcey.com/html5-video-is-finally-ready/big_buck_bunny.mp4
 http://sourcey.com/
 http://sourcey.com/sitemap.txt
 http://sourcey.com/sitemap.xml

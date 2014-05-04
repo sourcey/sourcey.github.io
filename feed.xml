@@ -61,7 +61,7 @@ Please note that this page has received a LOT of traffic, so if the video isn't 
     <link rel="alternate" href="http://sourcey.com/html5-video-is-finally-ready/"/>
     <id>http://sourcey.com/html5-video-is-finally-ready/</id>
     <published>2014-05-03T00:00:00Z</published>
-    <updated>2014-05-05T00:25:17+10:00</updated>
+    <updated>2014-05-05T00:38:36+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -75,15 +75,15 @@ Here's the trick though, both Chrome and Firefox will play the &lt;strong&gt;sam
 &lt;p&gt;Here is the proof of concept. Try it out in Chrome, Firefox and Safari:&lt;/p&gt;
 
 &lt;video controls="controls" style="margin-bottom:20px;width:640px"&gt;
-    &lt;source src="http://sourcey.com/html5-video-is-finally-ready/big_buck_bunny.mp4" type="video/mp4" /&gt;
-    &lt;source src="http://sourcey.com/html5-video-is-finally-ready/big_buck_bunny.mp4" type="video/webm" /&gt;
+    &lt;source src="http://media.sourcey.com/big_buck_bunny.mp4" type="video/mp4" /&gt;
+    &lt;source src="http://media.sourcey.com/big_buck_bunny.mp4" type="video/webm" /&gt;
 &lt;/video&gt;
 
 &lt;p&gt;And the source code:&lt;/p&gt;
 
 &lt;pre class="highlight html"&gt;&lt;span class="nt"&gt;&amp;lt;video&lt;/span&gt; &lt;span class="na"&gt;controls=&lt;/span&gt;&lt;span class="s"&gt;"controls"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;source&lt;/span&gt; &lt;span class="na"&gt;src=&lt;/span&gt;&lt;span class="s"&gt;"http://sourcey.com/html5-video-is-finally-ready/big_buck_bunny.mp4"&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;'video/mp4'&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;source&lt;/span&gt; &lt;span class="na"&gt;src=&lt;/span&gt;&lt;span class="s"&gt;"http://sourcey.com/html5-video-is-finally-ready/big_buck_bunny.mp4"&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;'video/webm'&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;source&lt;/span&gt; &lt;span class="na"&gt;src=&lt;/span&gt;&lt;span class="s"&gt;"http://media.sourcey.com/big_buck_bunny.mp4"&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;'video/mp4'&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;source&lt;/span&gt; &lt;span class="na"&gt;src=&lt;/span&gt;&lt;span class="s"&gt;"http://media.sourcey.com/big_buck_bunny.mp4"&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;'video/webm'&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;/video&amp;gt;&lt;/span&gt;
 &lt;/pre&gt;
 
