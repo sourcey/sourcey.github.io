@@ -14,7 +14,7 @@
     <link rel="alternate" href="http://sourcey.com/html5-video-streaming-from-google-drive/"/>
     <id>http://sourcey.com/html5-video-streaming-from-google-drive/</id>
     <published>2014-05-04T00:00:00Z</published>
-    <updated>2014-05-05T00:23:49+10:00</updated>
+    <updated>2014-05-05T00:42:07+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -32,7 +32,7 @@
 Please note that this page has received a LOT of traffic, so if the video isn't displaying then Drive may have temporarily restricted access to the file.
 &lt;/div&gt;
 
-&lt;video controls="controls" style="margin-bottom: 20px"&gt;
+&lt;video controls="controls" style="margin-bottom:20px;width:640px"&gt;
     &lt;source src="https://drive.google.com/uc?export=download&amp;amp;id=0B0JMGMGgxp9WMEdWb1hyQUhlOWs" type="video/mp4" /&gt;
     &lt;source src="https://drive.google.com/uc?export=download&amp;amp;id=0B0JMGMGgxp9WMEdWb1hyQUhlOWs" type="video/webm" /&gt;
 &lt;/video&gt;
