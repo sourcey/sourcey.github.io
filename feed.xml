@@ -14,17 +14,17 @@
     <link rel="alternate" href="http://sourcey.com/html5-video-streaming-from-google-drive/"/>
     <id>http://sourcey.com/html5-video-streaming-from-google-drive/</id>
     <published>2014-05-04T00:00:00Z</published>
-    <updated>2014-05-04T17:10:54+10:00</updated>
+    <updated>2014-05-04T21:35:52+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
     <content type="html">&lt;h1 id="html5-video-streaming-from-google-drive"&gt;HTML5 Video Streaming from Google Drive&lt;/h1&gt;
 
-&lt;p&gt;If you made it here, you're probably wondering if Google Drive is a viable option for hosting streamable videos? Well, the answer is yes!&lt;/p&gt;
+&lt;p&gt;If you made it here, then you're probably wondering if Google Drive is a viable option for hosting streamable videos? Well, the answer is yes!&lt;/p&gt;
 
-&lt;p&gt;This is a follow-up from my last article, &lt;a href="/html5-video-is-finally-ready"&gt;HTML5 Video is Finally Ready&lt;/a&gt;, so read that first if you want the lowdown on how and why this works.&lt;/p&gt;
+&lt;p&gt;This is a follow-up to my last article, &lt;a href="/html5-video-is-finally-ready"&gt;HTML5 Video is Finally Ready&lt;/a&gt;, so read that first if you want the lowdown on how and why this works.&lt;/p&gt;
 
-&lt;p&gt;In order to make files publically playable by anyone you need to share the files as "Public on the web" via your Google Drive, otherwise standard OAuth rules apply.&lt;/p&gt;
+&lt;p&gt;In order to make files publicly playable by anyone you need to share the files as "Public on the web" via your Google Drive, otherwise standard OAuth rules apply.&lt;/p&gt;
 
 &lt;p&gt;Here is the proof of concept which works on Chrome, Firefox and Safari:&lt;/p&gt;
 
@@ -43,7 +43,7 @@
 
 &lt;p&gt;In order to be completely cross browser then we can't forget about the browser world's reject child; Internet Explorer. &lt;/p&gt;
 
-&lt;p&gt;As you probably know, Google automatically encodes uploaded videos into lower bitrate FLV files for playback using Flash via the Google Drive Viewer, so your best bet is to access the raw FLV stream using a custom player of some kind. &lt;/p&gt;
+&lt;p&gt;As you may already know, Google automatically encodes uploaded videos into lower bitrate FLV files for playback using Flash via the Google Drive Viewer, so your best bet is to access the raw FLV stream using a custom player of some kind. &lt;/p&gt;
 
 &lt;p&gt;If you don't care about look of the player, then you can just reuse the Google Flash player like so:&lt;/p&gt;
 
@@ -57,13 +57,13 @@
     <link rel="alternate" href="http://sourcey.com/html5-video-is-finally-ready/"/>
     <id>http://sourcey.com/html5-video-is-finally-ready/</id>
     <published>2014-05-03T00:00:00Z</published>
-    <updated>2014-05-04T17:12:50+10:00</updated>
+    <updated>2014-05-04T21:35:27+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
     <content type="html">&lt;h1 id="html5-video-is-finally-ready"&gt;HTML5 Video is Finally Ready&lt;/h1&gt;
 
-&lt;p&gt;Today I had a plesant surprise when I was able to get a H.264 MPEG-4 AVC encoded MP4 video to play on Chrome (34.0.1847.131), Firefox (28.0) and Safari (5.1.7) using the native HTML5 video element. Keep on reading to find out how.&lt;/p&gt;
+&lt;p&gt;Today I had a pleasant surprise when I was able to get a H.264 MPEG-4 AVC encoded MP4 video to play on Chrome (34.0.1847.131), Firefox (28.0) and Safari (5.1.7) using the native HTML5 video element. Keep on reading to find out how.&lt;/p&gt;
 
 &lt;p&gt;As expected, Safari plays the video when source is provided with the &lt;code&gt;video/mp4&lt;/code&gt; mime type.
 Here's the trick though, both Chrome and Firefox will play the same file if it's provided with a &lt;code&gt;video/webm&lt;/code&gt; attribute. Bingo, cross-browser (for the important browsers that is) native HTML5 video is finally a go!&lt;/p&gt;
