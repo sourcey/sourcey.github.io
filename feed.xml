@@ -5,10 +5,87 @@
   <id>http://sourcey.com</id>
   <link href="http://sourcey.com"/>
   <link href="http://sourcey.com/feed.xml" rel="self"/>
-  <updated>2014-04-25T00:00:00Z</updated>
+  <updated>2014-05-04T00:00:00Z</updated>
   <author>
     <name>Blog Author</name>
   </author>
+  <entry>
+    <title>HTML5 Video Streaming from Google Drive</title>
+    <link rel="alternate" href="http://sourcey.com/html5-video-streaming-from-google-drive/"/>
+    <id>http://sourcey.com/html5-video-streaming-from-google-drive/</id>
+    <published>2014-05-04T00:00:00Z</published>
+    <updated>2014-05-04T17:10:54+10:00</updated>
+    <author>
+      <name>Article Author</name>
+    </author>
+    <content type="html">&lt;h1 id="html5-video-streaming-from-google-drive"&gt;HTML5 Video Streaming from Google Drive&lt;/h1&gt;
+
+&lt;p&gt;If you made it here, you're probably wondering if Google Drive is a viable option for hosting streamable videos? Well, the answer is yes!&lt;/p&gt;
+
+&lt;p&gt;This is a follow-up from my last article, &lt;a href="/html5-video-is-finally-ready"&gt;HTML5 Video is Finally Ready&lt;/a&gt;, so read that first if you want the lowdown on how and why this works.&lt;/p&gt;
+
+&lt;p&gt;In order to make files publically playable by anyone you need to share the files as "Public on the web" via your Google Drive, otherwise standard OAuth rules apply.&lt;/p&gt;
+
+&lt;p&gt;Here is the proof of concept which works on Chrome, Firefox and Safari:&lt;/p&gt;
+
+&lt;video controls="controls" style="margin-bottom: 20px"&gt;
+    &lt;source src="https://drive.google.com/uc?export=download&amp;amp;id=0B0JMGMGgxp9WMEdWb1hyQUhlOWs" type="video/mp4" /&gt;
+    &lt;source src="https://drive.google.com/uc?export=download&amp;amp;id=0B0JMGMGgxp9WMEdWb1hyQUhlOWs" type="video/webm" /&gt;
+&lt;/video&gt;
+
+&lt;p&gt;And the source code:&lt;/p&gt;
+
+&lt;pre class="highlight html"&gt;&lt;span class="nt"&gt;&amp;lt;video&lt;/span&gt; &lt;span class="na"&gt;controls=&lt;/span&gt;&lt;span class="s"&gt;"controls"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;source&lt;/span&gt; &lt;span class="na"&gt;src=&lt;/span&gt;&lt;span class="s"&gt;"https://drive.google.com/uc?export=download&amp;amp;id=0B0JMGMGgxp9WMEdWb1hyQUhlOWs"&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;'video/mp4'&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;source&lt;/span&gt; &lt;span class="na"&gt;src=&lt;/span&gt;&lt;span class="s"&gt;"https://drive.google.com/uc?export=download&amp;amp;id=0B0JMGMGgxp9WMEdWb1hyQUhlOWs"&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;'video/webm'&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/video&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;
+
+&lt;p&gt;In order to be completely cross browser then we can't forget about the browser world's reject child; Internet Explorer. &lt;/p&gt;
+
+&lt;p&gt;As you probably know, Google automatically encodes uploaded videos into lower bitrate FLV files for playback using Flash via the Google Drive Viewer, so your best bet is to access the raw FLV stream using a custom player of some kind. &lt;/p&gt;
+
+&lt;p&gt;If you don't care about look of the player, then you can just reuse the Google Flash player like so:&lt;/p&gt;
+
+&lt;object type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" wmode="opaque" data="https://video.google.com/get_player?el=leaf&amp;amp;cc_load_policy=1&amp;amp;enablejsapi=1" width="1280px" height="750px" id="vpl0" style="width: 590px; height: 370px; margin-bottom: 20px"&gt;&lt;param name="allowFullScreen" value="true" /&gt;&lt;param name="allowscriptaccess" value="always" /&gt;&lt;param name="wmode" value="opaque" /&gt;&lt;param name="flashvars" value="status=ok&amp;amp;hl=en&amp;amp;allow_embed=0&amp;amp;ps=docs&amp;amp;partnerid=30&amp;amp;autoplay=0&amp;amp;docid=0B0JMGMGgxp9WMEdWb1hyQUhlOWs&amp;amp;abd=0&amp;amp;el=leaf&amp;amp;title=big_buck_bunny.mp4&amp;amp;iurl=https%3A%2F%2Fdocs.google.com%2Fvt%3Fauthuser%3D0%26id%3D0B0JMGMGgxp9WMEdWb1hyQUhlOWs&amp;amp;ttsurl=https%3A%2F%2Fdocs.google.com%2Ftimedtext%3Fauthuser%3D0%26id%3D0B0JMGMGgxp9WMEdWb1hyQUhlOWs%26vid%3De578958e6e16e44f&amp;amp;reportabuseurl=https%3A%2F%2Fdocs.google.com%2Fabuse%3Fauthuser%3D0%26id%3D0B0JMGMGgxp9WMEdWb1hyQUhlOWs&amp;amp;token=1&amp;amp;plid=V0QTaujn2CBLXA&amp;amp;fmt_stream_map=18%7Chttps%3A%2F%2Fr8---sn-ntq7ened.c.docs.google.com%2Fvideoplayback%3Frequiressl%3Dyes%26shardbypass%3Dyes%26cmbypass%3Dyes%26id%3De578958e6e16e44f%26itag%3D18%26source%3Dwebdrive%26app%3Ddocs%26ip%3D59.101.83.21%26ipbits%3D0%26expire%3D1399190315%26sparams%3Drequiressl%252Cshardbypass%252Ccmbypass%252Cid%252Citag%252Csource%252Cip%252Cipbits%252Cexpire%26signature%3D1409A45041079AC97B82A53C82B72B176E7295BE.432A8FD910D8DB7C14D0ED93884BE6D55B9C918%26key%3Dck2%26ir%3D1%26ms%3Dnxu%26mt%3D1399186650%26mv%3Dm%26mws%3Dyes%2C34%7Chttps%3A%2F%2Fr8---sn-ntq7ened.c.docs.google.com%2Fvideoplayback%3Frequiressl%3Dyes%26shardbypass%3Dyes%26cmbypass%3Dyes%26id%3De578958e6e16e44f%26itag%3D34%26source%3Dwebdrive%26app%3Ddocs%26ip%3D59.101.83.21%26ipbits%3D0%26expire%3D1399190315%26sparams%3Drequiressl%252Cshardbypass%252Ccmbypass%252Cid%252Citag%252Csource%252Cip%252Cipbits%252Cexpire%26signature%3D18B8078AAA0F03717ADE0B017E752D1E797B9406.81C1DA43B6417F6B524AA33F654E5BE0D90F596%26key%3Dck2%26ir%3D1%26ms%3Dnxu%26mt%3D1399186650%26mv%3Dm%26mws%3Dyes%2C43%7Chttps%3A%2F%2Fr8---sn-ntq7ened.c.docs.google.com%2Fvideoplayback%3Frequiressl%3Dyes%26shardbypass%3Dyes%26cmbypass%3Dyes%26id%3De578958e6e16e44f%26itag%3D43%26source%3Dwebdrive%26app%3Ddocs%26ip%3D59.101.83.21%26ipbits%3D0%26expire%3D1399190315%26sparams%3Drequiressl%252Cshardbypass%252Ccmbypass%252Cid%252Citag%252Csource%252Cip%252Cipbits%252Cexpire%26signature%3D41EDA4A85EB4BBD63C31C15D6A9178B48B99FC49.177799E1DBD96CB7575DB86EFB115BD10DFA37A1%26key%3Dck2%26ir%3D1%26ms%3Dnxu%26mt%3D1399186650%26mv%3Dm%26mws%3Dyes&amp;amp;fmt_list=18%2F640x360%2F9%2F0%2F115%2C34%2F640x360%2F9%2F0%2F115%2C43%2F640x360%2F99%2F0%2F0&amp;amp;url_encoded_fmt_stream_map=itag%3D18%26url%3Dhttps%253A%252F%252Fr8---sn-ntq7ened.c.docs.google.com%252Fvideoplayback%253Frequiressl%253Dyes%2526shardbypass%253Dyes%2526cmbypass%253Dyes%2526id%253De578958e6e16e44f%2526itag%253D18%2526source%253Dwebdrive%2526app%253Ddocs%2526ip%253D59.101.83.21%2526ipbits%253D0%2526expire%253D1399190315%2526sparams%253Drequiressl%252Cshardbypass%252Ccmbypass%252Cid%252Citag%252Csource%252Cip%252Cipbits%252Cexpire%2526signature%253D1409A45041079AC97B82A53C82B72B176E7295BE.432A8FD910D8DB7C14D0ED93884BE6D55B9C918%2526key%253Dck2%2526ir%253D1%2526ms%253Dnxu%2526mt%253D1399186650%2526mv%253Dm%2526mws%253Dyes%26type%3Dvideo%252Fmp4%253B%2Bcodecs%253D%2522avc1.42001E%252C%2Bmp4a.40.2%2522%26quality%3Dmedium%2Citag%3D34%26url%3Dhttps%253A%252F%252Fr8---sn-ntq7ened.c.docs.google.com%252Fvideoplayback%253Frequiressl%253Dyes%2526shardbypass%253Dyes%2526cmbypass%253Dyes%2526id%253De578958e6e16e44f%2526itag%253D34%2526source%253Dwebdrive%2526app%253Ddocs%2526ip%253D59.101.83.21%2526ipbits%253D0%2526expire%253D1399190315%2526sparams%253Drequiressl%252Cshardbypass%252Ccmbypass%252Cid%252Citag%252Csource%252Cip%252Cipbits%252Cexpire%2526signature%253D18B8078AAA0F03717ADE0B017E752D1E797B9406.81C1DA43B6417F6B524AA33F654E5BE0D90F596%2526key%253Dck2%2526ir%253D1%2526ms%253Dnxu%2526mt%253D1399186650%2526mv%253Dm%2526mws%253Dyes%26type%3Dvideo%252Fx-flv%26quality%3Dmedium%2Citag%3D43%26url%3Dhttps%253A%252F%252Fr8---sn-ntq7ened.c.docs.google.com%252Fvideoplayback%253Frequiressl%253Dyes%2526shardbypass%253Dyes%2526cmbypass%253Dyes%2526id%253De578958e6e16e44f%2526itag%253D43%2526source%253Dwebdrive%2526app%253Ddocs%2526ip%253D59.101.83.21%2526ipbits%253D0%2526expire%253D1399190315%2526sparams%253Drequiressl%252Cshardbypass%252Ccmbypass%252Cid%252Citag%252Csource%252Cip%252Cipbits%252Cexpire%2526signature%253D41EDA4A85EB4BBD63C31C15D6A9178B48B99FC49.177799E1DBD96CB7575DB86EFB115BD10DFA37A1%2526key%253Dck2%2526ir%253D1%2526ms%253Dnxu%2526mt%253D1399186650%2526mv%253Dm%2526mws%253Dyes%26type%3Dvideo%252Fwebm%26quality%3Dmedium&amp;amp;timestamp=1399186715856&amp;amp;length_seconds=61&amp;amp;playerapiid=vpl0" /&gt;&lt;/object&gt;
+
+&lt;p&gt;Hopefully this will make someone's day like it made mine, cheers!&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <title>HTML5 Video is Finally Ready</title>
+    <link rel="alternate" href="http://sourcey.com/html5-video-is-finally-ready/"/>
+    <id>http://sourcey.com/html5-video-is-finally-ready/</id>
+    <published>2014-05-03T00:00:00Z</published>
+    <updated>2014-05-04T17:12:50+10:00</updated>
+    <author>
+      <name>Article Author</name>
+    </author>
+    <content type="html">&lt;h1 id="html5-video-is-finally-ready"&gt;HTML5 Video is Finally Ready&lt;/h1&gt;
+
+&lt;p&gt;Today I had a plesant surprise when I was able to get a H.264 MPEG-4 AVC encoded MP4 video to play on Chrome (34.0.1847.131), Firefox (28.0) and Safari (5.1.7) using the native HTML5 video element. Keep on reading to find out how.&lt;/p&gt;
+
+&lt;p&gt;As expected, Safari plays the video when source is provided with the &lt;code&gt;video/mp4&lt;/code&gt; mime type.
+Here's the trick though, both Chrome and Firefox will play the same file if it's provided with a &lt;code&gt;video/webm&lt;/code&gt; attribute. Bingo, cross-browser (for the important browsers that is) native HTML5 video is finally a go!&lt;/p&gt;
+
+&lt;p&gt;Here is the proof of concept:&lt;/p&gt;
+
+&lt;video controls="controls"&gt;
+    &lt;source src="https://drive.google.com/uc?export=download&amp;amp;id=0B0JMGMGgxp9WMEdWb1hyQUhlOWs" type="video/mp4" /&gt;
+    &lt;source src="https://drive.google.com/uc?export=download&amp;amp;id=0B0JMGMGgxp9WMEdWb1hyQUhlOWs" type="video/webm" /&gt;
+&lt;/video&gt;
+
+&lt;p&gt;And the source code:&lt;/p&gt;
+
+&lt;pre class="highlight html"&gt;&lt;span class="nt"&gt;&amp;lt;video&lt;/span&gt; &lt;span class="na"&gt;controls=&lt;/span&gt;&lt;span class="s"&gt;"controls"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;source&lt;/span&gt; &lt;span class="na"&gt;src=&lt;/span&gt;&lt;span class="s"&gt;"https://drive.google.com/uc?export=download&amp;amp;id=0B0JMGMGgxp9WMEdWb1hyQUhlOWs"&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;'video/mp4'&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;source&lt;/span&gt; &lt;span class="na"&gt;src=&lt;/span&gt;&lt;span class="s"&gt;"https://drive.google.com/uc?export=download&amp;amp;id=0B0JMGMGgxp9WMEdWb1hyQUhlOWs"&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;'video/webm'&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/video&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;
+
+&lt;p&gt;I would interested to hear if this method works on the new Internet Explorer, so please drop me a comment if you're able to test it, or have any other thoughts to add.&lt;/p&gt;
+</content>
+  </entry>
   <entry>
     <title>Password Free Signup and Authentication</title>
     <link rel="alternate" href="http://sourcey.com/password-free-signup-and-authentication/"/>
@@ -370,130 +447,6 @@ Note that if you are attempting to make a call to a remote endpoint, and both us
 &lt;p&gt;Symple and it's client/server implementations are open source, so feel free to grab them from Github and use them in your projects. For a full list of projects and the protocol specification see the Symple homepage: http://sourcey.com/symple &lt;/p&gt;
 
 &lt;p&gt;I hope you enjoy the demo, and feel free to drop me a line if you have any questions.&lt;/p&gt;
-</content>
-  </entry>
-  <entry>
-    <title>The Art of the Internet AKA. Attack of the Clones</title>
-    <link rel="alternate" href="http://sourcey.com/the-art-of-the-internet/"/>
-    <id>http://sourcey.com/the-art-of-the-internet/</id>
-    <published>2014-03-29T02:23:53Z</published>
-    <updated>2014-04-06T23:12:59+10:00</updated>
-    <author>
-      <name>Article Author</name>
-    </author>
-    <content type="html">&lt;h1 id="the-art-of-the-internet-aka-attack-of-the-clones"&gt;The Art of the Internet AKA. Attack of the Clones&lt;/h1&gt;
-
-&lt;p&gt;Many of the programmers and designers I know consider themselves to be artists, but as in the art world, there are good artists, and well … not so good artists. &lt;/p&gt;
-
-&lt;p&gt;It's important to realise that artists are not just people who build stuff, they are able to channel real creative inspiration and express it using their medium. How many so called 'entrepreneurs' or 'gurus' can claim this? Most are just churning out the same old stale crap. Remember people, its easy to be a builder, but not many people can be an artist. &lt;/p&gt;
-
-&lt;p&gt;The truth is artists (and women to a lesser extent &lt;em&gt;slap&lt;/em&gt;) are few and far between in the professional IT world, but thats most likely due to the logic driven paradigm in which we work. Everyone has their strengths and weaknesses; and some say this is related to their predominant functional lateralisation ie. weather they predominantly use the right (intuitive) and the left(logical) hemispheres of their brain. A person who is "left-brained" is often said to be more logical, analytical, and objective, while a person who is "right-brained" is said to be more intuitive, thoughtful, and subjective. Personally, I believe this concept to be a total myth, but people's tendency to believe in absurd ideas that adequately describe the unknown should never be underestimated!&lt;/p&gt;
-
-&lt;p&gt;Lets say for arguments sake that functional lateralisation was a real thing, then it would be safe to assume that the Internet is a predominantly "left-brained" phenomenon. The problem here, is that left brained thinking is fundamentally restrictive; it's calculated, rigid, and lacks abstract dimension. Despite this however, even "left-brained" thinkers have the ability to appreciate fine art. They might not truly understand it, but it still speaks to them on a primal level, which tells me the ability is there, but the connection has been lost.&lt;/p&gt;
-
-&lt;p&gt;Every day I look at new startups being released, and its rare that I don't look at their websites and see a clone of whatever design is currently trending. It's almost like sitting through a Hollywood movie; the formulaic predictability detracts from any substance that might be lurking beneath the surface. How many other people out there must be in the same boat, especially in gen Y, how many potential customers!? &lt;/p&gt;
-
-&lt;p&gt;It's time to look deeper folks. It's time to let our logical and intuitive brains compliment each other, in fact this kind of genius thats within all of our grasp. The more clones that saturate the Internet and media worldwide, the more people will be recognize the genuine point-of-difference that makes them feel something. Try to make a genuine psychological and emotional connection with your clients when planning your next project, and if they ain't feelin' it like you are, then your idea might not be as good as you think.&lt;/p&gt;
-
-&lt;p&gt;To all of you IT professionals out there, take the time to thoroughly master your trade before expecting success, and don't forget to mingle with real artists because they will teach you to create with passion and inspiration. Think like an artist and work like a machine!
-&lt;!--
-teach you how to think (oh the irony). Unless you have it naturally, artists are the ones that will 
- --&gt; &lt;/p&gt;
-
-</content>
-  </entry>
-  <entry>
-    <title>Conquering the Internet</title>
-    <link rel="alternate" href="http://sourcey.com/conquering-the-internet/"/>
-    <id>http://sourcey.com/conquering-the-internet/</id>
-    <published>2014-03-28T15:02:16Z</published>
-    <updated>2014-04-25T23:56:37+10:00</updated>
-    <author>
-      <name>Article Author</name>
-    </author>
-    <content type="html">&lt;h1 id="conquering-the-internet"&gt;Conquering the Internet&lt;/h1&gt;
-
-&lt;p&gt;Everyone with an entrepreneurial spark is trying to claim their piece of Internet glory, yet only a small number will have any measure of success. &lt;/p&gt;
-
-&lt;p&gt;When a warlord conquers a country, he not only does so with supreme force of will, he does so with an army. Despite his brutality, the warlords also has a certain kind of honour. The Internet differs from the battlefield in this respect, because of the enormous potential for cloak and dagger. In this brave new world of Internet marketing, it's the Internet warrior who succeeds with honour and dignity who's the real victor.&lt;/p&gt;
-
-&lt;!--
-To conquer the Internet is a dream held by many, yet its easy to forget what's important along the treacherous path to victory. 
-, and what you will have to give and take.
-
-and build unrealistic expectations of success. 
---&gt;
-
-&lt;h2 id="meditation"&gt;Meditation&lt;/h2&gt;
-
-&lt;p&gt;When launching a new enterprise it's your entrepreneurial passion that will drive you, and delude you from the truth. This is why its important to calm and prepare your mind for what's coming before you setting out on your hero's journey. &lt;/p&gt;
-
-&lt;p&gt;Don't be blinded by the entrepreneurial fervour, and or loose sight of the reality of your choices. Make sure you know what you're in for, and that you're willing to accept the long term effects and responsibilities of your undertaking. &lt;/p&gt;
-
-&lt;p&gt;Take the time to detach yourself, and view your goals with an objective and critical mind. Ask yourself the difficult questions, and if you can't be 100% honest, then find someone who will.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Have I researched the market properly?&lt;/li&gt;
-  &lt;li&gt;Do I have the manpower and resources?&lt;/li&gt;
-  &lt;li&gt;Is my project worthy of financial investment?&lt;/li&gt;
-  &lt;li&gt;Am I ready to spend the next few years doing this?&lt;/li&gt;
-  &lt;li&gt;Have I spoken to the right people?&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;In this world full by quick fix pop culture and black-hat morals, genuine quality has become something of a rarity. Stay true to your purpose, don't be guiled into believing the hollow promises and hype, and eventually you will cultivate a loyal and credible following. What's rare is also valuable, and even though your success won't be instantaneous, it will be well earned and rewarded. &lt;/p&gt;
-
-&lt;h2 id="building-your-castle"&gt;Building your Castle&lt;/h2&gt;
-
-&lt;p&gt;In the game of the Internet, you should first concentrate on building your castle, which your primary domain.&lt;/p&gt;
-
-&lt;p&gt;Forget about the crappy minisites and backlink spam - shortcuts will get you killed. You are establishing an online economy and you don't want to spread yourself thin with too many towns and villages early on in the piece. Consolidate your resources, and focus on your primary domain.&lt;/p&gt;
-
-&lt;h2 id="rallying-the-troops"&gt;Rallying the Troops&lt;/h2&gt;
-
-&lt;p&gt;To consolidate your vision, you need to rally the troops. Working as a solopreneur is a tough gig - so why not make life easy on yourself? The Internet is a hive of people, and everyone is looking for something, so why not use it to connect with people! Check meetup.com for local meetups with people of similar interests. Talk about and develop your ideas with other people, and pretty soon your talent, conviction and passion will begin to attract an army.&lt;/p&gt;
-
-&lt;p&gt;A warlord rallies his troops with fear and promise of spoils untold, but as entrepreneurs preffer to offer each other friendship and success.&lt;/p&gt;
-
-&lt;p&gt;Some good places are Meetup, Facebook, Github - whatever floats your boat.&lt;/p&gt;
-
-&lt;h2 id="going-to-war"&gt;Going to War&lt;/h2&gt;
-
-&lt;p&gt;On the Internet, the success is measured in terms of conversions, revenue and real estate. Total annihilation of the competition is just a bonus!&lt;/p&gt;
-
-&lt;p&gt;Developing a sound Marketing Strategy and sticking to is key, as well as knowing how to use the Internet as a weapon.&lt;/p&gt;
-
-&lt;p&gt;Without going into extreme detail, here are some factors to consider when educating yourself and planning your strategy.&lt;/p&gt;
-
-&lt;h3 id="content"&gt;Content&lt;/h3&gt;
-
-&lt;p&gt;Google's algorithm changes have made it easier than ever to rank for genuine quality original content, so get writing! Write natural content covering all aspects of your market and profession. Careful not to repost or duplicate your content on other sites. Guest post if you have to, but remember, &lt;strong&gt;your&lt;/strong&gt; content is always more valuable on &lt;strong&gt;YOUR&lt;/strong&gt; domain.&lt;/p&gt;
-
-&lt;p&gt;Because of this, it follows that you should store your blog of your own domain. Try to stay clear of cloud blogging platforms (Wordpress/Tumblr) for your primary content, but by all means use them to aggregate excerpts from your blog feed.&lt;/p&gt;
-
-&lt;h3 id="social-media"&gt;Social Media&lt;/h3&gt;
-
-&lt;p&gt;Social media mastery is vital to your online success. Learn to balance the right amount of interaction and automation to ensure rapid growth. &lt;/p&gt;
-
-&lt;p&gt;Using and understanding the right tools for the job will save you precious time. Tools you should be using are: &lt;a href="http://bufferapp.com" title="Buffer" target="_blank"&gt;Buffer&lt;/a&gt; to automate your content syndication, and &lt;a href="http://gardn.net" title="Gardn" target="_blank"&gt;Gardn&lt;/a&gt; to ensure your content is shared far and wide via your social networks.&lt;/p&gt;
-
-&lt;h3 id="seo"&gt;SEO&lt;/h3&gt;
-
-&lt;p&gt;Things are changing fast in the SEO world, so it's a good idea to stay informed about the latest SEO trends - just don't caught up in the hype.&lt;/p&gt;
-
-&lt;p&gt;Spend time creating regular content and reputable backlinks, and be sure to optimize your site for page speed and cross platform devices. Educate yourself about static websites (Middleman, Jekyll), and responsive design (Bootstrap, Zerb Foundation), and use pretty URLs wherever possible.&lt;/p&gt;
-
-&lt;h3 id="advertising"&gt;Advertising&lt;/h3&gt;
-
-&lt;p&gt;Your best source of traffic is going to be organic search traffic, so pool your resources and focus on the search engines. If you have the budget for it, then by all means advertise the best of your content and products.&lt;/p&gt;
-
-&lt;p&gt;PPC advertising is expensive, and can be hit and miss depending on your product and presentation. The best success I have had is with more expensive items due to the increased the conversion ratio.&lt;/p&gt;
-
-&lt;p&gt;You might also consider paid directories. DMOZ is free but hard to get in, and Best of the Web and Yahoo are well known paid directories. Directories will give you credibility, but bear in mind they aren't cheap, and many consider them to be redundant.&lt;/p&gt;
-
-&lt;h2 id="preparing-for-victory"&gt;Preparing for Victory&lt;/h2&gt;
-&lt;p&gt;The way one handles victory says a lot about the character of a person or business. You may be tempted by the bright lights and fat stacks, but in the end the greatest reward you can expect is to succeed while having a good time and conducting yourself with integrity.&lt;/p&gt;
-
-&lt;p&gt;The victor has certain obligations, least of which is to set the standard for those to come. As your business grows, so must you. Be consistent with your training, meditation and relaxation, and free yourself from gloating and arrogant expression. Keep developing your mind and body so that your endeavours may continue to evolve alongside your vision and creativity.&lt;/p&gt;
 </content>
   </entry>
 </feed>

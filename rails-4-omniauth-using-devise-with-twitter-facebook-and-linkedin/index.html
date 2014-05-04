@@ -84,7 +84,7 @@
       </div>
       <h1 id="rails-4-omniauth-using-devise-with-twitter-facebook-and-linkedin">Rails 4 OmniAuth using Devise with Twitter, Facebook and Linkedin</h1>
 
-<p>There are quite a few OAuth solutions out there, but I want to share the one we use, as it allows you to intelligently link multiple OAuth identities with a single user entity. If you use 90% of the code examples on the internet you will wind up with a new user entity each time the user signs in with a different OAuth provider, and a bunch of very confused users.</p>
+<p>There are quite a few OAuth solutions out there, but I want to share the one we use since it allows you to intelligently link multiple OAuth identities with a single user entity. If you use 90% of the code examples on the internet you will wind up with a new user entity each time the user signs in with a different OAuth provider, and a bunch of very confused users.</p>
 
 <p>The OAuth provider that throws a spanner in the works and adds convolution to our code is Twitter. Twitter doesn't share their user's email address, so we need to add an extra step to get it from the user. Note that we do not ask Twitter users to "confirm" their email address, since they have already associated their Twitter account, and we don't want to be too much of a pain in the ass and remove all the joy from OAuth altogether.</p>
 
@@ -104,7 +104,7 @@
 <pre class="highlight ruby"><span class="n">rails</span> <span class="n">generate</span> <span class="n">devise</span><span class="ss">:install</span>
 <span class="n">rails</span> <span class="n">generate</span> <span class="n">devise</span> <span class="n">user</span>
 <span class="n">rails</span> <span class="n">g</span> <span class="n">migration</span> <span class="n">add_name_to_users</span> <span class="nb">name</span><span class="ss">:string</span>
-<span class="n">rails</span> <span class="n">g</span> <span class="n">model</span> <span class="n">identity</span> <span class="n">user</span><span class="ss">:references</span> <span class="n">provider</span><span class="ss">:string</span> <span class="n">uid</span><span class="ss">:string</span> <span class="n">oauth_token</span><span class="ss">:string</span> <span class="n">oauth_secret</span><span class="ss">:string</span> <span class="n">oauth_expires_at</span><span class="ss">:datetime</span>
+<span class="n">rails</span> <span class="n">g</span> <span class="n">model</span> <span class="n">identity</span> <span class="n">user</span><span class="ss">:references</span> <span class="n">provider</span><span class="ss">:string</span> <span class="n">uid</span><span class="ss">:string</span>
 
 <span class="c1"># Modify the db/migrate/[timestamp]_add_devise_to_users.rb to configure the Devise modules you will use.</span>
 <span class="c1"># We usually enable the "confirmable" module when enabling email signups.</span>

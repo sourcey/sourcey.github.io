@@ -88,20 +88,30 @@
 
 <p>There are a few ways to <a href="http://trac.edgewall.org/wiki/TracInstall" target="_blank">install Trac</a>, by Python's <code>easy_install</code> package makes the actual installation pretty straight forward so we'll use that.</p>
 
-<p>Install Trac 1.0.1:
-~~~ easy_install Trac==1.0.1~~~ </p>
+<p>Install Trac 1.0.1:</p>
 
-<p>Or install latest development version:
-~~~ easy_install Trac==dev~~~ </p>
+<pre class="highlight shell">easy_install <span class="nv">Trac</span><span class="o">==</span>1.0.1 
+</pre>
 
-<p>Next we create the environment:
-~~~ trac-admin /path/to/trac initenv~~~ </p>
+<p>Or install latest development version:</p>
 
-<p>Make sure the user account under which the web front-end runs will have write permissions to the environment directory and all the files inside:
-~~~ chown -R deploy.deploy /path/to/trac~~~ </p>
+<pre class="highlight shell">easy_install <span class="nv">Trac</span><span class="o">==</span>dev 
+</pre>
 
-<p>You can fire up the server now to test everything. If you are only have a single Trac project you should use the -s option to bypass the "Available Projects" screen.
-~~~ tracd -s –port 9990 /path/to/trac~~~ </p>
+<p>Next we create the environment:</p>
+
+<pre class="highlight shell">trac-admin /path/to/trac initenv
+</pre>
+
+<p>Make sure the user account under which the web front-end runs will have write permissions to the environment directory and all the files inside:</p>
+
+<pre class="highlight shell">chown -R deploy.deploy /path/to/trac 
+</pre>
+
+<p>You can fire up the server now to test everything. If you are only have a single Trac project you should use the -s option to bypass the "Available Projects" screen.</p>
+
+<pre class="highlight shell">tracd -s --port 9990 /path/to/trac 
+</pre>
 
 <p>For our purposes we are content using the tracd server behind an Nginx reverse proxy, but there are other alternatives to tracd should you need it. </p>
 
@@ -193,29 +203,39 @@ stop<span class="o">()</span> <span class="o">{</span>
 </span><span class="nb">exit</span> <span class="nv">$RETVAL</span>
 </pre>
 
-<p>Now run the following commands:
-~~~ chmod 755 /etc/init.d/tracd~~~ 
-~~~ chkconfig –-add /etc/init.d/tracd~~~ </p>
+<p>Now run the following commands:</p>
 
-<p>Unless you want to create a public wiki you will want some form of authentication. The init.d script uses a htpasswd file for basic authentication, so we can build that now:
-~~~ htpasswd -c /path/to/trac/htpasswd MyUsername~~~ </p>
+<pre class="highlight shell">chmod 755 /etc/init.d/tracd
+chkconfig –-add /etc/init.d/tracd
+</pre>
 
-<p>Alternatively, if you want a completely public wiki you could do something like this to give anonymous users full privileges (be sure you know what you are doing before you run this command!):
-~~~ trac-admin /path/to/trac permission add anonymous "*"~~~ </p>
+<p>Unless you want to create a public wiki you will want some form of authentication. The init.d script uses a htpasswd file for basic authentication, so we can build that now:</p>
 
-<p>To start the server you can run:
-~~~ service tracd start~~~ </p>
+<pre class="highlight shell">htpasswd -c /path/to/trac/htpasswd MyUsername
+</pre>
+
+<p>Alternatively, if you want a completely public wiki you could do something like this to give anonymous users full privileges (be sure you know what you are doing before you run this command!):</p>
+
+<pre class="highlight shell">trac-admin /path/to/trac permission add anonymous <span class="s2">"*"</span>
+</pre>
+
+<p>To start the server you can run:</p>
+
+<pre class="highlight shell">service tracd start
+</pre>
 
 <p>Since we use monit to monitor our server stack we will add a quick script to ensure the server doesn't go down. Copy the following file to <code>/etc/monit.d/tracd</code>:</p>
 
-<pre class="highlight plaintext">check process tracd with pidfile /var/run/tracd.pid
-  start program = "/etc/init.d/tracd start"
-  stop  program = "/etc/init.d/tracd stop"
-  if 5 restarts within 5 cycles then timeout
+<pre class="highlight shell">check process tracd with pidfile /var/run/tracd.pid
+  start program <span class="o">=</span> <span class="s2">"/etc/init.d/tracd start"</span>
+  stop  program <span class="o">=</span> <span class="s2">"/etc/init.d/tracd stop"</span>
+  <span class="k">if </span>5 restarts within 5 cycles <span class="k">then </span>timeout
 </pre>
 
 <p>Now reload the monit configuration:
-~~~ monit reload~~~ </p>
+~~~ bash
+monit reload
+~~~ </p>
 
 <p>And we are done. Hopefully this saved you some time, and good luck with your projects!</p>
     

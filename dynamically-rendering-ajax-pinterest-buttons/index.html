@@ -92,16 +92,17 @@
 
 <p>The most common way to achieve this, although it's not my preferred way, is by using the "data-pin-build" attribute of the script tag to map the function for rendering dynamic buttons.</p>
 
-<p>~~~ <script defer="defer" src="//assets.pinterest.com/js/pinit.js" data-pin-build="parsePins"></script>~~~ ruby</p>
+<pre class="highlight plaintext">&lt;script defer="defer" src="//assets.pinterest.com/js/pinit.js" data-pin-build="parsePins"&gt;&lt;/script&gt;
+</pre>
 
 <p>Buttons can now be rendered as follows:</p>
 
-<p>~~~ javascript  // render buttons inside a scoped DOM element
-  window.parsePins(pbtn[0]);</p>
+<pre class="highlight javascript"><span class="c1">// render buttons inside a scoped DOM element
+</span><span class="nb">window</span><span class="p">.</span><span class="nx">parsePins</span><span class="p">(</span><span class="nx">pbtn</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
 
-<p>// render the whole page
-  window.parsePins();
-~~~ </p>
+<span class="c1">// render the whole page
+</span><span class="nb">window</span><span class="p">.</span><span class="nx">parsePins</span><span class="p">();</span>
+</pre>
 
 <h3 id="method-two">Method two</h3>
 

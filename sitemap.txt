@@ -32,6 +32,8 @@ http://sourcey.com/symple-webrtc-video-chat-demo/
 http://sourcey.com/migrating-from-wordpress-to-middleman/
 http://sourcey.com/guest-posting-opportunities/
 http://sourcey.com/password-free-signup-and-authentication/
+http://sourcey.com/html5-video-is-finally-ready/
+http://sourcey.com/html5-video-streaming-from-google-drive/
 http://sourcey.com/archives/
 http://sourcey.com/CNAME
 http://sourcey.com/favicon.ico
@@ -101,3 +103,5 @@ http://sourcey.com/tags/real-time/
 http://sourcey.com/tags/streaming/
 http://sourcey.com/tags/demo/
 http://sourcey.com/tags/authentication/
+http://sourcey.com/tags/google/
+http://sourcey.com/tags/drive/

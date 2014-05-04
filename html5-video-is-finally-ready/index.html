@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="google-site-verification" content="lC7-hHwqtiRqo7YTHc1fJ6t8ie-Hs7J4o5u3XRIF9Vw" />
-    <title>WebRTC Native C++ to Browser Video Streaming Example</title>
+    <title>HTML5 Video is Finally Ready</title>
     <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
     
     <link href="/stylesheets/app.css" media="screen" rel="stylesheet" type="text/css" />
@@ -26,7 +26,7 @@
     </script>
   </head>
       
-  <body class="blog webrtc-native-to-browser-video-streaming-example webrtc-native-to-browser-video-streaming-example_index">
+  <body class="blog html5-video-is-finally-ready html5-video-is-finally-ready_index">
       <nav class="top-bar" data-topbar="">
     <div id="social">
       <a href="https://plus.google.com/+SourceyDevel"><i class="fi-social-google-plus large"></i></a>
@@ -76,55 +76,56 @@
     <div id="main" role="main">
       <div id="rotate-article">
         
-          <a class="next" href="/twitter-follow-unfollow-retweeter-ruby-bot/">next article &rarr;</a>
+          <a class="next" href="/html5-video-streaming-from-google-drive/">next article &rarr;</a>
         
         
-          <a class="prev" href="/initial-commit/">&larr; previous article</a>
+          <a class="prev" href="/password-free-signup-and-authentication/">&larr; previous article</a>
         
       </div>
-      <h1 id="webrtc-native-c-to-browser-video-streaming-example">WebRTC Native C++ to Browser Video Streaming Example</h1>
+      <h1 id="html5-video-is-finally-ready">HTML5 Video is Finally Ready</h1>
 
-<p>There is a lot of information out there about browser to browser WebRTC streaming, but surprisingly there is not much coverage on how to stream video from a native application to the browser. Hopefully this example will be of some use to those of you out there who are looking to use WebRTC in native applications.</p>
+<p>Today I had a plesant surprise when I was able to get a H.264 MPEG-4 AVC encoded MP4 video to play on Chrome (34.0.1847.131), Firefox (28.0) and Safari (5.1.7) using the native HTML5 video element. Keep on reading to find out how.</p>
 
-<p>We have repackaged the <code>peerconnection_client</code> and <code>peerconnection_server</code> projects from the WebRTC repository with a few modifications, and included a <code>native-to-browser-test.html</code> page which you can use to view the native video stream in your browser.</p>
+<p>As expected, Safari plays the video when source is provided with the <code>video/mp4</code> mime type.
+Here's the trick though, both Chrome and Firefox will play the same file if it's provided with a <code>video/webm</code> attribute. Bingo, cross-browser (for the important browsers that is) native HTML5 video is finally a go!</p>
 
-<p>Follow the steps below to get the sample working:</p>
+<p>Here is the proof of concept:</p>
 
-<ol>
-  <li>Checkout and build the WebRTC repository as per the <a href="http://www.webrtc.org/reference/getting-started">official guide</a></li>
-  <li>Clone the example repository <code>git clone https://github.com/auscaster/webrtc-native-to-browser-peerconnection-example.git</code>, or <a href="https://github.com/auscaster/webrtc-native-to-browser-peerconnection-example">download it from Github</a></li>
-  <li>Copy the <code>peerconnection</code> folder into the <code>webrtc/trunk/talk/examples</code> folder, ensuring to rename and backup the existing <code>peerconnection</code> folder</li>
-  <li>Build the WebRTC solution again</li>
-  <li>Run the <code>peerconnection_server</code> and <code>peerconnection_client</code> executables located in <code>webrtc/trunk/build</code></li>
-  <li>Fire up the <code>native-to-browser-test.html</code> page in Chrome</li>
-  <li>Select the "myclient" entry from the <code>peerconnection_client</code> window to begin broadcasting video to the browser page</li>
-  <li>If all went according to plan you should see your sexy self in the browser!</li>
-</ol>
+<video controls="controls">
+    <source src="https://drive.google.com/uc?export=download&amp;id=0B0JMGMGgxp9WMEdWb1hyQUhlOWs" type="video/mp4" />
+    <source src="https://drive.google.com/uc?export=download&amp;id=0B0JMGMGgxp9WMEdWb1hyQUhlOWs" type="video/webm" />
+</video>
 
-<p>Note that this example only works in Chrome, as the DTLS SRTP signalling which is required by Firefox is not implemented. If you want to stream to both Chrome and Firefox then take a look at the <a href="/symple">Symple</a> project, which features a native C++ server sample that streams live video to the browser using a Node.js server for signalling. Also check out the Anionu SDK, which features a native WebRTC plugin for cross-browser video streaming using Anionu's Spot client.</p>
+<p>And the source code:</p>
 
-<p>Hopefully you found this information useful, and keep sharing the love!</p>
+<pre class="highlight html"><span class="nt">&lt;video</span> <span class="na">controls=</span><span class="s">"controls"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;source</span> <span class="na">src=</span><span class="s">"https://drive.google.com/uc?export=download&amp;id=0B0JMGMGgxp9WMEdWb1hyQUhlOWs"</span> <span class="na">type=</span><span class="s">'video/mp4'</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;source</span> <span class="na">src=</span><span class="s">"https://drive.google.com/uc?export=download&amp;id=0B0JMGMGgxp9WMEdWb1hyQUhlOWs"</span> <span class="na">type=</span><span class="s">'video/webm'</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/video&gt;</span>
+</pre>
+
+<p>I would interested to hear if this method works on the new Internet Explorer, so please drop me a comment if you're able to test it, or have any other thoughts to add.</p>
     
       
       <ul class="social-buttons">
         <li>
-          <a href="http://twitter.com/share" class="socialite twitter-share" data-text="WebRTC Native C++ to Browser Video Streaming Example" data-url="http://sourcey.com/webrtc-native-to-browser-video-streaming-example/" data-count="vertical" rel="nofollow" target="_blank"><span class="vhidden">Share on Twitter</span></a>
+          <a href="http://twitter.com/share" class="socialite twitter-share" data-text="HTML5 Video is Finally Ready" data-url="http://sourcey.com/html5-video-is-finally-ready/" data-count="vertical" rel="nofollow" target="_blank"><span class="vhidden">Share on Twitter</span></a>
         </li>
         <li>
-          <a href="https://plus.google.com/share?url=http://sourcey.com/webrtc-native-to-browser-video-streaming-example/" class="socialite googleplus-one" data-size="tall" data-href="http://sourcey.com/webrtc-native-to-browser-video-streaming-example/" rel="nofollow" target="_blank"><span class="vhidden">Share on Google+</span></a>
+          <a href="https://plus.google.com/share?url=http://sourcey.com/html5-video-is-finally-ready/" class="socialite googleplus-one" data-size="tall" data-href="http://sourcey.com/html5-video-is-finally-ready/" rel="nofollow" target="_blank"><span class="vhidden">Share on Google+</span></a>
         </li>
         <li>
-          <a href="http://www.facebook.com/sharer.php?u=http://sourcey.com/webrtc-native-to-browser-video-streaming-example/&amp;t=WebRTC Native C++ to Browser Video Streaming Example" class="socialite facebook-like" data-href="http://sourcey.com/webrtc-native-to-browser-video-streaming-example/" data-send="false" data-layout="box_count" data-width="60" data-show-faces="false" rel="nofollow" target="_blank"><span class="vhidden">Share on Facebook</span></a>
+          <a href="http://www.facebook.com/sharer.php?u=http://sourcey.com/html5-video-is-finally-ready/&amp;t=HTML5 Video is Finally Ready" class="socialite facebook-like" data-href="http://sourcey.com/html5-video-is-finally-ready/" data-send="false" data-layout="box_count" data-width="60" data-show-faces="false" rel="nofollow" target="_blank"><span class="vhidden">Share on Facebook</span></a>
         </li>
         <li>
-          <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://sourcey.com/webrtc-native-to-browser-video-streaming-example/&amp;title=WebRTC Native C++ to Browser Video Streaming Example" class="socialite linkedin-share" data-url="http://sourcey.com/webrtc-native-to-browser-video-streaming-example/" data-counter="top" rel="nofollow" target="_blank"><span class="vhidden">Share on LinkedIn</span></a>
+          <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://sourcey.com/html5-video-is-finally-ready/&amp;title=HTML5 Video is Finally Ready" class="socialite linkedin-share" data-url="http://sourcey.com/html5-video-is-finally-ready/" data-counter="top" rel="nofollow" target="_blank"><span class="vhidden">Share on LinkedIn</span></a>
         </li>
       </ul>        
       <div class="meta">
-        Posted on <time class="updated" datetime="Jan  7 2014">Jan  7 2014</time> by 
+        Posted on <time class="updated" datetime="May  3 2014">May  3 2014</time> by 
         
           <a rel="author external" href="https://plus.google.com/+KamLow">Kam Low</a>
-        . Tagged: c++, programming, webrtc.
+        . Tagged: html5, video, streaming.
       </div>       
       
       <div id="disqus_thread"></div>
