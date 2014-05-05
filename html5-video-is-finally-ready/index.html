@@ -95,16 +95,17 @@ Safari plays the video when source is provided with the `video/mp4` mime type.
 Here's the trick though, both Chrome and Firefox will play the **same file** if it's provided with a `video/webm` attribute. 
 Yes, this is a hack and MP4 files shouldn't be served with `video/webm`, but the point is that it works.
 
-Here is the proof of concept. Try it out in Chrome, Firefox and Safari:
 -->
 
-<div class="panel callout radius">
-Please note that MP4 doesn't work out-of-the box on Chrome or Firefox because of software patents, so you will need to have a thrid-party H.264 decoder installed. See <a href="https://developer.mozilla.org/en-US/docs/HTML/Supported_media_formats">this page</a> on MDN for more information.
-</div>
+<p>Here is the video:</p>
 
 <video controls="controls" style="margin-bottom:20px;width:590px">
     <source src="http://media.sourcey.com/big_buck_bunny.mp4" type="video/mp4" />
 </video>
+
+<div class="panel callout radius">
+Please note that MP4 doesn't work out-of-the box on Chrome or Firefox because of software patents, so you will need to have a thrid-party H.264 decoder installed. See <a href="https://developer.mozilla.org/en-US/docs/HTML/Supported_media_formats">this page</a> on MDN for more information.
+</div>
 
 <p>And the source code in all its simplicity, as it should have been years ago:</p>
 
@@ -123,7 +124,7 @@ but these are mostly likely going to be tech people who will have them installed
 I'm a massive advocate for both Theora and WebM, mainly since I like to be able to encode videos without having to pay royalties to MPEG LA … I know, crazy right?
 At this stage though, these codec's "openness" may not be enough to shift the balance.</p>
 
-<p>Drop a comment if you're able to test it out on other browsers, or have any thoughts to add.</p>
+<p>Drop a comment with your browser and weather or not it works for you, or have any thoughts to add.</p>
     
       
       <ul class="social-buttons">

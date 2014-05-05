@@ -14,7 +14,7 @@
     <link rel="alternate" href="http://sourcey.com/html5-video-streaming-from-google-drive/"/>
     <id>http://sourcey.com/html5-video-streaming-from-google-drive/</id>
     <published>2014-05-04T00:00:00Z</published>
-    <updated>2014-05-05T15:47:16+10:00</updated>
+    <updated>2014-05-05T16:38:10+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -26,15 +26,15 @@
 
 &lt;p&gt;In order to make files publicly playable by anyone you need to share the files as "Public on the web" via your Google Drive, otherwise standard OAuth rules apply.&lt;/p&gt;
 
-&lt;div class="panel callout radius"&gt;
-Please note that this page has received a lot of traffic, so if the video isn't displaying then Drive may have temporarily restricted access to the file. In that case please try using the original source from: &lt;a href="http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4" traget="_blank"&gt;QuirksMode&lt;/a&gt;. You can view your quota via the **Quota** section of your &lt;a href="https://code.google.com/apis/console" traget="_blank"&gt;Google APIs console&lt;/a&gt; in the **Service** tab.
-&lt;/div&gt;
-
 &lt;p&gt;Here is an example using an H.264/AVC encoded MP4 which plays on Chrome, Firefox and Safari, and apparently Internet Explorer 11 too (untested):&lt;/p&gt;
 
 &lt;video controls="controls" style="margin-bottom:20px;width:590px"&gt;
     &lt;source src="https://drive.google.com/uc?export=download&amp;amp;id=0B0JMGMGgxp9WMEdWb1hyQUhlOWs" type="video/mp4" /&gt;
 &lt;/video&gt;
+
+&lt;div class="panel callout radius"&gt;
+Please note that this page has received a lot of traffic, so if the video isn't displaying then Drive may have temporarily restricted access to the file. In that case please try using the original source from: &lt;a href="http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4" traget="_blank"&gt;QuirksMode&lt;/a&gt;. You can view your quota via the "Quota" section of your &lt;a href="https://code.google.com/apis/console" traget="_blank"&gt;Google APIs console&lt;/a&gt; in the "Service" tab.
+&lt;/div&gt;
 
 &lt;p&gt;And the source code:&lt;/p&gt;
 
@@ -43,9 +43,9 @@ Please note that this page has received a lot of traffic, so if the video isn't 
 &lt;span class="nt"&gt;&amp;lt;/video&amp;gt;&lt;/span&gt;
 &lt;/pre&gt;
 
-&lt;p&gt;In order to be completely cross-browser then we can't forget about the geriatric fathers of the browser world which still claim a share of the market. &lt;!--; Internet Explorer. --&gt;&lt;/p&gt;
+&lt;p&gt;In order to be completely cross-browser then we can't forget about the geriatric fathers of the browser world which still claim a market share. &lt;!--; Internet Explorer. --&gt;&lt;/p&gt;
 
-&lt;p&gt;As you may already know, Google automatically encodes uploaded videos into lower bitrate FLV files for playback using Flash via the Google Drive Viewer. That makes it easy to just reuse the Google Flash player like so:&lt;/p&gt;
+&lt;p&gt;As you may already know, Google automatically encodes uploaded videos into lower bitrate FLV files for playback using Flash via the Google Drive Viewer. This means the Google Flash player can be reused like so:&lt;/p&gt;
 
 &lt;object type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" wmode="opaque" data="https://video.google.com/get_player?el=leaf&amp;amp;cc_load_policy=1&amp;amp;enablejsapi=1" width="1280px" height="750px" id="vpl0" style="width: 590px; height: 370px; margin-bottom: 20px"&gt;&lt;param name="allowFullScreen" value="true" /&gt;&lt;param name="allowscriptaccess" value="always" /&gt;&lt;param name="wmode" value="opaque" /&gt;&lt;param name="flashvars" value="status=ok&amp;amp;hl=en&amp;amp;allow_embed=0&amp;amp;ps=docs&amp;amp;partnerid=30&amp;amp;autoplay=0&amp;amp;docid=0B0JMGMGgxp9WMEdWb1hyQUhlOWs&amp;amp;abd=0&amp;amp;el=leaf&amp;amp;title=big_buck_bunny.mp4&amp;amp;iurl=https%3A%2F%2Fdocs.google.com%2Fvt%3Fauthuser%3D0%26id%3D0B0JMGMGgxp9WMEdWb1hyQUhlOWs&amp;amp;ttsurl=https%3A%2F%2Fdocs.google.com%2Ftimedtext%3Fauthuser%3D0%26id%3D0B0JMGMGgxp9WMEdWb1hyQUhlOWs%26vid%3De578958e6e16e44f&amp;amp;reportabuseurl=https%3A%2F%2Fdocs.google.com%2Fabuse%3Fauthuser%3D0%26id%3D0B0JMGMGgxp9WMEdWb1hyQUhlOWs&amp;amp;token=1&amp;amp;plid=V0QTaujn2CBLXA&amp;amp;fmt_stream_map=18%7Chttps%3A%2F%2Fr8---sn-ntq7ened.c.docs.google.com%2Fvideoplayback%3Frequiressl%3Dyes%26shardbypass%3Dyes%26cmbypass%3Dyes%26id%3De578958e6e16e44f%26itag%3D18%26source%3Dwebdrive%26app%3Ddocs%26ip%3D59.101.83.21%26ipbits%3D0%26expire%3D1399190315%26sparams%3Drequiressl%252Cshardbypass%252Ccmbypass%252Cid%252Citag%252Csource%252Cip%252Cipbits%252Cexpire%26signature%3D1409A45041079AC97B82A53C82B72B176E7295BE.432A8FD910D8DB7C14D0ED93884BE6D55B9C918%26key%3Dck2%26ir%3D1%26ms%3Dnxu%26mt%3D1399186650%26mv%3Dm%26mws%3Dyes%2C34%7Chttps%3A%2F%2Fr8---sn-ntq7ened.c.docs.google.com%2Fvideoplayback%3Frequiressl%3Dyes%26shardbypass%3Dyes%26cmbypass%3Dyes%26id%3De578958e6e16e44f%26itag%3D34%26source%3Dwebdrive%26app%3Ddocs%26ip%3D59.101.83.21%26ipbits%3D0%26expire%3D1399190315%26sparams%3Drequiressl%252Cshardbypass%252Ccmbypass%252Cid%252Citag%252Csource%252Cip%252Cipbits%252Cexpire%26signature%3D18B8078AAA0F03717ADE0B017E752D1E797B9406.81C1DA43B6417F6B524AA33F654E5BE0D90F596%26key%3Dck2%26ir%3D1%26ms%3Dnxu%26mt%3D1399186650%26mv%3Dm%26mws%3Dyes%2C43%7Chttps%3A%2F%2Fr8---sn-ntq7ened.c.docs.google.com%2Fvideoplayback%3Frequiressl%3Dyes%26shardbypass%3Dyes%26cmbypass%3Dyes%26id%3De578958e6e16e44f%26itag%3D43%26source%3Dwebdrive%26app%3Ddocs%26ip%3D59.101.83.21%26ipbits%3D0%26expire%3D1399190315%26sparams%3Drequiressl%252Cshardbypass%252Ccmbypass%252Cid%252Citag%252Csource%252Cip%252Cipbits%252Cexpire%26signature%3D41EDA4A85EB4BBD63C31C15D6A9178B48B99FC49.177799E1DBD96CB7575DB86EFB115BD10DFA37A1%26key%3Dck2%26ir%3D1%26ms%3Dnxu%26mt%3D1399186650%26mv%3Dm%26mws%3Dyes&amp;amp;fmt_list=18%2F640x360%2F9%2F0%2F115%2C34%2F640x360%2F9%2F0%2F115%2C43%2F640x360%2F99%2F0%2F0&amp;amp;url_encoded_fmt_stream_map=itag%3D18%26url%3Dhttps%253A%252F%252Fr8---sn-ntq7ened.c.docs.google.com%252Fvideoplayback%253Frequiressl%253Dyes%2526shardbypass%253Dyes%2526cmbypass%253Dyes%2526id%253De578958e6e16e44f%2526itag%253D18%2526source%253Dwebdrive%2526app%253Ddocs%2526ip%253D59.101.83.21%2526ipbits%253D0%2526expire%253D1399190315%2526sparams%253Drequiressl%252Cshardbypass%252Ccmbypass%252Cid%252Citag%252Csource%252Cip%252Cipbits%252Cexpire%2526signature%253D1409A45041079AC97B82A53C82B72B176E7295BE.432A8FD910D8DB7C14D0ED93884BE6D55B9C918%2526key%253Dck2%2526ir%253D1%2526ms%253Dnxu%2526mt%253D1399186650%2526mv%253Dm%2526mws%253Dyes%26type%3Dvideo%252Fmp4%253B%2Bcodecs%253D%2522avc1.42001E%252C%2Bmp4a.40.2%2522%26quality%3Dmedium%2Citag%3D34%26url%3Dhttps%253A%252F%252Fr8---sn-ntq7ened.c.docs.google.com%252Fvideoplayback%253Frequiressl%253Dyes%2526shardbypass%253Dyes%2526cmbypass%253Dyes%2526id%253De578958e6e16e44f%2526itag%253D34%2526source%253Dwebdrive%2526app%253Ddocs%2526ip%253D59.101.83.21%2526ipbits%253D0%2526expire%253D1399190315%2526sparams%253Drequiressl%252Cshardbypass%252Ccmbypass%252Cid%252Citag%252Csource%252Cip%252Cipbits%252Cexpire%2526signature%253D18B8078AAA0F03717ADE0B017E752D1E797B9406.81C1DA43B6417F6B524AA33F654E5BE0D90F596%2526key%253Dck2%2526ir%253D1%2526ms%253Dnxu%2526mt%253D1399186650%2526mv%253Dm%2526mws%253Dyes%26type%3Dvideo%252Fx-flv%26quality%3Dmedium%2Citag%3D43%26url%3Dhttps%253A%252F%252Fr8---sn-ntq7ened.c.docs.google.com%252Fvideoplayback%253Frequiressl%253Dyes%2526shardbypass%253Dyes%2526cmbypass%253Dyes%2526id%253De578958e6e16e44f%2526itag%253D43%2526source%253Dwebdrive%2526app%253Ddocs%2526ip%253D59.101.83.21%2526ipbits%253D0%2526expire%253D1399190315%2526sparams%253Drequiressl%252Cshardbypass%252Ccmbypass%252Cid%252Citag%252Csource%252Cip%252Cipbits%252Cexpire%2526signature%253D41EDA4A85EB4BBD63C31C15D6A9178B48B99FC49.177799E1DBD96CB7575DB86EFB115BD10DFA37A1%2526key%253Dck2%2526ir%253D1%2526ms%253Dnxu%2526mt%253D1399186650%2526mv%253Dm%2526mws%253Dyes%26type%3Dvideo%252Fwebm%26quality%3Dmedium&amp;amp;timestamp=1399186715856&amp;amp;length_seconds=61&amp;amp;playerapiid=vpl0" /&gt;&lt;/object&gt;
 
@@ -59,7 +59,7 @@ Please note that this page has received a lot of traffic, so if the video isn't 
     <link rel="alternate" href="http://sourcey.com/html5-video-is-finally-ready/"/>
     <id>http://sourcey.com/html5-video-is-finally-ready/</id>
     <published>2014-05-03T00:00:00Z</published>
-    <updated>2014-05-05T16:34:39+10:00</updated>
+    <updated>2014-05-05T16:43:30+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -76,16 +76,17 @@ Safari plays the video when source is provided with the `video/mp4` mime type.
 Here's the trick though, both Chrome and Firefox will play the **same file** if it's provided with a `video/webm` attribute. 
 Yes, this is a hack and MP4 files shouldn't be served with `video/webm`, but the point is that it works.
 
-Here is the proof of concept. Try it out in Chrome, Firefox and Safari:
 --&gt;
 
-&lt;div class="panel callout radius"&gt;
-Please note that MP4 doesn't work out-of-the box on Chrome or Firefox because of software patents, so you will need to have a thrid-party H.264 decoder installed. See &lt;a href="https://developer.mozilla.org/en-US/docs/HTML/Supported_media_formats"&gt;this page&lt;/a&gt; on MDN for more information.
-&lt;/div&gt;
+&lt;p&gt;Here is the video:&lt;/p&gt;
 
 &lt;video controls="controls" style="margin-bottom:20px;width:590px"&gt;
     &lt;source src="http://media.sourcey.com/big_buck_bunny.mp4" type="video/mp4" /&gt;
 &lt;/video&gt;
+
+&lt;div class="panel callout radius"&gt;
+Please note that MP4 doesn't work out-of-the box on Chrome or Firefox because of software patents, so you will need to have a thrid-party H.264 decoder installed. See &lt;a href="https://developer.mozilla.org/en-US/docs/HTML/Supported_media_formats"&gt;this page&lt;/a&gt; on MDN for more information.
+&lt;/div&gt;
 
 &lt;p&gt;And the source code in all its simplicity, as it should have been years ago:&lt;/p&gt;
 
@@ -104,7 +105,7 @@ but these are mostly likely going to be tech people who will have them installed
 I'm a massive advocate for both Theora and WebM, mainly since I like to be able to encode videos without having to pay royalties to MPEG LA … I know, crazy right?
 At this stage though, these codec's "openness" may not be enough to shift the balance.&lt;/p&gt;
 
-&lt;p&gt;Drop a comment if you're able to test it out on other browsers, or have any thoughts to add.&lt;/p&gt;
+&lt;p&gt;Drop a comment with your browser and weather or not it works for you, or have any thoughts to add.&lt;/p&gt;
 </content>
   </entry>
   <entry>
