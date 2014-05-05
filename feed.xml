@@ -59,7 +59,7 @@ Please note that this page has received a lot of traffic, so if the video isn't 
     <link rel="alternate" href="http://sourcey.com/html5-video-is-finally-ready/"/>
     <id>http://sourcey.com/html5-video-is-finally-ready/</id>
     <published>2014-05-03T00:00:00Z</published>
-    <updated>2014-05-05T16:46:56+10:00</updated>
+    <updated>2014-05-05T16:51:18+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -67,7 +67,7 @@ Please note that this page has received a lot of traffic, so if the video isn't 
 
 &lt;p&gt;Today I had a pleasant surprise when I was able to get a H.264/AVC encoded MP4 video to play on Chrome (&lt;em&gt;34.0.1847.131&lt;/em&gt;), Firefox (&lt;em&gt;28.0&lt;/em&gt;) and Safari (&lt;em&gt;5.1.7&lt;/em&gt;) using the native HTML5 video element. I'm also told that Internet Explorer 11 works, and has apparently had partial support since &lt;a href="http://stackoverflow.com/questions/6944679/html5-mp4-video-does-not-play-in-ie9"&gt;version 9&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;AI also had some luck getting this to work with videos hosted Google Drive: &lt;a href="/html5-video-streaming-from-google-drive"&gt;HTML5 Video Streaming from Google Drive&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I also had some luck getting this to work with videos hosted Google Drive: &lt;a href="/html5-video-streaming-from-google-drive"&gt;HTML5 Video Streaming from Google Drive&lt;/a&gt;.&lt;/p&gt;
 
 &lt;!--
 Anyway, thCross-browser HTML5 video is finally a go, keep on reading to find out how.
@@ -98,8 +98,8 @@ Please note that MP4 doesn't work out-of-the box on Chrome or Firefox because of
 &lt;p&gt;This is exactly what us developers wanted from HTML5 video since the beginning; a ubiquitous video format that works across all major browsers with no more having to store multiple encodings of each damn video just to cater for different browser vendors and their ridiculous licensing schemes.
 Well, now we have it (mostly), and it seems that H.264 MP4 has won the race. &lt;/p&gt;
 
-&lt;p&gt;Remember that Chrome and Firefox people still have to have the proper codecs installed on their system,
-but they are mostly likely going to be tech people anyway, who will already have them installed.
+&lt;p&gt;Remember that Chrome and Firefox people still have to have a H.264 decoder installed on their system,
+but they are mostly likely going to be tech people anyway who will already have it installed.
 It would be interesting to see some statistics on this, but thats a job for another time or person.&lt;/p&gt;
 
 &lt;p&gt;Unfortunately the prevailing video codec (H.264) is about as patent encumbered as a NASA spaceship, which begs the next question; what's left for Theora and WebM? 
