@@ -14,7 +14,7 @@
     <link rel="alternate" href="http://sourcey.com/html5-video-streaming-from-google-drive/"/>
     <id>http://sourcey.com/html5-video-streaming-from-google-drive/</id>
     <published>2014-05-04T00:00:00Z</published>
-    <updated>2014-05-05T00:43:35+10:00</updated>
+    <updated>2014-05-05T10:43:18+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -34,14 +34,12 @@ Please note that this page has received a LOT of traffic, so if the video isn't 
 
 &lt;video controls="controls" style="margin-bottom:20px;width:590px"&gt;
     &lt;source src="https://drive.google.com/uc?export=download&amp;amp;id=0B0JMGMGgxp9WMEdWb1hyQUhlOWs" type="video/mp4" /&gt;
-    &lt;source src="https://drive.google.com/uc?export=download&amp;amp;id=0B0JMGMGgxp9WMEdWb1hyQUhlOWs" type="video/webm" /&gt;
 &lt;/video&gt;
 
 &lt;p&gt;And the source code:&lt;/p&gt;
 
 &lt;pre class="highlight html"&gt;&lt;span class="nt"&gt;&amp;lt;video&lt;/span&gt; &lt;span class="na"&gt;controls=&lt;/span&gt;&lt;span class="s"&gt;"controls"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
     &lt;span class="nt"&gt;&amp;lt;source&lt;/span&gt; &lt;span class="na"&gt;src=&lt;/span&gt;&lt;span class="s"&gt;"https://drive.google.com/uc?export=download&amp;amp;id=0B0JMGMGgxp9WMEdWb1hyQUhlOWs"&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;'video/mp4'&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;source&lt;/span&gt; &lt;span class="na"&gt;src=&lt;/span&gt;&lt;span class="s"&gt;"https://drive.google.com/uc?export=download&amp;amp;id=0B0JMGMGgxp9WMEdWb1hyQUhlOWs"&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;'video/webm'&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;/video&amp;gt;&lt;/span&gt;
 &lt;/pre&gt;
 
@@ -61,45 +59,46 @@ Please note that this page has received a LOT of traffic, so if the video isn't 
     <link rel="alternate" href="http://sourcey.com/html5-video-is-finally-ready/"/>
     <id>http://sourcey.com/html5-video-is-finally-ready/</id>
     <published>2014-05-03T00:00:00Z</published>
-    <updated>2014-05-05T10:27:25+10:00</updated>
+    <updated>2014-05-05T10:42:27+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
     <content type="html">&lt;h1 id="html5-video-is-finally-ready"&gt;HTML5 Video is Finally Ready&lt;/h1&gt;
 
-&lt;p&gt;Today I had a pleasant surprise when I was able to get a H.264 MPEG-4 AVC encoded MP4 video to play on Chrome (&lt;em&gt;34.0.1847.131&lt;/em&gt;), Firefox (&lt;em&gt;28.0&lt;/em&gt;) and Safari (&lt;em&gt;5.1.7&lt;/em&gt;) using the native HTML5 video element. Cross-browser HTML5 video (for the important browsers that is) is finally a go, keep on reading to find out how.&lt;/p&gt;
+&lt;p&gt;Today I had a pleasant surprise when I was able to get a H.264 MPEG-4 AVC encoded MP4 video to play on Chrome (&lt;em&gt;34.0.1847.131&lt;/em&gt;), Firefox (&lt;em&gt;28.0&lt;/em&gt;) and Safari (&lt;em&gt;5.1.7&lt;/em&gt;) using the native HTML5 video element. I'm also told that Internet Explorer 11 works too, and apparently has had &lt;a href="http://stackoverflow.com/questions/6944679/html5-mp4-video-does-not-play-in-ie9"&gt;support since 9.0&lt;/a&gt; - you can tell I really give a shit about IE, right?&lt;/p&gt;
 
-&lt;p&gt;As expected, Safari plays the video when source is provided with the &lt;code&gt;video/mp4&lt;/code&gt; mime type.
-Here's the trick though, both Chrome and Firefox will play the &lt;strong&gt;same file&lt;/strong&gt; if it's provided with a &lt;code&gt;video/webm&lt;/code&gt; attribute. 
-Yes, this is a hack and MP4 files shouldn't be served with &lt;code&gt;video/webm&lt;/code&gt;, but the point is that it works.&lt;/p&gt;
+&lt;!--
+Anyway, thCross-browser HTML5 video is finally a go, keep on reading to find out how.
+Safari plays the video when source is provided with the `video/mp4` mime type.
 
-&lt;p&gt;Here is the proof of concept. Try it out in Chrome, Firefox and Safari:&lt;/p&gt;
+Here's the trick though, both Chrome and Firefox will play the **same file** if it's provided with a `video/webm` attribute. 
+Yes, this is a hack and MP4 files shouldn't be served with `video/webm`, but the point is that it works.
+
+Here is the proof of concept. Try it out in Chrome, Firefox and Safari:
+--&gt;
 
 &lt;div class="panel callout radius"&gt;
-Please note that MP4 doesn't work out-of-the box on Firefox because of software patents, you need to have a thrid-party decoder installed. See [this page](https://developer.mozilla.org/en-US/docs/HTML/Supported_media_formats) on MDN for more information.
+Please note that MP4 doesn't work out-of-the box on Firefox because of software patents, so you need to have a thrid-party H.264 decoder installed. See &lt;a href="https://developer.mozilla.org/en-US/docs/HTML/Supported_media_formats"&gt;this page&lt;/a&gt; on MDN for more information.
 &lt;/div&gt;
 
 &lt;video controls="controls" style="margin-bottom:20px;width:590px"&gt;
     &lt;source src="http://media.sourcey.com/big_buck_bunny.mp4" type="video/mp4" /&gt;
-    &lt;source src="http://media.sourcey.com/big_buck_bunny.mp4" type="video/webm" /&gt;
 &lt;/video&gt;
 
-&lt;p&gt;And the source code:&lt;/p&gt;
+&lt;p&gt;Finally, the source code as it should be:&lt;/p&gt;
 
 &lt;pre class="highlight html"&gt;&lt;span class="nt"&gt;&amp;lt;video&lt;/span&gt; &lt;span class="na"&gt;controls=&lt;/span&gt;&lt;span class="s"&gt;"controls"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
     &lt;span class="nt"&gt;&amp;lt;source&lt;/span&gt; &lt;span class="na"&gt;src=&lt;/span&gt;&lt;span class="s"&gt;"http://media.sourcey.com/big_buck_bunny.mp4"&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;'video/mp4'&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;source&lt;/span&gt; &lt;span class="na"&gt;src=&lt;/span&gt;&lt;span class="s"&gt;"http://media.sourcey.com/big_buck_bunny.mp4"&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;'video/webm'&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;/video&amp;gt;&lt;/span&gt;
 &lt;/pre&gt;
 
-&lt;p&gt;This is exactly what us developers wanted from HTML5 video since the beginning; a ubiquitous video format that works across all major browsers!
+&lt;p&gt;This is exactly what us developers wanted from HTML5 video since the beginning; a ubiquitous video format that works across all major browsers.
 No more having to store multiple encodings of each damn video just to cater for different browser vendors and their ridiculous licensing strategies.
 Well, now we have it, and it seems that H.264 has won the race. &lt;/p&gt;
 
-&lt;p&gt;Unfortunately the prevailing video codec is about as patent encumbered as a NASA spaceship, 
-which begs the next question; what's left for WebM? 
-I'm still an advocate for WebM, mainly since I like to be able to encode videos without having to pay royalties to MPEG LA … I know, crazy right?
-At this stage WebM's "openness" may be its only saving grace.&lt;/p&gt;
+&lt;p&gt;Unfortunately the prevailing video codec is about as patent encumbered as a NASA spaceship, which begs the next question; what's left for Theora and WebM? 
+I'm still an advocate for both Theora and WebM, mainly since I like to be able to encode videos without having to pay royalties to MPEG LA … I know, crazy right?
+At this stage these codec's "openness" may be their only saving grace.&lt;/p&gt;
 
 &lt;p&gt;I also had some luck getting this method to work with videos hosted Google Drive. Test results and working examples are posted here: &lt;a href="/html5-video-streaming-from-google-drive"&gt;HTML5 Video Streaming from Google Drive&lt;/a&gt;.&lt;/p&gt;
 
