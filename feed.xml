@@ -59,7 +59,7 @@ Please note that this page has received a lot of traffic, so if the video isn't 
     <link rel="alternate" href="http://sourcey.com/html5-video-is-finally-ready/"/>
     <id>http://sourcey.com/html5-video-is-finally-ready/</id>
     <published>2014-05-03T00:00:00Z</published>
-    <updated>2014-05-05T15:53:03+10:00</updated>
+    <updated>2014-05-05T16:34:39+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -87,22 +87,24 @@ Please note that MP4 doesn't work out-of-the box on Chrome or Firefox because of
     &lt;source src="http://media.sourcey.com/big_buck_bunny.mp4" type="video/mp4" /&gt;
 &lt;/video&gt;
 
-&lt;p&gt;The source code in all its simplicity, as it should have been years ago:&lt;/p&gt;
+&lt;p&gt;And the source code in all its simplicity, as it should have been years ago:&lt;/p&gt;
 
 &lt;pre class="highlight html"&gt;&lt;span class="nt"&gt;&amp;lt;video&lt;/span&gt; &lt;span class="na"&gt;controls=&lt;/span&gt;&lt;span class="s"&gt;"controls"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
     &lt;span class="nt"&gt;&amp;lt;source&lt;/span&gt; &lt;span class="na"&gt;src=&lt;/span&gt;&lt;span class="s"&gt;"http://media.sourcey.com/big_buck_bunny.mp4"&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;'video/mp4'&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;/video&amp;gt;&lt;/span&gt;
 &lt;/pre&gt;
 
-&lt;p&gt;This is exactly what us developers wanted from HTML5 video since the beginning; a ubiquitous video format that works across all major browsers.
-No more having to store multiple encodings of each damn video just to cater for different browser vendors and their ridiculous licensing strategies.
-Well, now we have it, and it seems that H.264 has won the race. &lt;/p&gt;
+&lt;p&gt;This is exactly what us developers wanted from HTML5 video since the beginning; a ubiquitous video format that works across all major browsers with no more having to store multiple encodings of each damn video just to cater for different browser vendors and their ridiculous licensing schemes.
+Well, now we have it (mostly), and it seems that H.264 MP4 has won the race. &lt;/p&gt;
+
+&lt;p&gt;Remember that Chrome and Firefox people still have to have the proper codecs installed on their system,
+but these are mostly likely going to be tech people who will have them installed anyway. It would be good to see some stats, but thats a job for another time or person.&lt;/p&gt;
 
 &lt;p&gt;Unfortunately the prevailing video codec is about as patent encumbered as a NASA spaceship, which begs the next question; what's left for Theora and WebM? 
 I'm a massive advocate for both Theora and WebM, mainly since I like to be able to encode videos without having to pay royalties to MPEG LA … I know, crazy right?
 At this stage though, these codec's "openness" may not be enough to shift the balance.&lt;/p&gt;
 
-&lt;p&gt;Drop a comment if you're able to test it on other browsers, or have any thoughts to add.&lt;/p&gt;
+&lt;p&gt;Drop a comment if you're able to test it out on other browsers, or have any thoughts to add.&lt;/p&gt;
 </content>
   </entry>
   <entry>
