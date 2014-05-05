@@ -14,7 +14,7 @@
     <link rel="alternate" href="http://sourcey.com/html5-video-streaming-from-google-drive/"/>
     <id>http://sourcey.com/html5-video-streaming-from-google-drive/</id>
     <published>2014-05-04T00:00:00Z</published>
-    <updated>2014-05-05T16:38:10+10:00</updated>
+    <updated>2014-05-05T16:56:12+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -33,7 +33,7 @@
 &lt;/video&gt;
 
 &lt;div class="panel callout radius"&gt;
-Please note that this page has received a lot of traffic, so if the video isn't displaying then Drive may have temporarily restricted access to the file. In that case please try using the original source from: &lt;a href="http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4" traget="_blank"&gt;QuirksMode&lt;/a&gt;. You can view your quota via the "Quota" section of your &lt;a href="https://code.google.com/apis/console" traget="_blank"&gt;Google APIs console&lt;/a&gt; in the "Service" tab.
+Please note that this page has received a lot of traffic, so if the video isn't displaying then Drive may have temporarily restricted access to the file. In that case please try using the original source from: &lt;a href="http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4" traget="_blank"&gt;QuirksMode&lt;/a&gt;. If you need, you can view your own video quotas via the "Quota" section of your &lt;a href="https://code.google.com/apis/console" traget="_blank"&gt;Google APIs console&lt;/a&gt; in the "Service" tab.
 &lt;/div&gt;
 
 &lt;p&gt;And the source code:&lt;/p&gt;
