@@ -61,7 +61,7 @@ Please note that this page has received a LOT of traffic, so if the video isn't 
     <link rel="alternate" href="http://sourcey.com/html5-video-is-finally-ready/"/>
     <id>http://sourcey.com/html5-video-is-finally-ready/</id>
     <published>2014-05-03T00:00:00Z</published>
-    <updated>2014-05-05T00:43:40+10:00</updated>
+    <updated>2014-05-05T10:27:25+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -70,9 +70,14 @@ Please note that this page has received a LOT of traffic, so if the video isn't 
 &lt;p&gt;Today I had a pleasant surprise when I was able to get a H.264 MPEG-4 AVC encoded MP4 video to play on Chrome (&lt;em&gt;34.0.1847.131&lt;/em&gt;), Firefox (&lt;em&gt;28.0&lt;/em&gt;) and Safari (&lt;em&gt;5.1.7&lt;/em&gt;) using the native HTML5 video element. Cross-browser HTML5 video (for the important browsers that is) is finally a go, keep on reading to find out how.&lt;/p&gt;
 
 &lt;p&gt;As expected, Safari plays the video when source is provided with the &lt;code&gt;video/mp4&lt;/code&gt; mime type.
-Here's the trick though, both Chrome and Firefox will play the &lt;strong&gt;same file&lt;/strong&gt; if it's provided with a &lt;code&gt;video/webm&lt;/code&gt; attribute. &lt;/p&gt;
+Here's the trick though, both Chrome and Firefox will play the &lt;strong&gt;same file&lt;/strong&gt; if it's provided with a &lt;code&gt;video/webm&lt;/code&gt; attribute. 
+Yes, this is a hack and MP4 files shouldn't be served with &lt;code&gt;video/webm&lt;/code&gt;, but the point is that it works.&lt;/p&gt;
 
 &lt;p&gt;Here is the proof of concept. Try it out in Chrome, Firefox and Safari:&lt;/p&gt;
+
+&lt;div class="panel callout radius"&gt;
+Please note that MP4 doesn't work out-of-the box on Firefox because of software patents, you need to have a thrid-party decoder installed. See [this page](https://developer.mozilla.org/en-US/docs/HTML/Supported_media_formats) on MDN for more information.
+&lt;/div&gt;
 
 &lt;video controls="controls" style="margin-bottom:20px;width:590px"&gt;
     &lt;source src="http://media.sourcey.com/big_buck_bunny.mp4" type="video/mp4" /&gt;
@@ -96,7 +101,7 @@ which begs the next question; what's left for WebM?
 I'm still an advocate for WebM, mainly since I like to be able to encode videos without having to pay royalties to MPEG LA … I know, crazy right?
 At this stage WebM's "openness" may be its only saving grace.&lt;/p&gt;
 
-&lt;p&gt;I also had some luck getting this method to work with videos hosted Google Drive, the results including working examples from those tests are posted here: &lt;a href="/html5-video-streaming-from-google-drive"&gt;HTML5 Video Streaming from Google Drive&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I also had some luck getting this method to work with videos hosted Google Drive. Test results and working examples are posted here: &lt;a href="/html5-video-streaming-from-google-drive"&gt;HTML5 Video Streaming from Google Drive&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;If you're able to test this on the new Internet Explorer I'd love to know if it works or not.
 Drop me a comment if you're able to test it, or have any other thoughts to add.&lt;/p&gt;

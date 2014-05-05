@@ -87,9 +87,14 @@
 <p>Today I had a pleasant surprise when I was able to get a H.264 MPEG-4 AVC encoded MP4 video to play on Chrome (<em>34.0.1847.131</em>), Firefox (<em>28.0</em>) and Safari (<em>5.1.7</em>) using the native HTML5 video element. Cross-browser HTML5 video (for the important browsers that is) is finally a go, keep on reading to find out how.</p>
 
 <p>As expected, Safari plays the video when source is provided with the <code>video/mp4</code> mime type.
-Here's the trick though, both Chrome and Firefox will play the <strong>same file</strong> if it's provided with a <code>video/webm</code> attribute. </p>
+Here's the trick though, both Chrome and Firefox will play the <strong>same file</strong> if it's provided with a <code>video/webm</code> attribute. 
+Yes, this is a hack and MP4 files shouldn't be served with <code>video/webm</code>, but the point is that it works.</p>
 
 <p>Here is the proof of concept. Try it out in Chrome, Firefox and Safari:</p>
+
+<div class="panel callout radius">
+Please note that MP4 doesn't work out-of-the box on Firefox because of software patents, you need to have a thrid-party decoder installed. See [this page](https://developer.mozilla.org/en-US/docs/HTML/Supported_media_formats) on MDN for more information.
+</div>
 
 <video controls="controls" style="margin-bottom:20px;width:590px">
     <source src="http://media.sourcey.com/big_buck_bunny.mp4" type="video/mp4" />
@@ -113,7 +118,7 @@ which begs the next question; what's left for WebM?
 I'm still an advocate for WebM, mainly since I like to be able to encode videos without having to pay royalties to MPEG LA … I know, crazy right?
 At this stage WebM's "openness" may be its only saving grace.</p>
 
-<p>I also had some luck getting this method to work with videos hosted Google Drive, the results including working examples from those tests are posted here: <a href="/html5-video-streaming-from-google-drive">HTML5 Video Streaming from Google Drive</a>.</p>
+<p>I also had some luck getting this method to work with videos hosted Google Drive. Test results and working examples are posted here: <a href="/html5-video-streaming-from-google-drive">HTML5 Video Streaming from Google Drive</a>.</p>
 
 <p>If you're able to test this on the new Internet Explorer I'd love to know if it works or not.
 Drop me a comment if you're able to test it, or have any other thoughts to add.</p>
