@@ -88,6 +88,8 @@
 
 <p>The OAuth provider that throws a spanner in the works and adds convolution to our code is Twitter. Twitter doesn't share their user's email address, so we need to add an extra step to get it from the user. Note that we do not ask Twitter users to "confirm" their email address, since they have already associated their Twitter account, and we don't want to be too much of a pain in the ass and remove all the joy from OAuth altogether.</p>
 
+<p>Thanks to everyone who submitted comments and changes! For a list of code changes <a href="#changes">see here</a>.</p>
+
 <p>So, without further ado, here is the code:</p>
 
 <h4 id="gemfile">Gemfile</h4>
@@ -119,9 +121,7 @@
 
   <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">find_for_oauth</span><span class="p">(</span><span class="n">auth</span><span class="p">)</span>
     <span class="n">identity</span> <span class="o">=</span> <span class="n">find_by</span><span class="p">(</span><span class="ss">provider: </span><span class="n">auth</span><span class="p">.</span><span class="nf">provider</span><span class="p">,</span> <span class="ss">uid: </span><span class="n">auth</span><span class="p">.</span><span class="nf">uid</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">identity</span><span class="p">.</span><span class="nf">nil?</span>
-      <span class="n">identity</span> <span class="o">=</span> <span class="n">create</span><span class="p">(</span><span class="ss">uid: </span><span class="n">auth</span><span class="p">.</span><span class="nf">uid</span><span class="p">,</span> <span class="ss">provider: </span><span class="n">auth</span><span class="p">.</span><span class="nf">provider</span><span class="p">)</span>
-    <span class="k">end</span>
+    <span class="n">identity</span> <span class="o">=</span> <span class="n">create</span><span class="p">(</span><span class="ss">uid: </span><span class="n">auth</span><span class="p">.</span><span class="nf">uid</span><span class="p">,</span> <span class="ss">provider: </span><span class="n">auth</span><span class="p">.</span><span class="nf">provider</span><span class="p">)</span> <span class="k">if</span> <span class="n">identity</span><span class="p">.</span><span class="nf">nil?</span>
     <span class="n">identity</span>
   <span class="k">end</span>
 <span class="k">end</span>
@@ -160,37 +160,24 @@
 <h4 id="appcontrollersomniauthcallbackscontrollerrb">app/controllers/omniauth_callbacks_controller.rb</h4>
 
 <pre class="highlight ruby"><span class="k">class</span> <span class="nc">OmniauthCallbacksController</span> <span class="o">&lt;</span> <span class="no">Devise</span><span class="o">::</span><span class="no">OmniauthCallbacksController</span>
-  <span class="k">def</span> <span class="nf">twitter</span>
-    <span class="vi">@user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">find_for_oauth</span><span class="p">(</span><span class="n">env</span><span class="o">[</span><span class="s2">"omniauth.auth"</span><span class="o">]</span><span class="p">,</span> <span class="n">current_user</span><span class="p">)</span>
-    <span class="k">if</span> <span class="vi">@user</span><span class="p">.</span><span class="nf">persisted?</span>
-      <span class="n">sign_in_and_redirect</span> <span class="vi">@user</span><span class="p">,</span> <span class="ss">:event</span> <span class="o">=&gt;</span> <span class="ss">:authentication</span>
-      <span class="n">set_flash_message</span><span class="p">(</span><span class="ss">:notice</span><span class="p">,</span> <span class="ss">:success</span><span class="p">,</span> <span class="ss">:kind</span> <span class="o">=&gt;</span> <span class="s2">"Twitter"</span><span class="p">)</span> <span class="k">if</span> <span class="n">is_navigational_format?</span>
-    <span class="k">else</span>
-      <span class="n">session</span><span class="o">[</span><span class="s2">"devise.twitter_uid"</span><span class="o">]</span> <span class="o">=</span> <span class="n">env</span><span class="o">[</span><span class="s2">"omniauth.auth"</span><span class="o">]</span>
-      <span class="n">redirect_to</span> <span class="n">new_user_registration_url</span>
-    <span class="k">end</span>
+  <span class="o">[</span><span class="ss">:twitter</span><span class="p">,</span> <span class="ss">:facebook</span><span class="p">,</span> <span class="ss">:linked_in</span><span class="o">]</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">provider</span><span class="o">|</span>
+    <span class="n">provides_callback_for</span> <span class="n">provider</span>
   <span class="k">end</span>
 
-  <span class="k">def</span> <span class="nf">facebook</span>
-    <span class="vi">@user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">find_for_oauth</span><span class="p">(</span><span class="n">env</span><span class="o">[</span><span class="s2">"omniauth.auth"</span><span class="o">]</span><span class="p">,</span> <span class="n">current_user</span><span class="p">)</span>
-    <span class="k">if</span> <span class="vi">@user</span><span class="p">.</span><span class="nf">persisted?</span>
-      <span class="n">sign_in_and_redirect</span> <span class="vi">@user</span><span class="p">,</span> <span class="ss">:event</span> <span class="o">=&gt;</span> <span class="ss">:authentication</span>
-      <span class="n">set_flash_message</span><span class="p">(</span><span class="ss">:notice</span><span class="p">,</span> <span class="ss">:success</span><span class="p">,</span> <span class="ss">:kind</span> <span class="o">=&gt;</span> <span class="s2">"Facebook"</span><span class="p">)</span> <span class="k">if</span> <span class="n">is_navigational_format?</span>
-    <span class="k">else</span>
-      <span class="n">session</span><span class="o">[</span><span class="s2">"devise.facebook_data"</span><span class="o">]</span> <span class="o">=</span> <span class="n">env</span><span class="o">[</span><span class="s2">"omniauth.auth"</span><span class="o">]</span>
-      <span class="n">redirect_to</span> <span class="n">new_user_registration_url</span>
-    <span class="k">end</span>
-  <span class="k">end</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">provides_callback_for</span><span class="p">(</span><span class="n">provider</span><span class="p">)</span>
+    <span class="nb">class_eval</span> <span class="sx">%Q{
+      def </span><span class="si">#{</span><span class="n">provider</span><span class="si">}</span><span class="sx">
+        @user = User.find_for_oauth(env["omniauth.auth"], current_user)
 
-  <span class="k">def</span> <span class="nf">linkedin</span>
-    <span class="vi">@user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">find_for_oauth</span><span class="p">(</span><span class="n">env</span><span class="o">[</span><span class="s2">"omniauth.auth"</span><span class="o">]</span><span class="p">,</span> <span class="n">current_user</span><span class="p">)</span>
-    <span class="k">if</span> <span class="vi">@user</span><span class="p">.</span><span class="nf">persisted?</span>
-      <span class="n">sign_in_and_redirect</span> <span class="vi">@user</span><span class="p">,</span> <span class="ss">:event</span> <span class="o">=&gt;</span> <span class="ss">:authentication</span>
-      <span class="n">set_flash_message</span><span class="p">(</span><span class="ss">:notice</span><span class="p">,</span> <span class="ss">:success</span><span class="p">,</span> <span class="ss">:kind</span> <span class="o">=&gt;</span> <span class="s2">"Linkedin"</span><span class="p">)</span> <span class="k">if</span> <span class="n">is_navigational_format?</span>
-    <span class="k">else</span>
-      <span class="n">session</span><span class="o">[</span><span class="s2">"devise.linkedin_data"</span><span class="o">]</span> <span class="o">=</span> <span class="n">env</span><span class="o">[</span><span class="s2">"omniauth.auth"</span><span class="o">]</span>
-      <span class="n">redirect_to</span> <span class="n">new_user_registration_url</span>
-    <span class="k">end</span>
+        if @user.persisted?
+          sign_in_and_redirect @user, event: :authentication
+          set_flash_message(:notice, :success, kind: </span><span class="si">#{</span><span class="n">provider</span><span class="si">}</span><span class="sx">.capitalize) if is_navigational_format?
+        else
+          session["devise.</span><span class="si">#{</span><span class="n">provider</span><span class="si">}</span><span class="sx">_data"] = env["omniauth.auth"]
+          redirect_to new_user_registration_url
+        end
+      end
+    }</span>
   <span class="k">end</span>
 <span class="k">end</span>
 </pre>
@@ -222,15 +209,17 @@
     <span class="n">user</span> <span class="o">=</span> <span class="n">identity</span><span class="p">.</span><span class="nf">user</span>
     <span class="k">if</span> <span class="n">user</span><span class="p">.</span><span class="nf">nil?</span>
 
-      <span class="c1"># Get the existing user from email if the OAuth provider gives us an email</span>
-      <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">:email</span> <span class="o">=&gt;</span> <span class="n">auth</span><span class="p">.</span><span class="nf">info</span><span class="p">.</span><span class="nf">email</span><span class="p">).</span><span class="nf">first</span> <span class="k">if</span> <span class="n">auth</span><span class="p">.</span><span class="nf">info</span><span class="p">.</span><span class="nf">email</span>
+      <span class="c1"># Get the existing user by email if the OAuth provider gives us a verified email</span>
+      <span class="c1"># If the email has not been verified yet we will force the user to validate it</span>
+      <span class="n">email</span> <span class="o">=</span> <span class="n">auth</span><span class="p">.</span><span class="nf">info</span><span class="p">.</span><span class="nf">email</span> <span class="k">if</span> <span class="n">auth</span><span class="p">.</span><span class="nf">info</span><span class="p">.</span><span class="nf">verified_email</span>
+      <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">:email</span> <span class="o">=&gt;</span> <span class="n">email</span><span class="p">).</span><span class="nf">first</span> <span class="k">if</span> <span class="n">email</span>
 
       <span class="c1"># Create the user if it is a new registration</span>
       <span class="k">if</span> <span class="n">user</span><span class="p">.</span><span class="nf">nil?</span>
         <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span>
           <span class="nb">name</span><span class="p">:</span> <span class="n">auth</span><span class="p">.</span><span class="nf">extra</span><span class="p">.</span><span class="nf">raw_info</span><span class="p">.</span><span class="nf">name</span><span class="p">,</span>
           <span class="c1">#username: auth.info.nickname || auth.uid,</span>
-          <span class="ss">email: </span><span class="n">auth</span><span class="p">.</span><span class="nf">info</span><span class="p">.</span><span class="nf">email</span><span class="p">.</span><span class="nf">blank?</span> <span class="p">?</span> <span class="no">TEMP_EMAIL</span> <span class="p">:</span> <span class="n">auth</span><span class="p">.</span><span class="nf">info</span><span class="p">.</span><span class="nf">email</span><span class="p">,</span>
+          <span class="ss">email: </span><span class="n">email</span> <span class="p">?</span> <span class="no">TEMP_EMAIL</span> <span class="p">:</span> <span class="n">email</span><span class="p">,</span>
           <span class="ss">password: </span><span class="no">Devise</span><span class="p">.</span><span class="nf">friendly_token</span><span class="o">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">20</span><span class="o">]</span>
         <span class="p">)</span>
         <span class="n">user</span><span class="p">.</span><span class="nf">skip_confirmation!</span>
@@ -329,6 +318,15 @@
 </pre>
 
 <p>Well that's pretty much it! If I left anything out please give me a shout and I will update the article. Cheers!</p>
+
+<h2 id="changes">Changes</h2>
+
+<ul>
+  <li>Added <code>UsersController.set_user</code> method for clarity</li>
+  <li>Removed duplicate controller methods from <code>OmniauthCallbacksController</code></li>
+  <li>Only accept verified email addresses from the provider via 'User.find_for_oauth'</li>
+  <li>Removed redundant <code>gem "omniauth"</code> from <code>Gemfile</code></li>
+</ul>
     
       
       <ul class="social-buttons">
