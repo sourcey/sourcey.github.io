@@ -211,7 +211,7 @@
 
       <span class="c1"># Get the existing user by email if the OAuth provider gives us a verified email</span>
       <span class="c1"># If the email has not been verified yet we will force the user to validate it</span>
-      <span class="n">email</span> <span class="o">=</span> <span class="n">auth</span><span class="p">.</span><span class="nf">info</span><span class="p">.</span><span class="nf">email</span> <span class="k">if</span> <span class="n">auth</span><span class="p">.</span><span class="nf">info</span><span class="p">.</span><span class="nf">verified_email</span>
+      <span class="n">email</span> <span class="o">=</span> <span class="n">auth</span><span class="p">.</span><span class="nf">info</span><span class="p">.</span><span class="nf">email</span> <span class="k">if</span> <span class="n">auth</span><span class="p">.</span><span class="nf">info</span><span class="p">.</span><span class="nf">email</span> <span class="o">&amp;&amp;</span> <span class="n">auth</span><span class="p">.</span><span class="nf">info</span><span class="p">.</span><span class="nf">verified_email</span>
       <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">:email</span> <span class="o">=&gt;</span> <span class="n">email</span><span class="p">).</span><span class="nf">first</span> <span class="k">if</span> <span class="n">email</span>
 
       <span class="c1"># Create the user if it is a new registration</span>
@@ -219,7 +219,7 @@
         <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span>
           <span class="nb">name</span><span class="p">:</span> <span class="n">auth</span><span class="p">.</span><span class="nf">extra</span><span class="p">.</span><span class="nf">raw_info</span><span class="p">.</span><span class="nf">name</span><span class="p">,</span>
           <span class="c1">#username: auth.info.nickname || auth.uid,</span>
-          <span class="ss">email: </span><span class="n">email</span> <span class="p">?</span> <span class="no">TEMP_EMAIL</span> <span class="p">:</span> <span class="n">email</span><span class="p">,</span>
+          <span class="ss">email: </span><span class="n">email</span> <span class="p">?</span> <span class="n">email</span> <span class="p">:</span> <span class="no">TEMP_EMAIL</span><span class="p">,</span>
           <span class="ss">password: </span><span class="no">Devise</span><span class="p">.</span><span class="nf">friendly_token</span><span class="o">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">20</span><span class="o">]</span>
         <span class="p">)</span>
         <span class="n">user</span><span class="p">.</span><span class="nf">skip_confirmation!</span>
@@ -271,15 +271,16 @@
   <span class="k">def</span> <span class="nf">add_email</span>
     <span class="k">if</span> <span class="n">params</span><span class="o">[</span><span class="ss">:user</span><span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="n">params</span><span class="o">[</span><span class="ss">:user</span><span class="o">][</span><span class="ss">:email</span><span class="o">]</span>
       <span class="n">current_user</span><span class="p">.</span><span class="nf">email</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:user</span><span class="o">][</span><span class="ss">:email</span><span class="o">]</span>
-      <span class="n">current_user</span><span class="p">.</span><span class="nf">skip_reconfirmation!</span> <span class="c1"># don't forget this if using Devise confirmable</span>
-      <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
-        <span class="k">if</span> <span class="n">current_user</span><span class="p">.</span><span class="nf">save</span>
-          <span class="nb">format</span><span class="p">.</span><span class="nf">html</span> <span class="p">{</span> <span class="n">redirect_to</span> <span class="n">current_user</span><span class="p">,</span> <span class="ss">notice: </span><span class="s1">'Your email address was successfully updated.'</span> <span class="p">}</span>
-          <span class="nb">format</span><span class="p">.</span><span class="nf">json</span> <span class="p">{</span> <span class="n">head</span> <span class="ss">:no_content</span> <span class="p">}</span>
-        <span class="k">else</span>
-          <span class="nb">format</span><span class="p">.</span><span class="nf">html</span> <span class="p">{</span> <span class="vi">@show_errors</span> <span class="o">=</span> <span class="kp">true</span> <span class="p">}</span>
-          <span class="nb">format</span><span class="p">.</span><span class="nf">json</span> <span class="p">{</span> <span class="n">render</span> <span class="ss">json: </span><span class="vi">@user</span><span class="p">.</span><span class="nf">errors</span><span class="p">,</span> <span class="ss">status: :unprocessable_entity</span> <span class="p">}</span>
-        <span class="k">end</span>
+
+      <span class="c1"># Note: When using the Devise confirmable module I choose to skip email validation</span>
+      <span class="c1"># here if the user has signed up with Twitter.</span>
+      <span class="c1"># Just remove the following line if you want the user to confirm their email address. </span>
+      <span class="n">current_user</span><span class="p">.</span><span class="nf">skip_reconfirmation!</span>
+
+      <span class="k">if</span> <span class="n">current_user</span><span class="p">.</span><span class="nf">save</span>
+          <span class="n">redirect_to</span> <span class="n">current_user</span><span class="p">,</span> <span class="ss">notice: </span><span class="s1">'Your email address was successfully updated.'</span>
+      <span class="k">else</span>
+          <span class="vi">@show_errors</span> <span class="o">=</span> <span class="kp">true</span>
       <span class="k">end</span>
     <span class="k">end</span>
   <span class="k">end</span>
@@ -293,31 +294,32 @@
 
 <h4 id="appviewsusersadduserhtmlrb">app/views/users/add_user.html.rb</h4>
 
-<pre class="highlight ruby"><span class="o">&lt;</span><span class="n">div</span> <span class="nb">id</span><span class="o">=</span><span class="s2">"add-email"</span> <span class="k">class</span><span class="o">=</span><span class="s2">"container"</span><span class="o">&gt;</span>
-  <span class="c1">## Add Email</span>
-  <span class="o">&lt;</span><span class="sx">%= form_for(@user, :as =</span><span class="o">&gt;</span> <span class="s1">'user'</span><span class="p">,</span> <span class="ss">:url</span> <span class="o">=&gt;</span> <span class="n">add_user_email_path</span><span class="p">(</span><span class="vi">@user</span><span class="p">),</span> <span class="ss">:html</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">role: </span><span class="s1">'form'</span><span class="p">})</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="sx">%&gt;
-    &lt;% if @show_errors &amp;&amp; @user.errors.any? %&gt;</span>
-      <span class="o">&lt;</span><span class="n">div</span> <span class="nb">id</span><span class="o">=</span><span class="s2">"error_explanation"</span><span class="o">&gt;</span>
-        <span class="o">&lt;</span><span class="sx">% @user.errors.full_messages.each </span><span class="k">do</span> <span class="o">|</span><span class="n">msg</span><span class="o">|</span> <span class="sx">%&gt;
-          &lt;%= msg %&gt;</span><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
-        <span class="o">&lt;</span><span class="sx">% end %&gt;
-      &lt;/div&gt;</span>
-    <span class="o">&lt;</span><span class="sx">% end %&gt;
-    &lt;div class="form-group"&gt;</span>
-      <span class="o">&lt;</span><span class="sx">%= f.label :email %&gt;
-      &lt;div class=</span><span class="s2">"controls"</span><span class="o">&gt;</span>
-        <span class="o">&lt;</span><span class="sx">%= f.text_field :email, :autofocus =</span><span class="o">&gt;</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">:value</span> <span class="o">=&gt;</span> <span class="s1">''</span><span class="p">,</span> <span class="k">class</span><span class="p">:</span> <span class="s1">'form-control input-lg'</span><span class="p">,</span> <span class="ss">placeholder: </span><span class="s1">'Example: email@me.com'</span> <span class="sx">%&gt;
-        &lt;p class="help-block"&gt;</span><span class="no">Please</span> <span class="n">confirm</span> <span class="n">your</span> <span class="n">email</span> <span class="n">address</span><span class="o">.</span> <span class="no">No</span> <span class="n">spam</span><span class="p">.</span><span class="nf">&lt;</span><span class="sr">/p&gt;
-      &lt;/</span><span class="n">div</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="sr">/div&gt;
-    &lt;div class="actions"&gt;
-      &lt;%= f.submit 'Continue', :class =&gt; 'btn btn-primary' %&gt;
-    &lt;/</span><span class="n">div</span><span class="o">&gt;</span>
-  <span class="o">&lt;</span><span class="sx">% end %&gt;
-&lt;/div&gt;</span>
+<p>Note that the following template uses Bootstrap markup.</p>
+
+<pre class="highlight html"><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"add-email"</span> <span class="na">class=</span><span class="s">"container"</span><span class="nt">&gt;</span>
+  <span class="err">&lt;</span>%= form_for(@user, :as =&gt; 'user', :url =&gt; add_user_email_path(@user), :html =&gt; { role: 'form'}) do |f| %&gt;
+    <span class="err">&lt;</span>% if @show_errors <span class="err">&amp;&amp;</span> @user.errors.any? %&gt;
+      <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"error_explanation"</span><span class="nt">&gt;</span>
+        <span class="err">&lt;</span>% @user.errors.full_messages.each do |msg| %&gt;
+          <span class="err">&lt;</span>%= msg %&gt;<span class="nt">&lt;br&gt;</span>
+        <span class="err">&lt;</span>% end %&gt;
+      <span class="nt">&lt;/div&gt;</span>
+    <span class="err">&lt;</span>% end %&gt;
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"form-group"</span><span class="nt">&gt;</span>
+      <span class="err">&lt;</span>%= f.label :email %&gt;
+      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"controls"</span><span class="nt">&gt;</span>
+        <span class="err">&lt;</span>%= f.text_field :email, :autofocus =&gt; true, :value =&gt; '', class: 'form-control input-lg', placeholder: 'Example: email@me.com' %&gt;
+        <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">"help-block"</span><span class="nt">&gt;</span>Please confirm your email address. No spam.<span class="nt">&lt;/p&gt;</span>
+      <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"actions"</span><span class="nt">&gt;</span>
+      <span class="err">&lt;</span>%= f.submit 'Continue', :class =&gt; 'btn btn-primary' %&gt;
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="err">&lt;</span>% end %&gt;
+<span class="nt">&lt;/div&gt;</span>
 </pre>
 
-<p>Well that's pretty much it! If I left anything out please give me a shout and I will update the article. Cheers!</p>
+<p>Well that's pretty much it! If I left anything out please give me a shout and I'll update the article, cheers!</p>
 
 <h2 id="changes">Changes</h2>
 
