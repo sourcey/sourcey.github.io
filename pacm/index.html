@@ -83,23 +83,31 @@ TODO: compare to current package managers
 
 <dl class="status">
   <dt>Repository</dt>
-  <dd><a href="https://github.com/sourcey/libsourcey">https://github.com/sourcey/libsourcey</a></dd>
+  <dd><a href="https://github.com/sourcey/pacm">https://github.com/sourcey/pacm</a></dd>
   <dt>Licence</dt>
   <dd>LGPL, <a href="/licence">Pro Licence</a></dd>
   <dt>Dependencies</dt>
-  <dd>LibSourcey (base, uv, net, json, http, archo), libuv, JsonCpp</dd>
+  <dd>LibSourcey (base, uv, net, json, http, archo)</dd>
 </dl>
 
-<p><img alt="Pacm Logo" title="Pacm Logo" class="align-left" src="/images/pacm-logo-120.png" /> Pacm is a redistributable package manager written C++ that speaks JSON with the server.
-It is designed to be embedded within an application to make easy work of installing, updating and uninstalling packages and plug-ins.</p>
+<p><img alt="Pacm Logo" title="Pacm Logo" class="align-left" src="/images/pacm-logo-120.png" /> Pacm is a front-end package manager written in C++ that can be embedded or redistributed with native applications to make short work of the following tasks:</p>
 
-<p>There is no shortage or open source <a href="http://en.wikipedia.org/wiki/List_of_software_package_management_systems">package managers</a> out there, but none of them quite fit the bill for an embeddable native package manager that could be controlled from the cloud. Rather than continue building with a square wheel, we decided to build a new one.</p>
+<ul>
+  <li>Auto-Updates</li>
+  <li>Version Constrained Package Management</li>
+  <li>Dependency Management</li>
+  <li>Remote Plugin Management</li>
+</ul>
 
-<p>Pacm is included a default module in the LibSourcey repository, so please download and compile <a href="libsourcey">LibSourcey</a> in order to use Pacm.</p>
+<p>There are a lot of open source <a href="http://en.wikipedia.org/wiki/List_of_software_package_management_systems">package managers</a> out there, but none of them quite fit the bill for a minimal and flexible native package manager that could be easily distributed with our apps, so we built Pacm.</p>
 
-<h2 id="usage-examples">Usage examples</h2>
+<p>The Pacm codebase is kept quite small and readable thanks to LibSourcey which handles and abstracts all the complex cross-platform tasks such as networking, filesystem and cryptography.</p>
 
-<p>The Pacm API is vey easy use. Some examples are illustrated below:</p>
+<p>Pacm speaks to the server using a basic <a href="#client-server-protocol">client-server JSON protocol</a> which is very straight forward to integrate with your existing web server architecture. </p>
+
+<h2 id="embedding-and-using-the-pacm-c-api">Embedding and Using the Pacm C++ API</h2>
+
+<p>If you have some basic C++ nouse then you'll discover that Pacm is very easy to embed and use within your own applications. Some examples of the Pacm API are illustrated below:</p>
 
 <pre class="highlight cpp"><span class="n">PackageManager</span><span class="o">::</span><span class="n">Options</span> <span class="n">options</span><span class="p">;</span>
 <span class="c1">// configuration options go here...
@@ -111,17 +119,17 @@ It is designed to be embedded within an application to make easy work of install
         
 <span class="c1">// list local (installed) packages
 </span><span class="k">auto</span> <span class="n">litems</span> <span class="o">=</span> <span class="n">pacm</span><span class="p">.</span><span class="n">localPackages</span><span class="p">().</span><span class="n">items</span><span class="p">();</span>
-<span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">litems</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">litems</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span><span class="p">)</span> <span class="p">{</span>				
-  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Package: "</span> <span class="o">&lt;&lt;</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">first</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">litems</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">litems</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span><span class="p">)</span> <span class="p">{</span>        
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Package: "</span> <span class="o">&lt;&lt;</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">first</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="c1">// list remote (available) packages
 </span><span class="k">auto</span> <span class="n">ritems</span> <span class="o">=</span> <span class="n">app</span><span class="p">.</span><span class="n">remotePackages</span><span class="p">().</span><span class="n">items</span><span class="p">();</span>
-<span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">ritems</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">ritems</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span><span class="p">)</span> <span class="p">{</span>				
-  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Package: "</span> <span class="o">&lt;&lt;</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">first</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>          
+<span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">ritems</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">ritems</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span><span class="p">)</span> <span class="p">{</span>        
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Package: "</span> <span class="o">&lt;&lt;</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">first</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>          
   
-  <span class="c1">// output the lastest asset information
-</span>  <span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span><span class="o">-&gt;</span><span class="n">latestAsset</span><span class="p">().</span><span class="n">print</span><span class="p">(</span><span class="n">cout</span><span class="p">);</span>	
+  <span class="c1">// output the latest asset information
+</span>  <span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span><span class="o">-&gt;</span><span class="n">latestAsset</span><span class="p">().</span><span class="n">print</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="p">);</span> 
 <span class="p">}</span>                
         
 <span class="c1">// install a package
@@ -131,10 +139,10 @@ It is designed to be embedded within an application to make easy work of install
 </span><span class="n">pacm</span><span class="p">.</span><span class="n">updatePackage</span><span class="p">(</span><span class="s">"SomePackageName"</span><span class="p">);</span>
 
 <span class="c1">// update / install a list of packages.
-// package states are availalbe via callback events
+// package states are available via callback events
 </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">packages</span><span class="p">;</span>
 <span class="n">packages</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">"SomePackageName"</span><span class="p">);</span>
-<span class="n">packages</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">"IThoughtPacmWasAGame"</span><span class="p">);</span>        
+<span class="n">packages</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">"SomeOtherPackage"</span><span class="p">);</span>        
 <span class="n">pacm</span><span class="p">.</span><span class="n">installPackages</span><span class="p">(</span><span class="n">packages</span><span class="p">);</span>
 
 <span class="c1">// update all packages
@@ -145,86 +153,153 @@ It is designed to be embedded within an application to make easy work of install
 </span><span class="n">pacm</span><span class="p">.</span><span class="n">uninstallPackage</span><span class="p">(</span><span class="s">"SomePackageName"</span><span class="p">);</span>
 </pre>
 
-<p>Pretty tidy huh? That covers basic Pacm usage. </p>
+<p>That covers basic Pacm usage. These are plenty of other methods and features available, just check out the documentation for the method definitions in the <a href="https://github.com/sourcey/pacm/blob/master/include/scy/pacm/packagemanager.h">source code</a> for a reference.</p>
 
-<p>These are plenty of other methods and features available, just check out the documentation for the method definitions in the <a href="https://github.com/sourcey/libsourcey/blob/master/src/pacm/include/scy/pacm/packagemanager.h">source code</a> for a reference.</p>
+<p>Another great place to start when working with the native API is the <a href="https://github.com/sourcey/pacm/blob/master/applications/pacmconsole/src/main.cpp">Pacm command line tool</a> which can be easily reverse engineered and modified for your own purposes.</p>
 
-<h2 id="client-server-protocol">Client server protocol</h2>
+<h2 id="redistributable-command-line-tool">Redistributable Command Line Tool</h2>
 
-<p>The Pacm core does not include a server module, but it should be easy to implement using your chosen web framework. All that is required on the server-side is to list packages using Pacm's simple JSON protocol. We generally use Rails for easy serialization of database objects. </p>
+<p>Pacm comes with a redistributable command-line tool which can be compiled and redistributed with your existing applications. In many ways this is preferable to embedding Pacm as it allows you to decouple complex version management code from your main application.</p>
 
-<p>An example of a server response to a Pacm query is illustrated below. Pacm will send a HTTP GET request to the server which will reply with a JSON response that looks like:</p>
+<h3 id="examples">Examples</h3>
 
-<pre class="highlight javascript"><span class="p">[</span> <span class="p">{</span> <span class="s2">"assets"</span> <span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="s2">"extension"</span> <span class="p">:</span> <span class="s2">"zip"</span><span class="p">,</span>
-          <span class="s2">"file-name"</span> <span class="p">:</span> <span class="s2">"Spot-1.0-win32-bin.zip"</span><span class="p">,</span>
-          <span class="s2">"file-size"</span> <span class="p">:</span> <span class="s2">"3261705"</span><span class="p">,</span>
-          <span class="s2">"mirrors"</span> <span class="p">:</span> <span class="p">[</span> <span class="s2">"http://localhost:3000/archives/417/Spot-1.0-win32-bin.zip"</span> <span class="p">],</span>
-          <span class="s2">"name"</span> <span class="p">:</span> <span class="s2">"Spot"</span><span class="p">,</span>
-          <span class="s2">"platform"</span> <span class="p">:</span> <span class="s2">"win32"</span><span class="p">,</span>
-          <span class="s2">"standalone"</span> <span class="p">:</span> <span class="s2">"true"</span><span class="p">,</span>
-          <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"bin"</span><span class="p">,</span>
-          <span class="s2">"version"</span> <span class="p">:</span> <span class="s2">"1.0"</span>
-        <span class="p">},</span>
-        <span class="p">{</span> <span class="s2">"extension"</span> <span class="p">:</span> <span class="s2">"zip"</span><span class="p">,</span>
-          <span class="s2">"file-name"</span> <span class="p">:</span> <span class="s2">"Spot-1.1-win32-bin.zip"</span><span class="p">,</span>
-          <span class="s2">"file-size"</span> <span class="p">:</span> <span class="s2">"3261705"</span><span class="p">,</span>
-          <span class="s2">"mirrors"</span> <span class="p">:</span> <span class="p">[</span> <span class="s2">"http://localhost:3000/archives/418/Spot-1.1-win32-bin.zip"</span> <span class="p">],</span>
-          <span class="s2">"name"</span> <span class="p">:</span> <span class="s2">"Spot"</span><span class="p">,</span>
-          <span class="s2">"platform"</span> <span class="p">:</span> <span class="s2">"win32"</span><span class="p">,</span>
-          <span class="s2">"standalone"</span> <span class="p">:</span> <span class="s2">"true"</span><span class="p">,</span>
-          <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"bin"</span><span class="p">,</span>
-          <span class="s2">"version"</span> <span class="p">:</span> <span class="s2">"1.1"</span>
-        <span class="p">}</span>
-      <span class="p">],</span>
-    <span class="s2">"author"</span> <span class="p">:</span> <span class="s2">"Sourcey"</span><span class="p">,</span>
-    <span class="s2">"id"</span> <span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
-    <span class="s2">"name"</span> <span class="p">:</span> <span class="s2">"Spot"</span><span class="p">,</span>
-    <span class="s2">"title"</span> <span class="p">:</span> <span class="s2">"Spot"</span><span class="p">,</span>
-    <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"Project"</span>
-  <span class="p">},</span>
-  <span class="p">{</span> <span class="s2">"assets"</span> <span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="s2">"extension"</span> <span class="p">:</span> <span class="s2">"zip"</span><span class="p">,</span>
-          <span class="s2">"file-name"</span> <span class="p">:</span> <span class="s2">"SurveillanceMode-0.9.0-Spot-1.0-win32-bin.zip"</span><span class="p">,</span>
-          <span class="s2">"file-size"</span> <span class="p">:</span> <span class="s2">"761951"</span><span class="p">,</span>
-          <span class="s2">"mirrors"</span> <span class="p">:</span> <span class="p">[</span> <span class="s2">"http://localhost:3000/archives/439/SurveillanceMode-0.9.0-Spot-1.0-win32-bin.zip"</span> <span class="p">],</span>
-          <span class="s2">"name"</span> <span class="p">:</span> <span class="s2">"SurveillanceMode"</span><span class="p">,</span>
-          <span class="s2">"platform"</span> <span class="p">:</span> <span class="s2">"win32"</span><span class="p">,</span>
-          <span class="s2">"project-name"</span> <span class="p">:</span> <span class="s2">"Spot"</span><span class="p">,</span>
-          <span class="s2">"project-version"</span> <span class="p">:</span> <span class="s2">"1.0"</span><span class="p">,</span>
-          <span class="s2">"standalone"</span> <span class="p">:</span> <span class="s2">"false"</span><span class="p">,</span>
-          <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"bin"</span><span class="p">,</span>
-          <span class="s2">"version"</span> <span class="p">:</span> <span class="s2">"0.9.0"</span>
-        <span class="p">}</span> <span class="p">],</span>
-    <span class="s2">"author"</span> <span class="p">:</span> <span class="s2">"Sourcey"</span><span class="p">,</span>
-    <span class="s2">"id"</span> <span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
-    <span class="s2">"name"</span> <span class="p">:</span> <span class="s2">"SurveillanceMode"</span><span class="p">,</span>
-    <span class="s2">"title"</span> <span class="p">:</span> <span class="s2">"Surveillance Mode Plugin"</span><span class="p">,</span>
-    <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"Plugin"</span>
-  <span class="p">},</span>
-  <span class="p">{</span> <span class="s2">"assets"</span> <span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="s2">"extension"</span> <span class="p">:</span> <span class="s2">"zip"</span><span class="p">,</span>
-          <span class="s2">"file-name"</span> <span class="p">:</span> <span class="s2">"MediaProvider-0.9.0-Spot-1.0-win32-bin.zip"</span><span class="p">,</span>
-          <span class="s2">"file-size"</span> <span class="p">:</span> <span class="s2">"136459"</span><span class="p">,</span>
-          <span class="s2">"mirrors"</span> <span class="p">:</span> <span class="p">[</span> <span class="s2">"http://localhost:3000/archives/435/MediaProvider-0.9.0-Spot-1.0-win32-bin.zip"</span> <span class="p">],</span>
-          <span class="s2">"name"</span> <span class="p">:</span> <span class="s2">"MediaProvider"</span><span class="p">,</span>
-          <span class="s2">"platform"</span> <span class="p">:</span> <span class="s2">"win32"</span><span class="p">,</span>
-          <span class="s2">"project-name"</span> <span class="p">:</span> <span class="s2">"Spot"</span><span class="p">,</span>
-          <span class="s2">"project-version"</span> <span class="p">:</span> <span class="s2">"1.0"</span><span class="p">,</span>
-          <span class="s2">"standalone"</span> <span class="p">:</span> <span class="s2">"false"</span><span class="p">,</span>
-          <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"bin"</span><span class="p">,</span>
-          <span class="s2">"version"</span> <span class="p">:</span> <span class="s2">"0.9.0"</span>
-        <span class="p">}</span> <span class="p">],</span>
-    <span class="s2">"author"</span> <span class="p">:</span> <span class="s2">"Sourcey"</span><span class="p">,</span>
-    <span class="s2">"id"</span> <span class="p">:</span> <span class="mi">19</span><span class="p">,</span>
-    <span class="s2">"name"</span> <span class="p">:</span> <span class="s2">"MediaProvider"</span><span class="p">,</span>
-    <span class="s2">"title"</span> <span class="p">:</span> <span class="s2">"Media Provider"</span><span class="p">,</span>
-    <span class="s2">"type"</span> <span class="p">:</span> <span class="s2">"Plugin"</span>
-  <span class="p">}</span>
-<span class="p">]</span>
+<p>Print help:</p>
+
+<pre class="highlight shell">pacm --help
+</pre>
+
+<p>Install the Anionu <code>surveillancemodeplugin</code>:</p>
+
+<pre class="highlight shell">pacm --endpoint https://anionu.com --uri /packages.json --print --install surveillancemodeplugin
+</pre>
+
+<p>Uninstall the Anionu <code>surveillancemodeplugin</code>:</p>
+
+<pre class="highlight shell">pacm --endpoint https://anionu.com --uri /packages.json --print --install surveillancemodeplugin
+</pre>
+
+<p>Update installed packages to the latest version:</p>
+
+<pre class="highlight shell">pacm --endpoint https://anionu.com --uri /packages.json --print --update
+</pre>
+
+<h3 id="supported-commands">Supported Commands</h3>
+
+<p>The following commands are implemented by the redistributable application. This is likely to be expanded upon in the near future, and in the mean time pull requests are very welcome:</p>
+
+<pre class="highlight plaintext">General commands:
+
+  --help           Print help
+  --logfile        Log file output path
+
+Server commands:
+
+  --endpoint       HTTP server endpoint
+  --uri            HTTP server package JSON index URI
+
+Package commands:
+
+  --install        Packages to install (comma separated)
+  --uninstall      Packages to uninstall (comma separated)
+  --update         Update all packages
+  --print          Print all local and remote packages on exit
+  --checksum-alg   Checksum algorithm for verifying packages (MDS/SHA1)
+
+Filesystem commands:
+
+  --install-dir    Directory where packages will be installed
+  --data-dir       Directory where package manifests will be stored
+  --temp-dir       Directory where intermediate package files will be stored
+</pre>
+
+<h2 id="client-server-protocol">Client-Server Protocol</h2>
+
+<p>The Pacm repository does not currently include a server module, but since everything is in JSON it should be a sinch to implement using your existing web framework. All that is required on the server-side is to list packages and facilitate downloads.</p>
+
+<p>An example of a server response to a Pacm query is illustrated below. Pacm will send a HTTP GET request to the server which will reply with a JSON response that looks like this:</p>
+
+<pre class="highlight javascript"><span class="p">[{</span>
+    <span class="s2">"id"</span><span class="p">:</span> <span class="s2">"surveillancemodeplugin"</span><span class="p">,</span>
+    <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"Plugin"</span><span class="p">,</span>
+    <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"Surveillance Mode Plugin"</span><span class="p">,</span>
+    <span class="s2">"author"</span><span class="p">:</span> <span class="s2">"Sourcey"</span><span class="p">,</span>
+    <span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Surveillance mode provides Spot with real-time motion detection capabilities. Surveillance mode is ideal for when you are away from the surveilled premises, and want to protect yourself against unwanted intruders. You can also configure SMS alerts and record videos during intervals of motion."</span><span class="p">,</span>
+    <span class="s2">"assets"</span><span class="p">:</span> <span class="p">[{</span>
+        <span class="s2">"version"</span><span class="p">:</span> <span class="s2">"0.9.3"</span><span class="p">,</span>
+        <span class="s2">"sdk-version"</span><span class="p">:</span> <span class="s2">"0.6.2"</span><span class="p">,</span>
+        <span class="s2">"platform"</span><span class="p">:</span> <span class="s2">"win32"</span><span class="p">,</span>
+        <span class="s2">"file-name"</span><span class="p">:</span> <span class="s2">"surveillancemodeplugin-0.9.4-sdk-0.6.2-win32.zip"</span><span class="p">,</span>
+        <span class="s2">"file-size"</span><span class="p">:</span> <span class="mi">432321</span><span class="p">,</span>
+        <span class="s2">"mirrors"</span><span class="p">:</span> <span class="p">[{</span>
+            <span class="s2">"url"</span><span class="p">:</span> <span class="s2">"https://anionu.com/packages/surveillancemodeplugin/download/surveillancemodeplugin-0.9.4-sdk-0.6.2-win32.zip"</span>
+        <span class="p">}]</span>
+    <span class="p">},</span> <span class="p">{</span>
+        <span class="s2">"version"</span><span class="p">:</span> <span class="s2">"0.9.3"</span><span class="p">,</span>
+        <span class="s2">"sdk-version"</span><span class="p">:</span> <span class="s2">"0.6.0"</span><span class="p">,</span>
+        <span class="s2">"platform"</span><span class="p">:</span> <span class="s2">"win32"</span><span class="p">,</span>
+        <span class="s2">"file-name"</span><span class="p">:</span> <span class="s2">"surveillancemodeplugin-0.9.3-sdk-0.6.0-win32-debug.zip"</span><span class="p">,</span>
+        <span class="s2">"file-size"</span><span class="p">:</span> <span class="mi">432221</span><span class="p">,</span>
+        <span class="s2">"mirrors"</span><span class="p">:</span> <span class="p">[{</span>
+            <span class="s2">"url"</span><span class="p">:</span> <span class="s2">"https://anionu.com/packages/surveillancemodeplugin/download/surveillancemodeplugin-0.9.3-sdk-0.6.0-win32-debug.zip"</span>
+        <span class="p">}]</span>
+    <span class="p">}]</span>
+<span class="p">},</span> <span class="p">{</span>
+    <span class="s2">"id"</span><span class="p">:</span> <span class="s2">"mediaplugin"</span><span class="p">,</span>
+    <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"Plugin"</span><span class="p">,</span>
+    <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"Media Plugin"</span><span class="p">,</span>
+    <span class="s2">"author"</span><span class="p">:</span> <span class="s2">"Sourcey"</span><span class="p">,</span>
+    <span class="s2">"description"</span><span class="p">:</span> <span class="s2">"The Media Plugin implements audio and video encoders for recording and real-time media streaming. If you want to enable different media formats in Spot, you can do so by modifying this plugin."</span><span class="p">,</span>
+    <span class="s2">"assets"</span><span class="p">:</span> <span class="p">[{</span>
+        <span class="s2">"version"</span><span class="p">:</span> <span class="s2">"0.8.9"</span><span class="p">,</span>
+        <span class="s2">"sdk-version"</span><span class="p">:</span> <span class="s2">"0.6.2"</span><span class="p">,</span>
+        <span class="s2">"platform"</span><span class="p">:</span> <span class="s2">"win32"</span><span class="p">,</span>
+        <span class="s2">"file-name"</span><span class="p">:</span> <span class="s2">"mediaplugin-0.8.9-sdk-0.6.2-win32.zip"</span><span class="p">,</span>
+        <span class="s2">"file-size"</span><span class="p">:</span> <span class="mi">1352888</span><span class="p">,</span>
+        <span class="s2">"mirrors"</span><span class="p">:</span> <span class="p">[{</span>
+            <span class="s2">"url"</span><span class="p">:</span> <span class="s2">"https://anionu.com/packages/mediaplugin/download/mediaplugin-0.8.9-sdk-0.6.2-win32.zip"</span>
+        <span class="p">}]</span>
+    <span class="p">},</span> <span class="p">{</span>
+        <span class="s2">"version"</span><span class="p">:</span> <span class="s2">"0.8.8"</span><span class="p">,</span>
+        <span class="s2">"sdk-version"</span><span class="p">:</span> <span class="s2">"0.6.0"</span><span class="p">,</span>
+        <span class="s2">"platform"</span><span class="p">:</span> <span class="s2">"win32"</span><span class="p">,</span>
+        <span class="s2">"file-name"</span><span class="p">:</span> <span class="s2">"mediaplugin-0.8.8-sdk-0.6.0-win32-debug.zip"</span><span class="p">,</span>
+        <span class="s2">"file-size"</span><span class="p">:</span> <span class="mi">1352818</span><span class="p">,</span>
+        <span class="s2">"mirrors"</span><span class="p">:</span> <span class="p">[{</span>
+            <span class="s2">"url"</span><span class="p">:</span> <span class="s2">"https://anionu.com/packages/mediaplugin/download/mediaplugin-0.8.8-sdk-0.6.0-win32-debug.zip"</span>
+        <span class="p">}]</span>
+    <span class="p">}]</span>
+<span class="p">},</span> <span class="p">{</span>
+    <span class="s2">"id"</span><span class="p">:</span> <span class="s2">"webrtcplugin"</span><span class="p">,</span>
+    <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"Plugin"</span><span class="p">,</span>
+    <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"WebRTC Plugin"</span><span class="p">,</span>
+    <span class="s2">"author"</span><span class="p">:</span> <span class="s2">"Sourcey"</span><span class="p">,</span>
+    <span class="s2">"description"</span><span class="p">:</span> <span class="s2">"This plugin provides Spot with WebRTC support, so you can view high quality video surveillance streams in a modern web browser."</span><span class="p">,</span>
+    <span class="s2">"assets"</span><span class="p">:</span> <span class="p">[{</span>
+        <span class="s2">"version"</span><span class="p">:</span> <span class="s2">"0.1.1"</span><span class="p">,</span>
+        <span class="s2">"sdk-version"</span><span class="p">:</span> <span class="s2">"0.6.2"</span><span class="p">,</span>
+        <span class="s2">"platform"</span><span class="p">:</span> <span class="s2">"win32"</span><span class="p">,</span>
+        <span class="s2">"file-name"</span><span class="p">:</span> <span class="s2">"webrtcplugin-0.1.1-sdk-0.6.2-win32.zip"</span><span class="p">,</span>
+        <span class="s2">"file-size"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">"mirrors"</span><span class="p">:</span> <span class="p">[{</span>
+            <span class="s2">"url"</span><span class="p">:</span> <span class="s2">"https://anionu.com/packages/webrtcplugin/download/webrtcplugin-0.1.1-sdk-0.6.2-win32.zip"</span>
+        <span class="p">}]</span>
+    <span class="p">},</span> <span class="p">{</span>
+        <span class="s2">"version"</span><span class="p">:</span> <span class="s2">"0.1.0"</span><span class="p">,</span>
+        <span class="s2">"sdk-version"</span><span class="p">:</span> <span class="s2">"0.6.0"</span><span class="p">,</span>
+        <span class="s2">"platform"</span><span class="p">:</span> <span class="s2">"win32"</span><span class="p">,</span>
+        <span class="s2">"file-name"</span><span class="p">:</span> <span class="s2">"webrtcplugin-0.1.0-sdk-0.6.0-win32-debug.zip"</span><span class="p">,</span>
+        <span class="s2">"file-size"</span><span class="p">:</span> <span class="mi">3888157</span><span class="p">,</span>
+        <span class="s2">"mirrors"</span><span class="p">:</span> <span class="p">[{</span>
+            <span class="s2">"url"</span><span class="p">:</span> <span class="s2">"https://anionu.com/packages/webrtcplugin/download/webrtcplugin-0.1.0-sdk-0.6.0-win32-debug.zip"</span>
+        <span class="p">}]</span>
+    <span class="p">}]</span>
+<span class="p">}]</span>
 </pre>
 
 <h2 id="contributing">Contributing</h2>
 
 <ol>
-  <li><a href="https://github.com/sourcey/libsourcey">Fork LibSourcey on Github</a></li>
+  <li><a href="https://github.com/sourcey/pacm">Fork Pacm on Github</a></li>
   <li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li>
   <li>Commit your changes (<code>git commit -am 'Add some feature'</code>)</li>
   <li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
@@ -233,15 +308,7 @@ It is designed to be embedded within an application to make easy work of install
 
 <h2 id="issues">Issues</h2>
 
-<p>If you find any bugs or issues please use the new <a href="https://github.com/sourcey/libsourcey/issues">Github issue tracker</a>.</p>
-
-<!--   
-## Things to do
-
-There are a few features we have not had time to implement yet which are listed in the TODO file in the source folder.
-If you're able to implement any of the those features then send a push request our way. 
--->
-
+<p>If you find any bugs or issues please use the new <a href="https://github.com/sourcey/pacm/issues">Github issue tracker</a>.</p>
  
     </div>
         
