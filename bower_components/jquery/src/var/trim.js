@@ -1,3 +1,1 @@
-define(function() {
-	return "".trim;
-});
+define(function(){return"".trim});

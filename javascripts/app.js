@@ -1,4 +1,1 @@
-$(document).foundation();
-$(document).ready(function() { 
-  Socialite.load();
-});
+$(document).foundation(),$(document).ready(function(){Socialite.load()});
