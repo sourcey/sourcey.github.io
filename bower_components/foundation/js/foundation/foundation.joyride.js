@@ -1,1 +1,844 @@
-!function(t,s,i,e){"use strict";Foundation.libs.joyride={name:"joyride",version:"5.2.1",defaults:{expose:!1,modal:!0,tip_location:"bottom",nub_position:"auto",scroll_speed:1500,scroll_animation:"linear",timer:0,start_timer_on_click:!0,start_offset:0,next_button:!0,tip_animation:"fade",pause_after:[],exposed:[],tip_animation_fade_speed:300,cookie_monster:!1,cookie_name:"joyride",cookie_domain:!1,cookie_expires:365,tip_container:"body",tip_location_patterns:{top:["bottom"],bottom:[],left:["right","top","bottom"],right:["left","top","bottom"]},post_ride_callback:function(){},post_step_callback:function(){},pre_step_callback:function(){},pre_ride_callback:function(){},post_expose_callback:function(){},template:{link:'<a href="#close" class="joyride-close-tip">&times;</a>',timer:'<div class="joyride-timer-indicator-wrap"><span class="joyride-timer-indicator"></span></div>',tip:'<div class="joyride-tip-guide"><span class="joyride-nub"></span></div>',wrapper:'<div class="joyride-content-wrapper"></div>',button:'<a href="#" class="small button joyride-next-tip"></a>',modal:'<div class="joyride-modal-bg"></div>',expose:'<div class="joyride-expose-wrapper"></div>',expose_cover:'<div class="joyride-expose-cover"></div>'},expose_add_class:""},init:function(s,i,e){Foundation.inherit(this,"throttle random_str"),this.settings=this.settings||t.extend({},this.defaults,e||i),this.bindings(i,e)},events:function(){var i=this;t(this.scope).off(".joyride").on("click.fndtn.joyride",".joyride-next-tip, .joyride-modal-bg",function(t){t.preventDefault(),this.settings.$li.next().length<1?this.end():this.settings.timer>0?(clearTimeout(this.settings.automate),this.hide(),this.show(),this.startTimer()):(this.hide(),this.show())}.bind(this)).on("click.fndtn.joyride",".joyride-close-tip",function(t){t.preventDefault(),this.end()}.bind(this)),t(s).off(".joyride").on("resize.fndtn.joyride",i.throttle(function(){if(t("["+i.attr_name()+"]").length>0&&i.settings.$next_tip){if(i.settings.exposed.length>0){var s=t(i.settings.exposed);s.each(function(){var s=t(this);i.un_expose(s),i.expose(s)})}i.is_phone()?i.pos_phone():i.pos_default(!1,!0)}},100))},start:function(){var s=this,i=t("["+this.attr_name()+"]",this.scope),e=["timer","scrollSpeed","startOffset","tipAnimationFadeSpeed","cookieExpires"],n=e.length;!i.length>0||(this.settings.init||this.events(),this.settings=i.data(this.attr_name(!0)+"-init"),this.settings.$content_el=i,this.settings.$body=t(this.settings.tip_container),this.settings.body_offset=t(this.settings.tip_container).position(),this.settings.$tip_content=this.settings.$content_el.find("> li"),this.settings.paused=!1,this.settings.attempts=0,"function"!=typeof t.cookie&&(this.settings.cookie_monster=!1),(!this.settings.cookie_monster||this.settings.cookie_monster&&!t.cookie(this.settings.cookie_name))&&(this.settings.$tip_content.each(function(i){var o=t(this);this.settings=t.extend({},s.defaults,s.data_options(o));for(var h=n;h--;)s.settings[e[h]]=parseInt(s.settings[e[h]],10);s.create({$li:o,index:i})}),!this.settings.start_timer_on_click&&this.settings.timer>0?(this.show("init"),this.startTimer()):this.show("init")))},resume:function(){this.set_li(),this.show()},tip_template:function(s){var i,e;return s.tip_class=s.tip_class||"",i=t(this.settings.template.tip).addClass(s.tip_class),e=t.trim(t(s.li).html())+this.button_text(s.button_text)+this.settings.template.link+this.timer_instance(s.index),i.append(t(this.settings.template.wrapper)),i.first().attr(this.add_namespace("data-index"),s.index),t(".joyride-content-wrapper",i).append(e),i[0]},timer_instance:function(s){var i;return i=0===s&&this.settings.start_timer_on_click&&this.settings.timer>0||0===this.settings.timer?"":t(this.settings.template.timer)[0].outerHTML},button_text:function(s){return this.settings.next_button?(s=t.trim(s)||"Next",s=t(this.settings.template.button).append(s)[0].outerHTML):s="",s},create:function(s){var i=s.$li.attr(this.add_namespace("data-button"))||s.$li.attr(this.add_namespace("data-text")),e=s.$li.attr("class"),n=t(this.tip_template({tip_class:e,index:s.index,button_text:i,li:s.$li}));t(this.settings.tip_container).append(n)},show:function(s){var i=null;this.settings.$li===e||-1===t.inArray(this.settings.$li.index(),this.settings.pause_after)?(this.settings.paused?this.settings.paused=!1:this.set_li(s),this.settings.attempts=0,this.settings.$li.length&&this.settings.$target.length>0?(s&&(this.settings.pre_ride_callback(this.settings.$li.index(),this.settings.$next_tip),this.settings.modal&&this.show_modal()),this.settings.pre_step_callback(this.settings.$li.index(),this.settings.$next_tip),this.settings.modal&&this.settings.expose&&this.expose(),this.settings.tip_settings=t.extend({},this.settings,this.data_options(this.settings.$li)),this.settings.timer=parseInt(this.settings.timer,10),this.settings.tip_settings.tip_location_pattern=this.settings.tip_location_patterns[this.settings.tip_settings.tip_location],/body/i.test(this.settings.$target.selector)||this.scroll_to(),this.is_phone()?this.pos_phone(!0):this.pos_default(!0),i=this.settings.$next_tip.find(".joyride-timer-indicator"),/pop/i.test(this.settings.tip_animation)?(i.width(0),this.settings.timer>0?(this.settings.$next_tip.show(),setTimeout(function(){i.animate({width:i.parent().width()},this.settings.timer,"linear")}.bind(this),this.settings.tip_animation_fade_speed)):this.settings.$next_tip.show()):/fade/i.test(this.settings.tip_animation)&&(i.width(0),this.settings.timer>0?(this.settings.$next_tip.fadeIn(this.settings.tip_animation_fade_speed).show(),setTimeout(function(){i.animate({width:i.parent().width()},this.settings.timer,"linear")}.bind(this),this.settings.tip_animation_fadeSpeed)):this.settings.$next_tip.fadeIn(this.settings.tip_animation_fade_speed)),this.settings.$current_tip=this.settings.$next_tip):this.settings.$li&&this.settings.$target.length<1?this.show():this.end()):this.settings.paused=!0},is_phone:function(){return matchMedia(Foundation.media_queries.small).matches&&!matchMedia(Foundation.media_queries.medium).matches},hide:function(){this.settings.modal&&this.settings.expose&&this.un_expose(),this.settings.modal||t(".joyride-modal-bg").hide(),this.settings.$current_tip.css("visibility","hidden"),setTimeout(t.proxy(function(){this.hide(),this.css("visibility","visible")},this.settings.$current_tip),0),this.settings.post_step_callback(this.settings.$li.index(),this.settings.$current_tip)},set_li:function(t){t?(this.settings.$li=this.settings.$tip_content.eq(this.settings.start_offset),this.set_next_tip(),this.settings.$current_tip=this.settings.$next_tip):(this.settings.$li=this.settings.$li.next(),this.set_next_tip()),this.set_target()},set_next_tip:function(){this.settings.$next_tip=t(".joyride-tip-guide").eq(this.settings.$li.index()),this.settings.$next_tip.data("closed","")},set_target:function(){var s=this.settings.$li.attr(this.add_namespace("data-class")),e=this.settings.$li.attr(this.add_namespace("data-id")),n=function(){return e?t(i.getElementById(e)):s?t("."+s).first():t("body")};this.settings.$target=n()},scroll_to:function(){var i,e;i=t(s).height()/2,e=Math.ceil(this.settings.$target.offset().top-i+this.settings.$next_tip.outerHeight()),0!=e&&t("html, body").animate({scrollTop:e},this.settings.scroll_speed,"swing")},paused:function(){return-1===t.inArray(this.settings.$li.index()+1,this.settings.pause_after)},restart:function(){this.hide(),this.settings.$li=e,this.show("init")},pos_default:function(i,e){var n=(Math.ceil(t(s).height()/2),this.settings.$next_tip.offset(),this.settings.$next_tip.find(".joyride-nub")),o=Math.ceil(n.outerWidth()/2),h=Math.ceil(n.outerHeight()/2),a=i||!1;a&&(this.settings.$next_tip.css("visibility","hidden"),this.settings.$next_tip.show()),"undefined"==typeof e&&(e=!1),/body/i.test(this.settings.$target.selector)?this.settings.$li.length&&this.pos_modal(n):(this.bottom()?(this.rtl?this.settings.$next_tip.css({top:this.settings.$target.offset().top+h+this.settings.$target.outerHeight(),left:this.settings.$target.offset().left+this.settings.$target.outerWidth()-this.settings.$next_tip.outerWidth()}):this.settings.$next_tip.css({top:this.settings.$target.offset().top+h+this.settings.$target.outerHeight(),left:this.settings.$target.offset().left}),this.nub_position(n,this.settings.tip_settings.nub_position,"top")):this.top()?(this.rtl?this.settings.$next_tip.css({top:this.settings.$target.offset().top-this.settings.$next_tip.outerHeight()-h,left:this.settings.$target.offset().left+this.settings.$target.outerWidth()-this.settings.$next_tip.outerWidth()}):this.settings.$next_tip.css({top:this.settings.$target.offset().top-this.settings.$next_tip.outerHeight()-h,left:this.settings.$target.offset().left}),this.nub_position(n,this.settings.tip_settings.nub_position,"bottom")):this.right()?(this.settings.$next_tip.css({top:this.settings.$target.offset().top,left:this.settings.$target.outerWidth()+this.settings.$target.offset().left+o}),this.nub_position(n,this.settings.tip_settings.nub_position,"left")):this.left()&&(this.settings.$next_tip.css({top:this.settings.$target.offset().top,left:this.settings.$target.offset().left-this.settings.$next_tip.outerWidth()-o}),this.nub_position(n,this.settings.tip_settings.nub_position,"right")),!this.visible(this.corners(this.settings.$next_tip))&&this.settings.attempts<this.settings.tip_settings.tip_location_pattern.length&&(n.removeClass("bottom").removeClass("top").removeClass("right").removeClass("left"),this.settings.tip_settings.tip_location=this.settings.tip_settings.tip_location_pattern[this.settings.attempts],this.settings.attempts++,this.pos_default())),a&&(this.settings.$next_tip.hide(),this.settings.$next_tip.css("visibility","visible"))},pos_phone:function(s){var i=this.settings.$next_tip.outerHeight(),e=(this.settings.$next_tip.offset(),this.settings.$target.outerHeight()),n=t(".joyride-nub",this.settings.$next_tip),o=Math.ceil(n.outerHeight()/2),h=s||!1;n.removeClass("bottom").removeClass("top").removeClass("right").removeClass("left"),h&&(this.settings.$next_tip.css("visibility","hidden"),this.settings.$next_tip.show()),/body/i.test(this.settings.$target.selector)?this.settings.$li.length&&this.pos_modal(n):this.top()?(this.settings.$next_tip.offset({top:this.settings.$target.offset().top-i-o}),n.addClass("bottom")):(this.settings.$next_tip.offset({top:this.settings.$target.offset().top+e+o}),n.addClass("top")),h&&(this.settings.$next_tip.hide(),this.settings.$next_tip.css("visibility","visible"))},pos_modal:function(t){this.center(),t.hide(),this.show_modal()},show_modal:function(){if(!this.settings.$next_tip.data("closed")){var s=t(".joyride-modal-bg");s.length<1&&t("body").append(this.settings.template.modal).show(),/pop/i.test(this.settings.tip_animation)?s.show():s.fadeIn(this.settings.tip_animation_fade_speed)}},expose:function(){var i,e,n,o,h,a="expose-"+this.random_str(6);if(arguments.length>0&&arguments[0]instanceof t)n=arguments[0];else{if(!this.settings.$target||/body/i.test(this.settings.$target.selector))return!1;n=this.settings.$target}return n.length<1?(s.console&&console.error("element not valid",n),!1):(i=t(this.settings.template.expose),this.settings.$body.append(i),i.css({top:n.offset().top,left:n.offset().left,width:n.outerWidth(!0),height:n.outerHeight(!0)}),e=t(this.settings.template.expose_cover),o={zIndex:n.css("z-index"),position:n.css("position")},h=null==n.attr("class")?"":n.attr("class"),n.css("z-index",parseInt(i.css("z-index"))+1),"static"==o.position&&n.css("position","relative"),n.data("expose-css",o),n.data("orig-class",h),n.attr("class",h+" "+this.settings.expose_add_class),e.css({top:n.offset().top,left:n.offset().left,width:n.outerWidth(!0),height:n.outerHeight(!0)}),this.settings.modal&&this.show_modal(),this.settings.$body.append(e),i.addClass(a),e.addClass(a),n.data("expose",a),this.settings.post_expose_callback(this.settings.$li.index(),this.settings.$next_tip,n),this.add_exposed(n),void 0)},un_expose:function(){var i,e,n,o,h,a=!1;if(arguments.length>0&&arguments[0]instanceof t)e=arguments[0];else{if(!this.settings.$target||/body/i.test(this.settings.$target.selector))return!1;e=this.settings.$target}return e.length<1?(s.console&&console.error("element not valid",e),!1):(i=e.data("expose"),n=t("."+i),arguments.length>1&&(a=arguments[1]),a===!0?t(".joyride-expose-wrapper,.joyride-expose-cover").remove():n.remove(),o=e.data("expose-css"),"auto"==o.zIndex?e.css("z-index",""):e.css("z-index",o.zIndex),o.position!=e.css("position")&&("static"==o.position?e.css("position",""):e.css("position",o.position)),h=e.data("orig-class"),e.attr("class",h),e.removeData("orig-classes"),e.removeData("expose"),e.removeData("expose-z-index"),this.remove_exposed(e),void 0)},add_exposed:function(s){this.settings.exposed=this.settings.exposed||[],s instanceof t||"object"==typeof s?this.settings.exposed.push(s[0]):"string"==typeof s&&this.settings.exposed.push(s)},remove_exposed:function(s){var i,e;for(s instanceof t?i=s[0]:"string"==typeof s&&(i=s),this.settings.exposed=this.settings.exposed||[],e=this.settings.exposed.length;e--;)if(this.settings.exposed[e]==i)return this.settings.exposed.splice(e,1),void 0},center:function(){var i=t(s);return this.settings.$next_tip.css({top:(i.height()-this.settings.$next_tip.outerHeight())/2+i.scrollTop(),left:(i.width()-this.settings.$next_tip.outerWidth())/2+i.scrollLeft()}),!0},bottom:function(){return/bottom/i.test(this.settings.tip_settings.tip_location)},top:function(){return/top/i.test(this.settings.tip_settings.tip_location)},right:function(){return/right/i.test(this.settings.tip_settings.tip_location)},left:function(){return/left/i.test(this.settings.tip_settings.tip_location)},corners:function(i){var e=t(s),n=e.height()/2,o=Math.ceil(this.settings.$target.offset().top-n+this.settings.$next_tip.outerHeight()),h=e.width()+e.scrollLeft(),a=e.height()+o,r=e.height()+e.scrollTop(),p=e.scrollTop();return p>o&&(p=0>o?0:o),a>r&&(r=a),[i.offset().top<p,h<i.offset().left+i.outerWidth(),r<i.offset().top+i.outerHeight(),e.scrollLeft()>i.offset().left]},visible:function(t){for(var s=t.length;s--;)if(t[s])return!1;return!0},nub_position:function(t,s,i){"auto"===s?t.addClass(i):t.addClass(s)},startTimer:function(){this.settings.$li.length?this.settings.automate=setTimeout(function(){this.hide(),this.show(),this.startTimer()}.bind(this),this.settings.timer):clearTimeout(this.settings.automate)},end:function(){this.settings.cookie_monster&&t.cookie(this.settings.cookie_name,"ridden",{expires:this.settings.cookie_expires,domain:this.settings.cookie_domain}),this.settings.timer>0&&clearTimeout(this.settings.automate),this.settings.modal&&this.settings.expose&&this.un_expose(),this.settings.$next_tip.data("closed",!0),t(".joyride-modal-bg").hide(),this.settings.$current_tip.hide(),this.settings.post_step_callback(this.settings.$li.index(),this.settings.$current_tip),this.settings.post_ride_callback(this.settings.$li.index(),this.settings.$current_tip),t(".joyride-tip-guide").remove()},off:function(){t(this.scope).off(".joyride"),t(s).off(".joyride"),t(".joyride-close-tip, .joyride-next-tip, .joyride-modal-bg").off(".joyride"),t(".joyride-tip-guide, .joyride-modal-bg").remove(),clearTimeout(this.settings.automate),this.settings={}},reflow:function(){}}}(jQuery,this,this.document);
+;(function ($, window, document, undefined) {
+  'use strict';
+
+  var Modernizr = Modernizr || false;
+
+  Foundation.libs.joyride = {
+    name : 'joyride',
+
+    version : '5.2.1',
+
+    defaults : {
+      expose                   : false,     // turn on or off the expose feature
+      modal                    : true,      // Whether to cover page with modal during the tour
+      tip_location             : 'bottom',  // 'top' or 'bottom' in relation to parent
+      nub_position             : 'auto',    // override on a per tooltip bases
+      scroll_speed             : 1500,      // Page scrolling speed in milliseconds, 0 = no scroll animation
+      scroll_animation         : 'linear',  // supports 'swing' and 'linear', extend with jQuery UI.
+      timer                    : 0,         // 0 = no timer , all other numbers = timer in milliseconds
+      start_timer_on_click     : true,      // true or false - true requires clicking the first button start the timer
+      start_offset             : 0,         // the index of the tooltip you want to start on (index of the li)
+      next_button              : true,      // true or false to control whether a next button is used
+      tip_animation            : 'fade',    // 'pop' or 'fade' in each tip
+      pause_after              : [],        // array of indexes where to pause the tour after
+      exposed                  : [],        // array of expose elements
+      tip_animation_fade_speed : 300,       // when tipAnimation = 'fade' this is speed in milliseconds for the transition
+      cookie_monster           : false,     // true or false to control whether cookies are used
+      cookie_name              : 'joyride', // Name the cookie you'll use
+      cookie_domain            : false,     // Will this cookie be attached to a domain, ie. '.notableapp.com'
+      cookie_expires           : 365,       // set when you would like the cookie to expire.
+      tip_container            : 'body',    // Where will the tip be attached
+      tip_location_patterns    : {
+        top: ['bottom'],
+        bottom: [], // bottom should not need to be repositioned
+        left: ['right', 'top', 'bottom'],
+        right: ['left', 'top', 'bottom']
+      },
+      post_ride_callback     : function (){},    // A method to call once the tour closes (canceled or complete)
+      post_step_callback     : function (){},    // A method to call after each step
+      pre_step_callback      : function (){},    // A method to call before each step
+      pre_ride_callback      : function (){},    // A method to call before the tour starts (passed index, tip, and cloned exposed element)
+      post_expose_callback   : function (){},    // A method to call after an element has been exposed
+      template : { // HTML segments for tip layout
+        link    : '<a href="#close" class="joyride-close-tip">&times;</a>',
+        timer   : '<div class="joyride-timer-indicator-wrap"><span class="joyride-timer-indicator"></span></div>',
+        tip     : '<div class="joyride-tip-guide"><span class="joyride-nub"></span></div>',
+        wrapper : '<div class="joyride-content-wrapper"></div>',
+        button  : '<a href="#" class="small button joyride-next-tip"></a>',
+        modal   : '<div class="joyride-modal-bg"></div>',
+        expose  : '<div class="joyride-expose-wrapper"></div>',
+        expose_cover: '<div class="joyride-expose-cover"></div>'
+      },
+      expose_add_class : '' // One or more space-separated class names to be added to exposed element
+    },
+
+    init : function (scope, method, options) {
+      Foundation.inherit(this, 'throttle random_str');
+
+      this.settings = this.settings || $.extend({}, this.defaults, (options || method));
+
+      this.bindings(method, options)
+    },
+
+    events : function () {
+      var self = this;
+
+      $(this.scope)
+        .off('.joyride')
+        .on('click.fndtn.joyride', '.joyride-next-tip, .joyride-modal-bg', function (e) {
+          e.preventDefault();
+
+          if (this.settings.$li.next().length < 1) {
+            this.end();
+          } else if (this.settings.timer > 0) {
+            clearTimeout(this.settings.automate);
+            this.hide();
+            this.show();
+            this.startTimer();
+          } else {
+            this.hide();
+            this.show();
+          }
+
+        }.bind(this))
+
+        .on('click.fndtn.joyride', '.joyride-close-tip', function (e) {
+          e.preventDefault();
+          this.end();
+        }.bind(this));
+
+      $(window)
+        .off('.joyride')
+        .on('resize.fndtn.joyride', self.throttle(function () {
+          if ($('[' + self.attr_name() + ']').length > 0 && self.settings.$next_tip) {
+            if (self.settings.exposed.length > 0) {
+              var $els = $(self.settings.exposed);
+
+              $els.each(function () {
+                var $this = $(this);
+                self.un_expose($this);
+                self.expose($this);
+              });
+            }
+
+            if (self.is_phone()) {
+              self.pos_phone();
+            } else {
+              self.pos_default(false, true);
+            }
+          }
+        }, 100));
+    },
+
+    start : function () {
+      var self = this,
+          $this = $('[' + this.attr_name() + ']', this.scope),
+          integer_settings = ['timer', 'scrollSpeed', 'startOffset', 'tipAnimationFadeSpeed', 'cookieExpires'],
+          int_settings_count = integer_settings.length;
+
+      if (!$this.length > 0) return;
+
+      if (!this.settings.init) this.events();
+
+      this.settings = $this.data(this.attr_name(true) + '-init');
+
+      // non configureable settings
+      this.settings.$content_el = $this;
+      this.settings.$body = $(this.settings.tip_container);
+      this.settings.body_offset = $(this.settings.tip_container).position();
+      this.settings.$tip_content = this.settings.$content_el.find('> li');
+      this.settings.paused = false;
+      this.settings.attempts = 0;
+
+      // can we create cookies?
+      if (typeof $.cookie !== 'function') {
+        this.settings.cookie_monster = false;
+      }
+
+      // generate the tips and insert into dom.
+      if (!this.settings.cookie_monster || this.settings.cookie_monster && !$.cookie(this.settings.cookie_name)) {
+        this.settings.$tip_content.each(function (index) {
+          var $this = $(this);
+          this.settings = $.extend({}, self.defaults, self.data_options($this))
+
+          // Make sure that settings parsed from data_options are integers where necessary
+          var i = int_settings_count;
+          while (i--) {
+            self.settings[integer_settings[i]] = parseInt(self.settings[integer_settings[i]], 10);
+          }
+          self.create({$li : $this, index : index});
+        });
+
+        // show first tip
+        if (!this.settings.start_timer_on_click && this.settings.timer > 0) {
+          this.show('init');
+          this.startTimer();
+        } else {
+          this.show('init');
+        }
+
+      }
+    },
+
+    resume : function () {
+      this.set_li();
+      this.show();
+    },
+
+    tip_template : function (opts) {
+      var $blank, content;
+
+      opts.tip_class = opts.tip_class || '';
+
+      $blank = $(this.settings.template.tip).addClass(opts.tip_class);
+      content = $.trim($(opts.li).html()) +
+        this.button_text(opts.button_text) +
+        this.settings.template.link +
+        this.timer_instance(opts.index);
+
+      $blank.append($(this.settings.template.wrapper));
+      $blank.first().attr(this.add_namespace('data-index'), opts.index);
+      $('.joyride-content-wrapper', $blank).append(content);
+
+      return $blank[0];
+    },
+
+    timer_instance : function (index) {
+      var txt;
+
+      if ((index === 0 && this.settings.start_timer_on_click && this.settings.timer > 0) || this.settings.timer === 0) {
+        txt = '';
+      } else {
+        txt = $(this.settings.template.timer)[0].outerHTML;
+      }
+      return txt;
+    },
+
+    button_text : function (txt) {
+      if (this.settings.next_button) {
+        txt = $.trim(txt) || 'Next';
+        txt = $(this.settings.template.button).append(txt)[0].outerHTML;
+      } else {
+        txt = '';
+      }
+      return txt;
+    },
+
+    create : function (opts) {
+      var buttonText = opts.$li.attr(this.add_namespace('data-button')) 
+        || opts.$li.attr(this.add_namespace('data-text')),
+        tipClass = opts.$li.attr('class'),
+        $tip_content = $(this.tip_template({
+          tip_class : tipClass,
+          index : opts.index,
+          button_text : buttonText,
+          li : opts.$li
+        }));
+
+      $(this.settings.tip_container).append($tip_content);
+    },
+
+    show : function (init) {
+      var $timer = null;
+
+      // are we paused?
+      if (this.settings.$li === undefined
+        || ($.inArray(this.settings.$li.index(), this.settings.pause_after) === -1)) {
+
+        // don't go to the next li if the tour was paused
+        if (this.settings.paused) {
+          this.settings.paused = false;
+        } else {
+          this.set_li(init);
+        }
+
+        this.settings.attempts = 0;
+
+        if (this.settings.$li.length && this.settings.$target.length > 0) {
+          if (init) { //run when we first start
+            this.settings.pre_ride_callback(this.settings.$li.index(), this.settings.$next_tip);
+            if (this.settings.modal) {
+              this.show_modal();
+            }
+          }
+
+          this.settings.pre_step_callback(this.settings.$li.index(), this.settings.$next_tip);
+
+          if (this.settings.modal && this.settings.expose) {
+            this.expose();
+          }
+
+          this.settings.tip_settings = $.extend({}, this.settings, this.data_options(this.settings.$li));
+
+          this.settings.timer = parseInt(this.settings.timer, 10);
+
+          this.settings.tip_settings.tip_location_pattern = this.settings.tip_location_patterns[this.settings.tip_settings.tip_location];
+
+          // scroll if not modal
+          if (!/body/i.test(this.settings.$target.selector)) {
+            this.scroll_to();
+          }
+
+          if (this.is_phone()) {
+            this.pos_phone(true);
+          } else {
+            this.pos_default(true);
+          }
+
+          $timer = this.settings.$next_tip.find('.joyride-timer-indicator');
+
+          if (/pop/i.test(this.settings.tip_animation)) {
+
+            $timer.width(0);
+
+            if (this.settings.timer > 0) {
+
+              this.settings.$next_tip.show();
+
+              setTimeout(function () {
+                $timer.animate({
+                  width: $timer.parent().width()
+                }, this.settings.timer, 'linear');
+              }.bind(this), this.settings.tip_animation_fade_speed);
+
+            } else {
+              this.settings.$next_tip.show();
+
+            }
+
+
+          } else if (/fade/i.test(this.settings.tip_animation)) {
+
+            $timer.width(0);
+
+            if (this.settings.timer > 0) {
+
+              this.settings.$next_tip
+                .fadeIn(this.settings.tip_animation_fade_speed)
+                .show();
+
+              setTimeout(function () {
+                $timer.animate({
+                  width: $timer.parent().width()
+                }, this.settings.timer, 'linear');
+              }.bind(this), this.settings.tip_animation_fadeSpeed);
+
+            } else {
+              this.settings.$next_tip.fadeIn(this.settings.tip_animation_fade_speed);
+            }
+          }
+
+          this.settings.$current_tip = this.settings.$next_tip;
+
+        // skip non-existant targets
+        } else if (this.settings.$li && this.settings.$target.length < 1) {
+
+          this.show();
+
+        } else {
+
+          this.end();
+
+        }
+      } else {
+
+        this.settings.paused = true;
+
+      }
+
+    },
+
+    is_phone : function () {
+      return matchMedia(Foundation.media_queries.small).matches &&
+        !matchMedia(Foundation.media_queries.medium).matches;
+    },
+
+    hide : function () {
+      if (this.settings.modal && this.settings.expose) {
+        this.un_expose();
+      }
+
+      if (!this.settings.modal) {
+        $('.joyride-modal-bg').hide();
+      }
+
+      // Prevent scroll bouncing...wait to remove from layout
+      this.settings.$current_tip.css('visibility', 'hidden');
+      setTimeout($.proxy(function() {
+        this.hide();
+        this.css('visibility', 'visible');
+      }, this.settings.$current_tip), 0);
+      this.settings.post_step_callback(this.settings.$li.index(),
+        this.settings.$current_tip);
+    },
+
+    set_li : function (init) {
+      if (init) {
+        this.settings.$li = this.settings.$tip_content.eq(this.settings.start_offset);
+        this.set_next_tip();
+        this.settings.$current_tip = this.settings.$next_tip;
+      } else {
+        this.settings.$li = this.settings.$li.next();
+        this.set_next_tip();
+      }
+
+      this.set_target();
+    },
+
+    set_next_tip : function () {
+      this.settings.$next_tip = $(".joyride-tip-guide").eq(this.settings.$li.index());
+      this.settings.$next_tip.data('closed', '');
+    },
+
+    set_target : function () {
+      var cl = this.settings.$li.attr(this.add_namespace('data-class')),
+          id = this.settings.$li.attr(this.add_namespace('data-id')),
+          $sel = function () {
+            if (id) {
+              return $(document.getElementById(id));
+            } else if (cl) {
+              return $('.' + cl).first();
+            } else {
+              return $('body');
+            }
+          };
+
+      this.settings.$target = $sel();
+    },
+
+    scroll_to : function () {
+      var window_half, tipOffset;
+
+      window_half = $(window).height() / 2;
+      tipOffset = Math.ceil(this.settings.$target.offset().top - window_half + this.settings.$next_tip.outerHeight());
+
+      if (tipOffset != 0) {
+        $('html, body').animate({
+          scrollTop: tipOffset
+        }, this.settings.scroll_speed, 'swing');
+      }
+    },
+
+    paused : function () {
+      return ($.inArray((this.settings.$li.index() + 1), this.settings.pause_after) === -1);
+    },
+
+    restart : function () {
+      this.hide();
+      this.settings.$li = undefined;
+      this.show('init');
+    },
+
+    pos_default : function (init, resizing) {
+      var half_fold = Math.ceil($(window).height() / 2),
+          tip_position = this.settings.$next_tip.offset(),
+          $nub = this.settings.$next_tip.find('.joyride-nub'),
+          nub_width = Math.ceil($nub.outerWidth() / 2),
+          nub_height = Math.ceil($nub.outerHeight() / 2),
+          toggle = init || false;
+
+      // tip must not be "display: none" to calculate position
+      if (toggle) {
+        this.settings.$next_tip.css('visibility', 'hidden');
+        this.settings.$next_tip.show();
+      }
+
+      if (typeof resizing === 'undefined') {
+        resizing = false;
+      }
+
+      if (!/body/i.test(this.settings.$target.selector)) {
+          if (this.bottom()) {
+            if (this.rtl) {
+              this.settings.$next_tip.css({
+                top: (this.settings.$target.offset().top + nub_height + this.settings.$target.outerHeight()),
+                left: this.settings.$target.offset().left + this.settings.$target.outerWidth() - this.settings.$next_tip.outerWidth()});
+            } else {
+              this.settings.$next_tip.css({
+                top: (this.settings.$target.offset().top + nub_height + this.settings.$target.outerHeight()),
+                left: this.settings.$target.offset().left});
+            }
+
+            this.nub_position($nub, this.settings.tip_settings.nub_position, 'top');
+
+          } else if (this.top()) {
+            if (this.rtl) {
+              this.settings.$next_tip.css({
+                top: (this.settings.$target.offset().top - this.settings.$next_tip.outerHeight() - nub_height),
+                left: this.settings.$target.offset().left + this.settings.$target.outerWidth() - this.settings.$next_tip.outerWidth()});
+            } else {
+              this.settings.$next_tip.css({
+                top: (this.settings.$target.offset().top - this.settings.$next_tip.outerHeight() - nub_height),
+                left: this.settings.$target.offset().left});
+            }
+
+            this.nub_position($nub, this.settings.tip_settings.nub_position, 'bottom');
+
+          } else if (this.right()) {
+
+            this.settings.$next_tip.css({
+              top: this.settings.$target.offset().top,
+              left: (this.settings.$target.outerWidth() + this.settings.$target.offset().left + nub_width)});
+
+            this.nub_position($nub, this.settings.tip_settings.nub_position, 'left');
+
+          } else if (this.left()) {
+
+            this.settings.$next_tip.css({
+              top: this.settings.$target.offset().top,
+              left: (this.settings.$target.offset().left - this.settings.$next_tip.outerWidth() - nub_width)});
+
+            this.nub_position($nub, this.settings.tip_settings.nub_position, 'right');
+
+          }
+
+          if (!this.visible(this.corners(this.settings.$next_tip)) && this.settings.attempts < this.settings.tip_settings.tip_location_pattern.length) {
+
+            $nub.removeClass('bottom')
+              .removeClass('top')
+              .removeClass('right')
+              .removeClass('left');
+
+            this.settings.tip_settings.tip_location = this.settings.tip_settings.tip_location_pattern[this.settings.attempts];
+
+            this.settings.attempts++;
+
+            this.pos_default();
+
+          }
+
+      } else if (this.settings.$li.length) {
+
+        this.pos_modal($nub);
+
+      }
+
+      if (toggle) {
+        this.settings.$next_tip.hide();
+        this.settings.$next_tip.css('visibility', 'visible');
+      }
+
+    },
+
+    pos_phone : function (init) {
+      var tip_height = this.settings.$next_tip.outerHeight(),
+          tip_offset = this.settings.$next_tip.offset(),
+          target_height = this.settings.$target.outerHeight(),
+          $nub = $('.joyride-nub', this.settings.$next_tip),
+          nub_height = Math.ceil($nub.outerHeight() / 2),
+          toggle = init || false;
+
+      $nub.removeClass('bottom')
+        .removeClass('top')
+        .removeClass('right')
+        .removeClass('left');
+
+      if (toggle) {
+        this.settings.$next_tip.css('visibility', 'hidden');
+        this.settings.$next_tip.show();
+      }
+
+      if (!/body/i.test(this.settings.$target.selector)) {
+
+        if (this.top()) {
+
+            this.settings.$next_tip.offset({top: this.settings.$target.offset().top - tip_height - nub_height});
+            $nub.addClass('bottom');
+
+        } else {
+
+          this.settings.$next_tip.offset({top: this.settings.$target.offset().top + target_height + nub_height});
+          $nub.addClass('top');
+
+        }
+
+      } else if (this.settings.$li.length) {
+        this.pos_modal($nub);
+      }
+
+      if (toggle) {
+        this.settings.$next_tip.hide();
+        this.settings.$next_tip.css('visibility', 'visible');
+      }
+    },
+
+    pos_modal : function ($nub) {
+      this.center();
+      $nub.hide();
+
+      this.show_modal();
+    },
+
+    show_modal : function () {
+      if (!this.settings.$next_tip.data('closed')) {
+        var joyridemodalbg =  $('.joyride-modal-bg');
+        if (joyridemodalbg.length < 1) {
+          $('body').append(this.settings.template.modal).show();
+        }
+
+        if (/pop/i.test(this.settings.tip_animation)) {
+            joyridemodalbg.show();
+        } else {
+            joyridemodalbg.fadeIn(this.settings.tip_animation_fade_speed);
+        }
+      }
+    },
+
+    expose : function () {
+      var expose,
+          exposeCover,
+          el,
+          origCSS,
+          origClasses,
+          randId = 'expose-' + this.random_str(6);
+
+      if (arguments.length > 0 && arguments[0] instanceof $) {
+        el = arguments[0];
+      } else if(this.settings.$target && !/body/i.test(this.settings.$target.selector)){
+        el = this.settings.$target;
+      }  else {
+        return false;
+      }
+
+      if(el.length < 1){
+        if(window.console){
+          console.error('element not valid', el);
+        }
+        return false;
+      }
+
+      expose = $(this.settings.template.expose);
+      this.settings.$body.append(expose);
+      expose.css({
+        top: el.offset().top,
+        left: el.offset().left,
+        width: el.outerWidth(true),
+        height: el.outerHeight(true)
+      });
+
+      exposeCover = $(this.settings.template.expose_cover);
+
+      origCSS = {
+        zIndex: el.css('z-index'),
+        position: el.css('position')
+      };
+
+      origClasses = el.attr('class') == null ? '' : el.attr('class');
+
+      el.css('z-index',parseInt(expose.css('z-index'))+1);
+
+      if (origCSS.position == 'static') {
+        el.css('position','relative');
+      }
+
+      el.data('expose-css',origCSS);
+      el.data('orig-class', origClasses);
+      el.attr('class', origClasses + ' ' + this.settings.expose_add_class);
+
+      exposeCover.css({
+        top: el.offset().top,
+        left: el.offset().left,
+        width: el.outerWidth(true),
+        height: el.outerHeight(true)
+      });
+
+      if (this.settings.modal) this.show_modal();
+
+      this.settings.$body.append(exposeCover);
+      expose.addClass(randId);
+      exposeCover.addClass(randId);
+      el.data('expose', randId);
+      this.settings.post_expose_callback(this.settings.$li.index(), this.settings.$next_tip, el);
+      this.add_exposed(el);
+    },
+
+    un_expose : function () {
+      var exposeId,
+          el,
+          expose ,
+          origCSS,
+          origClasses,
+          clearAll = false;
+
+      if (arguments.length > 0 && arguments[0] instanceof $) {
+        el = arguments[0];
+      } else if(this.settings.$target && !/body/i.test(this.settings.$target.selector)){
+        el = this.settings.$target;
+      }  else {
+        return false;
+      }
+
+      if(el.length < 1){
+        if (window.console) {
+          console.error('element not valid', el);
+        }
+        return false;
+      }
+
+      exposeId = el.data('expose');
+      expose = $('.' + exposeId);
+
+      if (arguments.length > 1) {
+        clearAll = arguments[1];
+      }
+
+      if (clearAll === true) {
+        $('.joyride-expose-wrapper,.joyride-expose-cover').remove();
+      } else {
+        expose.remove();
+      }
+
+      origCSS = el.data('expose-css');
+
+      if (origCSS.zIndex == 'auto') {
+        el.css('z-index', '');
+      } else {
+        el.css('z-index', origCSS.zIndex);
+      }
+
+      if (origCSS.position != el.css('position')) {
+        if(origCSS.position == 'static') {// this is default, no need to set it.
+          el.css('position', '');
+        } else {
+          el.css('position', origCSS.position);
+        }
+      }
+
+      origClasses = el.data('orig-class');
+      el.attr('class', origClasses);
+      el.removeData('orig-classes');
+
+      el.removeData('expose');
+      el.removeData('expose-z-index');
+      this.remove_exposed(el);
+    },
+
+    add_exposed: function(el){
+      this.settings.exposed = this.settings.exposed || [];
+      if (el instanceof $ || typeof el === 'object') {
+        this.settings.exposed.push(el[0]);
+      } else if (typeof el == 'string') {
+        this.settings.exposed.push(el);
+      }
+    },
+
+    remove_exposed: function(el){
+      var search, i;
+      if (el instanceof $) {
+        search = el[0]
+      } else if (typeof el == 'string'){
+        search = el;
+      }
+
+      this.settings.exposed = this.settings.exposed || [];
+      i = this.settings.exposed.length;
+
+      while (i--) {
+        if (this.settings.exposed[i] == search) {
+          this.settings.exposed.splice(i, 1);
+          return;
+        }
+      }
+    },
+
+    center : function () {
+      var $w = $(window);
+
+      this.settings.$next_tip.css({
+        top : ((($w.height() - this.settings.$next_tip.outerHeight()) / 2) + $w.scrollTop()),
+        left : ((($w.width() - this.settings.$next_tip.outerWidth()) / 2) + $w.scrollLeft())
+      });
+
+      return true;
+    },
+
+    bottom : function () {
+      return /bottom/i.test(this.settings.tip_settings.tip_location);
+    },
+
+    top : function () {
+      return /top/i.test(this.settings.tip_settings.tip_location);
+    },
+
+    right : function () {
+      return /right/i.test(this.settings.tip_settings.tip_location);
+    },
+
+    left : function () {
+      return /left/i.test(this.settings.tip_settings.tip_location);
+    },
+
+    corners : function (el) {
+      var w = $(window),
+          window_half = w.height() / 2,
+          //using this to calculate since scroll may not have finished yet.
+          tipOffset = Math.ceil(this.settings.$target.offset().top - window_half + this.settings.$next_tip.outerHeight()),
+          right = w.width() + w.scrollLeft(),
+          offsetBottom =  w.height() + tipOffset,
+          bottom = w.height() + w.scrollTop(),
+          top = w.scrollTop();
+
+      if (tipOffset < top) {
+        if (tipOffset < 0) {
+          top = 0;
+        } else {
+          top = tipOffset;
+        }
+      }
+
+      if (offsetBottom > bottom) {
+        bottom = offsetBottom;
+      }
+
+      return [
+        el.offset().top < top,
+        right < el.offset().left + el.outerWidth(),
+        bottom < el.offset().top + el.outerHeight(),
+        w.scrollLeft() > el.offset().left
+      ];
+    },
+
+    visible : function (hidden_corners) {
+      var i = hidden_corners.length;
+
+      while (i--) {
+        if (hidden_corners[i]) return false;
+      }
+
+      return true;
+    },
+
+    nub_position : function (nub, pos, def) {
+      if (pos === 'auto') {
+        nub.addClass(def);
+      } else {
+        nub.addClass(pos);
+      }
+    },
+
+    startTimer : function () {
+      if (this.settings.$li.length) {
+        this.settings.automate = setTimeout(function () {
+          this.hide();
+          this.show();
+          this.startTimer();
+        }.bind(this), this.settings.timer);
+      } else {
+        clearTimeout(this.settings.automate);
+      }
+    },
+
+    end : function () {
+      if (this.settings.cookie_monster) {
+        $.cookie(this.settings.cookie_name, 'ridden', { expires: this.settings.cookie_expires, domain: this.settings.cookie_domain });
+      }
+
+      if (this.settings.timer > 0) {
+        clearTimeout(this.settings.automate);
+      }
+
+      if (this.settings.modal && this.settings.expose) {
+        this.un_expose();
+      }
+
+      this.settings.$next_tip.data('closed', true);
+
+      $('.joyride-modal-bg').hide();
+      this.settings.$current_tip.hide();
+      this.settings.post_step_callback(this.settings.$li.index(), this.settings.$current_tip);
+      this.settings.post_ride_callback(this.settings.$li.index(), this.settings.$current_tip);
+      $('.joyride-tip-guide').remove();
+    },
+
+    off : function () {
+      $(this.scope).off('.joyride');
+      $(window).off('.joyride');
+      $('.joyride-close-tip, .joyride-next-tip, .joyride-modal-bg').off('.joyride');
+      $('.joyride-tip-guide, .joyride-modal-bg').remove();
+      clearTimeout(this.settings.automate);
+      this.settings = {};
+    },
+
+    reflow : function () {}
+  };
+}(jQuery, this, this.document));

@@ -1,1 +1,14 @@
-Modernizr.addTest("cssvmaxunit",function(){var t;return Modernizr.testStyles("#modernizr { width: 50vmax; }",function(e){var n=window.innerWidth/100,r=window.innerHeight/100,i=parseInt((window.getComputedStyle?getComputedStyle(e,null):e.currentStyle).width,10);t=parseInt(50*Math.max(n,r),10)==i}),t});
+// https://github.com/Modernizr/Modernizr/issues/572
+// http://jsfiddle.net/glsee/JDsWQ/4/
+Modernizr.addTest('cssvmaxunit', function(){
+    var bool;
+    Modernizr.testStyles("#modernizr { width: 50vmax; }", function(elem, rule) {
+        var one_vw = window.innerWidth/100,
+            one_vh = window.innerHeight/100,
+            compWidth = parseInt((window.getComputedStyle ?
+                                  getComputedStyle(elem, null) :
+                                  elem.currentStyle)['width'],10);
+        bool = ( parseInt(Math.max(one_vw, one_vh)*50,10) == compWidth );
+    });
+    return bool;
+});

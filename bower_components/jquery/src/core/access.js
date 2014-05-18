@@ -1,1 +1,60 @@
-define(["../core"],function(n){var c=n.access=function(c,l,e,r,i,t,o){var u=0,a=c.length,f=null==e;if("object"===n.type(e)){i=!0;for(u in e)n.access(c,l,u,e[u],!0,t,o)}else if(void 0!==r&&(i=!0,n.isFunction(r)||(o=!0),f&&(o?(l.call(c,r),l=null):(f=l,l=function(c,l,e){return f.call(n(c),e)})),l))for(;a>u;u++)l(c[u],e,o?r:r.call(c[u],u,l(c[u],e)));return i?c:f?l.call(c):a?l(c[0],e):t};return c});
+define([
+	"../core"
+], function( jQuery ) {
+
+// Multifunctional method to get and set values of a collection
+// The value/s can optionally be executed if it's a function
+var access = jQuery.access = function( elems, fn, key, value, chainable, emptyGet, raw ) {
+	var i = 0,
+		len = elems.length,
+		bulk = key == null;
+
+	// Sets many values
+	if ( jQuery.type( key ) === "object" ) {
+		chainable = true;
+		for ( i in key ) {
+			jQuery.access( elems, fn, i, key[i], true, emptyGet, raw );
+		}
+
+	// Sets one value
+	} else if ( value !== undefined ) {
+		chainable = true;
+
+		if ( !jQuery.isFunction( value ) ) {
+			raw = true;
+		}
+
+		if ( bulk ) {
+			// Bulk operations run against the entire set
+			if ( raw ) {
+				fn.call( elems, value );
+				fn = null;
+
+			// ...except when executing function values
+			} else {
+				bulk = fn;
+				fn = function( elem, key, value ) {
+					return bulk.call( jQuery( elem ), value );
+				};
+			}
+		}
+
+		if ( fn ) {
+			for ( ; i < len; i++ ) {
+				fn( elems[i], key, raw ? value : value.call( elems[i], i, fn( elems[i], key ) ) );
+			}
+		}
+	}
+
+	return chainable ?
+		elems :
+
+		// Gets
+		bulk ?
+			fn.call( elems ) :
+			len ? fn( elems[0], key ) : emptyGet;
+};
+
+return access;
+
+});

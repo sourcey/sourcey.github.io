@@ -1,1 +1,32 @@
-Modernizr.addTest("localizedNumber",function(){var e,t,n,r,d=document,i=document.createElement("div");t=d.body||function(){var t=d.documentElement;return e=!0,t.insertBefore(d.createElement("body"),t.firstElementChild||t.firstChild)}(),i.innerHTML='<input type="number" value="1.0" step="0.1"/>',n=i.childNodes[0],t.appendChild(i),n.focus();try{d.execCommand("InsertText",!1,"1,1")}catch(o){}return r="number"===n.type&&1.1===n.valueAsNumber&&n.checkValidity(),t.removeChild(i),e&&t.parentNode.removeChild(t),r});
+// input[type="number"] localized input/output
+// // Detects whether input type="number" is capable of receiving and
+// // displaying localized numbers, e.g. with comma separator
+// // https://bugs.webkit.org/show_bug.cgi?id=42484
+// // Based on http://trac.webkit.org/browser/trunk/LayoutTests/fast/forms/script-tests/input-number-keyoperation.js?rev=80096#L9
+// // By Peter Janes
+
+Modernizr.addTest('localizedNumber', function() {
+    var doc = document,
+        el = document.createElement('div'),
+        fake,
+        root,
+        input,
+        diff;
+    root = doc.body || (function() {
+        var de = doc.documentElement;
+        fake = true;
+        return de.insertBefore(doc.createElement('body'), de.firstElementChild || de.firstChild);
+    }());
+    el.innerHTML = '<input type="number" value="1.0" step="0.1"/>';
+    input = el.childNodes[0];
+    root.appendChild(el);
+    input.focus();
+    try {
+        doc.execCommand('InsertText', false, '1,1');
+    } catch(e) { // prevent warnings in IE
+    }
+    diff = input.type === 'number' && input.valueAsNumber === 1.1 && input.checkValidity();
+    root.removeChild(el);
+    fake && root.parentNode.removeChild(root);
+    return diff;
+});

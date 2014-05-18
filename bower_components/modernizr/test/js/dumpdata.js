@@ -1,1 +1,75 @@
-function dumpModernizr(){var e="";dumpModernizr.old=dumpModernizr.old||{};for(var r in Modernizr)if(!dumpModernizr.old[r]&&(dumpModernizr.old[r]=!0,"function"!=typeof Modernizr[r]&&!/^test/.test(r)))if(~TEST.inputs.indexOf(r)){e+="<li><b>"+r+"{}</b><ul>";for(var t in Modernizr[r])e+='<li class="'+(Modernizr[r][t]?"yes":"")+'">'+t+": "+Modernizr[r][t]+"</li>";e+="</ul></li>"}else e+='<li  id="'+r+'" class="'+(Modernizr[r]?"yes":"")+'">'+r+": "+Modernizr[r]+"</li>";return e}function grabFeatDetects(){$.getScript("https://api.github.com/repos/Modernizr/Modernizr/git/trees/master?recursive=1&callback=processTree")}function processTree(e){for(var r=[],t=0;t<e.data.tree.length;t++){var i=e.data.tree[t],n=i.path.match(/^feature-detects\/(.*)/);if(n){var o="modernizr.github.com"==location.host?"../modernizr-git/":"../";r.push(o+n[0])}}var s=r.map(function(e){return jQuery.getScript(e)});jQuery.when.apply(jQuery,s).done(resultsToDOM)}function resultsToDOM(){var e=document.createElement("div"),r=document.getElementById("qunit-testresult")||document.getElementById("qunit-tests");e.className="output",e.innerHTML=dumpModernizr(),r.parentNode.insertBefore(e,r),document.getElementsByTagName("textarea")[0].innerHTML=JSON.stringify(Modernizr)}resultsToDOM(),grabFeatDetects(),setTimeout(resultsToDOM,5e3),setTimeout(resultsToDOM,15e3);
+function dumpModernizr(){
+  var str = '';
+  dumpModernizr.old = dumpModernizr.old || {};
+
+    for (var prop in Modernizr) {
+
+      // skip previously done ones.
+      if (dumpModernizr.old[prop]) continue;
+      else dumpModernizr.old[prop] = true;
+
+      if (typeof Modernizr[prop] === 'function') continue;
+      // skip unit test items
+      if (/^test/.test(prop)) continue;
+
+      if (~TEST.inputs.indexOf(prop)) {
+        str += '<li><b>'+prop+'{}</b><ul>';
+        for (var field in Modernizr[prop]) {
+          str += '<li class="' + (Modernizr[prop][field] ? 'yes' : '') + '">' + field + ': ' + Modernizr[prop][field] + '</li>';
+        }
+        str += '</ul></li>';
+      } else {
+        str += '<li  id="'+prop+'" class="' + (Modernizr[prop] ? 'yes' : '') + '">' + prop + ': ' + Modernizr[prop] + '</li>';
+      }
+  }
+  return str;
+}
+
+
+function grabFeatDetects(){
+  // thx github.js
+  $.getScript('https://api.github.com/repos/Modernizr/Modernizr/git/trees/master?recursive=1&callback=processTree');
+}
+
+
+function processTree(data){
+  var filenames = [];
+
+  for (var i = 0; i < data.data.tree.length; i++){
+    var file = data.data.tree[i];
+    var match = file.path.match(/^feature-detects\/(.*)/);
+    if (!match) continue;
+
+    var relpath = location.host == "modernizr.github.com" ?
+                    '../modernizr-git/' : '../';
+
+    filenames.push(relpath + match[0]);
+  }
+
+  var jqxhrs = filenames.map(function(filename){
+    return jQuery.getScript(filename);
+  });
+
+  jQuery.when.apply(jQuery, jqxhrs).done(resultsToDOM);
+
+}
+
+function resultsToDOM(){
+
+  var modOutput = document.createElement('div'),
+      ref = document.getElementById('qunit-testresult') || document.getElementById('qunit-tests');
+
+  modOutput.className = 'output';
+  modOutput.innerHTML = dumpModernizr();
+
+  ref.parentNode.insertBefore(modOutput, ref);
+
+  // Modernizr object as text
+  document.getElementsByTagName('textarea')[0].innerHTML = JSON.stringify(Modernizr);
+
+}
+
+/* uno    */ resultsToDOM();
+/* dos    */ grabFeatDetects();
+/* tres   */ setTimeout(resultsToDOM,  5e3);
+/* quatro */ setTimeout(resultsToDOM, 15e3);

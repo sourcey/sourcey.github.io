@@ -1,1 +1,5 @@
-define(["../Data"],function(n){return new n});
+define([
+	"../Data"
+], function( Data ) {
+	return new Data();
+});

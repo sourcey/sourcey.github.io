@@ -1,1 +1,5 @@
-define(["./arr"],function(e){return e.slice});
+define([
+	"./arr"
+], function( arr ) {
+	return arr.slice;
+});

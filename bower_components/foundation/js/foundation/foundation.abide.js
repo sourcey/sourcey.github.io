@@ -1,1 +1,258 @@
-!function(t,a,e){"use strict";Foundation.libs.abide={name:"abide",version:"5.2.1",settings:{live_validate:!0,focus_on_invalid:!0,error_labels:!0,timeout:1e3,patterns:{alpha:/^[a-zA-Z]+$/,alpha_numeric:/^[a-zA-Z0-9]+$/,integer:/^\d+$/,number:/-?(?:\d+|\d{1,3}(?:,\d{3})+)?(?:\.\d+)?/,card:/^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/,cvv:/^([0-9]){3,4}$/,email:/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,url:/(https?|ftp|file|ssh):\/\/(((([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-zA-Z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-zA-Z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-zA-Z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-zA-Z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-zA-Z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-zA-Z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?/,domain:/^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6}$/,datetime:/([0-2][0-9]{3})\-([0-1][0-9])\-([0-3][0-9])T([0-5][0-9])\:([0-5][0-9])\:([0-5][0-9])(Z|([\-\+]([0-1][0-9])\:00))/,date:/(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))/,time:/(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9]){2}/,dateISO:/\d{4}[\/\-]\d{1,2}[\/\-]\d{1,2}/,month_day_year:/(0[1-9]|1[012])[- \/.](0[1-9]|[12][0-9]|3[01])[- \/.](19|20)\d\d/,color:/^#?([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/},validators:{equalTo:function(t){var a=e.getElementById(t.getAttribute(this.add_namespace("data-equalto"))).value,i=t.value,r=a===i;return r}}},timer:null,init:function(t,a,e){this.bindings(a,e)},events:function(a){{var e=this,i=e.S(a).attr("novalidate","novalidate");i.data(this.attr_name(!0)+"-init")}this.invalid_attr=this.add_namespace("data-invalid"),i.off(".abide").on("submit.fndtn.abide validate.fndtn.abide",function(t){var a=/ajax/i.test(e.S(this).attr(e.attr_name()));return e.validate(e.S(this).find("input, textarea, select").get(),t,a)}).on("reset",function(){return e.reset(t(this))}).find("input, textarea, select").off(".abide").on("blur.fndtn.abide change.fndtn.abide",function(t){e.validate([this],t)}).on("keydown.fndtn.abide",function(a){var i=t(this).closest("form").data(e.attr_name(!0)+"-init");i.live_validate===!0&&(clearTimeout(e.timer),e.timer=setTimeout(function(){e.validate([this],a)}.bind(this),i.timeout))})},reset:function(a){a.removeAttr(this.invalid_attr),t(this.invalid_attr,a).removeAttr(this.invalid_attr),t(".error",a).not("small").removeClass("error")},validate:function(t,a,e){for(var i=this.parse_patterns(t),r=i.length,s=this.S(t[0]).closest("form"),n=/submit/.test(a.type),d=0;r>d;d++)if(!i[d]&&(n||e))return this.settings.focus_on_invalid&&t[d].focus(),s.trigger("invalid"),this.S(t[d]).closest("form").attr(this.invalid_attr,""),!1;return(n||e)&&s.trigger("valid"),s.removeAttr(this.invalid_attr),e?!1:!0},parse_patterns:function(t){for(var a=t.length,e=[];a--;)e.push(this.pattern(t[a]));return this.check_validation_and_apply_styles(e)},pattern:function(t){var a=t.getAttribute("type"),e="string"==typeof t.getAttribute("required"),i=t.getAttribute("pattern")||"";return this.settings.patterns.hasOwnProperty(i)&&i.length>0?[t,this.settings.patterns[i],e]:i.length>0?[t,new RegExp(i),e]:this.settings.patterns.hasOwnProperty(a)?[t,this.settings.patterns[a],e]:(i=/.*/,[t,i,e])},check_validation_and_apply_styles:function(a){for(var e=a.length,i=[];e--;){var r,s,n=a[e][0],d=a[e][2],u=n.value,F=this.S(n).parent(),l=n.getAttribute(this.add_namespace("data-abide-validator")),o="radio"===n.type,h="checkbox"===n.type,v=this.S('label[for="'+n.getAttribute("id")+'"]'),A=d?n.value.length>0:!0;n.getAttribute(this.add_namespace("data-equalto"))&&(l="equalTo"),r=F.is("label")?F.parent():F,o&&d?i.push(this.valid_radio(n,d)):h&&d?i.push(this.valid_checkbox(n,d)):l?(s=this.settings.validators[l].apply(this,[n,d,r]),i.push(s),s?(this.S(n).removeAttr(this.invalid_attr),r.removeClass("error")):(this.S(n).attr(this.invalid_attr,""),r.addClass("error"))):a[e][1].test(u)&&A||!d&&n.value.length<1||t(n).attr("disabled")?(this.S(n).removeAttr(this.invalid_attr),r.removeClass("error"),v.length>0&&this.settings.error_labels&&v.removeClass("error"),i.push(!0),t(n).triggerHandler("valid")):(this.S(n).attr(this.invalid_attr,""),r.addClass("error"),v.length>0&&this.settings.error_labels&&v.addClass("error"),i.push(!1),t(n).triggerHandler("invalid"))}return i},valid_checkbox:function(t,a){var t=this.S(t),e=t.is(":checked")||!a;return e?t.removeAttr(this.invalid_attr).parent().removeClass("error"):t.attr(this.invalid_attr,"").parent().addClass("error"),e},valid_radio:function(t){for(var a=t.getAttribute("name"),i=e.getElementsByName(a),r=i.length,s=!1,n=0;r>n;n++)i[n].checked&&(s=!0);for(var n=0;r>n;n++)s?this.S(i[n]).removeAttr(this.invalid_attr).parent().removeClass("error"):this.S(i[n]).attr(this.invalid_attr,"").parent().addClass("error");return s}}}(jQuery,this,this.document);
+;(function ($, window, document, undefined) {
+  'use strict';
+
+  Foundation.libs.abide = {
+    name : 'abide',
+
+    version : '5.2.1',
+
+    settings : {
+      live_validate : true,
+      focus_on_invalid : true,
+      error_labels: true, // labels with a for="inputId" will recieve an `error` class
+      timeout : 1000,
+      patterns : {
+        alpha: /^[a-zA-Z]+$/,
+        alpha_numeric : /^[a-zA-Z0-9]+$/,
+        integer: /^\d+$/,
+        number: /-?(?:\d+|\d{1,3}(?:,\d{3})+)?(?:\.\d+)?/,
+
+        // amex, visa, diners
+        card : /^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/,
+        cvv : /^([0-9]){3,4}$/,
+
+        // http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#valid-e-mail-address
+        email : /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
+
+        url: /(https?|ftp|file|ssh):\/\/(((([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-zA-Z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-zA-Z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-zA-Z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-zA-Z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-zA-Z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-zA-Z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-zA-Z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?/,
+        // abc.de
+        domain: /^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6}$/,
+
+        datetime: /([0-2][0-9]{3})\-([0-1][0-9])\-([0-3][0-9])T([0-5][0-9])\:([0-5][0-9])\:([0-5][0-9])(Z|([\-\+]([0-1][0-9])\:00))/,
+        // YYYY-MM-DD
+        date: /(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))/,
+        // HH:MM:SS
+        time : /(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9]){2}/,
+        dateISO: /\d{4}[\/\-]\d{1,2}[\/\-]\d{1,2}/,
+        // MM/DD/YYYY
+        month_day_year : /(0[1-9]|1[012])[- \/.](0[1-9]|[12][0-9]|3[01])[- \/.](19|20)\d\d/,
+
+        // #FFF or #FFFFFF
+        color: /^#?([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/
+      },
+      validators : {
+        equalTo: function(el, required, parent) {
+          var from  = document.getElementById(el.getAttribute(this.add_namespace('data-equalto'))).value,
+              to    = el.value,
+              valid = (from === to);
+
+          return valid;
+        }
+      }
+    },
+
+    timer : null,
+
+    init : function (scope, method, options) {
+      this.bindings(method, options);
+    },
+
+    events : function (scope) {
+      var self = this,
+          form = self.S(scope).attr('novalidate', 'novalidate'),
+          settings = form.data(this.attr_name(true) + '-init');
+
+      this.invalid_attr = this.add_namespace('data-invalid');
+
+      form
+        .off('.abide')
+        .on('submit.fndtn.abide validate.fndtn.abide', function (e) {
+          var is_ajax = /ajax/i.test(self.S(this).attr(self.attr_name()));
+          return self.validate(self.S(this).find('input, textarea, select').get(), e, is_ajax);
+        })
+        .on('reset', function() {
+          return self.reset($(this));
+        })
+        .find('input, textarea, select')
+          .off('.abide')
+          .on('blur.fndtn.abide change.fndtn.abide', function (e) {
+            self.validate([this], e);
+          })
+          .on('keydown.fndtn.abide', function (e) {
+            var settings = $(this).closest('form').data(self.attr_name(true) + '-init');
+            if (settings.live_validate === true) {
+              clearTimeout(self.timer);
+              self.timer = setTimeout(function () {
+                self.validate([this], e);
+              }.bind(this), settings.timeout);
+            }
+          });
+    },
+
+    reset : function (form) {
+      form.removeAttr(this.invalid_attr);
+      $(this.invalid_attr, form).removeAttr(this.invalid_attr);
+      $('.error', form).not('small').removeClass('error');
+    },
+
+    validate : function (els, e, is_ajax) {
+      var validations = this.parse_patterns(els),
+          validation_count = validations.length,
+          form = this.S(els[0]).closest('form'),
+          submit_event = /submit/.test(e.type);
+
+      // Has to count up to make sure the focus gets applied to the top error
+      for (var i=0; i < validation_count; i++) {
+        if (!validations[i] && (submit_event || is_ajax)) {
+          if (this.settings.focus_on_invalid) els[i].focus();
+          form.trigger('invalid');
+          this.S(els[i]).closest('form').attr(this.invalid_attr, '');
+          return false;
+        }
+      }
+
+      if (submit_event || is_ajax) {
+        form.trigger('valid');
+      }
+
+      form.removeAttr(this.invalid_attr);
+
+      if (is_ajax) return false;
+
+      return true;
+    },
+
+    parse_patterns : function (els) {
+      var i = els.length,
+          el_patterns = [];
+
+      while (i--) {
+        el_patterns.push(this.pattern(els[i]));
+      }
+
+      return this.check_validation_and_apply_styles(el_patterns);
+    },
+
+    pattern : function (el) {
+      var type = el.getAttribute('type'),
+          required = typeof el.getAttribute('required') === 'string';
+
+      var pattern = el.getAttribute('pattern') || '';
+
+      if (this.settings.patterns.hasOwnProperty(pattern) && pattern.length > 0) {
+        return [el, this.settings.patterns[pattern], required];
+      } else if (pattern.length > 0) {
+        return [el, new RegExp(pattern), required];
+      }
+
+      if (this.settings.patterns.hasOwnProperty(type)) {
+        return [el, this.settings.patterns[type], required];
+      }
+
+      pattern = /.*/;
+
+      return [el, pattern, required];
+    },
+
+    check_validation_and_apply_styles : function (el_patterns) {
+      var i = el_patterns.length,
+          validations = [];
+
+      while (i--) {
+        var el = el_patterns[i][0],
+            required = el_patterns[i][2],
+            value = el.value,
+            direct_parent = this.S(el).parent(),
+            validator = el.getAttribute(this.add_namespace('data-abide-validator')),
+            is_radio = el.type === "radio",
+            is_checkbox = el.type === "checkbox",
+            label = this.S('label[for="' + el.getAttribute('id') + '"]'),
+            valid_length = (required) ? (el.value.length > 0) : true;
+
+        var parent, valid;
+
+        // support old way to do equalTo validations
+        if(el.getAttribute(this.add_namespace('data-equalto'))) { validator = "equalTo" }
+
+        if (!direct_parent.is('label')) {
+          parent = direct_parent;
+        } else {
+          parent = direct_parent.parent();
+        }
+
+        if (is_radio && required) {
+          validations.push(this.valid_radio(el, required));
+        } else if (is_checkbox && required) {
+          validations.push(this.valid_checkbox(el, required));
+        } else if (validator) {
+          valid = this.settings.validators[validator].apply(this, [el, required, parent])
+          validations.push(valid);
+
+          if (valid) {
+            this.S(el).removeAttr(this.invalid_attr);
+            parent.removeClass('error');
+          } else {
+            this.S(el).attr(this.invalid_attr, '');
+            parent.addClass('error');
+          }
+        } else {
+
+          if (el_patterns[i][1].test(value) && valid_length ||
+            !required && el.value.length < 1 || $(el).attr('disabled')) {
+            this.S(el).removeAttr(this.invalid_attr);
+            parent.removeClass('error');
+            if (label.length > 0 && this.settings.error_labels) label.removeClass('error');
+
+            validations.push(true);
+            $(el).triggerHandler('valid');
+          } else {
+            this.S(el).attr(this.invalid_attr, '');
+            parent.addClass('error');
+            if (label.length > 0 && this.settings.error_labels) label.addClass('error');
+
+            validations.push(false);
+            $(el).triggerHandler('invalid');
+          }
+        }
+      }
+
+      return validations;
+    },
+
+    valid_checkbox : function(el, required) {
+      var el = this.S(el),
+          valid = (el.is(':checked') || !required);
+
+      if (valid) {
+        el.removeAttr(this.invalid_attr).parent().removeClass('error');
+      } else {
+        el.attr(this.invalid_attr, '').parent().addClass('error');
+      }
+
+      return valid;
+    },
+
+    valid_radio : function (el, required) {
+      var name = el.getAttribute('name'),
+          group = document.getElementsByName(name),
+          count = group.length,
+          valid = false;
+
+      // Has to count up to make sure the focus gets applied to the top error
+      for (var i=0; i < count; i++) {
+        if (group[i].checked) valid = true;
+      }
+
+      // Has to count up to make sure the focus gets applied to the top error
+      for (var i=0; i < count; i++) {
+        if (valid) {
+          this.S(group[i]).removeAttr(this.invalid_attr).parent().removeClass('error');
+        } else {
+          this.S(group[i]).attr(this.invalid_attr, '').parent().addClass('error');
+        }
+      }
+
+      return valid;
+    }
+  };
+}(jQuery, this, this.document));

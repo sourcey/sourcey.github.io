@@ -1,4 +1,15 @@
-<!doctype html> <html class=no-js lang=en> <head> <title>Installing Trac with Monit on CentOS</title> <meta charset=utf-8 /> <meta name=viewport content="width=device-width, initial-scale=1.0"/> <meta name=google-site-verification content=lC7-hHwqtiRqo7YTHc1fJ6t8ie-Hs7J4o5u3XRIF9Vw /> <link rel=alternate type="application/atom+xml" title="Atom Feed" href="/feed.xml"/> <script>
+<!doctype html>
+<html class="no-js" lang="en">
+  
+  <head>
+    <title>Installing Trac with Monit on CentOS</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="google-site-verification" content="lC7-hHwqtiRqo7YTHc1fJ6t8ie-Hs7J4o5u3XRIF9Vw" />
+    <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+    
+    <!-- Google Universal Analytics -->
+    <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -6,12 +17,101 @@
 
       ga('create', 'UA-836728-7', 'sourcey.com');
       ga('send', 'pageview');
-    </script> </head> <body class="blog installing-trac-with-monit-on-centos installing-trac-with-monit-on-centos_index"> <nav class=top-bar data-topbar=""> <div id=social> <a href="https://plus.google.com/+SourceyDevel"><i class="fi-social-google-plus large"></i></a> <a href="https://facebook.com/sourceydevel"><i class="fi-social-facebook large"></i></a> <a href="https://twitter.com/sourceydevel"><i class="fi-social-twitter large"></i></a> <a href="https://github.com/sourcey"><i class="fi-social-github large"></i></a> </div> <ul class=title-area> <li class=name></li> <li class="toggle-topbar menu-icon"><a href="" class=left></a></li> </ul> <section class=top-bar-section style="left: 0%;"> <ul class=left> <li class="has-dropdown not-click"><a href="/">Menu</a> <ul class=dropdown><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li> <li><label>Wicked</label></li> <li class="has-dropdown not-click"><a href="/#projects">Projects</a> <ul class=dropdown><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li> <li><label>Projects</label></li> <li><a href="/libsourcey">LibSourcey</a></li> <li><a href="/anionu">Anionu</a></li> <li><a href="/symple">Symple</a></li> <li><a href="/mesh">Mesh</a></li> <li><a href="/pacm">Pacm</a></li> </ul> </li> <li class=divider></li> <li><a href="/#blog">Blog</a></li> <li><a href="/archives">Archives</a></li> <li><a href="/feed.xml">Feed</a></li> <li class=divider></li> <li><a href="mailto:hello@sourcey.com">Contact</a></li> </ul> </li> <li class=divider></li> </ul> </section></nav> <header id=header> <h1 id=logo> <a title=Sourcey rel=home href="//sourcey.com"><img height=150 width=150 title=Sourcey alt=Sourcey src="/images/logo-250.png"/></a> </h1> </header> <div id=main role=main> <div id=rotate-article> <a class=next href="/combining-multiple-rss-feeds/">next article &rarr;</a> <a class=prev href="/pinterest-api-pinit-button-callback-tracking/">&larr; previous article</a> </div> <h1 id=installing-trac-with-monit-on-centos>Installing Trac with Monit on CentOS</h1> <p>We just finished installing Trac for Sourcey and thought we would share the process with others. Make sure you are logged in as <code>root</code> and let the fun begin!</p> <p>There are a few ways to <a href="//trac.edgewall.org/wiki/TracInstall" target=_blank>install Trac</a>, by Python's <code>easy_install</code> package makes the actual installation pretty straight forward so we'll use that.</p> <p>Install Trac 1.0.1:</p> <pre class="highlight shell">easy_install <span class="nv">Trac</span><span class="o">==</span>1.0.1 
-</pre> <p>Or install latest development version:</p> <pre class="highlight shell">easy_install <span class="nv">Trac</span><span class="o">==</span>dev 
-</pre> <p>Next we create the environment:</p> <pre class="highlight shell">trac-admin /path/to/trac initenv
-</pre> <p>Make sure the user account under which the web front-end runs will have write permissions to the environment directory and all the files inside:</p> <pre class="highlight shell">chown -R deploy.deploy /path/to/trac 
-</pre> <p>You can fire up the server now to test everything. If you are only have a single Trac project you should use the -s option to bypass the "Available Projects" screen.</p> <pre class="highlight shell">tracd -s --port 9990 /path/to/trac 
-</pre> <p>For our purposes we are content using the tracd server behind an Nginx reverse proxy, but there are other alternatives to tracd should you need it. </p> <p>Next we create a bash script for tracd. Copy the contents of the below bash script into <code>/etc/init.d/tracd</code> and change the necessary variables:</p> <pre class="highlight shell"><span class="c">#!/bin/bash</span>
+    </script>
+  </head>
+      
+  <body class="blog installing-trac-with-monit-on-centos installing-trac-with-monit-on-centos_index">
+      <nav class="top-bar" data-topbar="">
+    <div id="social">
+      <a href="https://plus.google.com/+SourceyDevel"><i class="fi-social-google-plus large"></i></a>
+      <a href="https://facebook.com/sourceydevel"><i class="fi-social-facebook large"></i></a>
+      <a href="https://twitter.com/sourceydevel"><i class="fi-social-twitter large"></i></a>
+      <a href="https://github.com/sourcey"><i class="fi-social-github large"></i></a>    
+    </div>
+      
+    <ul class="title-area">
+      <li class="name"></li>
+      <li class="toggle-topbar menu-icon"><a href="" class="left"><!--Menu--></a></li>
+    </ul>
+    
+    <section class="top-bar-section" style="left: 0%;">      
+      <ul class="left">
+        <li class="has-dropdown not-click"><a href="/">Menu</a>
+          <ul class="dropdown"><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li>
+            <li><label>Wicked</label></li>
+            <li class="has-dropdown not-click"><a href="/#projects">Projects</a>
+              <ul class="dropdown"><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li>
+                <li><label>Projects</label></li>
+                <li><a href="/libsourcey">LibSourcey</a></li>
+                <li><a href="/anionu">Anionu</a></li>
+                <li><a href="/symple">Symple</a></li>
+                <li><a href="/mesh">Mesh</a></li>
+                <li><a href="/pacm">Pacm</a></li>
+              </ul>
+            </li>
+            <li class="divider"></li>
+            <li><a href="/#blog">Blog</a></li>
+            <li><a href="/archives">Archives</a></li>
+            <li><a href="/feed.xml">Feed</a></li>
+            <li class="divider"></li>
+            <li><a href="mailto:hello@sourcey.com">Contact</a></li>
+          </ul>
+        </li>
+        <li class="divider"></li>
+      </ul>
+    </section></nav>
+    
+    <header id="header">
+      <h1 id="logo">
+        <a title="Sourcey" rel="home" href="http://sourcey.com"><img height="150" width="150" title="Sourcey" alt="Sourcey" src="/images/logo-250.png" /></a>
+      </h1>
+      <!--<h2 class="site-description">Open Source Developer Collective</h2>-->
+    </header>    
+    <div id="main" role="main">
+      <div id="rotate-article">
+        
+          <a class="next" href="/combining-multiple-rss-feeds/">next article &rarr;</a>
+        
+        
+          <a class="prev" href="/pinterest-api-pinit-button-callback-tracking/">&larr; previous article</a>
+        
+      </div>
+      <h1 id="installing-trac-with-monit-on-centos">Installing Trac with Monit on CentOS</h1>
+
+<p>We just finished installing Trac for Sourcey and thought we would share the process with others. Make sure you are logged in as <code>root</code> and let the fun begin!</p>
+
+<p>There are a few ways to <a href="http://trac.edgewall.org/wiki/TracInstall" target="_blank">install Trac</a>, by Python's <code>easy_install</code> package makes the actual installation pretty straight forward so we'll use that.</p>
+
+<p>Install Trac 1.0.1:</p>
+
+<pre class="highlight shell">easy_install <span class="nv">Trac</span><span class="o">==</span>1.0.1 
+</pre>
+
+<p>Or install latest development version:</p>
+
+<pre class="highlight shell">easy_install <span class="nv">Trac</span><span class="o">==</span>dev 
+</pre>
+
+<p>Next we create the environment:</p>
+
+<pre class="highlight shell">trac-admin /path/to/trac initenv
+</pre>
+
+<p>Make sure the user account under which the web front-end runs will have write permissions to the environment directory and all the files inside:</p>
+
+<pre class="highlight shell">chown -R deploy.deploy /path/to/trac 
+</pre>
+
+<p>You can fire up the server now to test everything. If you are only have a single Trac project you should use the -s option to bypass the "Available Projects" screen.</p>
+
+<pre class="highlight shell">tracd -s --port 9990 /path/to/trac 
+</pre>
+
+<p>For our purposes we are content using the tracd server behind an Nginx reverse proxy, but there are other alternatives to tracd should you need it. </p>
+
+<p>Next we create a bash script for tracd. Copy the contents of the below bash script into <code>/etc/init.d/tracd</code> and change the necessary variables:</p>
+
+<pre class="highlight shell"><span class="c">#!/bin/bash</span>
 <span class="c">#</span>
 <span class="c"># chkconfig: - 85 15</span>
 <span class="c"># description: tracd</span>
@@ -95,16 +195,68 @@ stop<span class="o">()</span> <span class="o">{</span>
 <span class="k">esac
 
 </span><span class="nb">exit</span> <span class="nv">$RETVAL</span>
-</pre> <p>Now run the following commands:</p> <pre class="highlight shell">chmod 755 /etc/init.d/tracd
+</pre>
+
+<p>Now run the following commands:</p>
+
+<pre class="highlight shell">chmod 755 /etc/init.d/tracd
 chkconfig –-add /etc/init.d/tracd
-</pre> <p>Unless you want to create a public wiki you will want some form of authentication. The init.d script uses a htpasswd file for basic authentication, so we can build that now:</p> <pre class="highlight shell">htpasswd -c /path/to/trac/htpasswd MyUsername
-</pre> <p>Alternatively, if you want a completely public wiki you could do something like this to give anonymous users full privileges (be sure you know what you are doing before you run this command!):</p> <pre class="highlight shell">trac-admin /path/to/trac permission add anonymous <span class="s2">"*"</span>
-</pre> <p>To start the server you can run:</p> <pre class="highlight shell">service tracd start
-</pre> <p>Since we use monit to monitor our server stack we will add a quick script to ensure the server doesn't go down. Copy the following file to <code>/etc/monit.d/tracd</code>:</p> <pre class="highlight shell">check process tracd with pidfile /var/run/tracd.pid
+</pre>
+
+<p>Unless you want to create a public wiki you will want some form of authentication. The init.d script uses a htpasswd file for basic authentication, so we can build that now:</p>
+
+<pre class="highlight shell">htpasswd -c /path/to/trac/htpasswd MyUsername
+</pre>
+
+<p>Alternatively, if you want a completely public wiki you could do something like this to give anonymous users full privileges (be sure you know what you are doing before you run this command!):</p>
+
+<pre class="highlight shell">trac-admin /path/to/trac permission add anonymous <span class="s2">"*"</span>
+</pre>
+
+<p>To start the server you can run:</p>
+
+<pre class="highlight shell">service tracd start
+</pre>
+
+<p>Since we use monit to monitor our server stack we will add a quick script to ensure the server doesn't go down. Copy the following file to <code>/etc/monit.d/tracd</code>:</p>
+
+<pre class="highlight shell">check process tracd with pidfile /var/run/tracd.pid
   start program <span class="o">=</span> <span class="s2">"/etc/init.d/tracd start"</span>
   stop  program <span class="o">=</span> <span class="s2">"/etc/init.d/tracd stop"</span>
   <span class="k">if </span>5 restarts within 5 cycles <span class="k">then </span>timeout
-</pre> <p>Now reload the monit configuration: ~~~ bash monit reload ~~~ </p> <p>And we are done. Hopefully this saved you some time, and good luck with your projects!</p> <ul class=social-buttons> <li> <a href="//twitter.com/share" class="socialite twitter-share" data-text="Installing Trac with Monit on CentOS" data-url="http://sourcey.com/installing-trac-with-monit-on-centos/" data-count=vertical rel=nofollow target=_blank><span class=vhidden>Share on Twitter</span></a> </li> <li> <a href="https://plus.google.com/share?url=http://sourcey.com/installing-trac-with-monit-on-centos/" class="socialite googleplus-one" data-size=tall data-href="//sourcey.com/installing-trac-with-monit-on-centos/" rel=nofollow target=_blank><span class=vhidden>Share on Google+</span></a> </li> <li> <a href="//www.facebook.com/sharer.php?u=http://sourcey.com/installing-trac-with-monit-on-centos/&amp;t=Installing Trac with Monit on CentOS" class="socialite facebook-like" data-href="http://sourcey.com/installing-trac-with-monit-on-centos/" data-send=false data-layout=box_count data-width=60 data-show-faces=false rel=nofollow target=_blank><span class=vhidden>Share on Facebook</span></a> </li> <li> <a href="//www.linkedin.com/shareArticle?mini=true&amp;url=http://sourcey.com/installing-trac-with-monit-on-centos/&amp;title=Installing Trac with Monit on CentOS" class="socialite linkedin-share" data-url="http://sourcey.com/installing-trac-with-monit-on-centos/" data-counter=top rel=nofollow target=_blank><span class=vhidden>Share on LinkedIn</span></a> </li> </ul> <div class=meta> Posted on <time class=updated datetime="Mar 26 2014">Mar 26 2014</time> by <a rel="author external" href="https://plus.google.com/+KamLow">Kam Low</a> . Tagged: centos, monit, programming, python, trac. </div> <div id=disqus_thread></div> <script>
+</pre>
+
+<p>Now reload the monit configuration:
+~~~ bash
+monit reload
+~~~ </p>
+
+<p>And we are done. Hopefully this saved you some time, and good luck with your projects!</p>
+    
+      
+      <ul class="social-buttons">
+        <li>
+          <a href="http://twitter.com/share" class="socialite twitter-share" data-text="Installing Trac with Monit on CentOS" data-url="http://sourcey.com/installing-trac-with-monit-on-centos/" data-count="vertical" rel="nofollow" target="_blank"><span class="vhidden">Share on Twitter</span></a>
+        </li>
+        <li>
+          <a href="https://plus.google.com/share?url=http://sourcey.com/installing-trac-with-monit-on-centos/" class="socialite googleplus-one" data-size="tall" data-href="http://sourcey.com/installing-trac-with-monit-on-centos/" rel="nofollow" target="_blank"><span class="vhidden">Share on Google+</span></a>
+        </li>
+        <li>
+          <a href="http://www.facebook.com/sharer.php?u=http://sourcey.com/installing-trac-with-monit-on-centos/&amp;t=Installing Trac with Monit on CentOS" class="socialite facebook-like" data-href="http://sourcey.com/installing-trac-with-monit-on-centos/" data-send="false" data-layout="box_count" data-width="60" data-show-faces="false" rel="nofollow" target="_blank"><span class="vhidden">Share on Facebook</span></a>
+        </li>
+        <li>
+          <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://sourcey.com/installing-trac-with-monit-on-centos/&amp;title=Installing Trac with Monit on CentOS" class="socialite linkedin-share" data-url="http://sourcey.com/installing-trac-with-monit-on-centos/" data-counter="top" rel="nofollow" target="_blank"><span class="vhidden">Share on LinkedIn</span></a>
+        </li>
+      </ul>        
+      <div class="meta">
+        Posted on <time class="updated" datetime="Mar 26 2014">Mar 26 2014</time> by 
+        
+          <a rel="author external" href="https://plus.google.com/+KamLow">Kam Low</a>
+        . Tagged: centos, monit, programming, python, trac.
+      </div>       
+      
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
           /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
           var disqus_shortname = 'sourcey'; // required: replace example with your forum shortname
 
@@ -114,4 +266,39 @@ chkconfig –-add /etc/init.d/tracd
               dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
               (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
           })();
-      </script> <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" rel=nofollow>comments powered by Disqus.</a></noscript> <a href="//disqus.com" rel=nofollow class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a> </div> <footer id=footer> <p> As with all business minded artists, we have fought the inevitable battle of conformity vs expression, and have emerged victorious with sanity intact to plunder the digiverse in search of new and interesting challenges. For more information, or a quote, drop us an email and tell us what you're working on. </p> <p> &copy;2014 Sourcey <p> </footer> </body> </html> <link href="/stylesheets/app.css" media=screen rel=stylesheet /><script src="/javascripts/all.js"></script>
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+      <a href="http://disqus.com" rel="nofollow" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>    
+    </div>
+        
+    <!--
+    <div style="text-align: center">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>  -->
+    <!-- Sourcey Small H --><!--
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:468px;height:60px;margin: 30px auto 15px;"
+         data-ad-client="ca-pub-1397369873900370"
+         data-ad-slot="8968503286"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+    </div>
+    -->
+
+    <footer id="footer">
+      <p>
+        As with all business minded artists, we have fought the inevitable battle of conformity vs expression, and have emerged victorious with sanity intact to plunder the digiverse in search of new and interesting challenges. For more information, or a quote, drop us an email and tell us what you're working on.
+      </p>
+      <!--
+      <p>                     
+        Our Kung Fu includes and is not limited to: C++, Ruby, Python, Java, Php, JavaScript, Node.js, ActionScript, HTML, CSS and Photoshop.
+      <p>  
+       -->      	  
+      <p>
+      &copy;2014 Sourcey     
+      <p>  
+    </footer>
+  </body>
+</html>
+    
+<link href="/stylesheets/app.css" media="screen" rel="stylesheet" type="text/css" /><script src="/javascripts/all.js" type="text/javascript"></script>

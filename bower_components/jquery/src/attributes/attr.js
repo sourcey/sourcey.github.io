@@ -1,1 +1,143 @@
-define(["../core","../var/rnotwhite","../var/strundefined","../core/access","./support","../selector"],function(t,e,r,o,n){var i,a,u=t.expr.attrHandle;t.fn.extend({attr:function(e,r){return o(this,t.attr,e,r,arguments.length>1)},removeAttr:function(e){return this.each(function(){t.removeAttr(this,e)})}}),t.extend({attr:function(e,o,n){var u,c,s=e.nodeType;if(e&&3!==s&&8!==s&&2!==s)return typeof e.getAttribute===r?t.prop(e,o,n):(1===s&&t.isXMLDoc(e)||(o=o.toLowerCase(),u=t.attrHooks[o]||(t.expr.match.bool.test(o)?a:i)),void 0===n?u&&"get"in u&&null!==(c=u.get(e,o))?c:(c=t.find.attr(e,o),null==c?void 0:c):null!==n?u&&"set"in u&&void 0!==(c=u.set(e,n,o))?c:(e.setAttribute(o,n+""),n):(t.removeAttr(e,o),void 0))},removeAttr:function(r,o){var n,i,a=0,u=o&&o.match(e);if(u&&1===r.nodeType)for(;n=u[a++];)i=t.propFix[n]||n,t.expr.match.bool.test(n)&&(r[i]=!1),r.removeAttribute(n)},attrHooks:{type:{set:function(e,r){if(!n.radioValue&&"radio"===r&&t.nodeName(e,"input")){var o=e.value;return e.setAttribute("type",r),o&&(e.value=o),r}}}}}),a={set:function(e,r,o){return r===!1?t.removeAttr(e,o):e.setAttribute(o,o),o}},t.each(t.expr.match.bool.source.match(/\w+/g),function(e,r){var o=u[r]||t.find.attr;u[r]=function(t,e,r){var n,i;return r||(i=u[e],u[e]=n,n=null!=o(t,e,r)?e.toLowerCase():null,u[e]=i),n}})});
+define([
+	"../core",
+	"../var/rnotwhite",
+	"../var/strundefined",
+	"../core/access",
+	"./support",
+	"../selector"
+], function( jQuery, rnotwhite, strundefined, access, support ) {
+
+var nodeHook, boolHook,
+	attrHandle = jQuery.expr.attrHandle;
+
+jQuery.fn.extend({
+	attr: function( name, value ) {
+		return access( this, jQuery.attr, name, value, arguments.length > 1 );
+	},
+
+	removeAttr: function( name ) {
+		return this.each(function() {
+			jQuery.removeAttr( this, name );
+		});
+	}
+});
+
+jQuery.extend({
+	attr: function( elem, name, value ) {
+		var hooks, ret,
+			nType = elem.nodeType;
+
+		// don't get/set attributes on text, comment and attribute nodes
+		if ( !elem || nType === 3 || nType === 8 || nType === 2 ) {
+			return;
+		}
+
+		// Fallback to prop when attributes are not supported
+		if ( typeof elem.getAttribute === strundefined ) {
+			return jQuery.prop( elem, name, value );
+		}
+
+		// All attributes are lowercase
+		// Grab necessary hook if one is defined
+		if ( nType !== 1 || !jQuery.isXMLDoc( elem ) ) {
+			name = name.toLowerCase();
+			hooks = jQuery.attrHooks[ name ] ||
+				( jQuery.expr.match.bool.test( name ) ? boolHook : nodeHook );
+		}
+
+		if ( value !== undefined ) {
+
+			if ( value === null ) {
+				jQuery.removeAttr( elem, name );
+
+			} else if ( hooks && "set" in hooks && (ret = hooks.set( elem, value, name )) !== undefined ) {
+				return ret;
+
+			} else {
+				elem.setAttribute( name, value + "" );
+				return value;
+			}
+
+		} else if ( hooks && "get" in hooks && (ret = hooks.get( elem, name )) !== null ) {
+			return ret;
+
+		} else {
+			ret = jQuery.find.attr( elem, name );
+
+			// Non-existent attributes return null, we normalize to undefined
+			return ret == null ?
+				undefined :
+				ret;
+		}
+	},
+
+	removeAttr: function( elem, value ) {
+		var name, propName,
+			i = 0,
+			attrNames = value && value.match( rnotwhite );
+
+		if ( attrNames && elem.nodeType === 1 ) {
+			while ( (name = attrNames[i++]) ) {
+				propName = jQuery.propFix[ name ] || name;
+
+				// Boolean attributes get special treatment (#10870)
+				if ( jQuery.expr.match.bool.test( name ) ) {
+					// Set corresponding property to false
+					elem[ propName ] = false;
+				}
+
+				elem.removeAttribute( name );
+			}
+		}
+	},
+
+	attrHooks: {
+		type: {
+			set: function( elem, value ) {
+				if ( !support.radioValue && value === "radio" &&
+					jQuery.nodeName( elem, "input" ) ) {
+					// Setting the type on a radio button after the value resets the value in IE6-9
+					// Reset value to default in case type is set after value during creation
+					var val = elem.value;
+					elem.setAttribute( "type", value );
+					if ( val ) {
+						elem.value = val;
+					}
+					return value;
+				}
+			}
+		}
+	}
+});
+
+// Hooks for boolean attributes
+boolHook = {
+	set: function( elem, value, name ) {
+		if ( value === false ) {
+			// Remove boolean attributes when set to false
+			jQuery.removeAttr( elem, name );
+		} else {
+			elem.setAttribute( name, name );
+		}
+		return name;
+	}
+};
+jQuery.each( jQuery.expr.match.bool.source.match( /\w+/g ), function( i, name ) {
+	var getter = attrHandle[ name ] || jQuery.find.attr;
+
+	attrHandle[ name ] = function( elem, name, isXML ) {
+		var ret, handle;
+		if ( !isXML ) {
+			// Avoid an infinite loop by temporarily removing this function from the getter
+			handle = attrHandle[ name ];
+			attrHandle[ name ] = ret;
+			ret = getter( elem, name, isXML ) != null ?
+				name.toLowerCase() :
+				null;
+			attrHandle[ name ] = handle;
+		}
+		return ret;
+	};
+});
+
+});

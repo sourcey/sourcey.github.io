@@ -1,1 +1,14 @@
-Modernizr.addTest("cssvminunit",function(){var n;return Modernizr.testStyles("#modernizr { width: 50vmin; }",function(t){var e=window.innerWidth/100,i=window.innerHeight/100,r=parseInt((window.getComputedStyle?getComputedStyle(t,null):t.currentStyle).width,10);n=parseInt(50*Math.min(e,i),10)==r}),n});
+// https://github.com/Modernizr/Modernizr/issues/572
+// http://jsfiddle.net/glsee/JRmdq/8/
+Modernizr.addTest('cssvminunit', function(){
+    var bool;
+    Modernizr.testStyles("#modernizr { width: 50vmin; }", function(elem, rule) {
+        var one_vw = window.innerWidth/100,
+            one_vh = window.innerHeight/100,
+            compWidth = parseInt((window.getComputedStyle ?
+                                  getComputedStyle(elem, null) :
+                                  elem.currentStyle)['width'],10);
+        bool = ( parseInt(Math.min(one_vw, one_vh)*50,10) == compWidth );
+    });
+    return bool;
+});

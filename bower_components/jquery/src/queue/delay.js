@@ -1,1 +1,22 @@
-define(["../core","../queue","../effects"],function(e){return e.fn.delay=function(n,f){return n=e.fx?e.fx.speeds[n]||n:n,f=f||"fx",this.queue(f,function(e,f){var t=setTimeout(e,n);f.stop=function(){clearTimeout(t)}})},e.fn.delay});
+define([
+	"../core",
+	"../queue",
+	"../effects" // Delay is optional because of this dependency
+], function( jQuery ) {
+
+// Based off of the plugin by Clint Helfers, with permission.
+// http://blindsignals.com/index.php/2009/07/jquery-delay/
+jQuery.fn.delay = function( time, type ) {
+	time = jQuery.fx ? jQuery.fx.speeds[ time ] || time : time;
+	type = type || "fx";
+
+	return this.queue( type, function( next, hooks ) {
+		var timeout = setTimeout( next, time );
+		hooks.stop = function() {
+			clearTimeout( timeout );
+		};
+	});
+};
+
+return jQuery.fn.delay;
+});

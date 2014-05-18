@@ -1,1 +1,23 @@
-Modernizr.addTest("mathml",function(){var e=!1;if(document.createElementNS){var t="http://www.w3.org/1998/Math/MathML",d=document.createElement("div");d.style.position="absolute";var n=d.appendChild(document.createElementNS(t,"math")).appendChild(document.createElementNS(t,"mfrac"));n.appendChild(document.createElementNS(t,"mi")).appendChild(document.createTextNode("xx")),n.appendChild(document.createElementNS(t,"mi")).appendChild(document.createTextNode("yy")),document.body.appendChild(d),e=d.offsetHeight>d.offsetWidth}return e});
+// MathML
+// http://www.w3.org/Math/ 
+// By Addy Osmani
+// Based on work by Davide (@dpvc) and David (@davidcarlisle)
+// in https://github.com/mathjax/MathJax/issues/182
+
+Modernizr.addTest('mathml', function(){
+	var hasMathML = false;
+	if ( document.createElementNS ) {
+	var ns = "http://www.w3.org/1998/Math/MathML",
+	    div = document.createElement("div");
+	    div.style.position = "absolute"; 
+	var mfrac = div.appendChild(document.createElementNS(ns,"math"))
+	               .appendChild(document.createElementNS(ns,"mfrac"));
+	mfrac.appendChild(document.createElementNS(ns,"mi"))
+	     .appendChild(document.createTextNode("xx"));
+	mfrac.appendChild(document.createElementNS(ns,"mi"))
+	     .appendChild(document.createTextNode("yy"));
+	document.body.appendChild(div);
+	hasMathML = div.offsetHeight > div.offsetWidth;
+	}
+	return hasMathML;
+});

@@ -1,1 +1,39 @@
-define(["../core","./var/rsingleTag","../manipulation"],function(e,n){return e.parseHTML=function(r,t,o){if(!r||"string"!=typeof r)return null;"boolean"==typeof t&&(o=t,t=!1),t=t||document;var a=n.exec(r),i=!o&&[];return a?[t.createElement(a[1])]:(a=e.buildFragment([r],t,i),i&&i.length&&e(i).remove(),e.merge([],a.childNodes))},e.parseHTML});
+define([
+	"../core",
+	"./var/rsingleTag",
+	"../manipulation" // buildFragment
+], function( jQuery, rsingleTag ) {
+
+// data: string of html
+// context (optional): If specified, the fragment will be created in this context, defaults to document
+// keepScripts (optional): If true, will include scripts passed in the html string
+jQuery.parseHTML = function( data, context, keepScripts ) {
+	if ( !data || typeof data !== "string" ) {
+		return null;
+	}
+	if ( typeof context === "boolean" ) {
+		keepScripts = context;
+		context = false;
+	}
+	context = context || document;
+
+	var parsed = rsingleTag.exec( data ),
+		scripts = !keepScripts && [];
+
+	// Single tag
+	if ( parsed ) {
+		return [ context.createElement( parsed[1] ) ];
+	}
+
+	parsed = jQuery.buildFragment( [ data ], context, scripts );
+
+	if ( scripts && scripts.length ) {
+		jQuery( scripts ).remove();
+	}
+
+	return jQuery.merge( [], parsed.childNodes );
+};
+
+return jQuery.parseHTML;
+
+});

@@ -1,1 +1,13 @@
-define(["../core"],function(e){return e.parseJSON=function(e){return JSON.parse(e+"")},e.parseJSON});
+define([
+	"../core"
+], function( jQuery ) {
+
+// Support: Android 2.3
+// Workaround failure to string-cast null input
+jQuery.parseJSON = function( data ) {
+	return JSON.parse( data + "" );
+};
+
+return jQuery.parseJSON;
+
+});

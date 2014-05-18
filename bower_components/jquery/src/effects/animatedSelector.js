@@ -1,1 +1,13 @@
-define(["../core","../selector","../effects"],function(e){e.expr.filters.animated=function(n){return e.grep(e.timers,function(e){return n===e.elem}).length}});
+define([
+	"../core",
+	"../selector",
+	"../effects"
+], function( jQuery ) {
+
+jQuery.expr.filters.animated = function( elem ) {
+	return jQuery.grep(jQuery.timers, function( fn ) {
+		return elem === fn.elem;
+	}).length;
+};
+
+});
