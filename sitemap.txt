@@ -34,6 +34,7 @@ http://sourcey.com/guest-posting-opportunities/
 http://sourcey.com/password-free-signup-and-authentication/
 http://sourcey.com/html5-video-is-finally-ready/
 http://sourcey.com/html5-video-streaming-from-google-drive/
+http://sourcey.com/darkly-pygments-css-theme/
 http://sourcey.com/archives/
 http://sourcey.com/CNAME
 http://sourcey.com/draft.txt
@@ -106,3 +107,6 @@ http://sourcey.com/tags/demo/
 http://sourcey.com/tags/authentication/
 http://sourcey.com/tags/google/
 http://sourcey.com/tags/drive/
+http://sourcey.com/tags/pygments/
+http://sourcey.com/tags/css/
+http://sourcey.com/tags/themes/

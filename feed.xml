@@ -5,10 +5,355 @@
   <id>http://sourcey.com</id>
   <link href="http://sourcey.com"/>
   <link href="http://sourcey.com/feed.xml" rel="self"/>
-  <updated>2014-05-04T00:00:00Z</updated>
+  <updated>2014-05-17T00:00:00Z</updated>
   <author>
     <name>Blog Author</name>
   </author>
+  <entry>
+    <title>Darkly Pygments CSS Theme</title>
+    <link rel="alternate" href="http://sourcey.com/darkly-pygments-css-theme/"/>
+    <id>http://sourcey.com/darkly-pygments-css-theme/</id>
+    <published>2014-05-17T00:00:00Z</published>
+    <updated>2014-05-18T00:24:24+10:00</updated>
+    <author>
+      <name>Article Author</name>
+    </author>
+    <content type="html">&lt;h1 id="darkly-pygments-css-theme"&gt;Darkly Pygments CSS Theme&lt;/h1&gt;
+
+&lt;p&gt;Sourcey has no shortage of beautiful code, so it's about time we had some sexy syntax highlighting to match. &lt;/p&gt;
+
+&lt;p&gt;Darkly is a pygments syntax highlighting theme which uses a broad spectrum of light and dark colours to create a luminous contrast that is both pleasing to the eye and great for readability.&lt;/p&gt;
+
+&lt;p&gt;If you want to use it yourself then please be our guest, here is the content of &lt;code&gt;darkly.css&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre class="highlight css"&gt;&lt;span class="c"&gt;/* 
+  Darkly Pygments Theme
+  (c) 2014 Sourcey
+  http://sourcey.com
+*/&lt;/span&gt;
+
+&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nl"&gt;white-space&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;pre&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; 
+  &lt;span class="nl"&gt;overflow&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;auto&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; 
+  &lt;span class="nl"&gt;word-wrap&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;normal&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c"&gt;/* horizontal scrolling */&lt;/span&gt;
+  &lt;span class="nl"&gt;-moz-border-radius&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;3px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; 
+  &lt;span class="nl"&gt;-webkit-border-radius&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;3px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; 
+  &lt;span class="nl"&gt;border-radius&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;3px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nl"&gt;padding&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;20px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; 
+  &lt;span class="nl"&gt;background&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#343642&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nl"&gt;color&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#C1C2C3&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.hll&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nl"&gt;background-color&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#ffc&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.gd&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nl"&gt;color&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#2e3436&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nl"&gt;background-color&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#0e1416&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.gr&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nl"&gt;color&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#eeeeec&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nl"&gt;background-color&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#c00&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.gi&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nl"&gt;color&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#babdb6&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nl"&gt;background-color&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#1f2b2d&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.go&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nl"&gt;color&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#2c3032&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nl"&gt;background-color&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#2c3032&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.kt&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nl"&gt;color&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#e3e7df&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.ni&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nl"&gt;color&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#888a85&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.c&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.cm&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.c1&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.cs&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nl"&gt;color&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#8D9684&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.err&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.g&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.l&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.n&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.x&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.p&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.ge&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;
+&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.gp&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.gs&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.gt&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.ld&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.s&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.nc&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.nd&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;
+&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.ne&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.nl&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.nn&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.nx&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.py&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.ow&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.w&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.sb&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;
+&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.sc&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.sd&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.s2&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.se&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.sh&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.si&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.sx&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.sr&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;
+&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.s1&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.ss&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.bp&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nl"&gt;color&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#C1C2C3&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.k&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.kc&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.kd&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.kn&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.kp&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.kr&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;
+&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.nt&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nl"&gt;color&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#729fcf&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.cp&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.gh&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.gu&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.na&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.nf&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nl"&gt;color&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#E9A94B&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.m&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.nb&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.no&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.mf&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.mh&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.mi&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.mo&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;
+&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.il&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nl"&gt;color&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#8ae234&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.o&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nl"&gt;color&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#989DAA&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.nv&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.vc&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.vg&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.vi&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nl"&gt;color&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#fff&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;
+
+&lt;p&gt;Looking for a demonstration? Every piece of code on this website!&lt;/p&gt;
+
+&lt;h4 id="ruby"&gt;Ruby&lt;/h4&gt;
+
+&lt;pre class="highlight ruby"&gt;&lt;span class="nb"&gt;require&lt;/span&gt; &lt;span class="s1"&gt;'httparty'&lt;/span&gt;
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;GooglePlus&lt;/span&gt;
+  &lt;span class="kp"&gt;include&lt;/span&gt; &lt;span class="no"&gt;HTTParty&lt;/span&gt;
+  &lt;span class="n"&gt;base_uri&lt;/span&gt; &lt;span class="s1"&gt;'https://accounts.google.com'&lt;/span&gt;
+
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;initialize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;params&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{})&lt;/span&gt;
+    &lt;span class="vi"&gt;@params&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;params&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="c1"&gt;# POST /o/oauth2/token HTTP/1.1&lt;/span&gt;
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;token&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;code&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="no"&gt;GooglePlus&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;post&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'/o/oauth2/token'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;body: &lt;/span&gt;&lt;span class="vi"&gt;@params&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;merge&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
+      &lt;span class="ss"&gt;code: &lt;/span&gt;&lt;span class="n"&gt;code&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="ss"&gt;grant_type: &lt;/span&gt;&lt;span class="s1"&gt;'authorization_code'&lt;/span&gt;
+    &lt;span class="p"&gt;}))&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="c1"&gt;# POST /o/oauth2/token HTTP/1.1&lt;/span&gt;
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;refresh_token&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;token&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="no"&gt;GooglePlus&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;post&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'/o/oauth2/token'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;body: &lt;/span&gt;&lt;span class="vi"&gt;@params&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;except&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:redirect_uri&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;merge&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
+      &lt;span class="ss"&gt;refresh_token: &lt;/span&gt;&lt;span class="n"&gt;token&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="ss"&gt;grant_type: &lt;/span&gt;&lt;span class="s1"&gt;'refresh_token'&lt;/span&gt;
+    &lt;span class="p"&gt;}))&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;
+
+&lt;h4 id="python"&gt;Python&lt;/h4&gt;
+
+&lt;pre class="highlight python"&gt;&lt;span class="c"&gt;#!/usr/bin/env python&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;socket&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;subprocess&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sys&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;datetime&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;datetime&lt;/span&gt;
+
+&lt;span class="c"&gt;# Clear the screen&lt;/span&gt;
+&lt;span class="n"&gt;subprocess&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;'clear'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c"&gt;# Ask for input&lt;/span&gt;
+&lt;span class="n"&gt;remoteServer&lt;/span&gt;    &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;raw_input&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Enter a remote host to scan: "&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;remoteServerIP&lt;/span&gt;  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;socket&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gethostbyname&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;remoteServer&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c"&gt;# Print a nice banner with information on which host we are about to scan&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;"-"&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="mi"&gt;60&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;"Please wait, scanning remote host"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;remoteServerIP&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;"-"&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="mi"&gt;60&lt;/span&gt;
+
+&lt;span class="c"&gt;# Check what time the scan started&lt;/span&gt;
+&lt;span class="n"&gt;t1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;datetime&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;now&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="c"&gt;# Using the range function to specify ports (here it will scans all ports between 1 and 1024)&lt;/span&gt;
+
+&lt;span class="c"&gt;# We also put in some error handling for catching errors&lt;/span&gt;
+
+&lt;span class="k"&gt;try&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;port&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;1025&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;  
+        &lt;span class="n"&gt;sock&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;socket&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;socket&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;socket&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;AF_INET&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;socket&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SOCK_STREAM&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sock&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;connect_ex&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;remoteServerIP&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;port&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;result&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;"Port {}: &lt;/span&gt;&lt;span class="se"&gt;\t&lt;/span&gt;&lt;span class="s"&gt; Open"&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;port&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;sock&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;close&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="k"&gt;except&lt;/span&gt; &lt;span class="nb"&gt;KeyboardInterrupt&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;"You pressed Ctrl+C"&lt;/span&gt;
+    &lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nb"&gt;exit&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="k"&gt;except&lt;/span&gt; &lt;span class="n"&gt;socket&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gaierror&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;'Hostname could not be resolved. Exiting'&lt;/span&gt;
+    &lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nb"&gt;exit&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="k"&gt;except&lt;/span&gt; &lt;span class="n"&gt;socket&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;error&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;"Couldn't connect to server"&lt;/span&gt;
+    &lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nb"&gt;exit&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="c"&gt;# Checking the time again&lt;/span&gt;
+&lt;span class="n"&gt;t2&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;datetime&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;now&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="c"&gt;# Calculates the difference of time, to see how long it took to run the script&lt;/span&gt;
+&lt;span class="n"&gt;total&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;  &lt;span class="n"&gt;t2&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;t1&lt;/span&gt;
+
+&lt;span class="c"&gt;# Printing the information to screen&lt;/span&gt;
+&lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;'Scanning Completed in: '&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;total&lt;/span&gt;
+&lt;/pre&gt;
+
+&lt;h4 id="javascript"&gt;JavaScript&lt;/h4&gt;
+
+&lt;pre class="highlight javascript"&gt;&lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;Mammal&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; 
+	&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;name&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+	&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;offspring&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[];&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt; 
+&lt;span class="nx"&gt;Mammal&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;prototype&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;haveABaby&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; 
+	&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;newBaby&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="nx"&gt;Mammal&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"Baby "&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;name&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+	&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;offspring&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;push&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;newBaby&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+	&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;newBaby&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt; 
+&lt;span class="nx"&gt;Mammal&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;prototype&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;toString&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; 
+	&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="s1"&gt;'[Mammal "'&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;name&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="s1"&gt;'"]'&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt; 
+
+
+&lt;span class="nx"&gt;Cat&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;prototype&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="nx"&gt;Mammal&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;               &lt;span class="c1"&gt;// Here's where the inheritance occurs 
+&lt;/span&gt;&lt;span class="nx"&gt;Cat&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;prototype&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;constructor&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;Cat&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;            &lt;span class="c1"&gt;// Otherwise instances of Cat would have a constructor of Mammal 
+&lt;/span&gt;&lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;Cat&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; 
+	&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;name&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt; 
+&lt;span class="nx"&gt;Cat&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;prototype&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;toString&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; 
+	&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="s1"&gt;'[Cat "'&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;name&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="s1"&gt;'"]'&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt; 
+
+
+&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;someAnimal&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="nx"&gt;Mammal&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'Mr. Biggles'&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;myPet&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="nx"&gt;Cat&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'Felix'&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'someAnimal is '&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nx"&gt;someAnimal&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;// results in 'someAnimal is [Mammal "Mr. Biggles"]' 
+&lt;/span&gt;&lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'myPet is '&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nx"&gt;myPet&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;           &lt;span class="c1"&gt;// results in 'myPet is [Cat "Felix"]' 
+&lt;/span&gt;
+&lt;span class="nx"&gt;myPet&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;haveABaby&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;                          &lt;span class="c1"&gt;// calls a method inherited from Mammal 
+&lt;/span&gt;&lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;myPet&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;offspring&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;length&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;        &lt;span class="c1"&gt;// shows that the cat has one baby now 
+&lt;/span&gt;&lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;myPet&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;offspring&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]);&lt;/span&gt;            &lt;span class="c1"&gt;// results in '[Mammal "Baby Felix"]' 
+&lt;/span&gt;&lt;/pre&gt;
+
+&lt;h4 id="c"&gt;C++&lt;/h4&gt;
+
+&lt;pre class="highlight cpp"&gt;&lt;span class="c1"&gt;//
+// LibSourcey
+// Copyright (C) 2005, Sourcey &amp;lt;http://sourcey.com&amp;gt;
+//
+// LibSourcey is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+//
+// LibSourcey is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see &amp;lt;http://www.gnu.org/licenses/&amp;gt;.
+//
+// This file uses the public domain libb64 library: http://libb64.sourceforge.net/
+//
+&lt;/span&gt;
+
+&lt;span class="cp"&gt;#ifndef SCY_Hex_H
+#define SCY_Hex_H
+&lt;/span&gt;
+
+&lt;span class="cp"&gt;#include "scy/interface.h"
+#include "scy/exception.h"
+#include "scy/logger.h"
+#include &amp;lt;iostream&amp;gt;
+#include &amp;lt;assert.h&amp;gt;
+#include &amp;lt;cstring&amp;gt;
+&lt;/span&gt;
+
+&lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;scy&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;hex&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+
+
+&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;Decoder&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="n"&gt;basic&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;Decoder&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;		
+	&lt;span class="n"&gt;Decoder&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;lastbyte&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sc"&gt;'\0'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{}&lt;/span&gt;
+	&lt;span class="k"&gt;virtual&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="n"&gt;Decoder&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{}&lt;/span&gt; 
+
+	&lt;span class="k"&gt;virtual&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="kt"&gt;size_t&lt;/span&gt; &lt;span class="n"&gt;decode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;inbuf&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="kt"&gt;size_t&lt;/span&gt; &lt;span class="n"&gt;nread&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;outbuf&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+	&lt;span class="p"&gt;{&lt;/span&gt;
+		&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+		&lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+		&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="kt"&gt;size_t&lt;/span&gt; &lt;span class="n"&gt;rpos&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+		&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="kt"&gt;size_t&lt;/span&gt; &lt;span class="n"&gt;nwrite&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;	
+		&lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rpos&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;nread&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+		&lt;span class="p"&gt;{&lt;/span&gt;
+			&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;readnext&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;inbuf&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;nread&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;rpos&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+				&lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;nybble&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+			&lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="nf"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rpos&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt; &lt;span class="n"&gt;nread&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;	
+				&lt;span class="c1"&gt;// Store the last byte to be
+&lt;/span&gt;				&lt;span class="c1"&gt;// prepended on next decode()
+&lt;/span&gt;				&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;iswspace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;inbuf&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;rpos&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]))&lt;/span&gt;
+					&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;memcpy&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;lastbyte&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;inbuf&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;rpos&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; 	
+				&lt;span class="k"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+			&lt;span class="p"&gt;}&lt;/span&gt;
+			
+			&lt;span class="n"&gt;readnext&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;inbuf&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;nread&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;rpos&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+			&lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;nybble&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+			&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;memcpy&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;outbuf&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;nwrite&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+		&lt;span class="p"&gt;}&lt;/span&gt;
+		&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;nwrite&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+	&lt;span class="p"&gt;}&lt;/span&gt;
+
+	&lt;span class="k"&gt;virtual&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="kt"&gt;size_t&lt;/span&gt; &lt;span class="n"&gt;finalize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="cm"&gt;/* outbuf */&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+	&lt;span class="p"&gt;{&lt;/span&gt;
+		&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+	&lt;span class="p"&gt;}&lt;/span&gt;
+	
+	&lt;span class="n"&gt;bool&lt;/span&gt; &lt;span class="n"&gt;readnext&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;inbuf&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="kt"&gt;size_t&lt;/span&gt; &lt;span class="n"&gt;nread&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="kt"&gt;size_t&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;rpos&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+	&lt;span class="p"&gt;{&lt;/span&gt;
+		&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rpos&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;lastbyte&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="sc"&gt;'\0'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+			&lt;span class="n"&gt;assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;iswspace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lastbyte&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+			&lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;lastbyte&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+			&lt;span class="n"&gt;lastbyte&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="sc"&gt;'\0'&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+		&lt;span class="p"&gt;}&lt;/span&gt;
+		&lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+			&lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;inbuf&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;rpos&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+			&lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;iswspace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;rpos&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;nread&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+				&lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;inbuf&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;rpos&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+		&lt;span class="p"&gt;}&lt;/span&gt;
+		&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;rpos&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;nread&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+	&lt;span class="p"&gt;}&lt;/span&gt;
+
+	&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;nybble&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+	&lt;span class="p"&gt;{&lt;/span&gt;
+		&lt;span class="k"&gt;if&lt;/span&gt;      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt; &lt;span class="sc"&gt;'0'&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;=&lt;/span&gt; &lt;span class="sc"&gt;'9'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="sc"&gt;'0'&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+		&lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt; &lt;span class="sc"&gt;'A'&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;=&lt;/span&gt; &lt;span class="sc"&gt;'F'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sc"&gt;'A'&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+		&lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt; &lt;span class="sc"&gt;'a'&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;=&lt;/span&gt; &lt;span class="sc"&gt;'f'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sc"&gt;'a'&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+		&lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="k"&gt;throw&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;runtime_error&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Invalid hex format"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+	&lt;span class="p"&gt;}&lt;/span&gt;
+
+	&lt;span class="n"&gt;bool&lt;/span&gt; &lt;span class="n"&gt;iswspace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+	&lt;span class="p"&gt;{&lt;/span&gt;
+		&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="sc"&gt;' '&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="sc"&gt;'\r'&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="sc"&gt;'\t'&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="sc"&gt;'\n'&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+	&lt;span class="p"&gt;}&lt;/span&gt;
+
+	&lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;lastbyte&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;
+
+
+&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="c1"&gt;// namespace scy::hex
+&lt;/span&gt;
+
+&lt;span class="cp"&gt;#endif // SCY_Hex_H
+&lt;/span&gt;&lt;/pre&gt;
+
+&lt;h4 id="bash"&gt;Bash&lt;/h4&gt;
+
+&lt;pre class="highlight shell"&gt;&lt;span class="nv"&gt;CommandLineOptions__config_file&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;""&lt;/span&gt;
+&lt;span class="nv"&gt;CommandLineOptions__debug_level&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;""&lt;/span&gt;
+
+&lt;span class="nv"&gt;getopt_results&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;getopt -s bash -o c:d:: --long config_file:,debug_level:: -- &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$@&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;
+
+&lt;span class="k"&gt;if &lt;/span&gt;&lt;span class="nb"&gt;test&lt;/span&gt; &lt;span class="nv"&gt;$?&lt;/span&gt; !&lt;span class="o"&gt;=&lt;/span&gt; 0
+&lt;span class="k"&gt;then
+    &lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"unrecognized option"&lt;/span&gt;
+    &lt;span class="nb"&gt;exit &lt;/span&gt;1
+&lt;span class="k"&gt;fi
+
+&lt;/span&gt;&lt;span class="nb"&gt;eval set&lt;/span&gt; -- &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$getopt_results&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+
+&lt;span class="k"&gt;while &lt;/span&gt;&lt;span class="nb"&gt;true
+&lt;/span&gt;&lt;span class="k"&gt;do
+    case&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt;
+        --config_file&lt;span class="p"&gt;)&lt;/span&gt;
+            &lt;span class="nv"&gt;CommandLineOptions__config_file&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$2&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;;
+            &lt;span class="nb"&gt;shift &lt;/span&gt;2;
+            &lt;span class="p"&gt;;;&lt;/span&gt;
+        --debug_level&lt;span class="p"&gt;)&lt;/span&gt;
+            &lt;span class="nv"&gt;CommandLineOptions__debug_level&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$2&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;;
+            &lt;span class="nb"&gt;shift &lt;/span&gt;2;
+            &lt;span class="p"&gt;;;&lt;/span&gt;
+        --&lt;span class="p"&gt;)&lt;/span&gt;
+            &lt;span class="nb"&gt;shift
+            break&lt;/span&gt;
+            &lt;span class="p"&gt;;;&lt;/span&gt;
+        &lt;span class="k"&gt;*&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+            &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$0&lt;/span&gt;&lt;span class="s2"&gt;: unparseable option &lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+            &lt;span class="nv"&gt;EXCEPTION&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$Main__ParameterException&lt;/span&gt;
+            &lt;span class="nv"&gt;EXCEPTION_MSG&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"unparseable option &lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+            &lt;span class="nb"&gt;exit &lt;/span&gt;1
+            &lt;span class="p"&gt;;;&lt;/span&gt;
+    &lt;span class="k"&gt;esac&lt;/span&gt;
+&lt;span class="k"&gt;done
+
+if &lt;/span&gt;&lt;span class="nb"&gt;test&lt;/span&gt; &lt;span class="s2"&gt;"x&lt;/span&gt;&lt;span class="nv"&gt;$CommandLineOptions__config_file&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s2"&gt;"x"&lt;/span&gt;
+&lt;span class="k"&gt;then
+    &lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$0&lt;/span&gt;&lt;span class="s2"&gt;: missing config_file parameter"&lt;/span&gt;
+    &lt;span class="nv"&gt;EXCEPTION&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$Main__ParameterException&lt;/span&gt;
+    &lt;span class="nv"&gt;EXCEPTION_MSG&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"missing config_file parameter"&lt;/span&gt;
+    &lt;span class="nb"&gt;exit &lt;/span&gt;1
+&lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;/pre&gt;
+
+&lt;p&gt;Thanks for reading and have fun with Darkly!&lt;/p&gt;
+</content>
+  </entry>
   <entry>
     <title>HTML5 Video Streaming from Google Drive</title>
     <link rel="alternate" href="http://sourcey.com/html5-video-streaming-from-google-drive/"/>
@@ -405,71 +750,6 @@ rake install
 &lt;h2 id="static-website-bliss"&gt;Static Website Bliss&lt;/h2&gt;
 
 &lt;p&gt;Hopefully there are some crazy web developers out there will find this post useful, and if you're like me and derive pleasure from the zen of simplification, then welcome to static website bliss! A big thanks to the wonderful devs behind the Middleman project, and if you have any questions or comments then just drop me a line ;)&lt;/p&gt;
-</content>
-  </entry>
-  <entry>
-    <title>Symple WebRTC Video Chat Demo</title>
-    <link rel="alternate" href="http://sourcey.com/symple-webrtc-video-chat-demo/"/>
-    <id>http://sourcey.com/symple-webrtc-video-chat-demo/</id>
-    <published>2014-04-03T01:41:32Z</published>
-    <updated>2014-04-06T22:29:10+10:00</updated>
-    <author>
-      <name>Article Author</name>
-    </author>
-    <content type="html">&lt;h1 id="symple-webrtc-video-chat-demo"&gt;Symple WebRTC Video Chat Demo&lt;/h1&gt;
-
-&lt;p&gt;For those of you that don't know about Symple yet, it's a lightweight messaging and presence protocol for communication between our native and browser based apps. Most of our work with Symple until this point has been with WebRTC native to browser applications, so I thought it would be nice to create a demo which showcases just how easy it is to use Symple for building WebRTC video conferencing and real-time messaging applications.&lt;/p&gt;
-
-&lt;p&gt;Symple's client side libraries already implement most of what we need to build such an application; real-time messaging; user presence; WebRTC signalling; and HTML5 video embedding. If fact, due to the comprehensiveness of Symple, and the awesomeness of AngularJS, I was able to write the entire application in less than 100 of JavaScript.&lt;/p&gt;
-
-&lt;p&gt;Check out the live demo, and if you want to find what's happening under the hood then just keep on reading. If you're looking for the source, then you can find it on &lt;a href="https://github.com/sourcey/symple-client-webrtc-demo"&gt;Github&lt;/a&gt;. Enjoy!&lt;/p&gt;
-
-&lt;center&gt;
-&lt;a href="http://symple.sourcey.com" class="action-button button success radius" target="_blank"&gt;launch the demo&lt;/a&gt;
-&lt;/center&gt;
-
-&lt;h2 id="using-the-demo"&gt;Using the Demo&lt;/h2&gt;
-
-&lt;p&gt;If you've used any sort of chat application before then this should be super easy for you! From the 'Login' panel just choose a handle/username to login. If you're testing then open another browser window and login again in order to have a conversation with yourself (I'm pretty sure it doesn't mean you're crazy).&lt;/p&gt;
-
-&lt;p&gt;A full list of users will be displayed on the left hand sidebar when you have logged in. &lt;/p&gt;
-
-&lt;h3 id="video-chat"&gt;Video Chat&lt;/h3&gt;
-
-&lt;p&gt;This guide assumes you have two browser windows open, and you have logged in with both. We refer to the client making the call as the 'caller', and the person receiving the call as the 'callee'.&lt;/p&gt;
-
-&lt;p&gt;Follow these steps to make a video call:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;From the caller window, click open the 'Action' menu beside a handle in the sidebar and select 'Video chat'.&lt;/li&gt;
-  &lt;li&gt;An 'Incoming call…' dialog will be displayed in the callee window. Go ahead and click 'Accept'.&lt;/li&gt;
-  &lt;li&gt;Be sure to enable access the the video capture device in the caller window.&lt;/li&gt;
-  &lt;li&gt;You should now be able to see your beautiful self in the caller window, and the callee should also be able to see the same video feed momentarily. &lt;/li&gt;
-  &lt;li&gt;When video is flowing from the caller to the callee, the callee can hot the 'Start video' button to start sending video to the caller. Again be sure to enable browser access to the video capture device (as above).&lt;/li&gt;
-  &lt;li&gt;WebRTC FTW!&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;div class="panel callout radius"&gt;
-Note that if you are attempting to make a call to a remote endpoint, and both users are behind a NAT or firewall, then the call will probably fail. In production you would use a TURN relay server which would facilitate a relayed connection between both endpoints, but that is beyond the scope of this demo.
-&lt;/div&gt;
-
-&lt;h3 id="instant-messaging"&gt;Instant Messaging&lt;/h3&gt;
-
-&lt;p&gt;In order to broadcast messages to everyone who is online, just type something in the message from at the top of the 'Conversation' panel and hit 'Send'. If you want to send a direct message to a specific person, click the 'Action' menu beside their name and select 'Direct message'.&lt;/p&gt;
-
-&lt;p&gt;You should see the user handle appears to the lest of the send message form, this means you are now sending direct messages to that user, and only they will see your messages. In order to stop sending direct messages, click the '@' beside the send message form and select 'Send to everyone' from the menu to remove the user scope.&lt;/p&gt;
-
-&lt;h2 id="symple-and-webrtc"&gt;Symple and WebRTC&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href="http://www.webrtc.org"&gt;WebRTC&lt;/a&gt; is the new standard for p2p video on the web, and although the spec has not yet reached full maturity, WebRTC already has full support in Firefox, Chrome and Opera. Support for Internet Explorer and Safari is still a way off due to the never ending &lt;a href="http://gigaom.com/2013/10/30/google-sticks-with-vp8-opposes-ciscos-push-for-h-264"&gt;h264 vs WebM debacle&lt;/a&gt;, but many forward thinking online enterprises are already adopting it as part of their core business model.&lt;/p&gt;
-
-&lt;p&gt;WebRTC relies on the &lt;a href="https://tools.ietf.org/html/rfc5245"&gt;ICE (Interactive Connectivity Establishment)&lt;/a&gt; protocol to determine the best method for endpoints to establish connectivity and data flow, but the actually signalling functionality is left to the client. This is where Symple comes in. Symple is not only a great way of signalling SDP metadata between clients, but is also handles cross-browser HTML5 &lt;code&gt;video&lt;/code&gt; tag embedding which is necessary for WebRTC playback.&lt;/p&gt;
-
-&lt;h2 id="open-source-repositories"&gt;Open Source Repositories&lt;/h2&gt;
-
-&lt;p&gt;Symple and it's client/server implementations are open source, so feel free to grab them from Github and use them in your projects. For a full list of projects and the protocol specification see the Symple homepage: http://sourcey.com/symple &lt;/p&gt;
-
-&lt;p&gt;I hope you enjoy the demo, and feel free to drop me a line if you have any questions.&lt;/p&gt;
 </content>
   </entry>
 </feed>
