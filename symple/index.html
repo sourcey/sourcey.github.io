@@ -1,17 +1,4 @@
-<!doctype html>
-<html class="no-js" lang="en">
-  
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="google-site-verification" content="lC7-hHwqtiRqo7YTHc1fJ6t8ie-Hs7J4o5u3XRIF9Vw" />
-    <title>Symple</title>
-    <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
-    
-    <script src="/javascripts/modernizr.js" type="text/javascript"></script>
-    
-    <!-- Google Universal Analytics -->
-    <script>
+<!doctype html> <html class=no-js lang=en> <head> <title>Symple</title> <meta charset=utf-8 /> <meta name=viewport content="width=device-width, initial-scale=1.0"/> <meta name=google-site-verification content=lC7-hHwqtiRqo7YTHc1fJ6t8ie-Hs7J4o5u3XRIF9Vw /> <link rel=alternate type="application/atom+xml" title="Atom Feed" href="/feed.xml"/> <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -19,190 +6,12 @@
 
       ga('create', 'UA-836728-7', 'sourcey.com');
       ga('send', 'pageview');
-
-    </script>
-  </head>
-      
-  <body class="blog symple symple_index">
-      <nav class="top-bar" data-topbar="">
-    <div id="social">
-      <a href="https://plus.google.com/+SourceyDevel"><i class="fi-social-google-plus large"></i></a>
-      <a href="https://facebook.com/sourceydevel"><i class="fi-social-facebook large"></i></a>
-      <a href="https://twitter.com/sourceydevel"><i class="fi-social-twitter large"></i></a>
-      <a href="https://github.com/sourcey"><i class="fi-social-github large"></i></a>    
-    </div>
-      
-    <ul class="title-area">
-      <li class="name"></li>
-      <li class="toggle-topbar menu-icon"><a href="" class="left"><!--Menu--></a></li>
-    </ul>
-    
-    <section class="top-bar-section" style="left: 0%;">      
-      <ul class="left">
-        <li class="has-dropdown not-click"><a href="/">Menu</a>
-          <ul class="dropdown"><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li>
-            <li><label>Wicked</label></li>
-            <li class="has-dropdown not-click"><a href="/#projects">Projects</a>
-              <ul class="dropdown"><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li>
-                <li><label>Projects</label></li>
-                <li><a href="/libsourcey">LibSourcey</a></li>
-                <li><a href="/anionu">Anionu</a></li>
-                <li><a href="/symple">Symple</a></li>
-                <li><a href="/mesh">Mesh</a></li>
-                <li><a href="/pacm">Pacm</a></li>
-              </ul>
-            </li>
-            <li class="divider"></li>
-            <li><a href="/#blog">Blog</a></li>
-            <li><a href="/archives">Archives</a></li>
-            <li><a href="/feed.xml">Feed</a></li>
-            <li class="divider"></li>
-            <li><a href="mailto:hello@sourcey.com">Contact</a></li>
-          </ul>
-        </li>
-        <li class="divider"></li>
-      </ul>
-    </section></nav>
-    
-    <header id="header">
-      <h1 id="logo">
-        <a title="Sourcey" rel="home" href="http://sourcey.com"><img height="150" width="150" title="Sourcey" alt="Sourcey" src="/images/logo-250.png" /></a>
-      </h1>
-      <!--<h2 class="site-description">Open Source Developer Collective</h2>-->
-    </header>    
-    <div id="main" role="main">
-      <!--<h1 class="title">Symple</h1>-->
-      <h1 id="symple">Symple</h1>
-
-<dl class="status">
-  <dt>Repositories</dt>
-  <dd>Node.js Server: <a href="https://github.com/sourcey/symple-server-node">https://github.com/sourcey/symple-server-node</a><br />
-JavaScript Client: <a href="https://github.com/sourcey/symple-client">https://github.com/sourcey/symple-client</a><br />
-Ruby Client: <a href="https://github.com/sourcey/symple-client-ruby">https://github.com/sourcey/symple-client-ruby</a><br />
-C++ Client: <a href="https://github.com/sourcey/libsourcey">https://github.com/sourcey/libsourcey</a></dd>
-  <dt>Licence</dt>
-  <dd>LGPL, <a href="/licence">Pro Licence</a></dd>
-</dl>
-
-<p><img alt="Symple Logo" title="Symple Logo" class="align-left" src="/images/symple-logo-120.png" /> Symple is a messaging, presence and remoting protocol with implementations in C++ and JavaScript for fast real-time communication between native desktop and browser applications.</p>
-
-<p>Symple is an unrestrictive peer messaging and presence protocol, as the name would suggest, it's a minimal and flexible protocol that is well suited to a "do-it-yourself" developer mentality.   </p>
-
-<p>The message format is semantically similar to XMPP, except that it uses a vastly simplified syntax, and it uses JSON instead of XML for encoding messages. Symple has built-in support signalling support for messages, commands, forms and presence.</p>
-
-<p>The flexible nature of the JSON format also make it great for remoting and serializing data structures such as nested polymorphic objects.</p>
-
-<!-- 
-identified by a "type" attribute.
-in that it supports broadcasting abritraty data structures and nested or polymorphic objects identified by a "type" attribute
- scalable and 
-
-If you are familiar with XMPP then you have a good head start, 
-Symple uses similar, but simpler semantics, and JSON instead of XML for encoding messages.
-It's no secret, we use JSON for everything.    
-The Symple protocol includes basic specifications for messaging, presence, commands, events and forms. 
-Symple naturally supports broadcasting any data structure to peers, which also makes Symple great for remoting. 
-Nested or polymorphic objects are identified using a message's "type" attribute.
-
-    
-Presently the underlying messaging system.
-,
-and <a class="external" href="https://github.com/sourcey/libsourcey">LibSourcey</a> includes a native C++ client and samples
--->
-
-<h2 id="client-implementations">Client implementations</h2>
-
-<p>There are currently three Symple client implementations, one in Ruby, one in JavaScript, and one in C++.</p>
-
-<p>The <a href="https://github.com/sourcey/symple-client-ruby">Ruby client</a> is a single drop-in module that is perfect for server-side integration with a web framework like Rails or Sinatra.</p>
-
-<p>The <a href="https://github.com/sourcey/symple-client">JavaScript client</a> provides a flexible interface for receiving standard and arbitrary message types. The client also includes a web player interface which enables Symple to be used in conjunction with MJPEG, FLV, h264 and WebRTC for live video streaming.</p>
-
-<p><a href="https://github.com/sourcey/libsourcey">LibSourcey</a> also contains includes a native C++ client and including samples for using Symple in native applications.</p>
-
-<h2 id="server-implementations">Server implementations</h2>
-
-<p>The <a href="https://github.com/sourcey/symple">Symple node.js server</a> repository includes sample server is implemented on a node.js stack.</p>
-
-<p>The server supports SSL configuration, groups, users, <code>x-real-ip</code> detection, and pre-arranged sessions using short-term authentication tokens via Redis.</p>
-
-<h2 id="why-symple">Why Symple</h2>
-
-<p>If you've had the pleasure of building a system to complex specifications then no doubt you'll be familiar with the bloat indicative of such systems.</p>
-
-<p>In some cases it's a necessity, but when it comes to a task like messaging, we prefer freedom of implementation rather than incumbent structure.</p>
-
-<p>Symple was created as a result of our work with <a href="https://anionu.com">Anionu</a>, for which we require real-time messaging, presence and command sharing between the native Spot client and online dashboard. Beyond that we hope to see Symple continue to adapt and develop as a great open source messaging solution.</p>
-
-<!--
-Anionu began it's life speaking the XMPP protocol, but while still in it's infancy the child fell terminally ill with a case of unwanted complexity on the client and server sides, and also suffered stiffness from early arthritis attributed to restrictive protocols.    
-
-At this point the need for something simpler became apparent. Before all hope was lost, and the satisfaction associated with the knowledge that one is creating a streamlined and intuitive system dissolved entirely into the rabbit warrens of unmaintainable code, Symple was given life!
-
-
-
-If you've had the pleasure of building a system around XMPP or similar protocols you will no doubt be familiar with the incumbent bloat indicative of systems adherent to complex specifications.
-Now there is absolutely nothing wrong with that, and i    determinest reason
-
-at Sourcey we prefer to work with a bare-bones platform that allows for rapid development in any given direction.      
-The end result is generally a more streamlined and intuative application (provided you know what you're doing of course).
-We actually started building 
-thus Symple was given life.
-Anionu with XMPP as the messaging protocol, but it became evident quite early on that we were introducing too much unwanted complexity on the client and server sides, and the feeling of satisfaction 
-associated with the knowledge that one is creating a streamlined and intuitive system dissipaters into the rabbit warrens of unmaintainable code.
-At this point that the need for something sympler became apparent, thus Symple was given life.
-
-The choice of JSON as the underlying protocol was natural given our trend towards web centric applications. JSON's smaller message size, reasonably fast processing and vast array of client libraries sealed the deal. It's no secret, we use JSON for just about everything.        
--->
-
-<h2 id="protocol-specifications">Protocol Specifications</h2>
-
-<p>Below are the protocol specifications for Symple's core message types.</p>
-
-<h3 id="address">Address</h3>
-
-<p>A Symple ID is the destination address of a group user or peer node on the server. 
-It consists of 3 namespace segments, each segment that is included in a message's destination address refines the delivery scope for that message.
-The purpose of namespacing peer addresses is so peers can be privately grouped.</p>
-
-<dl>
-  <dt>Group</dt>
-  <dd>Each peer on the Symple server belongs to a group namespace. 
-A message directed to the group namespace will be dispatched to all nodes belonging to that group.
-
-    <p><em>Example:</em> <code>{ to: "group" }</code></p>
-  </dd>
-  <dt>User</dt>
-  <dd>Each peer on the Symple sever has an associated user name for the purposes of authentication and node grouping.
-A message directed to the user namespace will be dispatched to nodes belonging to that user.
-When directing a message to a user namespace, the group namespace MUST be included beforehand.
-
-    <p><em>Example:</em> <code>{ to: "group@user" }</code></p>
-  </dd>
-  <dt>Session ID</dt>
-  <dd>Each peer on the Symple sever has a session ID. The session ID acts is a unique identifier for each peer session.
-Messages may be directed to a specific peer by including the node ID in the destination address.
-When directing a message to a node ID, the node's group and user namespaces MUST be included beforehand.
-
-    <p><em>Example:</em> <code>{ to: "group@user/sessionid" }</code></p>
-  </dd>
-</dl>
-
-<h3 id="message">Message</h3>
-
-<p>A symple message is a JSON object which acts as a container for data that is sent over the wire. 
-There are 3 required message attributes:</p>
-
-<pre class="highlight javascript"><span class="p">{</span>
+    </script> </head> <body class="blog symple symple_index"> <nav class=top-bar data-topbar=""> <div id=social> <a href="https://plus.google.com/+SourceyDevel"><i class="fi-social-google-plus large"></i></a> <a href="https://facebook.com/sourceydevel"><i class="fi-social-facebook large"></i></a> <a href="https://twitter.com/sourceydevel"><i class="fi-social-twitter large"></i></a> <a href="https://github.com/sourcey"><i class="fi-social-github large"></i></a> </div> <ul class=title-area> <li class=name></li> <li class="toggle-topbar menu-icon"><a href="" class=left></a></li> </ul> <section class=top-bar-section style="left: 0%;"> <ul class=left> <li class="has-dropdown not-click"><a href="/">Menu</a> <ul class=dropdown><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li> <li><label>Wicked</label></li> <li class="has-dropdown not-click"><a href="/#projects">Projects</a> <ul class=dropdown><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li> <li><label>Projects</label></li> <li><a href="/libsourcey">LibSourcey</a></li> <li><a href="/anionu">Anionu</a></li> <li><a href="/symple">Symple</a></li> <li><a href="/mesh">Mesh</a></li> <li><a href="/pacm">Pacm</a></li> </ul> </li> <li class=divider></li> <li><a href="/#blog">Blog</a></li> <li><a href="/archives">Archives</a></li> <li><a href="/feed.xml">Feed</a></li> <li class=divider></li> <li><a href="mailto:hello@sourcey.com">Contact</a></li> </ul> </li> <li class=divider></li> </ul> </section></nav> <header id=header> <h1 id=logo> <a title=Sourcey rel=home href="//sourcey.com"><img height=150 width=150 title=Sourcey alt=Sourcey src="/images/logo-250.png"/></a> </h1> </header> <div id=main role=main> <h1 id=symple>Symple</h1> <dl class=status> <dt>Repositories</dt> <dd>Node.js Server: <a href="https://github.com/sourcey/symple-server-node">https://github.com/sourcey/symple-server-node</a><br/> JavaScript Client: <a href="https://github.com/sourcey/symple-client">https://github.com/sourcey/symple-client</a><br/> Ruby Client: <a href="https://github.com/sourcey/symple-client-ruby">https://github.com/sourcey/symple-client-ruby</a><br/> C++ Client: <a href="https://github.com/sourcey/libsourcey">https://github.com/sourcey/libsourcey</a></dd> <dt>Licence</dt> <dd>LGPL, <a href="/licence">Pro Licence</a></dd> </dl> <p><img alt="Symple Logo" title="Symple Logo" class=align-left src="/images/symple-logo-120.png"/> Symple is a messaging, presence and remoting protocol with implementations in C++ and JavaScript for fast real-time communication between native desktop and browser applications.</p> <p>Symple is an unrestrictive peer messaging and presence protocol, as the name would suggest, it's a minimal and flexible protocol that is well suited to a "do-it-yourself" developer mentality. </p> <p>The message format is semantically similar to XMPP, except that it uses a vastly simplified syntax, and it uses JSON instead of XML for encoding messages. Symple has built-in support signalling support for messages, commands, forms and presence.</p> <p>The flexible nature of the JSON format also make it great for remoting and serializing data structures such as nested polymorphic objects.</p> <h2 id=client-implementations>Client implementations</h2> <p>There are currently three Symple client implementations, one in Ruby, one in JavaScript, and one in C++.</p> <p>The <a href="https://github.com/sourcey/symple-client-ruby">Ruby client</a> is a single drop-in module that is perfect for server-side integration with a web framework like Rails or Sinatra.</p> <p>The <a href="https://github.com/sourcey/symple-client">JavaScript client</a> provides a flexible interface for receiving standard and arbitrary message types. The client also includes a web player interface which enables Symple to be used in conjunction with MJPEG, FLV, h264 and WebRTC for live video streaming.</p> <p><a href="https://github.com/sourcey/libsourcey">LibSourcey</a> also contains includes a native C++ client and including samples for using Symple in native applications.</p> <h2 id=server-implementations>Server implementations</h2> <p>The <a href="https://github.com/sourcey/symple">Symple node.js server</a> repository includes sample server is implemented on a node.js stack.</p> <p>The server supports SSL configuration, groups, users, <code>x-real-ip</code> detection, and pre-arranged sessions using short-term authentication tokens via Redis.</p> <h2 id=why-symple>Why Symple</h2> <p>If you've had the pleasure of building a system to complex specifications then no doubt you'll be familiar with the bloat indicative of such systems.</p> <p>In some cases it's a necessity, but when it comes to a task like messaging, we prefer freedom of implementation rather than incumbent structure.</p> <p>Symple was created as a result of our work with <a href="https://anionu.com">Anionu</a>, for which we require real-time messaging, presence and command sharing between the native Spot client and online dashboard. Beyond that we hope to see Symple continue to adapt and develop as a great open source messaging solution.</p> <h2 id=protocol-specifications>Protocol Specifications</h2> <p>Below are the protocol specifications for Symple's core message types.</p> <h3 id=address>Address</h3> <p>A Symple ID is the destination address of a group user or peer node on the server. It consists of 3 namespace segments, each segment that is included in a message's destination address refines the delivery scope for that message. The purpose of namespacing peer addresses is so peers can be privately grouped.</p> <dl> <dt>Group</dt> <dd>Each peer on the Symple server belongs to a group namespace. A message directed to the group namespace will be dispatched to all nodes belonging to that group. <p><em>Example:</em> <code>{ to: "group" }</code></p> </dd> <dt>User</dt> <dd>Each peer on the Symple sever has an associated user name for the purposes of authentication and node grouping. A message directed to the user namespace will be dispatched to nodes belonging to that user. When directing a message to a user namespace, the group namespace MUST be included beforehand. <p><em>Example:</em> <code>{ to: "group@user" }</code></p> </dd> <dt>Session ID</dt> <dd>Each peer on the Symple sever has a session ID. The session ID acts is a unique identifier for each peer session. Messages may be directed to a specific peer by including the node ID in the destination address. When directing a message to a node ID, the node's group and user namespaces MUST be included beforehand. <p><em>Example:</em> <code>{ to: "group@user/sessionid" }</code></p> </dd> </dl> <h3 id=message>Message</h3> <p>A symple message is a JSON object which acts as a container for data that is sent over the wire. There are 3 required message attributes:</p> <pre class="highlight javascript"><span class="p">{</span>
   <span class="s2">"to"</span><span class="p">:</span> <span class="s2">"group@recipient/sessionid"</span><span class="p">,</span>      <span class="c1">// Recipient @see Symple ID (may be full or partial ID)
 </span>  <span class="s2">"from"</span><span class="p">:</span> <span class="s2">"group@sender/sessionid"</span><span class="p">,</span>       <span class="c1">// Sender @see Symple ID (always full ID)
 </span>  <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"message"</span><span class="p">,</span>                      <span class="c1">// The type of message being sent, maybe a polymorphic type.
 </span><span class="p">}</span>
-</pre>
-
-<p>Other frequently used but optional attributes include:</p>
-
-<pre class="highlight javascript"><span class="p">{</span>
+</pre> <p>Other frequently used but optional attributes include:</p> <pre class="highlight javascript"><span class="p">{</span>
   <span class="s2">"data"</span><span class="p">:</span> <span class="p">{},</span>                             <span class="c1">// We recommend placing arbitrary message data inside a "data" attribute, but this is optional.  
 </span>  <span class="s2">"notes"</span><span class="p">:</span> <span class="p">[</span>                              <span class="c1">// Notes can be added to messages like so.
 </span>    <span class="p">{</span>
@@ -210,75 +19,33 @@ There are 3 required message attributes:</p>
 </span>      <span class="s2">"text"</span><span class="p">:</span> <span class="s2">"ummm..."</span>
     <span class="p">}</span>
 <span class="p">}</span>          
-</pre>
-
-<p>From these meagre beginnings we can rapidly develop just about any kind of messaging system we want.
-As long as this simple message structure is adhered to data can be broadcast between scoped peers.</p>
-
-<h3 id="command">Command</h3>
-
-<p>Command messages allow us to send arbitrary commands peer. 
-They are suited for sending either short or long running commands, and allow for status callbacks.
-A command request looks like this:</p>
-
-<pre class="highlight javascript"><span class="p">{</span>
+</pre> <p>From these meagre beginnings we can rapidly develop just about any kind of messaging system we want. As long as this simple message structure is adhered to data can be broadcast between scoped peers.</p> <h3 id=command>Command</h3> <p>Command messages allow us to send arbitrary commands peer. They are suited for sending either short or long running commands, and allow for status callbacks. A command request looks like this:</p> <pre class="highlight javascript"><span class="p">{</span>
   <span class="s2">"to"</span><span class="p">:</span> <span class="s2">"responder"</span><span class="p">,</span>                      <span class="c1">// Responder
 </span>  <span class="s2">"from"</span><span class="p">:</span> <span class="s2">"initiator"</span><span class="p">,</span>                    <span class="c1">// Initiator
 </span>  <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"command"</span><span class="p">,</span>                      <span class="c1">// Message type
 </span>  <span class="s2">"node"</span><span class="p">:</span> <span class="s2">"some:node"</span><span class="p">,</span>                    <span class="c1">// The target command node or namespace
 </span>  <span class="s2">"action"</span><span class="p">:</span> <span class="s2">"execute"</span>                     <span class="c1">// An optional command action
 </span><span class="p">}</span>
-</pre>
-
-<p>A command response looks like this:</p>
-
-<pre class="highlight javascript"><span class="p">{</span>
+</pre> <p>A command response looks like this:</p> <pre class="highlight javascript"><span class="p">{</span>
   <span class="s2">"to"</span><span class="p">:</span> <span class="s2">"initiator"</span><span class="p">,</span>                      <span class="c1">// Initiator
 </span>  <span class="s2">"from"</span><span class="p">:</span> <span class="s2">"responder"</span><span class="p">,</span>                    <span class="c1">// Responder
 </span>  <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"command"</span><span class="p">,</span>
   <span class="s2">"node"</span><span class="p">:</span> <span class="s2">"some:node"</span><span class="p">,</span>
   <span class="s2">"status"</span><span class="p">:</span> <span class="mi">200</span>                           <span class="c1">// HTTP status codes are employed to describe the status of the command.
 </span><span class="p">}</span>                                         <span class="c1">// HTTP codes are generally 200, 202, 404, 406, 500 *
-</span></pre>
-
-<div class="panel callout radius">
-Command status callbacks for long running commands should use status 202 (Accepted) and 406 (Not accepted) to describe the command's running status.
-All other response status codes will result in completion and termination of the command session.
-</div>
-
-<h3 id="event">Event</h3>
-
-<p>Events allow peers to broadcast information about their running state to other peers.</p>
-
-<pre class="highlight javascript"><span class="p">{</span>
+</span></pre> <div class="panel callout radius"> Command status callbacks for long running commands should use status 202 (Accepted) and 406 (Not accepted) to describe the command's running status. All other response status codes will result in completion and termination of the command session. </div> <h3 id=event>Event</h3> <p>Events allow peers to broadcast information about their running state to other peers.</p> <pre class="highlight javascript"><span class="p">{</span>
   <span class="s2">"to"</span><span class="p">:</span> <span class="s2">"recipient"</span><span class="p">,</span>                      <span class="c1">// Recipient
 </span>  <span class="s2">"from"</span><span class="p">:</span> <span class="s2">"sender"</span><span class="p">,</span>                       <span class="c1">// Sender
 </span>  <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"event"</span><span class="p">,</span>
   <span class="s2">"node"</span><span class="p">:</span> <span class="s2">"some:node"</span>                     <span class="c1">// The target event node
 </span><span class="p">}</span>
-</pre>
-
-<h3 id="form">Form</h3>
-
-<p>Forms allow for peers to engage in configuration sessions.
-The forms data structure is designed to be easily interpreted by GUI renderers.
-Our JavaScript library includes support for displaying Symple forms as HTML.
-Forms objects generally piggyback on command messages. 
-A basic form session is illustrated below:</p>
-
-<p>A form session is requested by the initiator:</p>
-
-<pre class="highlight javascript"><span class="p">{</span>
+</pre> <h3 id=form>Form</h3> <p>Forms allow for peers to engage in configuration sessions. The forms data structure is designed to be easily interpreted by GUI renderers. Our JavaScript library includes support for displaying Symple forms as HTML. Forms objects generally piggyback on command messages. A basic form session is illustrated below:</p> <p>A form session is requested by the initiator:</p> <pre class="highlight javascript"><span class="p">{</span>
   <span class="s2">"to"</span><span class="p">:</span> <span class="s2">"responder"</span><span class="p">,</span>                      <span class="c1">// Responder
 </span>  <span class="s2">"from"</span><span class="p">:</span> <span class="s2">"initiator"</span><span class="p">,</span>                    <span class="c1">// Initiator
 </span>  <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"command"</span>
   <span class="s2">"node"</span><span class="p">:</span> <span class="s2">"some:node:config"</span>
 <span class="p">}</span>
-</pre>
-
-<p>The responder returns an empty form.</p>
-
-<pre class="highlight javascript"><span class="p">{</span>
+</pre> <p>The responder returns an empty form.</p> <pre class="highlight javascript"><span class="p">{</span>
   <span class="s2">"to"</span><span class="p">:</span> <span class="s2">"initiator"</span><span class="p">,</span>                      <span class="c1">// Initiator
 </span>  <span class="s2">"from"</span><span class="p">:</span> <span class="s2">"responder"</span><span class="p">,</span>                    <span class="c1">// Responder
 </span>  <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"command"</span><span class="p">,</span>
@@ -308,13 +75,7 @@ A basic form session is illustrated below:</p>
     <span class="p">]</span>
   <span class="p">}</span>
 <span class="p">}</span>
-</pre>
-
-<p>The initiator receives and displays the form the responder. 
-Once complete and the form data is updated an submit back to responder for processing and validation.
-Note the only fields that change here are the form's "type" attribute which is set to "submit", status code is removed, and the field value now equals "key2".</p>
-
-<pre class="highlight javascript"><span class="p">{</span>
+</pre> <p>The initiator receives and displays the form the responder. Once complete and the form data is updated an submit back to responder for processing and validation. Note the only fields that change here are the form's "type" attribute which is set to "submit", status code is removed, and the field value now equals "key2".</p> <pre class="highlight javascript"><span class="p">{</span>
   <span class="s2">"to"</span><span class="p">:</span> <span class="s2">"responder"</span><span class="p">,</span>                      <span class="c1">// Responder
 </span>  <span class="s2">"from"</span><span class="p">:</span> <span class="s2">"initiator"</span><span class="p">,</span>                    <span class="c1">// Initiator
 </span>  <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"command"</span><span class="p">,</span>
@@ -344,14 +105,7 @@ Note the only fields that change here are the form's "type" attribute which is s
     <span class="p">]</span>
   <span class="p">}</span>
 <span class="p">}</span>
-</pre>
-
-<p>The responder receives and and processes the form data. 
-If any errors are encountered during validation, an error message may added to the field and form returned to the requester for review.</p>
-
-<p>For the purpose of our example validation failed and case the responder was unable to set the value to key2</p>
-
-<pre class="highlight javascript"><span class="p">{</span>
+</pre> <p>The responder receives and and processes the form data. If any errors are encountered during validation, an error message may added to the field and form returned to the requester for review.</p> <p>For the purpose of our example validation failed and case the responder was unable to set the value to key2</p> <pre class="highlight javascript"><span class="p">{</span>
   <span class="s2">"to"</span><span class="p">:</span> <span class="s2">"initiator"</span><span class="p">,</span>                      <span class="c1">// Initiator
 </span>  <span class="s2">"from"</span><span class="p">:</span> <span class="s2">"responder"</span><span class="p">,</span>                    <span class="c1">// Responder
 </span>  <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"command"</span><span class="p">,</span>
@@ -382,12 +136,7 @@ If any errors are encountered during validation, an error message may added to t
     <span class="p">]</span>
   <span class="p">}</span>
 <span class="p">}</span>
-</pre>
-
-<p>The requester receives the form and displays the errors to the user.
-Once rectified the user submits the form again, this time selecting "key3".</p>
-
-<pre class="highlight javascript"><span class="p">{</span>
+</pre> <p>The requester receives the form and displays the errors to the user. Once rectified the user submits the form again, this time selecting "key3".</p> <pre class="highlight javascript"><span class="p">{</span>
   <span class="s2">"to"</span><span class="p">:</span> <span class="s2">"responder"</span><span class="p">,</span>                      <span class="c1">// Responder
 </span>  <span class="s2">"from"</span><span class="p">:</span> <span class="s2">"initiator"</span><span class="p">,</span>                    <span class="c1">// Initiator
 </span>  <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"command"</span><span class="p">,</span>
@@ -416,13 +165,7 @@ Once rectified the user submits the form again, this time selecting "key3".</p>
     <span class="p">]</span>
   <span class="p">}</span>
 <span class="p">}</span>
-</pre>
-
-<p>Finally both peers have come to an agreement, the info is valid, contracts are signed, and the data is saved.</p>
-
-<p>The responding peer terminates the session by saying thanks:</p>
-
-<pre class="highlight javascript"><span class="p">{</span>
+</pre> <p>Finally both peers have come to an agreement, the info is valid, contracts are signed, and the data is saved.</p> <p>The responding peer terminates the session by saying thanks:</p> <pre class="highlight javascript"><span class="p">{</span>
   <span class="s2">"to"</span><span class="p">:</span> <span class="s2">"initiator"</span><span class="p">,</span>                      <span class="c1">// Initiator
 </span>  <span class="s2">"from"</span><span class="p">:</span> <span class="s2">"responder"</span><span class="p">,</span>                    <span class="c1">// Responder
 </span>  <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"command"</span><span class="p">,</span>
@@ -436,53 +179,4 @@ Once rectified the user submits the form again, this time selecting "key3".</p>
     <span class="p">}</span>
   <span class="p">]</span>
 <span class="p">}</span>
-</pre>
-
-<h2 id="contributing">Contributing</h2>
-
-<ol>
-  <li>Fork it on Github</li>
-  <li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li>
-  <li>Commit your changes (<code>git commit -am 'Add some feature'</code>)</li>
-  <li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
-  <li>Create new Pull Request</li>
-</ol>
-
-<h2 id="issues">Issues</h2>
-
-<p>If you come across any bugs or issues then please use the Github issue tracker.</p>
- 
-    </div>
-        
-    <!--
-    <div style="text-align: center">
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>  -->
-    <!-- Sourcey Small H --><!--
-    <ins class="adsbygoogle"
-         style="display:inline-block;width:468px;height:60px;margin: 30px auto 15px;"
-         data-ad-client="ca-pub-1397369873900370"
-         data-ad-slot="8968503286"></ins>
-    <script>
-    (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-    </div>
-    -->
-
-    <footer id="footer">
-      <p>
-        As with all business minded artists, we have fought the inevitable battle of conformity vs expression, and have emerged victorious with sanity intact to plunder the digiverse in search of new and interesting challenges. For more information, or a quote, drop us an email and tell us what you're working on.
-      </p>
-      <!--
-      <p>                     
-        Our Kung Fu includes and is not limited to: C++, Ruby, Python, Java, Php, JavaScript, Node.js, ActionScript, HTML, CSS and Photoshop.
-      <p>  
-       -->      	  
-      <p>
-      &copy;2014 Sourcey     
-      <p>  
-    </footer>
-      
-    <link href="/stylesheets/app.css" media="screen" rel="stylesheet" type="text/css" />
-    <script src="/javascripts/all.js" type="text/javascript"></script>
-  </body>
-</html>
+</pre> <h2 id=contributing>Contributing</h2> <ol> <li>Fork it on Github</li> <li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li> <li>Commit your changes (<code>git commit -am 'Add some feature'</code>)</li> <li>Push to the branch (<code>git push origin my-new-feature</code>)</li> <li>Create new Pull Request</li> </ol> <h2 id=issues>Issues</h2> <p>If you come across any bugs or issues then please use the Github issue tracker.</p> </div> <footer id=footer> <p> As with all business minded artists, we have fought the inevitable battle of conformity vs expression, and have emerged victorious with sanity intact to plunder the digiverse in search of new and interesting challenges. For more information, or a quote, drop us an email and tell us what you're working on. </p> <p> &copy;2014 Sourcey <p> </footer> </body> </html> <link href="/stylesheets/app.css" media=screen rel=stylesheet /><script src="/javascripts/all.js"></script>

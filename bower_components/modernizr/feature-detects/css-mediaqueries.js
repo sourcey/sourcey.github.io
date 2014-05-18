@@ -1,3 +1,1 @@
-
-
-Modernizr.addTest('mediaqueries', Modernizr.mq('only all'));
+Modernizr.addTest("mediaqueries",Modernizr.mq("only all"));

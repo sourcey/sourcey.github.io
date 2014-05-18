@@ -1,3 +1,1 @@
-define(function() {
-	return typeof undefined;
-});
+define(function(){return"undefined"});

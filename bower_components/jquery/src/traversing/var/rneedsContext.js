@@ -1,6 +1,1 @@
-define([
-	"../../core",
-	"../../selector"
-], function( jQuery ) {
-	return jQuery.expr.match.needsContext;
-});
+define(["../../core","../../selector"],function(e){return e.expr.match.needsContext});
