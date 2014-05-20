@@ -10,26 +10,25 @@
     <name>Blog Author</name>
   </author>
   <entry>
-    <title>Precompile Assets Locally for Large Rails Capistrano Deployments</title>
-    <link rel="alternate" href="http://sourcey.com/precompile-assets-locally-for-large-rails-capistrano-deployments/"/>
-    <id>http://sourcey.com/precompile-assets-locally-for-large-rails-capistrano-deployments/</id>
+    <title>Precompiling Assets for Large Rails Deployments with Capistrano</title>
+    <link rel="alternate" href="http://sourcey.com/precompiling-assets-for-large-rails-deployments-with-capistrano/"/>
+    <id>http://sourcey.com/precompiling-assets-for-large-rails-deployments-with-capistrano/</id>
     <published>2014-05-20T00:00:00Z</published>
-    <updated>2014-05-20T12:54:14+10:00</updated>
+    <updated>2014-05-20T17:12:08+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
-    <content type="html">&lt;h1 id="precompile-assets-locally-for-large-rails-capistrano-deployments"&gt;Precompile Assets Locally for Large Rails Capistrano Deployments&lt;/h1&gt;
+    <content type="html">&lt;h1 id="precompiling-assets-for-large-rails-deployments-with-capistrano"&gt;Precompiling Assets for Large Rails Deployments with Capistrano&lt;/h1&gt;
 
 &lt;p&gt;If you've ever had to deploy a large Rails site using Capistrano, 
-then you're no doubt aware of how time consuming it is to precompile the assets pipeline on the server-side.&lt;/p&gt;
+then you're probably aware of how time consuming it is to precompile the assets pipeline on the server-side.&lt;/p&gt;
 
 &lt;p&gt;This is not really an issue for a small sites with a few images and JavaScripts, 
-but when it starts taking upwards of half an hour to roll out a small time critical patch you know somethings gotta give!&lt;/p&gt;
+but when it starts taking upwards of half an hour to roll out a small or time critical patch you know somethings gotta give!&lt;/p&gt;
 
-&lt;p&gt;Some people store compiled assets using &lt;code&gt;git&lt;/code&gt; in either the master or a separate repository, but that's really overkill and a completely unnecessary step. The most efficient way is just to use Capistrano's &lt;code&gt;run_locally&lt;/code&gt; command compile assets locally and then &lt;code&gt;rsync&lt;/code&gt; them to the remote server.&lt;/p&gt;
+&lt;p&gt;Some people store compiled assets using &lt;code&gt;git&lt;/code&gt; in either the master or a separate repository, but that's kind of overkill and it also introduces an extra step. The most efficient way is just to use Capistrano's &lt;code&gt;run_locally&lt;/code&gt; command to compile assets on the local machine and then &lt;code&gt;rsync&lt;/code&gt; them to the remote server.&lt;/p&gt;
 
-&lt;p&gt;The following Capistrano script is what we currently use on a Rails 3.2 site, but it should work with other Rails versions too.
-Stick the following task somewhere in your &lt;code&gt;deploy.rb&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;The following Capistrano script is what we currently use on a Rails 3.2 site, but it should work with other Rails versions too. Stick the following task somewhere in your &lt;code&gt;deploy.rb&lt;/code&gt;:&lt;/p&gt;
 
 &lt;pre class="highlight ruby"&gt;&lt;span class="n"&gt;namespace&lt;/span&gt; &lt;span class="ss"&gt;:deploy&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
   &lt;span class="n"&gt;namespace&lt;/span&gt; &lt;span class="ss"&gt;:assets&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
@@ -50,8 +49,7 @@ Stick the following task somewhere in your &lt;code&gt;deploy.rb&lt;/code&gt;:&l
 Just add the &lt;code&gt;cwRsync/bin&lt;/code&gt; folder to your system path and everything will be peaches.&lt;/p&gt;
 
 &lt;p&gt;To make sure assets are compiles we need to call &lt;code&gt;deploy:assets:precompile&lt;/code&gt; after each deployment. 
-The order in which the task is called is no so critical since Rails will be compiling assets from the local repository, 
-but I do prefer to call it after everything else is complete just in case anything else fails so we won't have run a costly task for nothing.&lt;/p&gt;
+The order in which the task is called is no so critical here since Rails will be compiling assets from the local repository, but just in case anything else fails it would be best to call it after other tasks so we won't have run a costly task for nothing.&lt;/p&gt;
 
 &lt;p&gt;A good time to run the task is after &lt;code&gt;deploy:finalize_update&lt;/code&gt; like so:&lt;/p&gt;
 

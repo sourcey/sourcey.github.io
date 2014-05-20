@@ -35,7 +35,7 @@ http://sourcey.com/password-free-signup-and-authentication/
 http://sourcey.com/html5-video-is-finally-ready/
 http://sourcey.com/html5-video-streaming-from-google-drive/
 http://sourcey.com/darkly-pygments-css-theme/
-http://sourcey.com/precompile-assets-locally-for-large-rails-capistrano-deployments/
+http://sourcey.com/precompiling-assets-for-large-rails-deployments-with-capistrano/
 http://sourcey.com/archives/
 http://sourcey.com/CNAME
 http://sourcey.com/draft.txt
