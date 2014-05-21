@@ -6,76 +6,72 @@
 
       ga('create', 'UA-836728-7', 'sourcey.com');
       ga('send', 'pageview');
-    </script> </head> <body class="blog pacm pacm_index"> <nav class=top-bar data-topbar=""> <div id=social> <a href="https://plus.google.com/+SourceyDevel"><i class="fi-social-google-plus large"></i></a> <a href="https://facebook.com/sourceydevel"><i class="fi-social-facebook large"></i></a> <a href="https://twitter.com/sourceydevel"><i class="fi-social-twitter large"></i></a> <a href="https://github.com/sourcey"><i class="fi-social-github large"></i></a> </div> <ul class=title-area> <li class=name></li> <li class="toggle-topbar menu-icon"><a href="" class=left></a></li> </ul> <section class=top-bar-section style="left: 0%;"> <ul class=left> <li class="has-dropdown not-click"><a href="/">Menu</a> <ul class=dropdown><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li> <li><label>Wicked</label></li> <li class="has-dropdown not-click"><a href="/#projects">Projects</a> <ul class=dropdown><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li> <li><label>Projects</label></li> <li><a href="/libsourcey">LibSourcey</a></li> <li><a href="/anionu">Anionu</a></li> <li><a href="/symple">Symple</a></li> <li><a href="/mesh">Mesh</a></li> <li><a href="/pacm">Pacm</a></li> </ul> </li> <li class=divider></li> <li><a href="/#blog">Blog</a></li> <li><a href="/archives">Archives</a></li> <li><a href="/feed.xml">Feed</a></li> <li class=divider></li> <li><a href="mailto:hello@sourcey.com">Contact</a></li> </ul> </li> <li class=divider></li> </ul> </section></nav> <header id=header> <h1 id=logo> <a title=Sourcey rel=home href="//sourcey.com"><img height=150 width=150 title=Sourcey alt=Sourcey src="/images/logo-250.png"/></a> </h1> </header> <div id=main role=main> <h1 id=pacm>Pacm</h1> <dl class=status> <dt>Repository</dt> <dd><a href="https://github.com/sourcey/pacm">https://github.com/sourcey/pacm</a></dd> <dt>Licence</dt> <dd>LGPL, <a href="/licence">Pro Licence</a></dd> <dt>Dependencies</dt> <dd>LibSourcey (base, uv, net, json, http, archo)</dd> </dl> <p><img alt="Pacm Logo" title="Pacm Logo" class=align-left src="/images/pacm-logo-120.png"/> Pacm is a front-end package manager written in C++ that can be embedded or redistributed with native applications to make short work of the following tasks:</p> <ul> <li>Auto-Updates</li> <li>Version Constrained Package Management</li> <li>Dependency Management</li> <li>Remote Plugin Management</li> </ul> <p>There are a lot of open source <a href="//en.wikipedia.org/wiki/List_of_software_package_management_systems">package managers</a> out there, but none of them quite fit the bill for a minimal and flexible native package manager that could be easily distributed with our apps, so we built Pacm.</p> <p>The Pacm codebase is kept quite small and readable thanks to LibSourcey which handles and abstracts all the complex cross-platform tasks such as networking, filesystem and cryptography.</p> <p>Pacm speaks to the server using a basic <a href="#client-server-protocol">client-server JSON protocol</a> which is very straight forward to integrate with your existing web server architecture. </p> <h2 id=embedding-pacm>Embedding Pacm</h2> <p>If you have some basic C++ nouse then you'll discover that Pacm is very easy to embed and use within your own applications. Some examples of the Pacm API are illustrated below:</p> <pre class="highlight cpp"><span class="n">PackageManager</span><span class="o">::</span><span class="n">Options</span> <span class="n">options</span><span class="p">;</span>
+    </script> </head> <body class="blog pacm pacm_index"> <nav class=top-bar data-topbar=""> <div id=social> <a href="https://plus.google.com/+SourceyDevel"><i class="fi-social-google-plus large"></i></a> <a href="https://facebook.com/sourceydevel"><i class="fi-social-facebook large"></i></a> <a href="https://twitter.com/sourceydevel"><i class="fi-social-twitter large"></i></a> <a href="https://github.com/sourcey"><i class="fi-social-github large"></i></a> </div> <ul class=title-area> <li class=name></li> <li class="toggle-topbar menu-icon"><a href="" class=left></a></li> </ul> <section class=top-bar-section style="left: 0%;"> <ul class=left> <li class="has-dropdown not-click"><a href="/">Menu</a> <ul class=dropdown><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li> <li><label>Wicked</label></li> <li class="has-dropdown not-click"><a href="/#projects">Projects</a> <ul class=dropdown><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li> <li><label>Projects</label></li> <li><a href="/libsourcey">LibSourcey</a></li> <li><a href="/anionu">Anionu</a></li> <li><a href="/symple">Symple</a></li> <li><a href="/mesh">Mesh</a></li> <li><a href="/pacm">Pacm</a></li> </ul> </li> <li class=divider></li> <li><a href="/#blog">Blog</a></li> <li><a href="/archives">Archives</a></li> <li><a href="/feed.xml">Feed</a></li> <li class=divider></li> <li><a href="mailto:hello@sourcey.com">Contact</a></li> </ul> </li> <li class=divider></li> </ul> </section></nav> <header id=header> <h1 id=logo> <a title=Sourcey rel=home href="//sourcey.com"><img height=150 width=150 title=Sourcey alt=Sourcey src="/images/logo-250.png"/></a> </h1> </header> <div id=main role=main> <h1 id=pacm>Pacm</h1> <dl class=status> <dt>Repository</dt> <dd><a href="https://github.com/sourcey/pacm">https://github.com/sourcey/pacm</a></dd> <dt>Licence</dt> <dd>LGPL, <a href="/licence">Pro Licence</a></dd> <dt>Dependencies</dt> <dd>LibSourcey (base, uv, net, json, http, archo)</dd> </dl> <p><img alt="Pacm Logo" title="Pacm Logo" class=align-left src="/images/pacm-logo-120.png"/> Pacm is your solution for a simple C++ package manager that can be embedded or redistributed with native applications. Pacm is designed to make short work of the following tasks:</p> <ul> <li>Auto-Updates</li> <li>Front-end Package Management</li> <li>Version Constrained Package Management</li> <li>Dependency Management</li> <li>Remote Plugin Management</li> </ul> <p>Pacm should be familiar territory if you've ever used <code>rubygems</code> in Ruby, or <code>npm</code> in NodeJS. Basically, a <a href="#client-server-protocol">package list</a> is downloaded from the server in JSON format, and the client then <a href="#supported-commands">issues commands</a> to manage packages installed on the local system. You can work with the API one of two ways; by <a href="#embedding-pacm">embedding Pacm</a> and compiling it with your application; or by redistributing it with your application and calling the <a href="#redistributable-command-line-tool">Pacm command line tool</a> directly.</p> <p>The Pacm code base is kept small and conscise thanks to LibSourcey, which abstracts and handles complex cross-platform tasks such as networking, filesystem and cryptography. LibSourcey is built on to of <code>libuv</code>, NodeJS's super fast networking layer, and provides a modern C++ interface for the native Pacm API.</p> <p>There are a lot of open source <a href="//en.wikipedia.org/wiki/List_of_software_package_management_systems">package managers</a> out there, but there has been great need of a simple embeddable package manager in C++ for some time. For this reason we built Pacm, and we're happy to contribute it to the open source community.</p> <h2 id=embedding-pacm>Embedding Pacm</h2> <p>Pacm is written in simple and readable C++11 code, so if you have some basic coding nouse then you'll be all over it like Barry White on a waterbed covered in hamburgers. </p> <p>The example below shows how to use the C++ API to query, list, install and uninstall packages:</p> <pre class="highlight cpp"><span class="n">pacm</span><span class="o">::</span><span class="n">PackageManager</span><span class="o">::</span><span class="n">Options</span> <span class="n">options</span><span class="p">;</span>
 <span class="c1">// configuration options go here...
-</span><span class="n">PackageManager</span> <span class="n">pacm</span><span class="p">(</span><span class="n">options</span><span class="p">);</span>
-<span class="n">pacm</span><span class="p">.</span><span class="n">initialize</span><span class="p">();</span>
+</span><span class="n">pacm</span><span class="o">::</span><span class="n">PackageManager</span> <span class="n">pm</span><span class="p">(</span><span class="n">options</span><span class="p">);</span>
+<span class="n">pm</span><span class="p">.</span><span class="n">initialize</span><span class="p">();</span>
         
 <span class="c1">// query the server for the latest packages
-</span><span class="n">pacm</span><span class="p">.</span><span class="n">queryRemotePackages</span><span class="p">();</span>                
+</span><span class="n">pm</span><span class="p">.</span><span class="n">queryRemotePackages</span><span class="p">();</span>                
         
 <span class="c1">// list local (installed) packages
-</span><span class="k">auto</span> <span class="n">litems</span> <span class="o">=</span> <span class="n">pacm</span><span class="p">.</span><span class="n">localPackages</span><span class="p">().</span><span class="n">items</span><span class="p">();</span>
-<span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">litems</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">litems</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span><span class="p">)</span> <span class="p">{</span>        
-  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Package: "</span> <span class="o">&lt;&lt;</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">first</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span><span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="n">kv</span> <span class="o">:</span> <span class="n">pm</span><span class="p">.</span><span class="n">localPackages</span><span class="p">().</span><span class="n">map</span><span class="p">())</span> <span class="p">{</span>            
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Local package: "</span> 
+    <span class="o">&lt;&lt;</span> <span class="n">kv</span><span class="p">.</span><span class="n">first</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span> 
+    <span class="o">&lt;&lt;</span> <span class="n">kv</span><span class="p">.</span><span class="n">second</span><span class="o">-&gt;</span><span class="n">toString</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="c1">// list remote (available) packages
-</span><span class="k">auto</span> <span class="n">ritems</span> <span class="o">=</span> <span class="n">app</span><span class="p">.</span><span class="n">remotePackages</span><span class="p">().</span><span class="n">items</span><span class="p">();</span>
-<span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">ritems</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">ritems</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span><span class="p">)</span> <span class="p">{</span>        
-  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Package: "</span> <span class="o">&lt;&lt;</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">first</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>          
-  
-  <span class="c1">// output the latest asset information
-</span>  <span class="n">it</span><span class="o">-&gt;</span><span class="n">second</span><span class="o">-&gt;</span><span class="n">latestAsset</span><span class="p">().</span><span class="n">print</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="p">);</span> 
-<span class="p">}</span>                
+</span><span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="n">kv</span> <span class="o">:</span> <span class="n">pm</span><span class="p">.</span><span class="n">remotePackages</span><span class="p">().</span><span class="n">map</span><span class="p">())</span> <span class="p">{</span>            
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Local package: "</span> 
+    <span class="o">&lt;&lt;</span> <span class="n">kv</span><span class="p">.</span><span class="n">first</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span> 
+    <span class="o">&lt;&lt;</span> <span class="n">kv</span><span class="p">.</span><span class="n">second</span><span class="o">-&gt;</span><span class="n">toString</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>              
         
 <span class="c1">// install a package
-</span><span class="n">pacm</span><span class="p">.</span><span class="n">installPackage</span><span class="p">(</span><span class="s">"SomePackageName"</span><span class="p">);</span>
+</span><span class="n">pm</span><span class="p">.</span><span class="n">installPackage</span><span class="p">(</span><span class="s">"SomePackageName"</span><span class="p">);</span>
 
 <span class="c1">// update a package (will install if it doesn't exist)
-</span><span class="n">pacm</span><span class="p">.</span><span class="n">updatePackage</span><span class="p">(</span><span class="s">"SomePackageName"</span><span class="p">);</span>
+</span><span class="n">pm</span><span class="p">.</span><span class="n">updatePackage</span><span class="p">(</span><span class="s">"SomePackageName"</span><span class="p">);</span>
 
 <span class="c1">// update / install a list of packages.
 // package states are available via callback events
 </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">packages</span><span class="p">;</span>
 <span class="n">packages</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">"SomePackageName"</span><span class="p">);</span>
 <span class="n">packages</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="s">"SomeOtherPackage"</span><span class="p">);</span>        
-<span class="n">pacm</span><span class="p">.</span><span class="n">installPackages</span><span class="p">(</span><span class="n">packages</span><span class="p">);</span>
+<span class="n">pm</span><span class="p">.</span><span class="n">installPackages</span><span class="p">(</span><span class="n">packages</span><span class="p">);</span>
 
 <span class="c1">// update all packages
-</span><span class="n">pacm</span><span class="p">.</span><span class="n">updateAllPackages</span><span class="p">();</span>
+</span><span class="n">pm</span><span class="p">.</span><span class="n">updateAllPackages</span><span class="p">();</span>
 
 <span class="c1">// uninstall a package.
 // uninstallPackages() can also be used for multiple packages.
-</span><span class="n">pacm</span><span class="p">.</span><span class="n">uninstallPackage</span><span class="p">(</span><span class="s">"SomePackageName"</span><span class="p">);</span>
-</pre> <p>If you're planning on using the native API then the best place to start is the source code of the <a href="https://github.com/sourcey/pacm/blob/master/applications/pacmconsole/src/main.cpp">Pacm command line tool</a>, which can be easily reverse engineered and modified for your own purposes.</p> <p>For all method definitions and further documentation the <a href="https://github.com/sourcey/pacm/blob/master/include/scy/pacm/packagemanager.h">source code</a> is always the best reference.</p> <h2 id=redistributable-command-line-tool>Redistributable Command Line Tool</h2> <p>Pacm comes with a redistributable command-line tool which can be compiled and redistributed with your existing applications. In many ways this is preferable to embedding Pacm as it allows you to decouple complex version management code from your main application, but depending on which platforms you are targeting there may also be security constraints to consider.</p> <h3 id=examples>Examples</h3> <p>Print help:</p> <pre class="highlight shell">pacm --help
-</pre> <p>Install the Anionu <code>surveillancemodeplugin</code>:</p> <pre class="highlight shell">pacm --endpoint https://anionu.com --uri /packages.json --print --install surveillancemodeplugin
-</pre> <p>Uninstall the Anionu <code>surveillancemodeplugin</code>:</p> <pre class="highlight shell">pacm --endpoint https://anionu.com --uri /packages.json --print --install surveillancemodeplugin
-</pre> <p>Update installed packages to the latest version:</p> <pre class="highlight shell">pacm --endpoint https://anionu.com --uri /packages.json --print --update
-</pre> <h3 id=supported-commands>Supported Commands</h3> <p>The following commands are implemented by the redistributable application. This is likely to be expanded upon in the near future, and in the mean time pull requests are very welcome:</p> <pre class="highlight plaintext">General commands:
-
-  --help           Print help
-  --logfile        Log file output path
+</span><span class="n">pm</span><span class="p">.</span><span class="n">uninstallPackage</span><span class="p">(</span><span class="s">"SomePackageName"</span><span class="p">);</span>
+</pre> <p>If you're planning on using the native API then the best place to start is the source code of the <a href="https://github.com/sourcey/pacm/blob/master/applications/pacmconsole/src/main.cpp">Pacm command line tool</a>, which can be easily reverse engineered and modified for your own purposes.</p> <p>For all method definitions and further documentation the <a href="https://github.com/sourcey/pacm/blob/master/include/scy/pacm/packagemanager.h">source code</a> is always the best reference.</p> <h2 id=redistributable-command-line-tool>Redistributable Command Line Tool</h2> <p>Pacm comes with a redistributable command-line tool which can be compiled and redistributed with your existing applications. In many ways this is preferable to embedding Pacm as it allows you to decouple complex version management code from your main application, but depending on which platforms you are targeting there may also be security limitations to consider.</p> <h3 id=examples>Examples</h3> <p>Print help:</p> <pre class="highlight shell">pacm -help
+</pre> <p>Install the Anionu <code>surveillancemodeplugin</code>:</p> <pre class="highlight shell">pacm -endpoint https://anionu.com -uri /packages.json -print -install surveillancemodeplugin
+</pre> <p>Uninstall the Anionu <code>surveillancemodeplugin</code>:</p> <pre class="highlight shell">pacm -endpoint https://anionu.com -uri /packages.json -print -install surveillancemodeplugin
+</pre> <p>Update all installed packages to the latest version:</p> <pre class="highlight shell">pacm -endpoint https://anionu.com -uri /packages.json -print -update
+</pre> <h3 id=supported-commands>Supported Commands</h3> <p>The following commands are currently supported by the Pacm console application:</p> <pre class="highlight plaintext">General commands:
+  -help           Print help
+  -logfile        Log file output path
 
 Server commands:
-
-  --endpoint       HTTP server endpoint
-  --uri            HTTP server package JSON index URI
+  -endpoint       HTTP server endpoint
+  -uri            HTTP server package JSON index URI
 
 Package commands:
-
-  --install        Packages to install (comma separated)
-  --uninstall      Packages to uninstall (comma separated)
-  --update         Update all packages
-  --print          Print all local and remote packages on exit
-  --checksum-alg   Checksum algorithm for verifying packages (MDS/SHA1)
+  -install        Packages to install (comma separated)
+  -uninstall      Packages to uninstall (comma separated)
+  -update         Update all packages
+  -print          Print all local and remote packages on exit
+  -checksum-alg   Checksum algorithm for verifying packages (MDS/SHA1)
 
 Filesystem commands:
-
-  --install-dir    Directory where packages will be installed
-  --data-dir       Directory where package manifests will be stored
-  --temp-dir       Directory where intermediate package files will be stored
-</pre> <h2 id=client-server-protocol>Client-Server Protocol</h2> <p>The Pacm repository does not currently include a server module, but since everything is in JSON it should be a sinch to implement using your existing web framework. All that is required on the server-side is to list packages and facilitate downloads.</p> <p>An example of a server response to a Pacm query is illustrated below. Pacm will send a HTTP GET request to the server which will reply with a JSON response that looks like this:</p> <pre class="highlight javascript"><span class="p">[{</span>
+  -install-dir    Directory where packages will be installed
+  -data-dir       Directory where package manifests will be stored
+  -temp-dir       Directory where intermediate package files will be stored
+</pre> <h2 id=client-server-protocol>Client-Server Protocol</h2> <p>The Pacm repository does not currently include a server module, but since everything is in JSON it should be a sinch to implement using your existing web framework. All that is required on the server-side is to list packages and facilitate downloads.</p> <p>A server response to a Pacm query is illustrated below, and remember that since everything is in JSON you can easily add your own metadata as required. </p> <p>Pacm will send a HTTP GET request to the server:</p> <pre class="highlight http"><span class="nf">GET</span> <span class="nn">/packages.json</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre> <p>The server responds with an array of packages and available file assets in JSON format like so:</p> <pre class="highlight javascript"><span class="p">[{</span>
     <span class="s2">"id"</span><span class="p">:</span> <span class="s2">"surveillancemodeplugin"</span><span class="p">,</span>
     <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"Plugin"</span><span class="p">,</span>
     <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"Surveillance Mode Plugin"</span><span class="p">,</span>
@@ -85,6 +81,7 @@ Filesystem commands:
         <span class="s2">"version"</span><span class="p">:</span> <span class="s2">"0.9.3"</span><span class="p">,</span>
         <span class="s2">"sdk-version"</span><span class="p">:</span> <span class="s2">"0.6.2"</span><span class="p">,</span>
         <span class="s2">"platform"</span><span class="p">:</span> <span class="s2">"win32"</span><span class="p">,</span>
+        <span class="s2">"checksum"</span><span class="p">:</span> <span class="s2">"e4d909c290d0fb1ca068ffaddf22cbd0"</span><span class="p">,</span>
         <span class="s2">"file-name"</span><span class="p">:</span> <span class="s2">"surveillancemodeplugin-0.9.4-sdk-0.6.2-win32.zip"</span><span class="p">,</span>
         <span class="s2">"file-size"</span><span class="p">:</span> <span class="mi">432321</span><span class="p">,</span>
         <span class="s2">"mirrors"</span><span class="p">:</span> <span class="p">[{</span>
@@ -94,6 +91,7 @@ Filesystem commands:
         <span class="s2">"version"</span><span class="p">:</span> <span class="s2">"0.9.3"</span><span class="p">,</span>
         <span class="s2">"sdk-version"</span><span class="p">:</span> <span class="s2">"0.6.0"</span><span class="p">,</span>
         <span class="s2">"platform"</span><span class="p">:</span> <span class="s2">"win32"</span><span class="p">,</span>
+        <span class="s2">"checksum"</span><span class="p">:</span> <span class="s2">"c290d0fb1ca068ffaddf22cbd0e4d909"</span><span class="p">,</span>
         <span class="s2">"file-name"</span><span class="p">:</span> <span class="s2">"surveillancemodeplugin-0.9.3-sdk-0.6.0-win32-debug.zip"</span><span class="p">,</span>
         <span class="s2">"file-size"</span><span class="p">:</span> <span class="mi">432221</span><span class="p">,</span>
         <span class="s2">"mirrors"</span><span class="p">:</span> <span class="p">[{</span>
@@ -110,6 +108,7 @@ Filesystem commands:
         <span class="s2">"version"</span><span class="p">:</span> <span class="s2">"0.8.9"</span><span class="p">,</span>
         <span class="s2">"sdk-version"</span><span class="p">:</span> <span class="s2">"0.6.2"</span><span class="p">,</span>
         <span class="s2">"platform"</span><span class="p">:</span> <span class="s2">"win32"</span><span class="p">,</span>
+        <span class="s2">"checksum"</span><span class="p">:</span> <span class="s2">"fb1ca068ffaddf22cbd0e4d909c290d0"</span><span class="p">,</span>
         <span class="s2">"file-name"</span><span class="p">:</span> <span class="s2">"mediaplugin-0.8.9-sdk-0.6.2-win32.zip"</span><span class="p">,</span>
         <span class="s2">"file-size"</span><span class="p">:</span> <span class="mi">1352888</span><span class="p">,</span>
         <span class="s2">"mirrors"</span><span class="p">:</span> <span class="p">[{</span>
@@ -119,6 +118,7 @@ Filesystem commands:
         <span class="s2">"version"</span><span class="p">:</span> <span class="s2">"0.8.8"</span><span class="p">,</span>
         <span class="s2">"sdk-version"</span><span class="p">:</span> <span class="s2">"0.6.0"</span><span class="p">,</span>
         <span class="s2">"platform"</span><span class="p">:</span> <span class="s2">"win32"</span><span class="p">,</span>
+        <span class="s2">"checksum"</span><span class="p">:</span> <span class="s2">"068ffaddf22cbd0e4d909c290d0fb1ca"</span><span class="p">,</span>
         <span class="s2">"file-name"</span><span class="p">:</span> <span class="s2">"mediaplugin-0.8.8-sdk-0.6.0-win32-debug.zip"</span><span class="p">,</span>
         <span class="s2">"file-size"</span><span class="p">:</span> <span class="mi">1352818</span><span class="p">,</span>
         <span class="s2">"mirrors"</span><span class="p">:</span> <span class="p">[{</span>
@@ -135,6 +135,7 @@ Filesystem commands:
         <span class="s2">"version"</span><span class="p">:</span> <span class="s2">"0.1.1"</span><span class="p">,</span>
         <span class="s2">"sdk-version"</span><span class="p">:</span> <span class="s2">"0.6.2"</span><span class="p">,</span>
         <span class="s2">"platform"</span><span class="p">:</span> <span class="s2">"win32"</span><span class="p">,</span>
+        <span class="s2">"checksum"</span><span class="p">:</span> <span class="s2">"068ffaddc290d0fb1caf22cbd0e4d909"</span><span class="p">,</span>
         <span class="s2">"file-name"</span><span class="p">:</span> <span class="s2">"webrtcplugin-0.1.1-sdk-0.6.2-win32.zip"</span><span class="p">,</span>
         <span class="s2">"file-size"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
         <span class="s2">"mirrors"</span><span class="p">:</span> <span class="p">[{</span>
@@ -144,6 +145,7 @@ Filesystem commands:
         <span class="s2">"version"</span><span class="p">:</span> <span class="s2">"0.1.0"</span><span class="p">,</span>
         <span class="s2">"sdk-version"</span><span class="p">:</span> <span class="s2">"0.6.0"</span><span class="p">,</span>
         <span class="s2">"platform"</span><span class="p">:</span> <span class="s2">"win32"</span><span class="p">,</span>
+        <span class="s2">"checksum"</span><span class="p">:</span> <span class="s2">"addc290d0fb1caf22cbd0e4d909068ff"</span><span class="p">,</span>
         <span class="s2">"file-name"</span><span class="p">:</span> <span class="s2">"webrtcplugin-0.1.0-sdk-0.6.0-win32-debug.zip"</span><span class="p">,</span>
         <span class="s2">"file-size"</span><span class="p">:</span> <span class="mi">3888157</span><span class="p">,</span>
         <span class="s2">"mirrors"</span><span class="p">:</span> <span class="p">[{</span>
@@ -151,4 +153,4 @@ Filesystem commands:
         <span class="p">}]</span>
     <span class="p">}]</span>
 <span class="p">}]</span>
-</pre> <h2 id=contributing>Contributing</h2> <ol> <li><a href="https://github.com/sourcey/pacm">Fork Pacm on Github</a></li> <li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li> <li>Commit your changes (<code>git commit -am 'Add some feature'</code>)</li> <li>Push to the branch (<code>git push origin my-new-feature</code>)</li> <li>Create new Pull Request</li> </ol> <h2 id=issues>Issues</h2> <p>If you find any bugs or issues please use the new <a href="https://github.com/sourcey/pacm/issues">Github issue tracker</a>.</p> </div> <footer id=footer> <p> As with all business minded artists, we have fought the inevitable battle of conformity vs expression, and have emerged victorious with sanity intact to plunder the digiverse in search of new and interesting challenges. For more information, or a quote, drop us an email and tell us what you're working on. </p> <p> &copy;2014 Sourcey <p> </footer> </body> </html> <script src="/javascripts/all.js"></script>
+</pre> <h2 id=contributing>Contributing</h2> <p>If you improve on the code base and want to contribute to the project then pull requests are always very welcome.</p> <ol> <li><a href="https://github.com/sourcey/pacm">Fork Pacm on Github</a></li> <li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li> <li>Commit your changes (<code>git commit -am 'Add some feature'</code>)</li> <li>Push to the branch (<code>git push origin my-new-feature</code>)</li> <li>Create new Pull Request</li> </ol> <h2 id=issues>Issues</h2> <p>If you find any bugs or issues please use the new <a href="https://github.com/sourcey/pacm/issues">Github issue tracker</a>.</p> </div> <footer id=footer> <p> As with all business minded artists, we have fought the inevitable battle of conformity vs expression, and have emerged victorious with sanity intact to plunder the digiverse in search of new and interesting challenges. For more information, or a quote, drop us an email and tell us what you're working on. </p> <p> &copy;2014 Sourcey <p> </footer> </body> </html> <script src="/javascripts/all.js"></script>

@@ -5,10 +5,59 @@
   <id>http://sourcey.com</id>
   <link href="http://sourcey.com"/>
   <link href="http://sourcey.com/feed.xml" rel="self"/>
-  <updated>2014-05-20T00:00:00Z</updated>
+  <updated>2014-05-21T00:00:00Z</updated>
   <author>
     <name>Blog Author</name>
   </author>
+  <entry>
+    <title>Agile Peer Code Reviews with Codebrag</title>
+    <link rel="alternate" href="http://sourcey.com/agile-peer-code-reviews-with-codebrag/"/>
+    <id>http://sourcey.com/agile-peer-code-reviews-with-codebrag/</id>
+    <published>2014-05-21T00:00:00Z</published>
+    <updated>2014-05-21T11:54:49+10:00</updated>
+    <author>
+      <name>Article Author</name>
+    </author>
+    <content type="html">&lt;h1 id="agile-peer-code-reviews-with-codebrag"&gt;Agile Peer Code Reviews with Codebrag&lt;/h1&gt;
+&lt;!-- No More Late Friday Fixes - Agile Peer Code Reviews with Codebrag --&gt;
+
+&lt;p&gt;&lt;img alt="Codebrag" title="Codebrag" src="/agile-peer-code-reviews-with-codebrag/cbr-landing-snippet.png" /&gt;&lt;/p&gt;
+
+&lt;p&gt;It's Friday afternoon and you're sitting in the office, extinguishing the fire on the production server.
+You promise yourself that it won't happen again, not after tonight. But it happened in the past. And might happen in the future. &lt;/p&gt;
+
+&lt;p&gt;Well, we've been there. Experienced the frustration and tiredness of staying late and fixing bugs. That's why we've decided to do something about it.
+Enter &lt;a href="http://codebrag.com"&gt;Codebrag&lt;/a&gt;, the code review tool your team will actually use.&lt;/p&gt;
+
+&lt;h2 id="fun--different"&gt;Fun = Different?&lt;/h2&gt;
+
+&lt;p&gt;Why you don't like code reviews? &lt;/p&gt;
+
+&lt;p&gt;You get criticised. Your carefully crafted code gets smashed to bits and analysed like an insect under a microscope. You &lt;em&gt;have&lt;/em&gt; to do code reviews, not necessarily &lt;em&gt;want&lt;/em&gt; to do them. You get stressed and the code quality gets hurt as well.&lt;/p&gt;
+
+&lt;p&gt;What if code reviews could be… fun? &lt;/p&gt;
+
+&lt;p&gt;We've built Codebrag to make you enjoy code reviews. Starting from a game-like, friendly interface to adding "Likes" to blocks of code, Codebrag is built around the idea of a positive atmosphere of software craftsmanship.&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt="Codebrag App Overview" title="Codebrag App Overview" src="/agile-peer-code-reviews-with-codebrag/cbr-app-overview.png" /&gt;&lt;/p&gt;
+
+&lt;h2 id="less-loss"&gt;Less Loss&lt;/h2&gt;
+
+&lt;p&gt;And it isn't just for fun. You can't really estimate the cost of an emotionally-wrecked developer. &lt;/p&gt;
+
+&lt;p&gt;Imagine that Amazon's down for a minute. The loss toll would be &lt;em&gt;quite&lt;/em&gt; high. Or the recent Heartbleed security loophole - isn't this all about people not getting enough support, proper feedback and rest? Once again, Codebrag addresses those issues by allowing you to introduce flexible code reviews methods, eliminating the possibility of bugs being overlooked.&lt;/p&gt;
+
+&lt;h2 id="lightweight-and-secure"&gt;Lightweight and Secure&lt;/h2&gt;
+
+&lt;p&gt;You set up Codebrag on your own terms, using your servers. Just &lt;a href="http://codebrag.com#get-codebrag"&gt;download the package&lt;/a&gt;, do a quick config, clone your repository start reviewing your friends' code. Codebrag is simple with the workflow focused on finding and eradicating problems as well as mutual learning and team support. &lt;/p&gt;
+
+&lt;h2 id="status--plans"&gt;Status &amp;amp; Plans&lt;/h2&gt;
+
+&lt;p&gt;Codebrag is currently in 2.0 version with Git, SVN, local and cloud repositories and both post-commit and review of feature branches support. It's developed by people from &lt;a href="http://softwaremill.com"&gt;SoftwareMill&lt;/a&gt; as a dogfood and startup project - we use Codebrag in our projects and decided to share it with the people. You can tweet us @codebrag and visit our &lt;a href="http://blog.codebrag.com"&gt;blog&lt;/a&gt; for code review guides and Codebrag news.&lt;/p&gt;
+
+&lt;iframe width="590" height="360" src="//www.youtube.com/embed/PxQflI7Bgxc" frameborder="0" allowfullscreen=""&gt;&lt;/iframe&gt;
+</content>
+  </entry>
   <entry>
     <title>Precompiling Assets for Large Rails Deployments with Capistrano</title>
     <link rel="alternate" href="http://sourcey.com/precompiling-assets-for-large-rails-deployments-with-capistrano/"/>
@@ -571,24 +620,6 @@ There is merit in &lt;a href="http://blog.codinghorror.com/how-to-be-lazy-dumb-a
 &lt;p&gt;Users are becoming increasingly wary of who they share their information with, and with &lt;a href="http://gigaom.com/2013/12/31/snapchat-hacked-4-6-million-usernames-and-phone-numbers-lifted/"&gt;good reason&lt;/a&gt; too. This makes "password free signup" a great incentive to offer lazy and wary, security conscious, customers.&lt;/p&gt;
 
 &lt;p&gt;It's an exciting technological era we live in, and as the big players claim more of the market share it's becoming more necessary for new and smaller startups to effectively use and integrate with the more established players in order to gain traction and build a solid customer base.&lt;/p&gt;
-</content>
-  </entry>
-  <entry>
-    <title>Guest Posting Opportunities</title>
-    <link rel="alternate" href="http://sourcey.com/guest-posting-opportunities/"/>
-    <id>http://sourcey.com/guest-posting-opportunities/</id>
-    <published>2014-04-24T00:00:00Z</published>
-    <updated>2014-04-25T23:39:25+10:00</updated>
-    <author>
-      <name>Article Author</name>
-    </author>
-    <content type="html">&lt;h1 id="guest-posting-opportunities"&gt;Guest Posting Opportunities&lt;/h1&gt;
-
-&lt;p&gt;If you are promoting a brilliant open soruce project, or a new technology startup, then you may be interested in guest posting on Sourcey.com. Naturally only the highest quality original content will be considered.&lt;/p&gt;
-
-&lt;p&gt;We work tirelessly to create quality code and startups ourselves, and as such we are intersted in hearing from other companies who are in the same boat.&lt;/p&gt;
-
-&lt;p&gt;For guest posting opportunities and other forms of affiliation and collaboration please drop us a line on &lt;a href="&amp;#109;&amp;#097;&amp;#105;&amp;#108;&amp;#116;&amp;#111;:&amp;#104;&amp;#101;&amp;#108;&amp;#108;&amp;#111;&amp;#064;&amp;#115;&amp;#111;&amp;#117;&amp;#114;&amp;#099;&amp;#101;&amp;#121;&amp;#046;&amp;#099;&amp;#111;&amp;#109;"&gt;&amp;#104;&amp;#101;&amp;#108;&amp;#108;&amp;#111;&amp;#064;&amp;#115;&amp;#111;&amp;#117;&amp;#114;&amp;#099;&amp;#101;&amp;#121;&amp;#046;&amp;#099;&amp;#111;&amp;#109;&lt;/a&gt;. &lt;/p&gt;
 </content>
   </entry>
 </feed>

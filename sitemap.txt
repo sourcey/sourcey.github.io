@@ -36,10 +36,11 @@ http://sourcey.com/html5-video-is-finally-ready/
 http://sourcey.com/html5-video-streaming-from-google-drive/
 http://sourcey.com/darkly-pygments-css-theme/
 http://sourcey.com/precompiling-assets-for-large-rails-deployments-with-capistrano/
+http://sourcey.com/agile-peer-code-reviews-with-codebrag/
 http://sourcey.com/archives/
 http://sourcey.com/CNAME
 http://sourcey.com/draft.txt
-http://sourcey.com/drafts/pacm-auto-updates.txt
+http://sourcey.com/drafts/auto-updates-using-pacm-cpp-package-manager/
 http://sourcey.com/favicon.ico
 http://sourcey.com/feed.xml
 http://sourcey.com/
@@ -114,3 +115,4 @@ http://sourcey.com/tags/css/
 http://sourcey.com/tags/themes/
 http://sourcey.com/tags/capistrano/
 http://sourcey.com/tags/rsync/
+http://sourcey.com/tags/code-review/
