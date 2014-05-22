@@ -37,6 +37,7 @@ http://sourcey.com/html5-video-streaming-from-google-drive/
 http://sourcey.com/darkly-pygments-css-theme/
 http://sourcey.com/precompiling-assets-for-large-rails-deployments-with-capistrano/
 http://sourcey.com/agile-peer-code-reviews-with-codebrag/
+http://sourcey.com/comparing-version-strings-in-cpp/
 http://sourcey.com/archives/
 http://sourcey.com/CNAME
 http://sourcey.com/draft.txt
@@ -68,11 +69,10 @@ http://sourcey.com/tags/libsourcey/
 http://sourcey.com/tags/packetstream/
 http://sourcey.com/tags/php/
 http://sourcey.com/tags/youtube/
-http://sourcey.com/tags/c/
+http://sourcey.com/tags/cpp/
 http://sourcey.com/tags/libuv/
-http://sourcey.com/tags/node-js/
+http://sourcey.com/tags/performance/
 http://sourcey.com/tags/ice/
-http://sourcey.com/tags/proxy/
 http://sourcey.com/tags/turn/
 http://sourcey.com/tags/regex/
 http://sourcey.com/tags/wordpress/
@@ -116,3 +116,4 @@ http://sourcey.com/tags/themes/
 http://sourcey.com/tags/capistrano/
 http://sourcey.com/tags/rsync/
 http://sourcey.com/tags/code-review/
+http://sourcey.com/tags/code/

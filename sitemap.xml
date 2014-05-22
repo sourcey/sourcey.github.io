@@ -157,6 +157,10 @@
     <lastmod>2014-05-22T00:00:00+10:00</lastmod>
   </url>
   <url>
+    <loc>http://sourcey.com/comparing-version-strings-in-cpp/</loc>
+    <lastmod>2014-05-22T00:00:00+10:00</lastmod>
+  </url>
+  <url>
     <loc>http://sourcey.com/archives/</loc>
     <lastmod>2014-05-22T00:00:00+10:00</lastmod>
   </url>
@@ -417,7 +421,7 @@
     <lastmod>2014-05-22T00:00:00+10:00</lastmod>
   </url>
   <url>
-    <loc>http://sourcey.com/tags/c/</loc>
+    <loc>http://sourcey.com/tags/cpp/</loc>
     <lastmod>2014-05-22T00:00:00+10:00</lastmod>
   </url>
   <url>
@@ -425,15 +429,11 @@
     <lastmod>2014-05-22T00:00:00+10:00</lastmod>
   </url>
   <url>
-    <loc>http://sourcey.com/tags/node-js/</loc>
+    <loc>http://sourcey.com/tags/performance/</loc>
     <lastmod>2014-05-22T00:00:00+10:00</lastmod>
   </url>
   <url>
     <loc>http://sourcey.com/tags/ice/</loc>
-    <lastmod>2014-05-22T00:00:00+10:00</lastmod>
-  </url>
-  <url>
-    <loc>http://sourcey.com/tags/proxy/</loc>
     <lastmod>2014-05-22T00:00:00+10:00</lastmod>
   </url>
   <url>
@@ -606,6 +606,10 @@
   </url>
   <url>
     <loc>http://sourcey.com/tags/code-review/</loc>
+    <lastmod>2014-05-22T00:00:00+10:00</lastmod>
+  </url>
+  <url>
+    <loc>http://sourcey.com/tags/code/</loc>
     <lastmod>2014-05-22T00:00:00+10:00</lastmod>
   </url>
 </urlset>

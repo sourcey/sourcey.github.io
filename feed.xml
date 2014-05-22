@@ -5,10 +5,70 @@
   <id>http://sourcey.com</id>
   <link href="http://sourcey.com"/>
   <link href="http://sourcey.com/feed.xml" rel="self"/>
-  <updated>2014-05-21T00:00:00Z</updated>
+  <updated>2014-05-22T00:00:00Z</updated>
   <author>
     <name>Blog Author</name>
   </author>
+  <entry>
+    <title>Comparing Version Strings in C++</title>
+    <link rel="alternate" href="http://sourcey.com/comparing-version-strings-in-cpp/"/>
+    <id>http://sourcey.com/comparing-version-strings-in-cpp/</id>
+    <published>2014-05-22T00:00:00Z</published>
+    <updated>2014-05-22T20:43:51+10:00</updated>
+    <author>
+      <name>Article Author</name>
+    </author>
+    <content type="html">&lt;h1 id="comparing-version-strings-in-c"&gt;Comparing Version Strings in C++&lt;/h1&gt;
+
+&lt;p&gt;If you're implementing any kind of version management system, such as a package manager or similar, then you'll need to be able to compare version strings. The method below is extracted from &lt;a href="/pacm"&gt;pacm&lt;/a&gt;, and hopefully comes in handy for someone else in need of this functionality:&lt;/p&gt;
+
+&lt;pre class="highlight cpp"&gt;&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;delim&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;vector&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;elems&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;limit&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; 
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;stringstream&lt;/span&gt; &lt;span class="n"&gt;ss&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;getline&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ss&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;delim&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;elems&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;push_back&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+		&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;limit&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="k"&gt;static_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;elems&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt; &lt;span class="n"&gt;limit&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+			&lt;span class="k"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+	&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ss&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tellg&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+		&lt;span class="n"&gt;elems&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;push_back&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ss&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;str&lt;/span&gt;&lt;span class="p"&gt;().&lt;/span&gt;&lt;span class="n"&gt;substr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+		&lt;span class="k"&gt;static_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ss&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tellg&lt;/span&gt;&lt;span class="p"&gt;()),&lt;/span&gt; 
+		&lt;span class="k"&gt;static_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;ss&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tellg&lt;/span&gt;&lt;span class="p"&gt;())));&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;vector&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;delim&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;limit&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; 
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;vector&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;elems&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="n"&gt;delim&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;elems&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;limit&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;elems&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="n"&gt;bool&lt;/span&gt; &lt;span class="n"&gt;compareVersion&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;l&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;r&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; 
+&lt;span class="p"&gt;{&lt;/span&gt;
+	&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;l&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;empty&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+		&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+	&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;r&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;empty&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+		&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;true&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+	&lt;span class="n"&gt;bool&lt;/span&gt; &lt;span class="n"&gt;isEqual&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;true&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+	&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;vector&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;lnums&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;util&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;l&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"."&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+	&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;vector&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;rnums&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;util&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;r&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"."&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+	&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;lnums&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;			
+		&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rnums&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+			&lt;span class="k"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;		
+		&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;ln&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;util&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;strtoi&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;UInt32&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;lnums&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]);&lt;/span&gt;
+		&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;rn&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;util&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;strtoi&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;UInt32&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rnums&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]);&lt;/span&gt;
+		&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ln&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;rn&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+			&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+		&lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ln&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;rn&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+			&lt;span class="n"&gt;isEqual&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+	&lt;span class="p"&gt;}&lt;/span&gt;
+	&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;isEqual&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;
+</content>
+  </entry>
   <entry>
     <title>Agile Peer Code Reviews with Codebrag</title>
     <link rel="alternate" href="http://sourcey.com/agile-peer-code-reviews-with-codebrag/"/>
@@ -456,7 +516,7 @@ if &lt;/span&gt;&lt;span class="nb"&gt;test&lt;/span&gt; &lt;span class="s2"&gt;
     <link rel="alternate" href="http://sourcey.com/html5-video-streaming-from-google-drive/"/>
     <id>http://sourcey.com/html5-video-streaming-from-google-drive/</id>
     <published>2014-05-04T00:00:00Z</published>
-    <updated>2014-05-05T16:57:20+10:00</updated>
+    <updated>2014-05-22T20:33:13+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -485,7 +545,7 @@ Please note that this page has received a lot of traffic, so if the video isn't 
 &lt;span class="nt"&gt;&amp;lt;/video&amp;gt;&lt;/span&gt;
 &lt;/pre&gt;
 
-&lt;p&gt;In order to be completely cross-browser then we can't forget about the geriatric fathers of the browser world which still claim a market share. &lt;!--; Internet Explorer. --&gt;&lt;/p&gt;
+&lt;p&gt;In order to be completely cross-browser we can't forget about the geriatric fathers of the browser world who still claim a market share, and require a Flash fallback. &lt;!--; Internet Explorer. --&gt;&lt;/p&gt;
 
 &lt;p&gt;As you may already know, Google automatically encodes uploaded videos into lower bitrate FLV files for playback using Flash via the Google Drive Viewer. This means the Google Flash player can be reused like so:&lt;/p&gt;
 
@@ -549,77 +609,6 @@ I'm a massive advocate for both Theora and WebM, mainly since I like to be able 
 At this stage though, these codec's "openness" may not be enough to shift the balance.&lt;/p&gt;
 
 &lt;p&gt;Drop a comment with your browser version and weather or not it works for you, or if have any other thoughts to add.&lt;/p&gt;
-</content>
-  </entry>
-  <entry>
-    <title>Password Free Signup and Authentication</title>
-    <link rel="alternate" href="http://sourcey.com/password-free-signup-and-authentication/"/>
-    <id>http://sourcey.com/password-free-signup-and-authentication/</id>
-    <published>2014-04-25T00:00:00Z</published>
-    <updated>2014-04-25T23:36:27+10:00</updated>
-    <author>
-      <name>Article Author</name>
-    </author>
-    <content type="html">&lt;h1 id="password-free-signup-and-authentication"&gt;Password Free Signup and Authentication&lt;/h1&gt;
-
-&lt;p&gt;Signup and authentication is a vital part of the user experience since it is probably the first interaction a customer has with your product or service. Let's face it, reentering your information each time you signup for a new service gets to be a real pain the the butt, so anything we can do to reduce the déjà vu is a good thing.&lt;/p&gt;
-
-&lt;p&gt;Anyone who is dabbled with web services will be familiar with the &lt;a href="http://tools.ietf.org/html/rfc6749"&gt;OAuth&lt;/a&gt; specification. OAuth enables your customers to signup and login to your service with their existing third-party accounts such as Google, Facebook, Twitter etc. &lt;/p&gt;
-
-&lt;p&gt;In fact, with a good OAuth implementation you can remove the need for passwords and even the entire signup process completely. The beauty here is that your customers don't have to remember any pesky passwords, and there's one less security concern for the developer.&lt;/p&gt;
-
-&lt;h2 id="choosing-an-oauth-provider"&gt;Choosing an OAuth Provider&lt;/h2&gt;
-
-&lt;p&gt;Choosing the right OAuth provider will come down to the nature of your product or service. Most big players in the industry provide OAuth APIs, so onless you are just looking for social login convenience, your decision will probably hinge on the other services offered by the provider.&lt;/p&gt;
-
-&lt;h3 id="facebook"&gt;Facebook&lt;/h3&gt;
-
-&lt;p&gt;The largest social network in the world is not surprisingly the &lt;a href="http://techcrunch.com/2013/04/08/report-46-of-social-login-users-still-choose-facebook-but-google-is-quickly-gaining-ground/"&gt;favourite OAuth provider&lt;/a&gt; for many users. Facebook has a very well rounded API and developer SDK. One of the more powerful features is the &lt;a href="https://developers.facebook.com/docs/reference/fql/"&gt;FQL&lt;/a&gt; language which enables you to query almost any social metadata on Facebook.&lt;/p&gt;
-
-&lt;p&gt;One gotcha to be aware of when using the JavaScript SDK is the "channelUrl" parameter. Without it set the SDK is &lt;strong&gt;ridiculously&lt;/strong&gt; slow, so be sure that it points to a valid file on your server.&lt;/p&gt;
-
-&lt;h3 id="google"&gt;Google&lt;/h3&gt;
-
-&lt;p&gt;Probably the best IMO, especially for professional services. Google is a close second behind Facebook with regards to user adoption, and is ever increasing in popularity. Every professional on the Internet has a Google account, and there's a good chance they already use GMail and other Google services regularly. &lt;/p&gt;
-
-&lt;p&gt;The real advantage of using Google however, is their &lt;a href="https://developers.google.com/products/"&gt;developer services&lt;/a&gt;. You can integrate your applications with Cloud Storage, Google Drive, YouTube, GMail and more, and it works seamlessly if your customers login with Google OAuth. &lt;/p&gt;
-
-&lt;h3 id="twitter"&gt;Twitter&lt;/h3&gt;
-
-&lt;p&gt;Twitter is good, but I would only recommend it when creating applications that integrate specifically with Twitter. The reason for this is that Twitter doesn't provide you with a valid user email address like the other providers do. As a developer this means implementing another step to get an email address from the user, which adds complexity and kind of defeats the purpose of using OAuth to begin with. &lt;/p&gt;
-
-&lt;h3 id="linkedin"&gt;LinkedIn&lt;/h3&gt;
-
-&lt;p&gt;The social network for professionals is good when building services for web professionals. LinkedIn traffic is considered to be higher quality and have &lt;a href="http://blog.hubspot.com/blog/tabid/6307/bid/30030/LinkedIn-277-More-Effective-for-Lead-Generation-Than-Facebook-Twitter-New-Data.aspx"&gt;higher conversions&lt;/a&gt; compared to other networks. Again it depends on your niche.&lt;/p&gt;
-
-&lt;p&gt;Personally, I'm not a great fan of LinkedIn. I find their pushy business model and dated interface detract from the experience and drive me to interact elsewhere.&lt;/p&gt;
-
-&lt;h2 id="going-all-the-way"&gt;Going All The Way&lt;/h2&gt;
-
-&lt;p&gt;It's often tempting for developers to get carried away and build the entire kitchen sink, and once you've finished theres always more to do.
-There is merit in &lt;a href="http://blog.codinghorror.com/how-to-be-lazy-dumb-and-successful/"&gt;keeping things simple&lt;/a&gt;, which is why I subscribe to the belief that the best kind of code is code that you don't write yourself.&lt;/p&gt;
-
-&lt;p&gt;If you have a niche product or service, you may consider restricting access to a single OAuth provider. While this method may ostracise certain customers, it will give you credibility and traction with the die-hards in your chosen network.&lt;/p&gt;
-
-&lt;p&gt;For example, we are using Google authentication exclusively for our cloud video surveillance service, &lt;a href="https://anionu.com"&gt;Anionu&lt;/a&gt;. This means no passwords, and greater security for users, and access to their Google Drive for storing videos in the cloud. As well as the convenience of using familiar technology, Googlers have 15GB of free storage in their Google Drive which is a pretty solid incentive to signup. Nice!&lt;/p&gt;
-
-&lt;h2 id="security-considerations"&gt;Security Considerations&lt;/h2&gt;
-
-&lt;p&gt;Make sure you educate yourself on OAuth best practices before getting started. For all intents and purposes, the OAuth tokens you store are just like passwords, so the same cautions should be observed. Some implementation points to consider are:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Using CSRF validation to verify OAuth callbacks. Most providers allow you to specify extra parameters with your initial OAuth request. This should contain a CSRF token, and be verified on response.&lt;/li&gt;
-  &lt;li&gt;Encrypt OAuth tokens in the database. You wouldn't store a clear text password now, would you?&lt;/li&gt;
-  &lt;li&gt;Social network SDKs are notoriously slow, especially when using a few of them! Don't forget to cache the remote .js files.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The obvious red flag for using OAuth is reliance on a third-party service, which we all want to keep to a minimum. The worst case scenario here is that the provider goes out of business; Google, not likely; Facebook, maybe given Zuckerberg's spending habits! As long as basic user information is retained locally there is no real risk to your business.&lt;/p&gt;
-
-&lt;h2 id="conclusion"&gt;Conclusion&lt;/h2&gt;
-
-&lt;p&gt;Users are becoming increasingly wary of who they share their information with, and with &lt;a href="http://gigaom.com/2013/12/31/snapchat-hacked-4-6-million-usernames-and-phone-numbers-lifted/"&gt;good reason&lt;/a&gt; too. This makes "password free signup" a great incentive to offer lazy and wary, security conscious, customers.&lt;/p&gt;
-
-&lt;p&gt;It's an exciting technological era we live in, and as the big players claim more of the market share it's becoming more necessary for new and smaller startups to effectively use and integrate with the more established players in order to gain traction and build a solid customer base.&lt;/p&gt;
 </content>
   </entry>
 </feed>
