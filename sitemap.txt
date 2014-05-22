@@ -11,7 +11,7 @@ http://sourcey.com/symple/
 http://sourcey.com/anionu-technical-challenges/
 http://sourcey.com/libsourcey-packetstream-api/
 http://sourcey.com/youtube-html5-embed-from-url-with-php/
-http://sourcey.com/libsourcey-using-libuv-networking-layer/
+http://sourcey.com/libsourcey-event-driven-networking-layer-using-libuv/
 http://sourcey.com/libuv-cpp-wrappers/
 http://sourcey.com/webrtc-port-forwarding-pseudo-turn-proxy/
 http://sourcey.com/automatic-escaping-of-html-tags-in-code-elements-for-wordpress/
