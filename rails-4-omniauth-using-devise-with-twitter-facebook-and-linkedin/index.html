@@ -59,7 +59,7 @@
 
         if @user.persisted?
           sign_in_and_redirect @user, event: :authentication
-          set_flash_message(:notice, :success, kind: </span><span class="si">#{</span><span class="n">provider</span><span class="si">}</span><span class="sx">.capitalize) if is_navigational_format?
+          set_flash_message(:notice, :success, kind: provider.capitalize) if is_navigational_format?
         else
           session["devise.</span><span class="si">#{</span><span class="n">provider</span><span class="si">}</span><span class="sx">_data"] = env["omniauth.auth"]
           redirect_to new_user_registration_url
@@ -95,12 +95,14 @@
     <span class="c1"># Create the user if needed</span>
     <span class="k">if</span> <span class="n">user</span><span class="p">.</span><span class="nf">nil?</span>
 
-      <span class="c1"># Get the existing user by email if the OAuth provider gives us a verified email</span>
-      <span class="c1"># If the email has not been verified yet we will force the user to validate it</span>
-      <span class="n">email</span> <span class="o">=</span> <span class="n">auth</span><span class="p">.</span><span class="nf">info</span><span class="p">.</span><span class="nf">email</span> <span class="k">if</span> <span class="n">auth</span><span class="p">.</span><span class="nf">info</span><span class="p">.</span><span class="nf">email</span> <span class="o">&amp;&amp;</span> <span class="n">auth</span><span class="p">.</span><span class="nf">info</span><span class="p">.</span><span class="nf">verified_email</span>
+      <span class="c1"># Get the existing user by email if the provider gives us a verified email</span>
+      <span class="c1"># If the email has not been verified by the provider we will assign the</span>
+      <span class="c1"># TEMP_EMAIL and get the user to verify it via UsersController.add_email</span>
+      <span class="n">email_is_verified</span> <span class="o">=</span> <span class="n">auth</span><span class="p">.</span><span class="nf">info</span><span class="p">.</span><span class="nf">email</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">auth</span><span class="p">.</span><span class="nf">info</span><span class="p">.</span><span class="nf">verified</span> <span class="o">||</span> <span class="n">auth</span><span class="p">.</span><span class="nf">info</span><span class="p">.</span><span class="nf">verified_email</span><span class="p">)</span>
+      <span class="n">email</span> <span class="o">=</span> <span class="n">auth</span><span class="p">.</span><span class="nf">info</span><span class="p">.</span><span class="nf">email</span> <span class="k">if</span> <span class="n">email_is_verified</span>
       <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">where</span><span class="p">(</span><span class="ss">:email</span> <span class="o">=&gt;</span> <span class="n">email</span><span class="p">).</span><span class="nf">first</span> <span class="k">if</span> <span class="n">email</span>
 
-      <span class="c1"># Create the user if it is a new registration</span>
+      <span class="c1"># Create the user if it's a new registration</span>
       <span class="k">if</span> <span class="n">user</span><span class="p">.</span><span class="nf">nil?</span>
         <span class="n">user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span>
           <span class="nb">name</span><span class="p">:</span> <span class="n">auth</span><span class="p">.</span><span class="nf">extra</span><span class="p">.</span><span class="nf">raw_info</span><span class="p">.</span><span class="nf">name</span><span class="p">,</span>
@@ -144,8 +146,8 @@
     <span class="k">if</span> <span class="n">params</span><span class="o">[</span><span class="ss">:user</span><span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="n">params</span><span class="o">[</span><span class="ss">:user</span><span class="o">][</span><span class="ss">:email</span><span class="o">]</span>
       <span class="n">current_user</span><span class="p">.</span><span class="nf">email</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:user</span><span class="o">][</span><span class="ss">:email</span><span class="o">]</span>
 
-      <span class="c1"># Note: When using the Devise confirmable module I choose to skip email validation</span>
-      <span class="c1"># here if the user has signed up with Twitter.</span>
+      <span class="c1"># When using the Devise confirmable module I choose to skip email confirmation here</span>
+      <span class="c1"># to avoid an unnecessary step since the user signed up with their Twitter account.</span>
       <span class="c1"># Just remove the following line if you want the user to confirm their email address. </span>
       <span class="n">current_user</span><span class="p">.</span><span class="nf">skip_reconfirmation!</span>
 
@@ -162,7 +164,7 @@
       <span class="vi">@user</span> <span class="o">=</span> <span class="no">User</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
     <span class="k">end</span>
 <span class="k">end</span>
-</pre> <h4 id=appviewsusersadduserhtmlrb>app/views/users/add_user.html.rb</h4> <p>Note that the following template uses Bootstrap markup.</p> <pre class="highlight html"><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"add-email"</span> <span class="na">class=</span><span class="s">"container"</span><span class="nt">&gt;</span>
+</pre> <h4 id=appviewsusersaddemailhtmlrb>app/views/users/add_email.html.rb</h4> <p>Note that the following template uses Bootstrap markup.</p> <pre class="highlight html"><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"add-email"</span> <span class="na">class=</span><span class="s">"container"</span><span class="nt">&gt;</span>
   <span class="err">&lt;</span>%= form_for(@user, :as =&gt; 'user', :url =&gt; add_user_email_path(@user), :html =&gt; { role: 'form'}) do |f| %&gt;
     <span class="err">&lt;</span>% if @show_errors <span class="err">&amp;&amp;</span> @user.errors.any? %&gt;
       <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"error_explanation"</span><span class="nt">&gt;</span>
