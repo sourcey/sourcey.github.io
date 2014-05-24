@@ -144,13 +144,13 @@ Enter &lt;a href="http://codebrag.com"&gt;Codebrag&lt;/a&gt;, the code review to
     <link rel="alternate" href="http://sourcey.com/precompiling-assets-for-large-rails-deployments-with-capistrano/"/>
     <id>http://sourcey.com/precompiling-assets-for-large-rails-deployments-with-capistrano/</id>
     <published>2014-05-20T00:00:00Z</published>
-    <updated>2014-05-24T19:56:56+10:00</updated>
+    <updated>2014-05-24T20:38:16+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
     <content type="html">&lt;h1 id="precompiling-assets-for-large-rails-deployments-with-capistrano"&gt;Precompiling Assets for Large Rails Deployments with Capistrano&lt;/h1&gt;
 
-&lt;p&gt;&lt;img alt="Capistrano" title="Capistrano" src="/precompiling-assets-for-large-rails-deployments-with-capistrano/capistrano.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Capistrano" title="Capistrano" src="/images/logos/capistrano-600x228.png" /&gt;&lt;/p&gt;
 
 &lt;p&gt;If you've ever had to deploy a large Rails site using Capistrano, 
 then you're probably aware of how time consuming it is to precompile the assets pipeline on the server-side.&lt;/p&gt;
@@ -539,13 +539,13 @@ if &lt;/span&gt;&lt;span class="nb"&gt;test&lt;/span&gt; &lt;span class="s2"&gt;
     <link rel="alternate" href="http://sourcey.com/html5-video-streaming-from-google-drive/"/>
     <id>http://sourcey.com/html5-video-streaming-from-google-drive/</id>
     <published>2014-05-04T00:00:00Z</published>
-    <updated>2014-05-24T19:04:20+10:00</updated>
+    <updated>2014-05-24T20:46:54+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
     <content type="html">&lt;h1 id="html5-video-streaming-from-google-drive"&gt;HTML5 Video Streaming from Google Drive&lt;/h1&gt;
 
-&lt;p&gt;&lt;img alt="Google Drive" title="Google Drive" src="/html5-video-streaming-from-google-drive/google-drive.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Google Drive" title="Google Drive" src="/images/logos/google-drive-704x344.png" /&gt;&lt;/p&gt;
 
 &lt;p&gt;If you made it here, then you're probably wondering weather or not Google Drive is a viable option for hosting streamable videos? Well, the answer is yes!&lt;/p&gt;
 
