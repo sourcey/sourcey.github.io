@@ -31,7 +31,7 @@ http://sourcey.com/the-art-of-the-internet/
 http://sourcey.com/symple-webrtc-video-chat-demo/
 http://sourcey.com/migrating-from-wordpress-to-middleman/
 http://sourcey.com/guest-posting-opportunities/
-http://sourcey.com/password-free-signup-and-authentication/
+http://sourcey.com/password-free-signup-and-authentication-with-oauth/
 http://sourcey.com/html5-video-is-finally-ready/
 http://sourcey.com/html5-video-streaming-from-google-drive/
 http://sourcey.com/darkly-pygments-css-theme/
