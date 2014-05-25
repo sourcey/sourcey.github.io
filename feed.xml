@@ -95,7 +95,7 @@
     <link rel="alternate" href="http://sourcey.com/agile-peer-code-reviews-with-codebrag/"/>
     <id>http://sourcey.com/agile-peer-code-reviews-with-codebrag/</id>
     <published>2014-05-21T00:00:00Z</published>
-    <updated>2014-05-21T11:54:49+10:00</updated>
+    <updated>2014-05-24T22:58:29+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -144,7 +144,7 @@ Enter &lt;a href="http://codebrag.com"&gt;Codebrag&lt;/a&gt;, the code review to
     <link rel="alternate" href="http://sourcey.com/precompiling-assets-for-large-rails-deployments-with-capistrano/"/>
     <id>http://sourcey.com/precompiling-assets-for-large-rails-deployments-with-capistrano/</id>
     <published>2014-05-20T00:00:00Z</published>
-    <updated>2014-05-24T20:38:16+10:00</updated>
+    <updated>2014-05-24T22:59:01+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -539,13 +539,13 @@ if &lt;/span&gt;&lt;span class="nb"&gt;test&lt;/span&gt; &lt;span class="s2"&gt;
     <link rel="alternate" href="http://sourcey.com/html5-video-streaming-from-google-drive/"/>
     <id>http://sourcey.com/html5-video-streaming-from-google-drive/</id>
     <published>2014-05-04T00:00:00Z</published>
-    <updated>2014-05-24T20:46:54+10:00</updated>
+    <updated>2014-05-24T22:57:04+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
-    <content type="html">&lt;h1 id="html5-video-streaming-from-google-drive"&gt;HTML5 Video Streaming from Google Drive&lt;/h1&gt;
+    <content type="html">&lt;p&gt;&lt;img alt="Google Drive" title="Google Drive" src="/images/logos/google-drive-704x344.png" /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt="Google Drive" title="Google Drive" src="/images/logos/google-drive-704x344.png" /&gt;&lt;/p&gt;
+&lt;h1 id="html5-video-streaming-from-google-drive"&gt;HTML5 Video Streaming from Google Drive&lt;/h1&gt;
 
 &lt;p&gt;If you made it here, then you're probably wondering weather or not Google Drive is a viable option for hosting streamable videos? Well, the answer is yes!&lt;/p&gt;
 
