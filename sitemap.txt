@@ -42,6 +42,7 @@ http://sourcey.com/archives/
 http://sourcey.com/CNAME
 http://sourcey.com/draft.txt
 http://sourcey.com/drafts/auto-updates-using-pacm-cpp-package-manager/
+http://sourcey.com/drafts/minimal-cross-platform-cpp-plugin-system/
 http://sourcey.com/favicon.ico
 http://sourcey.com/feed.xml
 http://sourcey.com/
