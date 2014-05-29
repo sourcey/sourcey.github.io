@@ -1,0 +1,290 @@
+<!doctype html> <html class=no-js lang=en> <head> <title>Sourcey</title> <meta charset=utf-8 /> <meta name=viewport content="width=device-width, initial-scale=1.0"/> <meta name=google-site-verification content=lC7-hHwqtiRqo7YTHc1fJ6t8ie-Hs7J4o5u3XRIF9Vw /> <link rel=alternate type="application/atom+xml" title="Atom Feed" href="/feed.xml"/> <link href="/stylesheets/app.css" media=screen rel=stylesheet /> <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-836728-7', 'sourcey.com');
+      ga('send', 'pageview');
+    </script> </head> <body class="page simple-cross-platform-cpp-plugin-system-with-plugu simple-cross-platform-cpp-plugin-system-with-plugu_index"> <nav class=top-bar data-topbar=""> <div id=social> <a href="https://plus.google.com/+SourceyDevel"><i class="fi-social-google-plus large"></i></a> <a href="https://facebook.com/sourceydevel"><i class="fi-social-facebook large"></i></a> <a href="https://twitter.com/sourceydevel"><i class="fi-social-twitter large"></i></a> <a href="https://github.com/sourcey"><i class="fi-social-github large"></i></a> </div> <ul class=title-area> <li class=name></li> <li class="toggle-topbar menu-icon"><a href="" class=left></a></li> </ul> <section class=top-bar-section style="left: 0%;"> <ul class=left> <li class="has-dropdown not-click"><a href="/">Menu</a> <ul class=dropdown><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li> <li><label>Wicked</label></li> <li class="has-dropdown not-click"><a href="/#projects">Projects</a> <ul class=dropdown><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li> <li><label>Projects</label></li> <li><a href="/libsourcey">LibSourcey</a></li> <li><a href="/anionu">Anionu</a></li> <li><a href="/symple">Symple</a></li> <li><a href="/mesh">Mesh</a></li> <li><a href="/pacm">Pacm</a></li> </ul> </li> <li class=divider></li> <li><a href="/#blog">Blog</a></li> <li><a href="/archives">Archives</a></li> <li><a href="/feed.xml">Feed</a></li> <li class=divider></li> <li><a href="mailto:hello@sourcey.com">Contact</a></li> </ul> </li> <li class=divider></li> </ul> </section></nav> <header id=header> <h1 id=logo> <a title=Sourcey rel=home href="//sourcey.com"><img height=150 width=150 title=Sourcey alt=Sourcey src="/images/logos/sourcey-250x250.png"/></a> </h1> </header> <div id=main role=main> <h1 id=simple-cross-platform-c-plugin-system-with-plugu>Simple Cross-platform C++ Plugin System with Plugu</h1> <p>When designing a plugin management system for C++ there are some important language nuances and gotchas to consider, such as binary compatibility, strict API versioning, and interprocess memory management. Sounds like fun right? Well, if you get it wrong then it sure as hell won't be, but if you get it right then it's really not so bad. We built Plugu as a simple and elegant solution to the issue, and we're sharing the code with you as open source. </p> <p>This article also talks about some key factors to consider when designing your own plugin API, and how we've addressed them in our own code.</p> <h2 id=abi-and-binary-compatibility>ABI and Binary Compatibility</h2> <p>The first issue to address is the <a href="//en.wikipedia.org/wiki/Application_binary_interface">ABI (binary compatibility)</a>. Unless you want a suicide inducing customer support nightmare on your hands, then stick to this one simple rule: only ever pass POD (plain old data) data types between process boundaries.</p> <p>This means no passing STL containers and other complex types between the application and plugins, and no throwing any standard exceptions either. "But this is C++!!", you cry in anguish, and unless you're rockin' a mullet with a stubbie cooler then who could blame you? In this case all we can do is bite our collective tongues and accept that that's the way it is. The reason is that the default standard libraries vary from compiler to compiler, and platform to platform, so if you really must use complex types then you will need to ensure that plugins are compiled on exactly the save version of exactly the same compiler using identical system libraries. In short, screw that!</p> <p>There are alternatives, such as embedding the standard libraries in your project using <a href="//www.stlport.org">STLport</a> or similar to ensure consistency between platforms, but why bother? It's overkill. The easiest alternative it just to pass a <code>void*</code> or a <code>char*</code> buffer and encode/decode it as required across the process boundary.</p> <p>The method we've been using recently is actually quite simple. Let's say that on the plugin side we have a single method which accepts arbitrary commands from the application. Commands are namespaced using a <a href="//en.wikipedia.org/wiki/Representational_state_transfer">REST</a> style interface like so <code>resource:action</code>, and the data buffer contains either a JSON encoded message which for representing and converting to an STL container such a <code>std::vector</code> or <code>std::map</code> to pass to the internal API, or it may just be a raw data buffer that can be used directly.</p> <p>Take the following code for example:</p> <pre class="highlight cpp"><span class="n">bool</span> <span class="nf">onCommand</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">node</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">data</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">size</span><span class="p">)</span>
+<span class="p">{</span>    
+    <span class="n">try</span> <span class="p">{</span>
+        <span class="c1">// Handle a JSON encoded options hash
+</span>        <span class="k">if</span> <span class="p">(</span><span class="n">strcmp</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s">"options:set"</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>   
+            <span class="n">json</span><span class="o">::</span><span class="n">Value</span> <span class="n">root</span><span class="p">;</span>
+            <span class="n">json</span><span class="o">::</span><span class="n">Reader</span> <span class="n">reader</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">reader</span><span class="p">.</span><span class="n">parse</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">root</span><span class="p">))</span>          
+                <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">"Invalid JSON format: "</span> <span class="o">+</span> <span class="n">reader</span><span class="p">.</span><span class="n">getFormatedErrorMessages</span><span class="p">());</span>
+                
+            <span class="c1">// Do something with JSON data here...
+</span>        <span class="p">}</span>
+
+        <span class="c1">// Handle raw file data
+</span>        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">strcmp</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s">"file:write"</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">path</span><span class="p">(</span><span class="s">"test.bin"</span><span class="p">);</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">ofstream</span> <span class="n">ofs</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">ios</span><span class="o">::</span><span class="n">out</span><span class="o">|</span><span class="n">std</span><span class="o">::</span><span class="n">ios</span><span class="o">::</span><span class="n">binary</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">ofs</span><span class="p">.</span><span class="n">is_open</span><span class="p">())</span>
+                <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">"Cannot write to output file: "</span> <span class="o">+</span> <span class="n">path</span><span class="p">);</span>
+            <span class="n">ofs</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">size</span><span class="p">);</span>
+            <span class="n">ofs</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="c1">// Handle unknown commands
+</span>        <span class="k">else</span> <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">"Unknown command"</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">catch</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">exception</span><span class="o">&amp;</span> <span class="n">exc</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Catch exceptions here and return false.
+</span>        <span class="c1">// You could set a lastError string here which is exposed to
+</span>        <span class="c1">// the application that returns the error message as a char*.
+</span>        <span class="c1">// See the full example for details.
+</span>        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">"Command error: "</span> <span class="o">&lt;&lt;</span> <span class="n">exc</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+</pre> <p>Using this method you're free to implement almost any kind of functionality without having to add new methods and break the API each time you roll out a new feature. Nice!</p> <h2 id=interprocess-memory-handling>Interprocess Memory Handling</h2> <p>One other simple rule that should be adhered to when building your plugin system is: any memory allocated by a process should be deallocated by the same process. Let's say the application asks the plugin to allocate and return a <code>char*</code> buffer, and then proceeds to delete the buffer when it's done with it. Honk! Big no no, you're asking for a crash.</p> <p>Two examples, this is bad:</p> <pre class="highlight cpp"><span class="n">bool</span> <span class="nf">askPluginForSomeSugar</span><span class="p">(</span><span class="n">Plugin</span><span class="o">*</span> <span class="n">plugin</span><span class="p">)</span>
+<span class="p">{</span>    
+    <span class="c1">// allocate buffer of some sort
+</span>    <span class="kt">char</span><span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="n">plugin</span><span class="o">-&gt;</span><span class="n">gimmeSomeSugarBaby</span><span class="p">();</span>
+
+    <span class="c1">// do something cool with data
+</span>
+    <span class="c1">// don't manage memory data allocated by the other process!
+</span>    <span class="k">delete</span><span class="p">[]</span> <span class="n">data</span><span class="p">;</span>
+<span class="p">}</span>
+</pre> <p>This is good:</p> <pre class="highlight cpp"><span class="n">bool</span> <span class="nf">askPluginForSomeSugar</span><span class="p">(</span><span class="n">Plugin</span><span class="o">*</span> <span class="n">plugin</span><span class="p">)</span>
+<span class="p">{</span>    
+    <span class="c1">// allocate buffer of some sort
+</span>    <span class="kt">char</span><span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="n">plugin</span><span class="o">-&gt;</span><span class="n">gimmeSomeSugarBaby</span><span class="p">();</span>
+
+    <span class="c1">// do something cool with data
+</span>
+    <span class="c1">// hand the pointer back to the plugin to be deallocated
+</span>    <span class="n">plugin</span><span class="o">-&gt;</span><span class="n">putSugarBackInTheBowl</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+<span class="p">}</span>
+</pre> <h2 id=plugin-system-api>Plugin System API</h2> <p>Lets take a look at the simple plugin system API used by Plugu. The API consists of a single header file that defines a set of macros which export a <code>PluginDetails</code> structure that exposes basic plugin information, a compile time API version, and a static function for instantiating plugins. By having an intermediary <code>PluginDetails</code> structure we can do some important runtime checks before safely instantiating the plugin.</p> <p>The API also forward declares a <code>IPlugin</code> virtual base class for plugins which must be defined in your own code, see <a href="#plugin-api">Plugin API</a>.</p> <pre class="highlight cpp"><span class="c1">//
+// LibSourcey
+// Copyright (C) 2005, Sourcey &lt;http://sourcey.com&gt;
+//
+// LibSourcey is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+//
+// LibSourcey is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see &lt;http://www.gnu.org/licenses/&gt;.
+//
+</span>
+<span class="cp">#ifndef SCY_Plugu_H
+#define SCY_Plugu_H
+</span>
+
+<span class="cp">#include "scy/base.h"
+</span>
+
+<span class="k">namespace</span> <span class="n">scy</span> <span class="p">{</span>
+<span class="k">namespace</span> <span class="n">plugu</span> <span class="p">{</span>
+
+
+<span class="c1">// Forward declare the plugin class which must be defined externally.
+</span><span class="k">class</span> <span class="nc">IPlugin</span><span class="p">;</span>
+
+<span class="c1">// Define the API version.
+// This value is incremented whenever there are ABI breaking changes.
+</span><span class="cp">#define SCY_PLUGIN_API_VERSION 1
+</span>    
+<span class="cp">#ifdef WIN32
+# define SCY_PLUGIN_EXPORT __declspec(dllexport)
+#else
+# define SCY_PLUGIN_EXPORT // empty
+#endif
+</span>
+<span class="c1">// Define a type for the static function pointer.
+</span><span class="n">SCY_EXTERN</span> <span class="k">typedef</span> <span class="n">IPlugin</span><span class="o">*</span> <span class="p">(</span><span class="o">*</span><span class="n">GetPluginFunc</span><span class="p">)();</span>
+
+<span class="c1">// Plugin details structure that's exposed to the application.
+</span><span class="k">struct</span> <span class="n">PluginDetails</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">apiVersion</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">fileName</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">className</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">pluginName</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">pluginVersion</span><span class="p">;</span>
+    <span class="n">GetPluginFunc</span> <span class="n">initializeFunc</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cp">#define SCY_STANDARD_PLUGIN_STUFF \
+    SCY_PLUGIN_API_VERSION,       \
+    __FILE__
+</span>
+<span class="cp">#define SCY_PLUGIN(classType, pluginName, pluginVersion)     \
+  extern "C" {                                               \
+      SCY_PLUGIN_EXPORT scy::plugu::IPlugin* getPlugin()     \
+      {                                                      \
+          static classType singleton;                        \
+          return &amp;singleton;                                 \
+      }                                                      \
+      SCY_PLUGIN_EXPORT scy::plugu::PluginDetails exports =  \
+      {                                                      \
+          SCY_STANDARD_PLUGIN_STUFF,                         \
+          #classType,                                        \
+          pluginName,                                        \
+          pluginVersion,                                     \
+          getPlugin,                                         \
+      };                                                     \
+  }
+</span>
+
+<span class="p">}</span> <span class="p">}</span> <span class="c1">// namespace scy::plugu
+</span>
+
+<span class="cp">#endif // SCY_Plugu_H
+</span></pre> <h2 id=plugin-api>Plugin API</h2> <p>The plugin API defines the virtual <code>IPlugin</code> class that's forward declared in the <a href="#plugin-system-api">Plugin System API</a> header. All virtual plugin methods and functionality are exposed by this class, which will be distributed to your clients and customers for extending and implementing their own plugins.</p> <p>Blow is a bare-bones example that only implements a single <code>onCommand</code> method:</p> <pre class="highlight cpp"><span class="c1">// testpluginapi.h
+</span>
+<span class="cp">#ifndef SCY_TestPluginAPI_H
+#define SCY_TestPluginAPI_H
+</span>
+
+<span class="cp">#include "scy/plugu/plugu.h"
+</span>
+
+<span class="k">namespace</span> <span class="n">scy</span> <span class="p">{</span>
+<span class="k">namespace</span> <span class="n">plugu</span> <span class="p">{</span>
+
+  
+<span class="k">class</span> <span class="nc">IPlugin</span>
+    <span class="c1">// Virtual plugin interface
+</span><span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">IPlugin</span><span class="p">()</span> <span class="p">{};</span>
+    <span class="k">virtual</span> <span class="o">~</span><span class="n">IPlugin</span><span class="p">()</span> <span class="p">{};</span>
+
+    <span class="k">virtual</span> <span class="n">bool</span> <span class="n">onCommand</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">node</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">data</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">size</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="c1">// Handles a command from the application.
+</span><span class="p">};</span>
+
+
+<span class="p">}</span> <span class="p">}</span> <span class="c1">// namespace scy::plugu
+</span>
+
+<span class="cp">#endif
+</span></pre> <h2 id=implementing-plugins>Implementing Plugins</h2> <p>Plugin implementations extend from the <a href="#plugin-api">Plugin API</a> to implement plugin functionality.</p> <pre class="highlight cpp"><span class="c1">// testplugin.h
+</span>
+<span class="cp">#ifndef SCY_TestPlugin_H
+#define SCY_TestPlugin_H
+</span>
+
+<span class="cp">#include "testpluginapi.h"
+</span>
+
+<span class="k">class</span> <span class="nc">TestPlugin</span><span class="o">:</span> <span class="k">public</span> <span class="n">scy</span><span class="o">::</span><span class="n">plugu</span><span class="o">::</span><span class="n">IPlugin</span> 
+    <span class="c1">// Test plugin implementation
+</span><span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">TestPlugin</span><span class="p">();</span>
+    <span class="k">virtual</span> <span class="o">~</span><span class="n">TestPlugin</span><span class="p">();</span>
+
+    <span class="k">virtual</span> <span class="n">bool</span> <span class="n">onCommand</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">node</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">data</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">size</span><span class="p">);</span>
+        <span class="c1">// Handles a command from the application.
+</span><span class="p">};</span>
+
+
+<span class="cp">#endif
+</span></pre> <pre class="highlight cpp"><span class="c1">// testplugin.cpp
+</span>
+<span class="cp">#include "testplugin.h"
+#include &lt;iostream&gt;
+</span>
+
+<span class="n">SCY_PLUGIN</span><span class="p">(</span><span class="n">TestPlugin</span><span class="p">,</span> <span class="s">"Test Plugin"</span><span class="p">,</span> <span class="s">"0.1.1"</span><span class="p">)</span>
+
+
+<span class="n">TestPlugin</span><span class="o">::</span><span class="n">TestPlugin</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"TestPlugin: Create"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="n">TestPlugin</span><span class="o">::~</span><span class="n">TestPlugin</span><span class="p">()</span> 
+<span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"TestPlugin: Destroy"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+  
+
+<span class="n">bool</span> <span class="n">TestPlugin</span><span class="o">::</span><span class="n">onCommand</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">node</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">data</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">size</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"TestPlugin: Command: "</span> <span class="o">&lt;&lt;</span> <span class="n">node</span> <span class="o">&lt;&lt;</span> <span class="s">": "</span> <span class="o">&lt;&lt;</span> <span class="n">data</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>  
+    <span class="c1">// Process commands as required
+</span>    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+</pre> <h2 id=instantiating-plugin>Instantiating Plugin</h2> <p>Instantiating plugins and calling plugin methods from the application side is easy using the LibSourcey <code>SharedLibrary</code> class.</p> <pre class="highlight cpp"><span class="cp">#include "scy/plugu/plugu.h"
+#include "scy/sharedlibrary.h"
+#include "testpluginapi.h"
+#include &lt;iostream&gt;
+#include &lt;assert.h&gt;
+</span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">scy</span><span class="p">;</span>
+
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> 
+<span class="p">{</span> 
+    <span class="c1">// Set the plugin shared library location
+</span>    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">path</span><span class="p">(</span><span class="n">SCY_INSTALL_PREFIX</span><span class="p">);</span>
+    <span class="n">path</span> <span class="o">+=</span> <span class="s">"/bin/testplugin/testplugin"</span><span class="p">;</span>
+<span class="cp">#if WIN32
+# ifdef _DEBUG
+</span>    <span class="n">path</span> <span class="o">+=</span> <span class="s">"d.dll"</span><span class="p">;</span>
+<span class="cp"># else
+</span>    <span class="n">path</span> <span class="o">+=</span> <span class="s">".dll"</span><span class="p">;</span>
+<span class="cp"># endif
+#else
+</span>    <span class="n">path</span> <span class="o">+=</span> <span class="s">".so"</span><span class="p">;</span>
+<span class="cp">#endif
+</span>    
+  <span class="n">try</span> <span class="p">{</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Loading: "</span> <span class="o">&lt;&lt;</span> <span class="n">path</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+      <span class="c1">// Load the shared library
+</span>      <span class="n">SharedLibrary</span> <span class="n">lib</span><span class="p">;</span>
+      <span class="n">lib</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
+      
+      <span class="c1">// Get plugin descriptor and exports
+</span>      <span class="n">plugu</span><span class="o">::</span><span class="n">PluginDetails</span><span class="o">*</span> <span class="n">info</span><span class="p">;</span>
+      <span class="n">lib</span><span class="p">.</span><span class="n">sym</span><span class="p">(</span><span class="s">"exports"</span><span class="p">,</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">**&gt;</span><span class="p">(</span><span class="o">&amp;</span><span class="n">info</span><span class="p">));</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Plugin Info: "</span> 
+          <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n\t</span><span class="s">API Version: "</span> <span class="o">&lt;&lt;</span> <span class="n">info</span><span class="o">-&gt;</span><span class="n">apiVersion</span> 
+          <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n\t</span><span class="s">File Name: "</span> <span class="o">&lt;&lt;</span> <span class="n">info</span><span class="o">-&gt;</span><span class="n">fileName</span> 
+          <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n\t</span><span class="s">Class Name: "</span> <span class="o">&lt;&lt;</span> <span class="n">info</span><span class="o">-&gt;</span><span class="n">className</span> 
+          <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n\t</span><span class="s">Plugin Name: "</span> <span class="o">&lt;&lt;</span> <span class="n">info</span><span class="o">-&gt;</span><span class="n">pluginName</span> 
+          <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n\t</span><span class="s">Plugin Version: "</span> <span class="o">&lt;&lt;</span> <span class="n">info</span><span class="o">-&gt;</span><span class="n">pluginVersion</span>
+          <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+      
+      <span class="c1">// API Version checking 
+</span>      <span class="k">if</span> <span class="p">(</span><span class="n">info</span><span class="o">-&gt;</span><span class="n">apiVersion</span> <span class="o">!=</span> <span class="n">SCY_PLUGIN_API_VERSION</span><span class="p">)</span>
+          <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span>
+              <span class="n">util</span><span class="o">::</span><span class="n">format</span><span class="p">(</span><span class="s">"Plugin ABI version mismatch. Expected %s, got %s."</span><span class="p">,</span> 
+                  <span class="n">SCY_PLUGIN_API_VERSION</span><span class="p">,</span> <span class="n">info</span><span class="o">-&gt;</span><span class="n">apiVersion</span><span class="p">));</span>
+      
+      <span class="c1">// Instantiate the plugin
+</span>      <span class="k">auto</span> <span class="n">plugin</span> <span class="o">=</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="n">plugu</span><span class="o">::</span><span class="n">IPlugin</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">info</span><span class="o">-&gt;</span><span class="n">initializeFunc</span><span class="p">());</span>
+    
+      <span class="c1">// Call plugin methods
+</span>      <span class="n">assert</span><span class="p">(</span><span class="n">plugin</span><span class="o">-&gt;</span><span class="n">onCommand</span><span class="p">(</span><span class="s">"some:command"</span><span class="p">,</span> <span class="s">"random:data"</span><span class="p">,</span> <span class="mi">11</span><span class="p">));</span>  
+
+      <span class="c1">// Close the plugin and free memory
+</span>      <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Closing"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+      <span class="n">lib</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+  <span class="p">}</span>
+  <span class="k">catch</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">exception</span><span class="o">&amp;</span> <span class="n">exc</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">"Error: "</span> <span class="o">&lt;&lt;</span> <span class="n">exc</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+      <span class="n">assert</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+  <span class="p">}</span>   
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre> <h2 id=installing-plugu>Installing Plugu</h2> <p>For a full working example just build <a href="https://sourcey.com/libsourcey">LibSourcey</a> with the <a href="https://github.com/plugu">Plugu</a> module enabled, or see the <a href="https://sourcey.com/plugu#installing">Plugu insallation guide</a> for more detailed instructions.</p> <p>And there you have it, a super simple C++ plugin system that you can use in your own projects. Enjoy!</p> </div> <footer id=footer> <p> As with all business minded artists, we have fought the inevitable battle of conformity vs expression, and have emerged victorious with sanity intact to plunder the digiverse in search of new and interesting challenges. For more information, or a quote, drop us an email and tell us what you're working on. </p> <p> &copy;2014 Sourcey <p> </footer> </body> </html> <script src="/javascripts/all.js"></script>
