@@ -39,7 +39,7 @@ http://sourcey.com/darkly-pygments-css-theme/
 http://sourcey.com/precompiling-assets-for-large-rails-deployments-with-capistrano/
 http://sourcey.com/agile-peer-code-reviews-with-codebrag/
 http://sourcey.com/comparing-version-strings-in-cpp/
-http://sourcey.com/building-a-simple-cross-platform-plugin-system-in-cpp/
+http://sourcey.com/building-a-cross-platform-plugin-system-in-cpp/
 http://sourcey.com/archives/
 http://sourcey.com/CNAME
 http://sourcey.com/favicon.ico

@@ -10,32 +10,41 @@
     <name>Blog Author</name>
   </author>
   <entry>
-    <title>Building a Simple Cross-platform Plugin System in C++</title>
-    <link rel="alternate" href="http://sourcey.com/building-a-simple-cross-platform-plugin-system-in-cpp/"/>
-    <id>http://sourcey.com/building-a-simple-cross-platform-plugin-system-in-cpp/</id>
+    <title>Building a Cross-platform Plugin System in C++</title>
+    <link rel="alternate" href="http://sourcey.com/building-a-cross-platform-plugin-system-in-cpp/"/>
+    <id>http://sourcey.com/building-a-cross-platform-plugin-system-in-cpp/</id>
     <published>2014-05-29T00:00:00Z</published>
-    <updated>2014-05-29T18:24:54+10:00</updated>
+    <updated>2014-05-30T00:45:45+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
-    <content type="html">&lt;h1 id="building-a-simple-cross-platform-plugin-system-in-c"&gt;Building a Simple Cross-platform Plugin System in C++&lt;/h1&gt;
+    <content type="html">&lt;h1 id="building-a-cross-platform-plugin-system-in-c"&gt;Building a Cross-platform Plugin System in C++&lt;/h1&gt;
 
-&lt;p&gt;When implementing a plugin management system in C++ there are some important language nuances and gotchas to consider, such as binary compatibility, strict API versioning, and interprocess memory management. Sounds like fun right? Well, if you get it wrong then it sure as hell won't be, but if you get it right then it's really not so bad. &lt;/p&gt;
+&lt;p&gt;This article talks about some key factors to consider when designing a plugin system in C++, such as binary compatibility, strict API versioning, interprocess memory management. Sounds like fun right? Well, if you get it wrong then it sure as hell won't be, sometime in the near future you'll most likely have a suicide inducing customer support nightmare on your hands, but if you get it right then it's really not so bad. Besides, keep reading and I'll give you some examples of how we've addressed these issues in our own code.&lt;/p&gt;
 
-&lt;p&gt;We built &lt;a href="http://sourcey.com/plugu"&gt;Plugu&lt;/a&gt; for this purpose, and also released it publicly on &lt;a href="https://github.com/sourcey/plugu"&gt;Github&lt;/a&gt; is as open source.&lt;/p&gt;
-
-&lt;p&gt;This article talks about some key factors to consider when designing a plugin system in C++, and also provides some examples as to how we've addressed these issues in our own code.&lt;/p&gt;
+&lt;p&gt;If you're looking for the code, we've released it as an open source &lt;a href="http://sourcey.com/LibSourcey"&gt;LibSourcey&lt;/a&gt; module called &lt;a href="http://sourcey.com/plugu"&gt;Plugu&lt;/a&gt; on &lt;a href="https://github.com/sourcey/plugu"&gt;Github&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h2 id="abi-and-binary-compatibility"&gt;ABI and Binary Compatibility&lt;/h2&gt;
 
-&lt;p&gt;The first issue to address is &lt;a href="http://en.wikipedia.org/wiki/Application_binary_interface"&gt;ABI&lt;/a&gt; compatibility. Unlike dynamically scripted languages, C++ demands that any shared libraries loaded by the runtime are binary compatible, otherwise all hell breaks loose. Essentially, this means that both the application and plugins must be compiled using the exactly the same development environment. Unless you want a suicide inducing customer support nightmare on your hands sometime in the near future, try and stick to this one simple rule: only pass POD (plain old data) data types across process boundaries.&lt;/p&gt;
+&lt;p&gt;The first issue to consider when designing your &lt;a href="#plugin-api"&gt;Plugin API&lt;/a&gt; is &lt;a href="http://en.wikipedia.org/wiki/Application_binary_interface"&gt;ABI&lt;/a&gt; compatibility. Unlike dynamically scripted languages, C++ demands that any shared libraries loaded by the runtime are binary compatible, otherwise all hell breaks loose. Essentially, this means that both the application and plugins must be compiled using the exactly the same development environment.&lt;/p&gt;
 
-&lt;p&gt;The standard libraries themselves are by no means binary compatible, and differ from compiler to compiler, platform to platform, even version to version, so unless you want to force clients to use exactly the same OS, compiler and third party dependencies as you to build plugins for your application, then stick to POD. By sticking to POD types you can avoid binary compatibility issues altogether, since the binaries will have no interdependent shared libraries. The tradeoff is you can't use any STL containers or other complex types in your &lt;a href="#plugin-api"&gt;Plugin API&lt;/a&gt;, and no throwing standard exceptions either.
-"But this is C++!!", you cry in anguish, and unless you're rockin' a mullet with a stubbie cooler then who could blame you? In this case all we can do is bite our collective tongues, accept that that's the way it is, and move on. &lt;/p&gt;
+&lt;p&gt;If you can, try and stick to this one simple rule: only pass POD (plain old data) data types across process boundaries. By sticking to POD types the binaries will have no interdependent shared libraries, and you can avoid binary compatibility issues altogether. &lt;/p&gt;
 
-&lt;p&gt;There are alternatives, such as embedding the standard libraries in your project using &lt;a href="http://www.stlport.org"&gt;STLport&lt;/a&gt; or similar to ensure consistency between platforms, but why bother? It's overkill. The easiest alternative it just to pass a &lt;code&gt;void*&lt;/code&gt; or a &lt;code&gt;char*&lt;/code&gt; buffer and encode/decode it as required across the process boundary.&lt;/p&gt;
+&lt;p&gt;The tradeoff is that standard libraries differ from compiler to compiler, platform to platform, even version to version, so they should always be deemed to be binary incompatible. This means that unless you want to force clients to use exactly the same OS, compiler and third party dependencies as you when buildng plugins for your application, then you'll need to avoid using STL containers or other complex types in your &lt;a href="#plugin-api"&gt;Plugin API&lt;/a&gt;.
+"But this is C++!?", you cry in anguish, and unless you're rockin' a mullet with a stubbie cooler then who could blame you? Unfortunately that's just the way it is, so in this case all we can do is bite our collective upper lip and move on. &lt;/p&gt;
 
-&lt;p&gt;The method we've been using recently is actually quite simple. Let's say that on the plugin side we have a single method which accepts arbitrary commands from the application. Commands are namespaced using a &lt;a href="http://en.wikipedia.org/wiki/Representational_state_transfer"&gt;REST&lt;/a&gt; style interface like so &lt;code&gt;resource:action&lt;/code&gt;, and the data buffer contains either a JSON encoded message which for representing and converting to an STL container such a &lt;code&gt;std::vector&lt;/code&gt; or &lt;code&gt;std::map&lt;/code&gt; to pass to the internal API, or it may just be a raw data buffer that can be used directly.&lt;/p&gt;
+&lt;!--
+Even the standard libraries themselves are not binary compatible, 
+    they
+, then stick to POD
+, and no throwing standard exceptions either.
+--&gt;
+
+&lt;p&gt;There are alternatives, such as embedding the standard libraries in your project using &lt;a href="http://www.stlport.org"&gt;STLport&lt;/a&gt; or similar to ensure consistency between platforms, but why bother? It seems like overkill, wouldn't it be easier to just to pass a &lt;code&gt;void*&lt;/code&gt; or a &lt;code&gt;char*&lt;/code&gt; buffer and encode/decode it as required across the process boundary?&lt;/p&gt;
+
+&lt;p&gt;The method we've been using recently is actually quite simple. The plugin implements a single &lt;code&gt;onCommand&lt;/code&gt; method which accepts arbitrary commands from the application. The advantage of using this type of interface is that you're able to implement almost any kind of functionality without having to add new methods and break the API each time you roll out a new feature. Obviously it doesn't have it be this simple, but you get the idea!&lt;/p&gt;
+
+&lt;p&gt;Command nodes (see code below) are namespaced using a &lt;a href="http://en.wikipedia.org/wiki/Representational_state_transfer"&gt;REST&lt;/a&gt; style interface like so &lt;code&gt;resource:action&lt;/code&gt;, and the data buffer contains either a JSON encoded message which for representing and converting to an STL container such a &lt;code&gt;std::vector&lt;/code&gt; or &lt;code&gt;std::map&lt;/code&gt; to pass to the internal API, or it may just be a raw data buffer that can be used directly.&lt;/p&gt;
 
 &lt;p&gt;Take, for example, the following code:&lt;/p&gt;
 
@@ -76,8 +85,6 @@
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;true&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/pre&gt;
-
-&lt;p&gt;Using this type of interface, you're free to implement almost any kind of functionality without having to add new methods and break the API each time you roll out a new feature. Nice!&lt;/p&gt;
 
 &lt;!-- TODO: Helper methods that convert to data structures and throw exceptions --&gt;
 
@@ -318,7 +325,7 @@ All virtual plugin methods and functionality are exposed by ,
 
 &lt;h2 id="instantiating-plugin"&gt;Instantiating Plugin&lt;/h2&gt;
 
-&lt;p&gt;The following is a totally minimal example application that shows how to load the plugin shared library, instantiate the &lt;code&gt;IPlugin&lt;/code&gt;, call it's methods, and destroy it. For this functionality we use the LibSourcey &lt;code&gt;SharedLibrary&lt;/code&gt; class.&lt;/p&gt;
+&lt;p&gt;The following is a totally minimal example application that shows how to use the LibSourcey &lt;code&gt;SharedLibrary&lt;/code&gt; class to load the plugin shared library, instantiate the &lt;code&gt;IPlugin&lt;/code&gt;, call it's methods, and destroy it.&lt;/p&gt;
 
 &lt;pre class="highlight cpp"&gt;&lt;span class="cp"&gt;#include "scy/plugu/plugu.h"
 #include "scy/sharedlibrary.h"
