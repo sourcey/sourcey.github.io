@@ -41,8 +41,6 @@ http://sourcey.com/comparing-version-strings-in-cpp/
 http://sourcey.com/simple-cross-platform-cpp-plugin-system-with-plugu/
 http://sourcey.com/archives/
 http://sourcey.com/CNAME
-http://sourcey.com/draft.txt
-http://sourcey.com/drafts/auto-updates-using-pacm-cpp-package-manager/
 http://sourcey.com/favicon.ico
 http://sourcey.com/feed.xml
 http://sourcey.com/
