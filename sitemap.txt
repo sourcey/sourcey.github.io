@@ -7,6 +7,7 @@ http://sourcey.com/libsourcey/
 http://sourcey.com/licence/
 http://sourcey.com/mesh/
 http://sourcey.com/pacm/
+http://sourcey.com/plugu/
 http://sourcey.com/symple/
 http://sourcey.com/anionu-technical-challenges/
 http://sourcey.com/libsourcey-packetstream-api/
@@ -19,7 +20,7 @@ http://sourcey.com/generating-website-thumbnails-in-rails-4-using-dragonfly-and-
 http://sourcey.com/dynamically-rendering-ajax-pinterest-buttons/
 http://sourcey.com/pinterest-api-pinit-button-callback-tracking/
 http://sourcey.com/5-tips-to-optimise-for-seo-2-0-in-2014/
-http://sourcey.com/add-grunt-to-your-javascript-projects/
+http://sourcey.com/add-grunt-to-your-projects/
 http://sourcey.com/combining-multiple-rss-feeds/
 http://sourcey.com/installing-trac-with-monit-on-centos/
 http://sourcey.com/rails-4-omniauth-using-devise-with-twitter-facebook-and-linkedin/
@@ -38,7 +39,7 @@ http://sourcey.com/darkly-pygments-css-theme/
 http://sourcey.com/precompiling-assets-for-large-rails-deployments-with-capistrano/
 http://sourcey.com/agile-peer-code-reviews-with-codebrag/
 http://sourcey.com/comparing-version-strings-in-cpp/
-http://sourcey.com/simple-cross-platform-cpp-plugin-system-with-plugu/
+http://sourcey.com/building-a-simple-cross-platform-plugin-system-in-cpp/
 http://sourcey.com/archives/
 http://sourcey.com/CNAME
 http://sourcey.com/favicon.ico

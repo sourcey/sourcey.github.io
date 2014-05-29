@@ -37,6 +37,10 @@
     <lastmod>2014-05-29T00:00:00+10:00</lastmod>
   </url>
   <url>
+    <loc>http://sourcey.com/plugu/</loc>
+    <lastmod>2014-05-29T00:00:00+10:00</lastmod>
+  </url>
+  <url>
     <loc>http://sourcey.com/symple/</loc>
     <lastmod>2014-05-29T00:00:00+10:00</lastmod>
   </url>
@@ -85,7 +89,7 @@
     <lastmod>2014-05-29T00:00:00+10:00</lastmod>
   </url>
   <url>
-    <loc>http://sourcey.com/add-grunt-to-your-javascript-projects/</loc>
+    <loc>http://sourcey.com/add-grunt-to-your-projects/</loc>
     <lastmod>2014-05-29T00:00:00+10:00</lastmod>
   </url>
   <url>
@@ -161,7 +165,7 @@
     <lastmod>2014-05-29T00:00:00+10:00</lastmod>
   </url>
   <url>
-    <loc>http://sourcey.com/simple-cross-platform-cpp-plugin-system-with-plugu/</loc>
+    <loc>http://sourcey.com/building-a-simple-cross-platform-plugin-system-in-cpp/</loc>
     <lastmod>2014-05-29T00:00:00+10:00</lastmod>
   </url>
   <url>
