@@ -10,11 +10,11 @@
     <name>Blog Author</name>
   </author>
   <entry>
-    <title/>
+    <title>Simple Cross-platform C++ Plugin System with Plugu</title>
     <link rel="alternate" href="http://sourcey.com/simple-cross-platform-cpp-plugin-system-with-plugu/"/>
     <id>http://sourcey.com/simple-cross-platform-cpp-plugin-system-with-plugu/</id>
     <published>2014-05-29T00:00:00Z</published>
-    <updated>2014-05-29T13:24:05+10:00</updated>
+    <updated>2014-05-29T13:33:05+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
