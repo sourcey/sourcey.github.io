@@ -14,7 +14,7 @@
     <link rel="alternate" href="http://sourcey.com/building-a-simple-cpp-cross-platform-plugin-system/"/>
     <id>http://sourcey.com/building-a-simple-cpp-cross-platform-plugin-system/</id>
     <published>2014-05-29T00:00:00Z</published>
-    <updated>2014-05-30T10:08:13+10:00</updated>
+    <updated>2014-05-30T15:13:12+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
@@ -22,7 +22,7 @@
 
 &lt;p&gt;This article talks about some key factors to consider when designing a plugin system in C++, and also provides some practical examples of how we've addressed these issues in our own code. There's a lot to cover here, such as binary compatibility, strict API versioning, and interprocess memory management. Sounds like fun right? Well, if you get it wrong then it sure as hell won't be, sometime in the near future you'll most likely have a suicide inducing customer support nightmare on your hands, but if you get it right then it's really not so bad.&lt;/p&gt;
 
-&lt;p&gt;If you're looking for the code, we've released it as an open source &lt;a href="http://sourcey.com/LibSourcey"&gt;LibSourcey&lt;/a&gt; module called &lt;a href="http://sourcey.com/plugu"&gt;Plugu&lt;/a&gt; on &lt;a href="https://github.com/sourcey/plugu"&gt;Github&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If you're looking for the code, we've released it as an open source &lt;a href="http://sourcey.com/LibSourcey"&gt;LibSourcey&lt;/a&gt; module called &lt;a href="http://sourcey.com/pluga"&gt;Pluga&lt;/a&gt; on &lt;a href="https://github.com/sourcey/pluga"&gt;Github&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h2 id="abi-and-binary-compatibility"&gt;ABI and Binary Compatibility&lt;/h2&gt;
 
@@ -124,7 +124,7 @@ Even the standard libraries themselves are not binary compatible,
 
 &lt;h2 id="plugin-system-api"&gt;Plugin System API&lt;/h2&gt;
 
-&lt;p&gt;The Plugu plugin system API consists of a single header file that defines a set of macros which export a &lt;code&gt;PluginDetails&lt;/code&gt; structure. The &lt;code&gt;PluginDetails&lt;/code&gt; structure exposes basic plugin information, a compile time API version, and a static initialiser function to the main application on runtime. By having an intermediary &lt;code&gt;PluginDetails&lt;/code&gt; structure that's loaded on runtime before the plugin is instantiated, we can do things like sanity check the API version, and print information about the plugin.&lt;/p&gt;
+&lt;p&gt;The Pluga plugin system API consists of a single header file that defines a set of macros which export a &lt;code&gt;PluginDetails&lt;/code&gt; structure. The &lt;code&gt;PluginDetails&lt;/code&gt; structure exposes basic plugin information, a compile time API version, and a static initialiser function to the main application on runtime. By having an intermediary &lt;code&gt;PluginDetails&lt;/code&gt; structure that's loaded on runtime before the plugin is instantiated, we can do things like sanity check the API version, and print information about the plugin.&lt;/p&gt;
 
 &lt;p&gt;Note that the system API also forward declares the &lt;code&gt;IPlugin&lt;/code&gt; type, which must be defined externally in your own code. See the &lt;a href="#plugin-api"&gt;Plugin API&lt;/a&gt; for more information about that.&lt;/p&gt;
 
@@ -146,15 +146,15 @@ Even the standard libraries themselves are not binary compatible,
 // along with this program. If not, see &amp;lt;http://www.gnu.org/licenses/&amp;gt;.
 //
 &lt;/span&gt;
-&lt;span class="cp"&gt;#ifndef SCY_Plugu_H
-#define SCY_Plugu_H
+&lt;span class="cp"&gt;#ifndef SCY_Pluga_H
+#define SCY_Pluga_H
 &lt;/span&gt;
 
 &lt;span class="cp"&gt;#include "scy/base.h"
 &lt;/span&gt;
 
 &lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;scy&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;plugu&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;pluga&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
 
 
 &lt;span class="c1"&gt;// Forward declare the plugin class which must be defined externally.
@@ -189,12 +189,12 @@ Even the standard libraries themselves are not binary compatible,
 &lt;/span&gt;
 &lt;span class="cp"&gt;#define SCY_PLUGIN(classType, pluginName, pluginVersion)     \
   extern "C" {                                               \
-      SCY_PLUGIN_EXPORT scy::plugu::IPlugin* getPlugin()     \
+      SCY_PLUGIN_EXPORT scy::pluga::IPlugin* getPlugin()     \
       {                                                      \
           static classType singleton;                        \
           return &amp;amp;singleton;                                 \
       }                                                      \
-      SCY_PLUGIN_EXPORT scy::plugu::PluginDetails exports =  \
+      SCY_PLUGIN_EXPORT scy::pluga::PluginDetails exports =  \
       {                                                      \
           SCY_STANDARD_PLUGIN_STUFF,                         \
           #classType,                                        \
@@ -205,10 +205,10 @@ Even the standard libraries themselves are not binary compatible,
   }
 &lt;/span&gt;
 
-&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="c1"&gt;// namespace scy::plugu
+&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="c1"&gt;// namespace scy::pluga
 &lt;/span&gt;
 
-&lt;span class="cp"&gt;#endif // SCY_Plugu_H
+&lt;span class="cp"&gt;#endif // SCY_Pluga_H
 &lt;/span&gt;&lt;/pre&gt;
 
 &lt;h2 id="plugin-api"&gt;Plugin API&lt;/h2&gt;
@@ -241,11 +241,11 @@ All virtual plugin methods and functionality are exposed by ,
 #define SCY_TestPluginAPI_H
 &lt;/span&gt;
 
-&lt;span class="cp"&gt;#include "scy/plugu/plugu.h"
+&lt;span class="cp"&gt;#include "scy/pluga/pluga.h"
 &lt;/span&gt;
 
 &lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;scy&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;plugu&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;pluga&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
 
   
 &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;IPlugin&lt;/span&gt;
@@ -260,7 +260,7 @@ All virtual plugin methods and functionality are exposed by ,
 &lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
 
 
-&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="c1"&gt;// namespace scy::plugu
+&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="c1"&gt;// namespace scy::pluga
 &lt;/span&gt;
 
 &lt;span class="cp"&gt;#endif
@@ -279,7 +279,7 @@ All virtual plugin methods and functionality are exposed by ,
 &lt;span class="cp"&gt;#include "testpluginapi.h"
 &lt;/span&gt;
 
-&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;TestPlugin&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="n"&gt;scy&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;plugu&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;IPlugin&lt;/span&gt; 
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;TestPlugin&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="n"&gt;scy&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;pluga&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;IPlugin&lt;/span&gt; 
     &lt;span class="c1"&gt;// Test plugin implementation.
 &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
 &lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
@@ -327,7 +327,7 @@ All virtual plugin methods and functionality are exposed by ,
 
 &lt;p&gt;The following is a totally minimal example application that shows how to use the LibSourcey &lt;code&gt;SharedLibrary&lt;/code&gt; class to load the plugin shared library, instantiate the &lt;code&gt;IPlugin&lt;/code&gt;, call it's methods, and destroy it.&lt;/p&gt;
 
-&lt;pre class="highlight cpp"&gt;&lt;span class="cp"&gt;#include "scy/plugu/plugu.h"
+&lt;pre class="highlight cpp"&gt;&lt;span class="cp"&gt;#include "scy/pluga/pluga.h"
 #include "scy/sharedlibrary.h"
 #include "testpluginapi.h"
 #include &amp;lt;iostream&amp;gt;
@@ -359,7 +359,7 @@ All virtual plugin methods and functionality are exposed by ,
         &lt;span class="n"&gt;lib&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
         
         &lt;span class="c1"&gt;// Get plugin descriptor and exports
-&lt;/span&gt;        &lt;span class="n"&gt;plugu&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;PluginDetails&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;        &lt;span class="n"&gt;pluga&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;PluginDetails&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
         &lt;span class="n"&gt;lib&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sym&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"exports"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;reinterpret_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;void&lt;/span&gt;&lt;span class="o"&gt;**&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
         &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;"Plugin Info: "&lt;/span&gt; 
             &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;"&lt;/span&gt;&lt;span class="se"&gt;\n\t&lt;/span&gt;&lt;span class="s"&gt;API Version: "&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;apiVersion&lt;/span&gt; 
@@ -376,7 +376,7 @@ All virtual plugin methods and functionality are exposed by ,
                     &lt;span class="n"&gt;SCY_PLUGIN_API_VERSION&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;apiVersion&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
         
         &lt;span class="c1"&gt;// Instantiate the plugin
-&lt;/span&gt;        &lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;plugin&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;reinterpret_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;plugu&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;IPlugin&lt;/span&gt;&lt;span class="o"&gt;*&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;initializeFunc&lt;/span&gt;&lt;span class="p"&gt;());&lt;/span&gt;
+&lt;/span&gt;        &lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;plugin&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;reinterpret_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;pluga&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;IPlugin&lt;/span&gt;&lt;span class="o"&gt;*&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;initializeFunc&lt;/span&gt;&lt;span class="p"&gt;());&lt;/span&gt;
       
         &lt;span class="c1"&gt;// Call plugin methods
 &lt;/span&gt;        &lt;span class="n"&gt;assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;plugin&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;onCommand&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"some:command"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"random:data"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;11&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;  
@@ -394,9 +394,9 @@ All virtual plugin methods and functionality are exposed by ,
 &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/pre&gt;
 
-&lt;h2 id="installing-plugu"&gt;Installing Plugu&lt;/h2&gt;
+&lt;h2 id="installing-pluga"&gt;Installing Pluga&lt;/h2&gt;
 
-&lt;p&gt;For more detailed instructions and full working example see the &lt;a href="https://sourcey.com/plugu#installing"&gt;Plugu insallation guide&lt;/a&gt;. All that's requires is to build build &lt;a href="https://sourcey.com/libsourcey"&gt;LibSourcey&lt;/a&gt; with the &lt;a href="https://github.com/plugu"&gt;Plugu&lt;/a&gt; module enabled.&lt;/p&gt;
+&lt;p&gt;For more detailed instructions and full working example see the &lt;a href="https://sourcey.com/pluga#installing"&gt;Pluga insallation guide&lt;/a&gt;. All that's requires is to build build &lt;a href="https://sourcey.com/libsourcey"&gt;LibSourcey&lt;/a&gt; with the &lt;a href="https://github.com/pluga"&gt;Pluga&lt;/a&gt; module enabled.&lt;/p&gt;
 
 &lt;p&gt;And there you have it, a super simple C++ plugin system that you can use in your own projects. Enjoy!&lt;/p&gt;
 </content>

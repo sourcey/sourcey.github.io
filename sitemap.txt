@@ -7,7 +7,7 @@ http://sourcey.com/libsourcey/
 http://sourcey.com/licence/
 http://sourcey.com/mesh/
 http://sourcey.com/pacm/
-http://sourcey.com/plugu/
+http://sourcey.com/pluga/
 http://sourcey.com/symple/
 http://sourcey.com/anionu-technical-challenges/
 http://sourcey.com/libsourcey-packetstream-api/
