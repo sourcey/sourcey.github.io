@@ -10,23 +10,23 @@
     <name>Blog Author</name>
   </author>
   <entry>
-    <title>Building a Cross-platform Plugin System in C++</title>
-    <link rel="alternate" href="http://sourcey.com/building-a-cross-platform-plugin-system-in-cpp/"/>
-    <id>http://sourcey.com/building-a-cross-platform-plugin-system-in-cpp/</id>
+    <title>Building a Simple C++ Cross-platform Plugin System</title>
+    <link rel="alternate" href="http://sourcey.com/building-a-simple-cpp-cross-platform-plugin-system/"/>
+    <id>http://sourcey.com/building-a-simple-cpp-cross-platform-plugin-system/</id>
     <published>2014-05-29T00:00:00Z</published>
-    <updated>2014-05-30T00:45:45+10:00</updated>
+    <updated>2014-05-30T10:08:13+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
-    <content type="html">&lt;h1 id="building-a-cross-platform-plugin-system-in-c"&gt;Building a Cross-platform Plugin System in C++&lt;/h1&gt;
+    <content type="html">&lt;h1 id="building-a-simple-c-cross-platform-plugin-system"&gt;Building a Simple C++ Cross-platform Plugin System&lt;/h1&gt;
 
-&lt;p&gt;This article talks about some key factors to consider when designing a plugin system in C++, such as binary compatibility, strict API versioning, interprocess memory management. Sounds like fun right? Well, if you get it wrong then it sure as hell won't be, sometime in the near future you'll most likely have a suicide inducing customer support nightmare on your hands, but if you get it right then it's really not so bad. Besides, keep reading and I'll give you some examples of how we've addressed these issues in our own code.&lt;/p&gt;
+&lt;p&gt;This article talks about some key factors to consider when designing a plugin system in C++, and also provides some practical examples of how we've addressed these issues in our own code. There's a lot to cover here, such as binary compatibility, strict API versioning, and interprocess memory management. Sounds like fun right? Well, if you get it wrong then it sure as hell won't be, sometime in the near future you'll most likely have a suicide inducing customer support nightmare on your hands, but if you get it right then it's really not so bad.&lt;/p&gt;
 
 &lt;p&gt;If you're looking for the code, we've released it as an open source &lt;a href="http://sourcey.com/LibSourcey"&gt;LibSourcey&lt;/a&gt; module called &lt;a href="http://sourcey.com/plugu"&gt;Plugu&lt;/a&gt; on &lt;a href="https://github.com/sourcey/plugu"&gt;Github&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h2 id="abi-and-binary-compatibility"&gt;ABI and Binary Compatibility&lt;/h2&gt;
 
-&lt;p&gt;The first issue to consider when designing your &lt;a href="#plugin-api"&gt;Plugin API&lt;/a&gt; is &lt;a href="http://en.wikipedia.org/wiki/Application_binary_interface"&gt;ABI&lt;/a&gt; compatibility. Unlike dynamically scripted languages, C++ demands that any shared libraries loaded by the runtime are binary compatible, otherwise all hell breaks loose. Essentially, this means that both the application and plugins must be compiled using the exactly the same development environment.&lt;/p&gt;
+&lt;p&gt;The first thing to consider when designing your &lt;a href="#plugin-api"&gt;Plugin API&lt;/a&gt; is &lt;a href="http://en.wikipedia.org/wiki/Application_binary_interface"&gt;ABI&lt;/a&gt; compatibility. Unlike dynamically scripted languages, C++ demands that any shared libraries loaded by the runtime are binary compatible, otherwise all hell breaks loose. Essentially, this means that both the application and plugins must be compiled using the exactly the same development environment.&lt;/p&gt;
 
 &lt;p&gt;If you can, try and stick to this one simple rule: only pass POD (plain old data) data types across process boundaries. By sticking to POD types the binaries will have no interdependent shared libraries, and you can avoid binary compatibility issues altogether. &lt;/p&gt;
 
@@ -94,20 +94,6 @@ Even the standard libraries themselves are not binary compatible,
 
 &lt;p&gt;Let's say the application asks the plugin to allocate and return a &lt;code&gt;char*&lt;/code&gt; buffer, and then proceeds to delete the buffer when it's done with it. Honk! Big no no, you're just asking for a crash.&lt;/p&gt;
 
-&lt;p&gt;This is bad:&lt;/p&gt;
-
-&lt;pre class="highlight cpp"&gt;&lt;span class="n"&gt;bool&lt;/span&gt; &lt;span class="nf"&gt;askPluginForSomeSugar&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Plugin&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;plugin&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="p"&gt;{&lt;/span&gt;    
-    &lt;span class="c1"&gt;// allocate buffer of some sort
-&lt;/span&gt;    &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;plugin&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;gimmeSomeSugarBaby&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
-
-    &lt;span class="c1"&gt;// do something cool with data
-&lt;/span&gt;
-    &lt;span class="c1"&gt;// don't manage memory data allocated by the other process!
-&lt;/span&gt;    &lt;span class="k"&gt;delete&lt;/span&gt;&lt;span class="p"&gt;[]&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/pre&gt;
-
 &lt;p&gt;This is good:&lt;/p&gt;
 
 &lt;pre class="highlight cpp"&gt;&lt;span class="n"&gt;bool&lt;/span&gt; &lt;span class="nf"&gt;askPluginForSomeSugar&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Plugin&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;plugin&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -119,6 +105,20 @@ Even the standard libraries themselves are not binary compatible,
 &lt;/span&gt;
     &lt;span class="c1"&gt;// hand the pointer back to the plugin to be deallocated
 &lt;/span&gt;    &lt;span class="n"&gt;plugin&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;putSugarBackInTheBowl&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;
+
+&lt;p&gt;This is bad:&lt;/p&gt;
+
+&lt;pre class="highlight cpp"&gt;&lt;span class="n"&gt;bool&lt;/span&gt; &lt;span class="nf"&gt;askPluginForSomeSugar&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Plugin&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;plugin&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;    
+    &lt;span class="c1"&gt;// allocate buffer of some sort
+&lt;/span&gt;    &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;plugin&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;gimmeSomeSugarBaby&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+
+    &lt;span class="c1"&gt;// do something cool with data
+&lt;/span&gt;
+    &lt;span class="c1"&gt;// don't manage memory data allocated by the other process!
+&lt;/span&gt;    &lt;span class="k"&gt;delete&lt;/span&gt;&lt;span class="p"&gt;[]&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/pre&gt;
 
