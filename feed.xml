@@ -14,24 +14,37 @@
     <link rel="alternate" href="http://sourcey.com/building-a-simple-cpp-cross-platform-plugin-system/"/>
     <id>http://sourcey.com/building-a-simple-cpp-cross-platform-plugin-system/</id>
     <published>2014-05-29T00:00:00Z</published>
-    <updated>2014-05-30T15:13:12+10:00</updated>
+    <updated>2014-06-02T00:12:34+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
-    <content type="html">&lt;h1 id="building-a-simple-c-cross-platform-plugin-system"&gt;Building a Simple C++ Cross-platform Plugin System&lt;/h1&gt;
+    <content type="html">&lt;div class="sidebar-section toc"&gt;
+  &lt;h4 class="no_toc" id="/contents"&gt;Contents&lt;/h4&gt;
 
-&lt;p&gt;This article talks about some key factors to consider when designing a plugin system in C++, and also provides some practical examples of how we've addressed these issues in our own code. There's a lot to cover here, such as binary compatibility, strict API versioning, and interprocess memory management. Sounds like fun right? Well, if you get it wrong then it sure as hell won't be, sometime in the near future you'll most likely have a suicide inducing customer support nightmare on your hands, but if you get it right then it's really not so bad.&lt;/p&gt;
+&lt;ul id="markdown-toc"&gt;
+  &lt;li&gt;&lt;a href="#/abi-and-binary-compatibility"&gt;ABI and Binary Compatibility&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#/interprocess-memory-handling"&gt;Interprocess Memory Handling&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#/plugin-system-api"&gt;Plugin System API&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#/plugin-api"&gt;Plugin API&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#/implementing-plugins"&gt;Implementing Plugins&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#/instantiating-plugin"&gt;Instantiating Plugin&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#/installing-pluga"&gt;Installing Pluga&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;p&gt;If you're looking for the code, we've released it as an open source &lt;a href="http://sourcey.com/LibSourcey"&gt;LibSourcey&lt;/a&gt; module called &lt;a href="http://sourcey.com/pluga"&gt;Pluga&lt;/a&gt; on &lt;a href="https://github.com/sourcey/pluga"&gt;Github&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
 
-&lt;h2 id="abi-and-binary-compatibility"&gt;ABI and Binary Compatibility&lt;/h2&gt;
+&lt;p&gt;This article talks about some key factors to consider when designing a plugin system in C++, and also provides some practical examples of how we’ve addressed these issues in our own code. There’s a lot to cover here, such as binary compatibility, strict API versioning, and interprocess memory management. Sounds like fun right? Well, if you get it wrong then it sure as hell won’t be, sometime in the near future you’ll most likely have a suicide inducing customer support nightmare on your hands, but if you get it right then it’s really not so bad.&lt;/p&gt;
+
+&lt;p&gt;If you’re looking for the code, we’ve released it as an open source &lt;a href="http://sourcey.com/LibSourcey"&gt;LibSourcey&lt;/a&gt; module called &lt;a href="http://sourcey.com/pluga"&gt;Pluga&lt;/a&gt; on &lt;a href="https://github.com/sourcey/pluga"&gt;Github&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id="/abi-and-binary-compatibility"&gt;ABI and Binary Compatibility&lt;/h2&gt;
 
 &lt;p&gt;The first thing to consider when designing your &lt;a href="#plugin-api"&gt;Plugin API&lt;/a&gt; is &lt;a href="http://en.wikipedia.org/wiki/Application_binary_interface"&gt;ABI&lt;/a&gt; compatibility. Unlike dynamically scripted languages, C++ demands that any shared libraries loaded by the runtime are binary compatible, otherwise all hell breaks loose. Essentially, this means that both the application and plugins must be compiled using the exactly the same development environment.&lt;/p&gt;
 
 &lt;p&gt;If you can, try and stick to this one simple rule: only pass POD (plain old data) data types across process boundaries. By sticking to POD types the binaries will have no interdependent shared libraries, and you can avoid binary compatibility issues altogether. &lt;/p&gt;
 
-&lt;p&gt;The tradeoff is that standard libraries differ from compiler to compiler, platform to platform, even version to version, so they should always be deemed to be binary incompatible. This means that unless you want to force clients to use exactly the same OS, compiler and third party dependencies as you when buildng plugins for your application, then you'll need to avoid using STL containers or other complex types in your &lt;a href="#plugin-api"&gt;Plugin API&lt;/a&gt;.
-"But this is C++!?", you cry in anguish, and unless you're rockin' a mullet with a stubbie cooler then who could blame you? Unfortunately that's just the way it is, so in this case all we can do is bite our collective upper lip and move on. &lt;/p&gt;
+&lt;p&gt;The tradeoff is that standard libraries differ from compiler to compiler, platform to platform, even version to version, so they should always be deemed to be binary incompatible. This means that unless you want to force clients to use exactly the same OS, compiler and third party dependencies as you when buildng plugins for your application, then you’ll need to avoid using STL containers or other complex types in your &lt;a href="#plugin-api"&gt;Plugin API&lt;/a&gt;.
+“But this is C++!?”, you cry in anguish, and unless you’re rockin’ a mullet with a stubbie cooler then who could blame you? Unfortunately that’s just the way it is, so in this case all we can do is bite our collective upper lip and move on. &lt;/p&gt;
 
 &lt;!--
 Even the standard libraries themselves are not binary compatible, 
@@ -40,15 +53,15 @@ Even the standard libraries themselves are not binary compatible,
 , and no throwing standard exceptions either.
 --&gt;
 
-&lt;p&gt;There are alternatives, such as embedding the standard libraries in your project using &lt;a href="http://www.stlport.org"&gt;STLport&lt;/a&gt; or similar to ensure consistency between platforms, but why bother? It seems like overkill, wouldn't it be easier to just to pass a &lt;code&gt;void*&lt;/code&gt; or a &lt;code&gt;char*&lt;/code&gt; buffer and encode/decode it as required across the process boundary?&lt;/p&gt;
+&lt;p&gt;There are alternatives, such as embedding the standard libraries in your project using &lt;a href="http://www.stlport.org"&gt;STLport&lt;/a&gt; or similar to ensure consistency between platforms, but why bother? It seems like overkill, wouldn’t it be easier to just to pass a &lt;code&gt;void*&lt;/code&gt; or a &lt;code&gt;char*&lt;/code&gt; buffer and encode/decode it as required across the process boundary?&lt;/p&gt;
 
-&lt;p&gt;The method we've been using recently is actually quite simple. The plugin implements a single &lt;code&gt;onCommand&lt;/code&gt; method which accepts arbitrary commands from the application. The advantage of using this type of interface is that you're able to implement almost any kind of functionality without having to add new methods and break the API each time you roll out a new feature. Obviously it doesn't have it be this simple, but you get the idea!&lt;/p&gt;
+&lt;p&gt;The method we’ve been using recently is actually quite simple. The plugin implements a &lt;code&gt;onCommand&lt;/code&gt; method which accepts arbitrary commands from the application. The advantage of using this type of interface is that you’re able to implement almost any kind of functionality without having to add new methods and break the API each time you roll out a new feature. Obviously it doesn’t have it be this simple, but you get the idea!&lt;/p&gt;
 
 &lt;p&gt;Command nodes (see code below) are namespaced using a &lt;a href="http://en.wikipedia.org/wiki/Representational_state_transfer"&gt;REST&lt;/a&gt; style interface like so &lt;code&gt;resource:action&lt;/code&gt;, and the data buffer contains either a JSON encoded message which for representing and converting to an STL container such a &lt;code&gt;std::vector&lt;/code&gt; or &lt;code&gt;std::map&lt;/code&gt; to pass to the internal API, or it may just be a raw data buffer that can be used directly.&lt;/p&gt;
 
 &lt;p&gt;Take, for example, the following code:&lt;/p&gt;
 
-&lt;pre class="highlight cpp"&gt;&lt;span class="n"&gt;bool&lt;/span&gt; &lt;span class="nf"&gt;onCommand&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;node&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;pre&gt;&lt;code class="highlight cpp"&gt;&lt;span class="n"&gt;bool&lt;/span&gt; &lt;span class="nf"&gt;onCommand&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;node&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="p"&gt;{&lt;/span&gt;    
     &lt;span class="n"&gt;try&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
         &lt;span class="c1"&gt;// Handle a JSON encoded options hash
@@ -84,19 +97,19 @@ Even the standard libraries themselves are not binary compatible,
     &lt;span class="p"&gt;}&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;true&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;!-- TODO: Helper methods that convert to data structures and throw exceptions --&gt;
 
-&lt;h2 id="interprocess-memory-handling"&gt;Interprocess Memory Handling&lt;/h2&gt;
+&lt;h2 id="/interprocess-memory-handling"&gt;Interprocess Memory Handling&lt;/h2&gt;
 
 &lt;p&gt;One other simple rule that will save you no small amount of frustration later on down the track is: any memory allocated by a process should be deallocated by the same process. &lt;/p&gt;
 
-&lt;p&gt;Let's say the application asks the plugin to allocate and return a &lt;code&gt;char*&lt;/code&gt; buffer, and then proceeds to delete the buffer when it's done with it. Honk! Big no no, you're just asking for a crash.&lt;/p&gt;
+&lt;p&gt;Let’s say the application asks the plugin to allocate and return a &lt;code&gt;char*&lt;/code&gt; buffer, and then proceeds to delete the buffer when it’s done with it. Honk! Big no no, you’re just asking for a crash.&lt;/p&gt;
 
 &lt;p&gt;This is good:&lt;/p&gt;
 
-&lt;pre class="highlight cpp"&gt;&lt;span class="n"&gt;bool&lt;/span&gt; &lt;span class="nf"&gt;askPluginForSomeSugar&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Plugin&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;plugin&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;pre&gt;&lt;code class="highlight cpp"&gt;&lt;span class="n"&gt;bool&lt;/span&gt; &lt;span class="nf"&gt;askPluginForSomeSugar&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Plugin&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;plugin&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="p"&gt;{&lt;/span&gt;    
     &lt;span class="c1"&gt;// allocate buffer of some sort
 &lt;/span&gt;    &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;plugin&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;gimmeSomeSugarBaby&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
@@ -106,11 +119,11 @@ Even the standard libraries themselves are not binary compatible,
     &lt;span class="c1"&gt;// hand the pointer back to the plugin to be deallocated
 &lt;/span&gt;    &lt;span class="n"&gt;plugin&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;putSugarBackInTheBowl&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;This is bad:&lt;/p&gt;
 
-&lt;pre class="highlight cpp"&gt;&lt;span class="n"&gt;bool&lt;/span&gt; &lt;span class="nf"&gt;askPluginForSomeSugar&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Plugin&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;plugin&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;pre&gt;&lt;code class="highlight cpp"&gt;&lt;span class="n"&gt;bool&lt;/span&gt; &lt;span class="nf"&gt;askPluginForSomeSugar&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Plugin&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;plugin&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="p"&gt;{&lt;/span&gt;    
     &lt;span class="c1"&gt;// allocate buffer of some sort
 &lt;/span&gt;    &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;plugin&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;gimmeSomeSugarBaby&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
@@ -120,15 +133,15 @@ Even the standard libraries themselves are not binary compatible,
     &lt;span class="c1"&gt;// don't manage memory data allocated by the other process!
 &lt;/span&gt;    &lt;span class="k"&gt;delete&lt;/span&gt;&lt;span class="p"&gt;[]&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id="plugin-system-api"&gt;Plugin System API&lt;/h2&gt;
+&lt;h2 id="/plugin-system-api"&gt;Plugin System API&lt;/h2&gt;
 
-&lt;p&gt;The Pluga plugin system API consists of a single header file that defines a set of macros which export a &lt;code&gt;PluginDetails&lt;/code&gt; structure. The &lt;code&gt;PluginDetails&lt;/code&gt; structure exposes basic plugin information, a compile time API version, and a static initialiser function to the main application on runtime. By having an intermediary &lt;code&gt;PluginDetails&lt;/code&gt; structure that's loaded on runtime before the plugin is instantiated, we can do things like sanity check the API version, and print information about the plugin.&lt;/p&gt;
+&lt;p&gt;The Pluga plugin system API consists of a single header file that defines a set of macros which export a &lt;code&gt;PluginDetails&lt;/code&gt; structure. The &lt;code&gt;PluginDetails&lt;/code&gt; structure exposes basic plugin information, a compile time API version, and a static initialiser function to the main application on runtime. By having an intermediary &lt;code&gt;PluginDetails&lt;/code&gt; structure that’s loaded on runtime before the plugin is instantiated, we can do things like sanity check the API version, and print information about the plugin.&lt;/p&gt;
 
 &lt;p&gt;Note that the system API also forward declares the &lt;code&gt;IPlugin&lt;/code&gt; type, which must be defined externally in your own code. See the &lt;a href="#plugin-api"&gt;Plugin API&lt;/a&gt; for more information about that.&lt;/p&gt;
 
-&lt;pre class="highlight cpp"&gt;&lt;span class="c1"&gt;//
+&lt;pre&gt;&lt;code class="highlight cpp"&gt;&lt;span class="c1"&gt;//
 // LibSourcey
 // Copyright (C) 2005, Sourcey &amp;lt;http://sourcey.com&amp;gt;
 //
@@ -209,11 +222,11 @@ Even the standard libraries themselves are not binary compatible,
 &lt;/span&gt;
 
 &lt;span class="cp"&gt;#endif // SCY_Pluga_H
-&lt;/span&gt;&lt;/pre&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id="plugin-api"&gt;Plugin API&lt;/h2&gt;
+&lt;h2 id="/plugin-api"&gt;Plugin API&lt;/h2&gt;
 
-&lt;p&gt;The plugin API defines the &lt;code&gt;IPlugin&lt;/code&gt; class that's forward declared in the &lt;a href="#plugin-system-api"&gt;Plugin System API&lt;/a&gt; header. The &lt;code&gt;IPlugin&lt;/code&gt; class is the interface that the application uses to interact with the plugin, and as such it's also the virtual base class that's extended from when &lt;a href="#implementing-plugins"&gt;implementing plugins&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The plugin API defines the &lt;code&gt;IPlugin&lt;/code&gt; class that’s forward declared in the &lt;a href="#plugin-system-api"&gt;Plugin System API&lt;/a&gt; header. The &lt;code&gt;IPlugin&lt;/code&gt; class is the interface that the application uses to interact with the plugin, and as such it’s also the virtual base class that’s extended from when &lt;a href="#implementing-plugins"&gt;implementing plugins&lt;/a&gt;.&lt;/p&gt;
 
 &lt;!--
 which exposes all the methods 
@@ -235,7 +248,7 @@ All virtual plugin methods and functionality are exposed by ,
 
 &lt;p&gt;Below is a bare-bones example that only implements a single &lt;code&gt;onCommand&lt;/code&gt; method:&lt;/p&gt;
 
-&lt;pre class="highlight cpp"&gt;&lt;span class="c1"&gt;// testpluginapi.h
+&lt;pre&gt;&lt;code class="highlight cpp"&gt;&lt;span class="c1"&gt;// testpluginapi.h
 &lt;/span&gt;
 &lt;span class="cp"&gt;#ifndef SCY_TestPluginAPI_H
 #define SCY_TestPluginAPI_H
@@ -264,13 +277,13 @@ All virtual plugin methods and functionality are exposed by ,
 &lt;/span&gt;
 
 &lt;span class="cp"&gt;#endif
-&lt;/span&gt;&lt;/pre&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id="implementing-plugins"&gt;Implementing Plugins&lt;/h2&gt;
+&lt;h2 id="/implementing-plugins"&gt;Implementing Plugins&lt;/h2&gt;
 
 &lt;p&gt;Plugin implementations extend from the &lt;a href="#plugin-api"&gt;Plugin API&lt;/a&gt; interface to implement plugin functionality.&lt;/p&gt;
 
-&lt;pre class="highlight cpp"&gt;&lt;span class="c1"&gt;// testplugin.h
+&lt;pre&gt;&lt;code class="highlight cpp"&gt;&lt;span class="c1"&gt;// testplugin.h
 &lt;/span&gt;
 &lt;span class="cp"&gt;#ifndef SCY_TestPlugin_H
 #define SCY_TestPlugin_H
@@ -292,9 +305,9 @@ All virtual plugin methods and functionality are exposed by ,
 
 
 &lt;span class="cp"&gt;#endif
-&lt;/span&gt;&lt;/pre&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
 
-&lt;pre class="highlight cpp"&gt;&lt;span class="c1"&gt;// testplugin.cpp
+&lt;pre&gt;&lt;code class="highlight cpp"&gt;&lt;span class="c1"&gt;// testplugin.cpp
 &lt;/span&gt;
 &lt;span class="cp"&gt;#include "testplugin.h"
 #include &amp;lt;iostream&amp;gt;
@@ -321,13 +334,13 @@ All virtual plugin methods and functionality are exposed by ,
     &lt;span class="c1"&gt;// Process commands as required
 &lt;/span&gt;    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;true&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id="instantiating-plugin"&gt;Instantiating Plugin&lt;/h2&gt;
+&lt;h2 id="/instantiating-plugin"&gt;Instantiating Plugin&lt;/h2&gt;
 
-&lt;p&gt;The following is a totally minimal example application that shows how to use the LibSourcey &lt;code&gt;SharedLibrary&lt;/code&gt; class to load the plugin shared library, instantiate the &lt;code&gt;IPlugin&lt;/code&gt;, call it's methods, and destroy it.&lt;/p&gt;
+&lt;p&gt;The following is a totally minimal example application that shows how to use the LibSourcey &lt;code&gt;SharedLibrary&lt;/code&gt; class to load the plugin shared library, instantiate the &lt;code&gt;IPlugin&lt;/code&gt;, call it’s methods, and destroy it.&lt;/p&gt;
 
-&lt;pre class="highlight cpp"&gt;&lt;span class="cp"&gt;#include "scy/pluga/pluga.h"
+&lt;pre&gt;&lt;code class="highlight cpp"&gt;&lt;span class="cp"&gt;#include "scy/pluga/pluga.h"
 #include "scy/sharedlibrary.h"
 #include "testpluginapi.h"
 #include &amp;lt;iostream&amp;gt;
@@ -392,11 +405,11 @@ All virtual plugin methods and functionality are exposed by ,
 
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id="installing-pluga"&gt;Installing Pluga&lt;/h2&gt;
+&lt;h2 id="/installing-pluga"&gt;Installing Pluga&lt;/h2&gt;
 
-&lt;p&gt;For more detailed instructions and full working example see the &lt;a href="https://sourcey.com/pluga#installing"&gt;Pluga insallation guide&lt;/a&gt;. All that's requires is to build build &lt;a href="https://sourcey.com/libsourcey"&gt;LibSourcey&lt;/a&gt; with the &lt;a href="https://github.com/pluga"&gt;Pluga&lt;/a&gt; module enabled.&lt;/p&gt;
+&lt;p&gt;For more detailed instructions and full working example see the &lt;a href="http://sourcey.com/pluga#installing"&gt;Pluga insallation guide&lt;/a&gt;. All that’s requires is to build build &lt;a href="http://sourcey.com/libsourcey"&gt;LibSourcey&lt;/a&gt; with the &lt;a href="https://github.com/pluga"&gt;Pluga&lt;/a&gt; module enabled.&lt;/p&gt;
 
 &lt;p&gt;And there you have it, a super simple C++ plugin system that you can use in your own projects. Enjoy!&lt;/p&gt;
 </content>
@@ -406,15 +419,13 @@ All virtual plugin methods and functionality are exposed by ,
     <link rel="alternate" href="http://sourcey.com/comparing-version-strings-in-cpp/"/>
     <id>http://sourcey.com/comparing-version-strings-in-cpp/</id>
     <published>2014-05-22T00:00:00Z</published>
-    <updated>2014-05-23T17:34:18+10:00</updated>
+    <updated>2014-06-01T15:35:35+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
-    <content type="html">&lt;h1 id="comparing-version-strings-in-c"&gt;Comparing Version Strings in C++&lt;/h1&gt;
+    <content type="html">&lt;p&gt;If you’re building any kind of version management system in C++, such as a package manager or plugin system, then you’ll need to be able to maniulate, compare and print version strings. The &lt;code&gt;Version&lt;/code&gt; structure below is extracted from &lt;a href="/pacm"&gt;pacm&lt;/a&gt;, and does exactly that:&lt;/p&gt;
 
-&lt;p&gt;If you're building any kind of version management system in C++, such as a package manager or plugin system, then you'll need to be able to maniulate, compare and print version strings. The &lt;code&gt;Version&lt;/code&gt; structure below is extracted from &lt;a href="/pacm"&gt;pacm&lt;/a&gt;, and does exactly that:&lt;/p&gt;
-
-&lt;pre class="highlight cpp"&gt;&lt;span class="cp"&gt;#include &amp;lt;cstdio&amp;gt;
+&lt;pre&gt;&lt;code class="highlight cpp"&gt;&lt;span class="cp"&gt;#include &amp;lt;cstdio&amp;gt;
 #include &amp;lt;string&amp;gt;
 #include &amp;lt;iostream&amp;gt;
 &lt;/span&gt;
@@ -464,11 +475,11 @@ All virtual plugin methods and functionality are exposed by ,
 		&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;stream&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 	&lt;span class="p"&gt;}&lt;/span&gt;
 &lt;span class="p"&gt;};&lt;/span&gt;
-&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Example usage:&lt;/p&gt;
 
-&lt;pre class="highlight cpp"&gt;&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;testVersionStringComparison&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; 
+&lt;pre&gt;&lt;code class="highlight cpp"&gt;&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;testVersionStringComparison&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; 
 &lt;span class="p"&gt;{&lt;/span&gt;
 	&lt;span class="n"&gt;assert&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;Version&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"3.7.8.0"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;Version&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"3.7.8.0"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="nb"&gt;true&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 	&lt;span class="n"&gt;assert&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;Version&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"3.7.8.0"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;Version&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"3.7.8"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="nb"&gt;true&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
@@ -479,7 +490,7 @@ All virtual plugin methods and functionality are exposed by ,
 	
 	&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;"Printing version (3.7.8.0): "&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;Version&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"3.7.8.0"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;
 </content>
   </entry>
   <entry>
@@ -487,46 +498,55 @@ All virtual plugin methods and functionality are exposed by ,
     <link rel="alternate" href="http://sourcey.com/agile-peer-code-reviews-with-codebrag/"/>
     <id>http://sourcey.com/agile-peer-code-reviews-with-codebrag/</id>
     <published>2014-05-21T00:00:00Z</published>
-    <updated>2014-05-24T22:58:29+10:00</updated>
+    <updated>2014-06-01T15:35:57+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
-    <content type="html">&lt;h1 id="agile-peer-code-reviews-with-codebrag"&gt;Agile Peer Code Reviews with Codebrag&lt;/h1&gt;
-&lt;!-- No More Late Friday Fixes - Agile Peer Code Reviews with Codebrag --&gt;
+    <content type="html">&lt;div class="sidebar-section toc"&gt;
+  &lt;h4 class="no_toc" id="/contents"&gt;Contents&lt;/h4&gt;
+
+&lt;ul id="markdown-toc"&gt;
+  &lt;li&gt;&lt;a href="#/fun--different"&gt;Fun = Different?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#/less-loss"&gt;Less Loss&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#/lightweight-and-secure"&gt;Lightweight and Secure&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#/status--plans"&gt;Status &amp;amp; Plans&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/div&gt;
+
+&lt;p&gt;It’s Friday afternoon and you’re sitting in the office, extinguishing the fire on the production server.
+You promise yourself that it won’t happen again, not after tonight. But it happened in the past. And might happen in the future. &lt;/p&gt;
+
+&lt;p&gt;Well, we’ve been there. Experienced the frustration and tiredness of staying late and fixing bugs. That’s why we’ve decided to do something about it.
+Enter &lt;a href="http://codebrag.com"&gt;Codebrag&lt;/a&gt;, the code review tool your team will actually use.&lt;/p&gt;
 
 &lt;p&gt;&lt;img alt="Codebrag" title="Codebrag" src="/agile-peer-code-reviews-with-codebrag/cbr-landing-snippet.png" /&gt;&lt;/p&gt;
 
-&lt;p&gt;It's Friday afternoon and you're sitting in the office, extinguishing the fire on the production server.
-You promise yourself that it won't happen again, not after tonight. But it happened in the past. And might happen in the future. &lt;/p&gt;
+&lt;h2 id="/fun--different"&gt;Fun = Different?&lt;/h2&gt;
 
-&lt;p&gt;Well, we've been there. Experienced the frustration and tiredness of staying late and fixing bugs. That's why we've decided to do something about it.
-Enter &lt;a href="http://codebrag.com"&gt;Codebrag&lt;/a&gt;, the code review tool your team will actually use.&lt;/p&gt;
-
-&lt;h2 id="fun--different"&gt;Fun = Different?&lt;/h2&gt;
-
-&lt;p&gt;Why you don't like code reviews? &lt;/p&gt;
+&lt;p&gt;Why you don’t like code reviews? &lt;/p&gt;
 
 &lt;p&gt;You get criticised. Your carefully crafted code gets smashed to bits and analysed like an insect under a microscope. You &lt;em&gt;have&lt;/em&gt; to do code reviews, not necessarily &lt;em&gt;want&lt;/em&gt; to do them. You get stressed and the code quality gets hurt as well.&lt;/p&gt;
 
 &lt;p&gt;What if code reviews could be… fun? &lt;/p&gt;
 
-&lt;p&gt;We've built Codebrag to make you enjoy code reviews. Starting from a game-like, friendly interface to adding "Likes" to blocks of code, Codebrag is built around the idea of a positive atmosphere of software craftsmanship.&lt;/p&gt;
+&lt;p&gt;We’ve built Codebrag to make you enjoy code reviews. Starting from a game-like, friendly interface to adding “Likes” to blocks of code, Codebrag is built around the idea of a positive atmosphere of software craftsmanship.&lt;/p&gt;
 
 &lt;p&gt;&lt;img alt="Codebrag App Overview" title="Codebrag App Overview" src="/agile-peer-code-reviews-with-codebrag/cbr-app-overview.png" /&gt;&lt;/p&gt;
 
-&lt;h2 id="less-loss"&gt;Less Loss&lt;/h2&gt;
+&lt;h2 id="/less-loss"&gt;Less Loss&lt;/h2&gt;
 
-&lt;p&gt;And it isn't just for fun. You can't really estimate the cost of an emotionally-wrecked developer. &lt;/p&gt;
+&lt;p&gt;And it isn’t just for fun. You can’t really estimate the cost of an emotionally-wrecked developer. &lt;/p&gt;
 
-&lt;p&gt;Imagine that Amazon's down for a minute. The loss toll would be &lt;em&gt;quite&lt;/em&gt; high. Or the recent Heartbleed security loophole - isn't this all about people not getting enough support, proper feedback and rest? Once again, Codebrag addresses those issues by allowing you to introduce flexible code reviews methods, eliminating the possibility of bugs being overlooked.&lt;/p&gt;
+&lt;p&gt;Imagine that Amazon’s down for a minute. The loss toll would be &lt;em&gt;quite&lt;/em&gt; high. Or the recent Heartbleed security loophole - isn’t this all about people not getting enough support, proper feedback and rest? Once again, Codebrag addresses those issues by allowing you to introduce flexible code reviews methods, eliminating the possibility of bugs being overlooked.&lt;/p&gt;
 
-&lt;h2 id="lightweight-and-secure"&gt;Lightweight and Secure&lt;/h2&gt;
+&lt;h2 id="/lightweight-and-secure"&gt;Lightweight and Secure&lt;/h2&gt;
 
-&lt;p&gt;You set up Codebrag on your own terms, using your servers. Just &lt;a href="http://codebrag.com#get-codebrag"&gt;download the package&lt;/a&gt;, do a quick config, clone your repository start reviewing your friends' code. Codebrag is simple with the workflow focused on finding and eradicating problems as well as mutual learning and team support. &lt;/p&gt;
+&lt;p&gt;You set up Codebrag on your own terms, using your servers. Just &lt;a href="http://codebrag.com#get-codebrag"&gt;download the package&lt;/a&gt;, do a quick config, clone your repository start reviewing your friends’ code. Codebrag is simple with the workflow focused on finding and eradicating problems as well as mutual learning and team support. &lt;/p&gt;
 
-&lt;h2 id="status--plans"&gt;Status &amp;amp; Plans&lt;/h2&gt;
+&lt;h2 id="/status--plans"&gt;Status &amp;amp; Plans&lt;/h2&gt;
 
-&lt;p&gt;Codebrag is currently in 2.0 version with Git, SVN, local and cloud repositories and both post-commit and review of feature branches support. It's developed by people from &lt;a href="http://softwaremill.com"&gt;SoftwareMill&lt;/a&gt; as a dogfood and startup project - we use Codebrag in our projects and decided to share it with the people. You can tweet us @codebrag and visit our &lt;a href="http://blog.codebrag.com"&gt;blog&lt;/a&gt; for code review guides and Codebrag news.&lt;/p&gt;
+&lt;p&gt;Codebrag is currently in 2.0 version with Git, SVN, local and cloud repositories and both post-commit and review of feature branches support. It’s developed by people from &lt;a href="http://softwaremill.com"&gt;SoftwareMill&lt;/a&gt; as a dogfood and startup project - we use Codebrag in our projects and decided to share it with the people. You can tweet us @codebrag and visit our &lt;a href="http://blog.codebrag.com"&gt;blog&lt;/a&gt; for code review guides and Codebrag news.&lt;/p&gt;
 
 &lt;iframe width="590" height="360" src="//www.youtube.com/embed/PxQflI7Bgxc" frameborder="0" allowfullscreen=""&gt;&lt;/iframe&gt;
 </content>
@@ -536,25 +556,23 @@ Enter &lt;a href="http://codebrag.com"&gt;Codebrag&lt;/a&gt;, the code review to
     <link rel="alternate" href="http://sourcey.com/precompiling-assets-for-large-rails-deployments-with-capistrano/"/>
     <id>http://sourcey.com/precompiling-assets-for-large-rails-deployments-with-capistrano/</id>
     <published>2014-05-20T00:00:00Z</published>
-    <updated>2014-05-24T22:59:01+10:00</updated>
+    <updated>2014-06-01T15:36:21+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
-    <content type="html">&lt;h1 id="precompiling-assets-for-large-rails-deployments-with-capistrano"&gt;Precompiling Assets for Large Rails Deployments with Capistrano&lt;/h1&gt;
+    <content type="html">&lt;p&gt;&lt;img alt="Capistrano" title="Capistrano" src="/images/logos/capistrano-600x228.png" /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt="Capistrano" title="Capistrano" src="/images/logos/capistrano-600x228.png" /&gt;&lt;/p&gt;
-
-&lt;p&gt;If you've ever had to deploy a large Rails site using Capistrano, 
-then you're probably aware of how time consuming it is to precompile the assets pipeline on the server-side.&lt;/p&gt;
+&lt;p&gt;If you’ve ever had to deploy a large Rails site using Capistrano, 
+then you’re probably aware of how time consuming it is to precompile the assets pipeline on the server-side.&lt;/p&gt;
 
 &lt;p&gt;This is not really an issue for a small sites with a few images and JavaScripts, 
 but when it starts taking upwards of half an hour to roll out a small or time critical patch you know somethings gotta give!&lt;/p&gt;
 
-&lt;p&gt;Some people store compiled assets using &lt;code&gt;git&lt;/code&gt; in either the master or a separate repository, but that's kind of overkill and it also introduces an extra step. The most efficient way is just to use Capistrano's &lt;code&gt;run_locally&lt;/code&gt; command to compile assets on the local machine and then &lt;code&gt;rsync&lt;/code&gt; them to the remote server.&lt;/p&gt;
+&lt;p&gt;Some people store compiled assets using &lt;code&gt;git&lt;/code&gt; in either the master or a separate repository, but that’s kind of overkill and it also introduces an extra step. The most efficient way is just to use Capistrano’s &lt;code&gt;run_locally&lt;/code&gt; command to compile assets on the local machine and then &lt;code&gt;rsync&lt;/code&gt; them to the remote server.&lt;/p&gt;
 
 &lt;p&gt;The following Capistrano script is what we currently use on a Rails 3.2 site, but it should work with other Rails versions too. Stick the following task somewhere in your &lt;code&gt;deploy.rb&lt;/code&gt;:&lt;/p&gt;
 
-&lt;pre class="highlight ruby"&gt;&lt;span class="n"&gt;namespace&lt;/span&gt; &lt;span class="ss"&gt;:deploy&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+&lt;pre&gt;&lt;code class="highlight ruby"&gt;&lt;span class="n"&gt;namespace&lt;/span&gt; &lt;span class="ss"&gt;:deploy&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
   &lt;span class="n"&gt;namespace&lt;/span&gt; &lt;span class="ss"&gt;:assets&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
    &lt;span class="n"&gt;desc&lt;/span&gt; &lt;span class="s2"&gt;"Precompile assets locally and then rsync to deploy server"&lt;/span&gt;
     &lt;span class="n"&gt;task&lt;/span&gt; &lt;span class="ss"&gt;:precompile&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:only&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="ss"&gt;:primary&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="kp"&gt;true&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
@@ -567,18 +585,18 @@ but when it starts taking upwards of half an hour to roll out a small or time cr
     &lt;span class="k"&gt;end&lt;/span&gt;
   &lt;span class="k"&gt;end&lt;/span&gt;
 &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p class="panel callout radius"&gt;If you're a Windows user you can obtain &lt;code&gt;rsync&lt;/code&gt; binaries &lt;a href="http://www.rsync.net/resources/howto/windows_rsync.html"&gt;here&lt;/a&gt;. 
+&lt;p class="panel callout radius"&gt;If you’re a Windows user you can obtain &lt;code&gt;rsync&lt;/code&gt; binaries &lt;a href="http://www.rsync.net/resources/howto/windows_rsync.html"&gt;here&lt;/a&gt;. 
 Just add the &lt;code&gt;cwRsync/bin&lt;/code&gt; folder to your system path and everything will be peaches.&lt;/p&gt;
 
 &lt;p&gt;To make sure assets are compiles we need to call &lt;code&gt;deploy:assets:precompile&lt;/code&gt; after each deployment. 
-The order in which the task is called is no so critical here since Rails will be compiling assets from the local repository, but just in case anything else fails it would be best to call it after other tasks so we won't have run a costly task for nothing.&lt;/p&gt;
+The order in which the task is called is no so critical here since Rails will be compiling assets from the local repository, but just in case anything else fails it would be best to call it after other tasks so we won’t have run a costly task for nothing.&lt;/p&gt;
 
 &lt;p&gt;A good time to run the task is after &lt;code&gt;deploy:finalize_update&lt;/code&gt; like so:&lt;/p&gt;
 
-&lt;pre class="highlight ruby"&gt;&lt;span class="n"&gt;after&lt;/span&gt; &lt;span class="s2"&gt;"deploy:finalize_update"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;"deploy:assets:precompile"&lt;/span&gt;
-&lt;/pre&gt;
+&lt;pre&gt;&lt;code class="highlight ruby"&gt;&lt;span class="n"&gt;after&lt;/span&gt; &lt;span class="s2"&gt;"deploy:finalize_update"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;"deploy:assets:precompile"&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
 </content>
   </entry>
   <entry>
@@ -586,19 +604,17 @@ The order in which the task is called is no so critical here since Rails will be
     <link rel="alternate" href="http://sourcey.com/darkly-pygments-css-theme/"/>
     <id>http://sourcey.com/darkly-pygments-css-theme/</id>
     <published>2014-05-17T00:00:00Z</published>
-    <updated>2014-05-18T00:24:24+10:00</updated>
+    <updated>2014-06-01T15:36:40+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
-    <content type="html">&lt;h1 id="darkly-pygments-css-theme"&gt;Darkly Pygments CSS Theme&lt;/h1&gt;
-
-&lt;p&gt;Sourcey has no shortage of beautiful code, so it's about time we had some sexy syntax highlighting to match. &lt;/p&gt;
+    <content type="html">&lt;p&gt;Sourcey has no shortage of beautiful code, so it’s about time we had some sexy syntax highlighting to match. &lt;/p&gt;
 
 &lt;p&gt;Darkly is a pygments syntax highlighting theme which uses a broad spectrum of light and dark colours to create a luminous contrast that is both pleasing to the eye and great for readability.&lt;/p&gt;
 
 &lt;p&gt;If you want to use it yourself then please be our guest, here is the content of &lt;code&gt;darkly.css&lt;/code&gt;:&lt;/p&gt;
 
-&lt;pre class="highlight css"&gt;&lt;span class="c"&gt;/* 
+&lt;pre&gt;&lt;code class="highlight css"&gt;&lt;span class="c"&gt;/* 
   Darkly Pygments Theme
   (c) 2014 Sourcey
   http://sourcey.com
@@ -635,13 +651,13 @@ The order in which the task is called is no so critical here since Rails will be
 &lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.il&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nl"&gt;color&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#8ae234&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.o&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nl"&gt;color&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#989DAA&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.nv&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.vc&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.vg&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nc"&gt;.highlight&lt;/span&gt; &lt;span class="nc"&gt;.vi&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nl"&gt;color&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#fff&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Looking for a demonstration? Every piece of code on this website!&lt;/p&gt;
 
-&lt;h4 id="ruby"&gt;Ruby&lt;/h4&gt;
+&lt;h4 id="/ruby"&gt;Ruby&lt;/h4&gt;
 
-&lt;pre class="highlight ruby"&gt;&lt;span class="nb"&gt;require&lt;/span&gt; &lt;span class="s1"&gt;'httparty'&lt;/span&gt;
+&lt;pre&gt;&lt;code class="highlight ruby"&gt;&lt;span class="nb"&gt;require&lt;/span&gt; &lt;span class="s1"&gt;'httparty'&lt;/span&gt;
 
 &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;GooglePlus&lt;/span&gt;
   &lt;span class="kp"&gt;include&lt;/span&gt; &lt;span class="no"&gt;HTTParty&lt;/span&gt;
@@ -667,11 +683,11 @@ The order in which the task is called is no so critical here since Rails will be
     &lt;span class="p"&gt;}))&lt;/span&gt;
   &lt;span class="k"&gt;end&lt;/span&gt;
 &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;h4 id="python"&gt;Python&lt;/h4&gt;
+&lt;h4 id="/python"&gt;Python&lt;/h4&gt;
 
-&lt;pre class="highlight python"&gt;&lt;span class="c"&gt;#!/usr/bin/env python&lt;/span&gt;
+&lt;pre&gt;&lt;code class="highlight python"&gt;&lt;span class="c"&gt;#!/usr/bin/env python&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;socket&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;subprocess&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sys&lt;/span&gt;
@@ -724,11 +740,11 @@ The order in which the task is called is no so critical here since Rails will be
 
 &lt;span class="c"&gt;# Printing the information to screen&lt;/span&gt;
 &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;'Scanning Completed in: '&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;total&lt;/span&gt;
-&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;h4 id="javascript"&gt;JavaScript&lt;/h4&gt;
+&lt;h4 id="/javascript"&gt;JavaScript&lt;/h4&gt;
 
-&lt;pre class="highlight javascript"&gt;&lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;Mammal&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; 
+&lt;pre&gt;&lt;code class="highlight javascript"&gt;&lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;Mammal&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; 
 	&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;name&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 	&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;offspring&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[];&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt; 
@@ -760,11 +776,11 @@ The order in which the task is called is no so critical here since Rails will be
 &lt;span class="nx"&gt;myPet&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;haveABaby&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;                          &lt;span class="c1"&gt;// calls a method inherited from Mammal 
 &lt;/span&gt;&lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;myPet&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;offspring&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;length&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;        &lt;span class="c1"&gt;// shows that the cat has one baby now 
 &lt;/span&gt;&lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;myPet&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;offspring&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]);&lt;/span&gt;            &lt;span class="c1"&gt;// results in '[Mammal "Baby Felix"]' 
-&lt;/span&gt;&lt;/pre&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
 
-&lt;h4 id="c"&gt;C++&lt;/h4&gt;
+&lt;h4 id="/c"&gt;C++&lt;/h4&gt;
 
-&lt;pre class="highlight cpp"&gt;&lt;span class="c1"&gt;//
+&lt;pre&gt;&lt;code class="highlight cpp"&gt;&lt;span class="c1"&gt;//
 // LibSourcey
 // Copyright (C) 2005, Sourcey &amp;lt;http://sourcey.com&amp;gt;
 //
@@ -873,11 +889,11 @@ The order in which the task is called is no so critical here since Rails will be
 &lt;/span&gt;
 
 &lt;span class="cp"&gt;#endif // SCY_Hex_H
-&lt;/span&gt;&lt;/pre&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
 
-&lt;h4 id="bash"&gt;Bash&lt;/h4&gt;
+&lt;h4 id="/bash"&gt;Bash&lt;/h4&gt;
 
-&lt;pre class="highlight shell"&gt;&lt;span class="nv"&gt;CommandLineOptions__config_file&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;""&lt;/span&gt;
+&lt;pre&gt;&lt;code class="highlight shell"&gt;&lt;span class="nv"&gt;CommandLineOptions__config_file&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;""&lt;/span&gt;
 &lt;span class="nv"&gt;CommandLineOptions__debug_level&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;""&lt;/span&gt;
 
 &lt;span class="nv"&gt;getopt_results&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;getopt -s bash -o c:d:: --long config_file:,debug_level:: -- &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$@&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;
@@ -921,7 +937,7 @@ if &lt;/span&gt;&lt;span class="nb"&gt;test&lt;/span&gt; &lt;span class="s2"&gt;
     &lt;span class="nv"&gt;EXCEPTION_MSG&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"missing config_file parameter"&lt;/span&gt;
     &lt;span class="nb"&gt;exit &lt;/span&gt;1
 &lt;span class="k"&gt;fi&lt;/span&gt;
-&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Thanks for reading and have fun with Darkly!&lt;/p&gt;
 </content>
@@ -931,19 +947,17 @@ if &lt;/span&gt;&lt;span class="nb"&gt;test&lt;/span&gt; &lt;span class="s2"&gt;
     <link rel="alternate" href="http://sourcey.com/html5-video-streaming-from-google-drive/"/>
     <id>http://sourcey.com/html5-video-streaming-from-google-drive/</id>
     <published>2014-05-04T00:00:00Z</published>
-    <updated>2014-05-24T22:57:04+10:00</updated>
+    <updated>2014-06-01T15:37:02+10:00</updated>
     <author>
       <name>Article Author</name>
     </author>
     <content type="html">&lt;p&gt;&lt;img alt="Google Drive" title="Google Drive" src="/images/logos/google-drive-704x344.png" /&gt;&lt;/p&gt;
 
-&lt;h1 id="html5-video-streaming-from-google-drive"&gt;HTML5 Video Streaming from Google Drive&lt;/h1&gt;
-
-&lt;p&gt;If you made it here, then you're probably wondering weather or not Google Drive is a viable option for hosting streamable videos? Well, the answer is yes!&lt;/p&gt;
+&lt;p&gt;If you made it here, then you’re probably wondering weather or not Google Drive is a viable option for hosting streamable videos? Well, the answer is yes!&lt;/p&gt;
 
 &lt;p&gt;This is a follow-up to &lt;a href="/html5-video-is-finally-ready"&gt;HTML5 Video is Finally Ready&lt;/a&gt;, so read that first for more info on the state of HTML5 video.&lt;/p&gt;
 
-&lt;p&gt;In order to make files publicly playable by anyone you need to share the files as "Public on the web" via your Google Drive, otherwise standard OAuth rules apply.&lt;/p&gt;
+&lt;p&gt;In order to make files publicly playable by anyone you need to share the files as “Public on the web” via your Google Drive, otherwise standard OAuth rules apply.&lt;/p&gt;
 
 &lt;p&gt;Here is an example using an H.264/AVC encoded MP4 which plays on Chrome, Firefox and Safari, and apparently Internet Explorer 11 too (untested):&lt;/p&gt;
 
@@ -952,21 +966,26 @@ if &lt;/span&gt;&lt;span class="nb"&gt;test&lt;/span&gt; &lt;span class="s2"&gt;
 &lt;/video&gt;
 
 &lt;div class="panel callout radius"&gt;
-This page has received a lot of traffic, so if the video isn't displaying then Drive may have temporarily restricted access to the file. In that case please try using the original source from: &lt;a href="http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4" traget="_blank"&gt;QuirksMode&lt;/a&gt;. If you need, you can view the quota of your own videos via the "Quota" section of your &lt;a href="https://code.google.com/apis/console" traget="_blank"&gt;Google APIs console&lt;/a&gt; in the "Service" tab.
+  &lt;p&gt;This page has received a lot of traffic, so if the video isn’t displaying then Drive may have temporarily restricted access to the file. In that case please try using the original source from: &lt;a href="http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4" traget="_blank"&gt;QuirksMode&lt;/a&gt;. If you need, you can view the quota of your own videos via the “Quota” section of your &lt;a href="https://code.google.com/apis/console" traget="_blank"&gt;Google APIs console&lt;/a&gt; in the “Service” tab.&lt;/p&gt;
 &lt;/div&gt;
 
 &lt;p&gt;And the source code:&lt;/p&gt;
 
-&lt;pre class="highlight html"&gt;&lt;span class="nt"&gt;&amp;lt;video&lt;/span&gt; &lt;span class="na"&gt;controls=&lt;/span&gt;&lt;span class="s"&gt;"controls"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+&lt;pre&gt;&lt;code class="highlight html"&gt;&lt;span class="nt"&gt;&amp;lt;video&lt;/span&gt; &lt;span class="na"&gt;controls=&lt;/span&gt;&lt;span class="s"&gt;"controls"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
     &lt;span class="nt"&gt;&amp;lt;source&lt;/span&gt; &lt;span class="na"&gt;src=&lt;/span&gt;&lt;span class="s"&gt;"https://drive.google.com/uc?export=download&amp;amp;id=0B0JMGMGgxp9WMEdWb1hyQUhlOWs"&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;'video/mp4'&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;/video&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;In order to be completely cross-browser we can't forget about the geriatric fathers of the browser world who still claim a market share, and require a Flash fallback. &lt;!--; Internet Explorer. --&gt;&lt;/p&gt;
+&lt;p&gt;In order to be completely cross-browser we can’t forget about the geriatric fathers of the browser world who still claim a market share, and require a Flash fallback. &lt;!--; Internet Explorer. --&gt;&lt;/p&gt;
 
 &lt;p&gt;As you may already know, Google automatically encodes uploaded videos into lower bitrate FLV files for playback using Flash via the Google Drive Viewer. This means the Google Flash player can be reused like so:&lt;/p&gt;
 
-&lt;object type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" wmode="opaque" data="https://video.google.com/get_player?el=leaf&amp;amp;cc_load_policy=1&amp;amp;enablejsapi=1" width="1280px" height="750px" id="vpl0" style="width: 590px; height: 370px; margin-bottom: 20px"&gt;&lt;param name="allowFullScreen" value="true" /&gt;&lt;param name="allowscriptaccess" value="always" /&gt;&lt;param name="wmode" value="opaque" /&gt;&lt;param name="flashvars" value="status=ok&amp;amp;hl=en&amp;amp;allow_embed=0&amp;amp;ps=docs&amp;amp;partnerid=30&amp;amp;autoplay=0&amp;amp;docid=0B0JMGMGgxp9WMEdWb1hyQUhlOWs&amp;amp;abd=0&amp;amp;el=leaf&amp;amp;title=big_buck_bunny.mp4&amp;amp;iurl=https%3A%2F%2Fdocs.google.com%2Fvt%3Fauthuser%3D0%26id%3D0B0JMGMGgxp9WMEdWb1hyQUhlOWs&amp;amp;ttsurl=https%3A%2F%2Fdocs.google.com%2Ftimedtext%3Fauthuser%3D0%26id%3D0B0JMGMGgxp9WMEdWb1hyQUhlOWs%26vid%3De578958e6e16e44f&amp;amp;reportabuseurl=https%3A%2F%2Fdocs.google.com%2Fabuse%3Fauthuser%3D0%26id%3D0B0JMGMGgxp9WMEdWb1hyQUhlOWs&amp;amp;token=1&amp;amp;plid=V0QTaujn2CBLXA&amp;amp;fmt_stream_map=18%7Chttps%3A%2F%2Fr8---sn-ntq7ened.c.docs.google.com%2Fvideoplayback%3Frequiressl%3Dyes%26shardbypass%3Dyes%26cmbypass%3Dyes%26id%3De578958e6e16e44f%26itag%3D18%26source%3Dwebdrive%26app%3Ddocs%26ip%3D59.101.83.21%26ipbits%3D0%26expire%3D1399190315%26sparams%3Drequiressl%252Cshardbypass%252Ccmbypass%252Cid%252Citag%252Csource%252Cip%252Cipbits%252Cexpire%26signature%3D1409A45041079AC97B82A53C82B72B176E7295BE.432A8FD910D8DB7C14D0ED93884BE6D55B9C918%26key%3Dck2%26ir%3D1%26ms%3Dnxu%26mt%3D1399186650%26mv%3Dm%26mws%3Dyes%2C34%7Chttps%3A%2F%2Fr8---sn-ntq7ened.c.docs.google.com%2Fvideoplayback%3Frequiressl%3Dyes%26shardbypass%3Dyes%26cmbypass%3Dyes%26id%3De578958e6e16e44f%26itag%3D34%26source%3Dwebdrive%26app%3Ddocs%26ip%3D59.101.83.21%26ipbits%3D0%26expire%3D1399190315%26sparams%3Drequiressl%252Cshardbypass%252Ccmbypass%252Cid%252Citag%252Csource%252Cip%252Cipbits%252Cexpire%26signature%3D18B8078AAA0F03717ADE0B017E752D1E797B9406.81C1DA43B6417F6B524AA33F654E5BE0D90F596%26key%3Dck2%26ir%3D1%26ms%3Dnxu%26mt%3D1399186650%26mv%3Dm%26mws%3Dyes%2C43%7Chttps%3A%2F%2Fr8---sn-ntq7ened.c.docs.google.com%2Fvideoplayback%3Frequiressl%3Dyes%26shardbypass%3Dyes%26cmbypass%3Dyes%26id%3De578958e6e16e44f%26itag%3D43%26source%3Dwebdrive%26app%3Ddocs%26ip%3D59.101.83.21%26ipbits%3D0%26expire%3D1399190315%26sparams%3Drequiressl%252Cshardbypass%252Ccmbypass%252Cid%252Citag%252Csource%252Cip%252Cipbits%252Cexpire%26signature%3D41EDA4A85EB4BBD63C31C15D6A9178B48B99FC49.177799E1DBD96CB7575DB86EFB115BD10DFA37A1%26key%3Dck2%26ir%3D1%26ms%3Dnxu%26mt%3D1399186650%26mv%3Dm%26mws%3Dyes&amp;amp;fmt_list=18%2F640x360%2F9%2F0%2F115%2C34%2F640x360%2F9%2F0%2F115%2C43%2F640x360%2F99%2F0%2F0&amp;amp;url_encoded_fmt_stream_map=itag%3D18%26url%3Dhttps%253A%252F%252Fr8---sn-ntq7ened.c.docs.google.com%252Fvideoplayback%253Frequiressl%253Dyes%2526shardbypass%253Dyes%2526cmbypass%253Dyes%2526id%253De578958e6e16e44f%2526itag%253D18%2526source%253Dwebdrive%2526app%253Ddocs%2526ip%253D59.101.83.21%2526ipbits%253D0%2526expire%253D1399190315%2526sparams%253Drequiressl%252Cshardbypass%252Ccmbypass%252Cid%252Citag%252Csource%252Cip%252Cipbits%252Cexpire%2526signature%253D1409A45041079AC97B82A53C82B72B176E7295BE.432A8FD910D8DB7C14D0ED93884BE6D55B9C918%2526key%253Dck2%2526ir%253D1%2526ms%253Dnxu%2526mt%253D1399186650%2526mv%253Dm%2526mws%253Dyes%26type%3Dvideo%252Fmp4%253B%2Bcodecs%253D%2522avc1.42001E%252C%2Bmp4a.40.2%2522%26quality%3Dmedium%2Citag%3D34%26url%3Dhttps%253A%252F%252Fr8---sn-ntq7ened.c.docs.google.com%252Fvideoplayback%253Frequiressl%253Dyes%2526shardbypass%253Dyes%2526cmbypass%253Dyes%2526id%253De578958e6e16e44f%2526itag%253D34%2526source%253Dwebdrive%2526app%253Ddocs%2526ip%253D59.101.83.21%2526ipbits%253D0%2526expire%253D1399190315%2526sparams%253Drequiressl%252Cshardbypass%252Ccmbypass%252Cid%252Citag%252Csource%252Cip%252Cipbits%252Cexpire%2526signature%253D18B8078AAA0F03717ADE0B017E752D1E797B9406.81C1DA43B6417F6B524AA33F654E5BE0D90F596%2526key%253Dck2%2526ir%253D1%2526ms%253Dnxu%2526mt%253D1399186650%2526mv%253Dm%2526mws%253Dyes%26type%3Dvideo%252Fx-flv%26quality%3Dmedium%2Citag%3D43%26url%3Dhttps%253A%252F%252Fr8---sn-ntq7ened.c.docs.google.com%252Fvideoplayback%253Frequiressl%253Dyes%2526shardbypass%253Dyes%2526cmbypass%253Dyes%2526id%253De578958e6e16e44f%2526itag%253D43%2526source%253Dwebdrive%2526app%253Ddocs%2526ip%253D59.101.83.21%2526ipbits%253D0%2526expire%253D1399190315%2526sparams%253Drequiressl%252Cshardbypass%252Ccmbypass%252Cid%252Citag%252Csource%252Cip%252Cipbits%252Cexpire%2526signature%253D41EDA4A85EB4BBD63C31C15D6A9178B48B99FC49.177799E1DBD96CB7575DB86EFB115BD10DFA37A1%2526key%253Dck2%2526ir%253D1%2526ms%253Dnxu%2526mt%253D1399186650%2526mv%253Dm%2526mws%253Dyes%26type%3Dvideo%252Fwebm%26quality%3Dmedium&amp;amp;timestamp=1399186715856&amp;amp;length_seconds=61&amp;amp;playerapiid=vpl0" /&gt;&lt;/object&gt;
+&lt;object type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" wmode="opaque" data="https://video.google.com/get_player?el=leaf&amp;amp;cc_load_policy=1&amp;amp;enablejsapi=1" width="1280px" height="750px" id="vpl0" style="width: 590px; height: 370px; margin-bottom: 20px"&gt;
+  &lt;param name="allowFullScreen" value="true" /&gt;
+  &lt;param name="allowscriptaccess" value="always" /&gt;
+  &lt;param name="wmode" value="opaque" /&gt;
+  &lt;param name="flashvars" value="status=ok&amp;amp;hl=en&amp;amp;allow_embed=0&amp;amp;ps=docs&amp;amp;partnerid=30&amp;amp;autoplay=0&amp;amp;docid=0B0JMGMGgxp9WMEdWb1hyQUhlOWs&amp;amp;abd=0&amp;amp;el=leaf&amp;amp;title=big_buck_bunny.mp4&amp;amp;iurl=https%3A%2F%2Fdocs.google.com%2Fvt%3Fauthuser%3D0%26id%3D0B0JMGMGgxp9WMEdWb1hyQUhlOWs&amp;amp;ttsurl=https%3A%2F%2Fdocs.google.com%2Ftimedtext%3Fauthuser%3D0%26id%3D0B0JMGMGgxp9WMEdWb1hyQUhlOWs%26vid%3De578958e6e16e44f&amp;amp;reportabuseurl=https%3A%2F%2Fdocs.google.com%2Fabuse%3Fauthuser%3D0%26id%3D0B0JMGMGgxp9WMEdWb1hyQUhlOWs&amp;amp;token=1&amp;amp;plid=V0QTaujn2CBLXA&amp;amp;fmt_stream_map=18%7Chttps%3A%2F%2Fr8---sn-ntq7ened.c.docs.google.com%2Fvideoplayback%3Frequiressl%3Dyes%26shardbypass%3Dyes%26cmbypass%3Dyes%26id%3De578958e6e16e44f%26itag%3D18%26source%3Dwebdrive%26app%3Ddocs%26ip%3D59.101.83.21%26ipbits%3D0%26expire%3D1399190315%26sparams%3Drequiressl%252Cshardbypass%252Ccmbypass%252Cid%252Citag%252Csource%252Cip%252Cipbits%252Cexpire%26signature%3D1409A45041079AC97B82A53C82B72B176E7295BE.432A8FD910D8DB7C14D0ED93884BE6D55B9C918%26key%3Dck2%26ir%3D1%26ms%3Dnxu%26mt%3D1399186650%26mv%3Dm%26mws%3Dyes%2C34%7Chttps%3A%2F%2Fr8---sn-ntq7ened.c.docs.google.com%2Fvideoplayback%3Frequiressl%3Dyes%26shardbypass%3Dyes%26cmbypass%3Dyes%26id%3De578958e6e16e44f%26itag%3D34%26source%3Dwebdrive%26app%3Ddocs%26ip%3D59.101.83.21%26ipbits%3D0%26expire%3D1399190315%26sparams%3Drequiressl%252Cshardbypass%252Ccmbypass%252Cid%252Citag%252Csource%252Cip%252Cipbits%252Cexpire%26signature%3D18B8078AAA0F03717ADE0B017E752D1E797B9406.81C1DA43B6417F6B524AA33F654E5BE0D90F596%26key%3Dck2%26ir%3D1%26ms%3Dnxu%26mt%3D1399186650%26mv%3Dm%26mws%3Dyes%2C43%7Chttps%3A%2F%2Fr8---sn-ntq7ened.c.docs.google.com%2Fvideoplayback%3Frequiressl%3Dyes%26shardbypass%3Dyes%26cmbypass%3Dyes%26id%3De578958e6e16e44f%26itag%3D43%26source%3Dwebdrive%26app%3Ddocs%26ip%3D59.101.83.21%26ipbits%3D0%26expire%3D1399190315%26sparams%3Drequiressl%252Cshardbypass%252Ccmbypass%252Cid%252Citag%252Csource%252Cip%252Cipbits%252Cexpire%26signature%3D41EDA4A85EB4BBD63C31C15D6A9178B48B99FC49.177799E1DBD96CB7575DB86EFB115BD10DFA37A1%26key%3Dck2%26ir%3D1%26ms%3Dnxu%26mt%3D1399186650%26mv%3Dm%26mws%3Dyes&amp;amp;fmt_list=18%2F640x360%2F9%2F0%2F115%2C34%2F640x360%2F9%2F0%2F115%2C43%2F640x360%2F99%2F0%2F0&amp;amp;url_encoded_fmt_stream_map=itag%3D18%26url%3Dhttps%253A%252F%252Fr8---sn-ntq7ened.c.docs.google.com%252Fvideoplayback%253Frequiressl%253Dyes%2526shardbypass%253Dyes%2526cmbypass%253Dyes%2526id%253De578958e6e16e44f%2526itag%253D18%2526source%253Dwebdrive%2526app%253Ddocs%2526ip%253D59.101.83.21%2526ipbits%253D0%2526expire%253D1399190315%2526sparams%253Drequiressl%252Cshardbypass%252Ccmbypass%252Cid%252Citag%252Csource%252Cip%252Cipbits%252Cexpire%2526signature%253D1409A45041079AC97B82A53C82B72B176E7295BE.432A8FD910D8DB7C14D0ED93884BE6D55B9C918%2526key%253Dck2%2526ir%253D1%2526ms%253Dnxu%2526mt%253D1399186650%2526mv%253Dm%2526mws%253Dyes%26type%3Dvideo%252Fmp4%253B%2Bcodecs%253D%2522avc1.42001E%252C%2Bmp4a.40.2%2522%26quality%3Dmedium%2Citag%3D34%26url%3Dhttps%253A%252F%252Fr8---sn-ntq7ened.c.docs.google.com%252Fvideoplayback%253Frequiressl%253Dyes%2526shardbypass%253Dyes%2526cmbypass%253Dyes%2526id%253De578958e6e16e44f%2526itag%253D34%2526source%253Dwebdrive%2526app%253Ddocs%2526ip%253D59.101.83.21%2526ipbits%253D0%2526expire%253D1399190315%2526sparams%253Drequiressl%252Cshardbypass%252Ccmbypass%252Cid%252Citag%252Csource%252Cip%252Cipbits%252Cexpire%2526signature%253D18B8078AAA0F03717ADE0B017E752D1E797B9406.81C1DA43B6417F6B524AA33F654E5BE0D90F596%2526key%253Dck2%2526ir%253D1%2526ms%253Dnxu%2526mt%253D1399186650%2526mv%253Dm%2526mws%253Dyes%26type%3Dvideo%252Fx-flv%26quality%3Dmedium%2Citag%3D43%26url%3Dhttps%253A%252F%252Fr8---sn-ntq7ened.c.docs.google.com%252Fvideoplayback%253Frequiressl%253Dyes%2526shardbypass%253Dyes%2526cmbypass%253Dyes%2526id%253De578958e6e16e44f%2526itag%253D43%2526source%253Dwebdrive%2526app%253Ddocs%2526ip%253D59.101.83.21%2526ipbits%253D0%2526expire%253D1399190315%2526sparams%253Drequiressl%252Cshardbypass%252Ccmbypass%252Cid%252Citag%252Csource%252Cip%252Cipbits%252Cexpire%2526signature%253D41EDA4A85EB4BBD63C31C15D6A9178B48B99FC49.177799E1DBD96CB7575DB86EFB115BD10DFA37A1%2526key%253Dck2%2526ir%253D1%2526ms%253Dnxu%2526mt%253D1399186650%2526mv%253Dm%2526mws%253Dyes%26type%3Dvideo%252Fwebm%26quality%3Dmedium&amp;amp;timestamp=1399186715856&amp;amp;length_seconds=61&amp;amp;playerapiid=vpl0" /&gt;
+&lt;/object&gt;
 
 &lt;p&gt;No doubt you could access the raw FLV stream using a custom player of your own design, in fact Symple has a &lt;a href="/symple"&gt;chromeless FLV player&lt;/a&gt; which would be suitable for the task.&lt;/p&gt;
 </content>
