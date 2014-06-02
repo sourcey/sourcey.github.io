@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Blog Name</title>
-  <subtitle>Blog subtitle</subtitle>
+  <title>Sourcey</title>
+  <subtitle>Developers of code and websites for forward-thinking technology startups.</subtitle>
   <id>http://sourcey.com</id>
   <link href="http://sourcey.com"/>
   <link href="http://sourcey.com/feed.xml" rel="self"/>
   <updated>2014-05-29T00:00:00Z</updated>
-  <author>
-    <name>Blog Author</name>
-  </author>
   <entry>
     <title>Building a Simple C++ Cross-platform Plugin System</title>
     <link rel="alternate" href="http://sourcey.com/building-a-simple-cpp-cross-platform-plugin-system/"/>
@@ -16,7 +13,7 @@
     <published>2014-05-29T00:00:00Z</published>
     <updated>2014-06-02T00:12:34+10:00</updated>
     <author>
-      <name>Article Author</name>
+      <name>Kam Low</name>
     </author>
     <content type="html">&lt;div class="sidebar-section toc"&gt;
   &lt;h4 class="no_toc" id="/contents"&gt;Contents&lt;/h4&gt;
@@ -421,7 +418,7 @@ All virtual plugin methods and functionality are exposed by ,
     <published>2014-05-22T00:00:00Z</published>
     <updated>2014-06-01T15:35:35+10:00</updated>
     <author>
-      <name>Article Author</name>
+      <name>Kam Low</name>
     </author>
     <content type="html">&lt;p&gt;If you’re building any kind of version management system in C++, such as a package manager or plugin system, then you’ll need to be able to maniulate, compare and print version strings. The &lt;code&gt;Version&lt;/code&gt; structure below is extracted from &lt;a href="/pacm"&gt;pacm&lt;/a&gt;, and does exactly that:&lt;/p&gt;
 
@@ -500,7 +497,7 @@ All virtual plugin methods and functionality are exposed by ,
     <published>2014-05-21T00:00:00Z</published>
     <updated>2014-06-01T15:35:57+10:00</updated>
     <author>
-      <name>Article Author</name>
+      <name>Mirek Woźniak</name>
     </author>
     <content type="html">&lt;div class="sidebar-section toc"&gt;
   &lt;h4 class="no_toc" id="/contents"&gt;Contents&lt;/h4&gt;
@@ -558,7 +555,7 @@ Enter &lt;a href="http://codebrag.com"&gt;Codebrag&lt;/a&gt;, the code review to
     <published>2014-05-20T00:00:00Z</published>
     <updated>2014-06-01T15:36:21+10:00</updated>
     <author>
-      <name>Article Author</name>
+      <name>Kam Low</name>
     </author>
     <content type="html">&lt;p&gt;&lt;img alt="Capistrano" title="Capistrano" src="/images/logos/capistrano-600x228.png" /&gt;&lt;/p&gt;
 
@@ -606,7 +603,7 @@ The order in which the task is called is no so critical here since Rails will be
     <published>2014-05-17T00:00:00Z</published>
     <updated>2014-06-01T15:36:40+10:00</updated>
     <author>
-      <name>Article Author</name>
+      <name>Kam Low</name>
     </author>
     <content type="html">&lt;p&gt;Sourcey has no shortage of beautiful code, so it’s about time we had some sexy syntax highlighting to match. &lt;/p&gt;
 
@@ -949,7 +946,7 @@ if &lt;/span&gt;&lt;span class="nb"&gt;test&lt;/span&gt; &lt;span class="s2"&gt;
     <published>2014-05-04T00:00:00Z</published>
     <updated>2014-06-01T15:37:02+10:00</updated>
     <author>
-      <name>Article Author</name>
+      <name>Kam Low</name>
     </author>
     <content type="html">&lt;p&gt;&lt;img alt="Google Drive" title="Google Drive" src="/images/logos/google-drive-704x344.png" /&gt;&lt;/p&gt;
 
