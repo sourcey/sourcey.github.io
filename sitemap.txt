@@ -41,10 +41,17 @@ http://sourcey.com/agile-peer-code-reviews-with-codebrag/
 http://sourcey.com/comparing-version-strings-in-cpp/
 http://sourcey.com/building-a-simple-cpp-cross-platform-plugin-system/
 http://sourcey.com/understanding-psychedelics/
+http://sourcey.com/engineering-the-mind/
 http://sourcey.com/archives/
 http://sourcey.com/CNAME
 http://sourcey.com/favicon.ico
 http://sourcey.com/feed.xml
+http://sourcey.com/images/news/ajax-loader-blue.gif
+http://sourcey.com/images/news/ajax-loader.gif
+http://sourcey.com/images/news/captcha/captcha.php
+http://sourcey.com/images/news/jm/gray.gif
+http://sourcey.com/images/news/trans.gif
+http://sourcey.com/images/news/ui-anim_basic_16x16.gif
 http://sourcey.com/
 http://sourcey.com/sitemap.txt
 http://sourcey.com/sitemap.xml
