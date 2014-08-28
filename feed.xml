@@ -5,7 +5,35 @@
   <id>http://sourcey.com</id>
   <link href="http://sourcey.com"/>
   <link href="http://sourcey.com/feed.xml" rel="self"/>
-  <updated>2014-07-05T00:00:00Z</updated>
+  <updated>2014-08-28T00:00:00Z</updated>
+  <entry>
+    <title>Making The World A Better Place</title>
+    <link rel="alternate" href="http://sourcey.com/making-the-world-a-better-place/"/>
+    <id>http://sourcey.com/making-the-world-a-better-place/</id>
+    <published>2014-08-28T00:00:00Z</published>
+    <updated>2014-08-28T14:40:01+10:00</updated>
+    <author>
+      <name>Kam Low</name>
+    </author>
+    <content type="html">&lt;p&gt;Everything in nature has a half-life depending on it’s vibrational consistency, and so it is with the technology and trends that capture our imagination one day, and fade the next.&lt;/p&gt;
+
+&lt;p&gt;With the world and technology changing as fast as is, it sometimes seems impossible to keep up, and the startup community gets swept up in the whirlwind of trying to create the next best quick fix to fuel the world’s rampant tech addiction. It’s like a never ending game of catchup in a game that most likely has a limited life span.&lt;/p&gt;
+
+&lt;p&gt;Smart business people (especially investors) know how to look to the future, and it doesn’t take a genius to see that all over the world inflation and breaking economies have people running scared. This isn’t just a third world phenomenon either, it’s a global crisis that our shiny devices and news media won’t shield us from for long.&lt;/p&gt;
+
+&lt;!-- , due to the fact that their very existence is dependent of these crumbling economies --&gt;
+
+&lt;p&gt;The law of entropy dictates that all things are moving towards chaos, so what happens when effects of entropy become unbearable, and the breaking point is reached? Everything collapses and we hard reset back to zero (like a defaulting economy). All our frivolities are discarded, and the essentials are all that matters: food, water, energy, economy, transport and communication.&lt;/p&gt;
+
+&lt;p&gt;In Australia, for instance, we live in a first world country, but so many aspects of our infrastructure are archaic and broken as hell. Now the Government is trying to solve our growing budget defect with privitisation, by selling our infrastructure off to foreign owned companies. In short; nothing is getting fixed any time soon.&lt;/p&gt;
+
+&lt;p&gt;The world needs more startups tackling and solving real-life issues that affect people and improve society. Maybe then (in our country anyway), the government will start to recognise their importance and offer proper support and reforms.&lt;/p&gt;
+
+&lt;p&gt;Does your startup solve a genuine human issue, or is it just another useless tech gimmick? The next time I hear an entrepreneur saying he is making the world a better place with a crappy new social network I think I’m going to loose it. If that’s the case we need to seriously consider what kind of world we want to be living in. &lt;/p&gt;
+
+&lt;p&gt;Theres huge money for startups that are providing genuine solutions for global issues, and making them accessible for consumers and governments who’re scrambling for the light switch. As entrepreneurs we have to power to create the future, so let’s use it to build something worthwhile!&lt;/p&gt;
+</content>
+  </entry>
   <entry>
     <title>Engineering the Mind</title>
     <link rel="alternate" href="http://sourcey.com/engineering-the-mind/"/>
@@ -1135,54 +1163,6 @@ Enter &lt;a href="http://codebrag.com"&gt;Codebrag&lt;/a&gt;, the code review to
 &lt;p&gt;Codebrag is currently in 2.0 version with Git, SVN, local and cloud repositories and both post-commit and review of feature branches support. It’s developed by people from &lt;a href="http://softwaremill.com"&gt;SoftwareMill&lt;/a&gt; as a dogfood and startup project - we use Codebrag in our projects and decided to share it with the people. You can tweet us @codebrag and visit our &lt;a href="http://blog.codebrag.com"&gt;blog&lt;/a&gt; for code review guides and Codebrag news.&lt;/p&gt;
 
 &lt;iframe width="590" height="360" src="//www.youtube.com/embed/PxQflI7Bgxc" frameborder="0" allowfullscreen=""&gt;&lt;/iframe&gt;
-</content>
-  </entry>
-  <entry>
-    <title>Precompiling Assets for Large Rails Deployments with Capistrano</title>
-    <link rel="alternate" href="http://sourcey.com/precompiling-assets-for-large-rails-deployments-with-capistrano/"/>
-    <id>http://sourcey.com/precompiling-assets-for-large-rails-deployments-with-capistrano/</id>
-    <published>2014-05-20T00:00:00Z</published>
-    <updated>2014-06-01T15:36:21+10:00</updated>
-    <author>
-      <name>Kam Low</name>
-    </author>
-    <content type="html">&lt;p&gt;&lt;img alt="Capistrano" title="Capistrano" src="/images/logos/capistrano-600x228.png" /&gt;&lt;/p&gt;
-
-&lt;p&gt;If you’ve ever had to deploy a large Rails site using Capistrano, 
-then you’re probably aware of how time consuming it is to precompile the assets pipeline on the server-side.&lt;/p&gt;
-
-&lt;p&gt;This is not really an issue for a small sites with a few images and JavaScripts, 
-but when it starts taking upwards of half an hour to roll out a small or time critical patch you know somethings gotta give!&lt;/p&gt;
-
-&lt;p&gt;Some people store compiled assets using &lt;code&gt;git&lt;/code&gt; in either the master or a separate repository, but that’s kind of overkill and it also introduces an extra step. The most efficient way is just to use Capistrano’s &lt;code&gt;run_locally&lt;/code&gt; command to compile assets on the local machine and then &lt;code&gt;rsync&lt;/code&gt; them to the remote server.&lt;/p&gt;
-
-&lt;p&gt;The following Capistrano script is what we currently use on a Rails 3.2 site, but it should work with other Rails versions too. Stick the following task somewhere in your &lt;code&gt;deploy.rb&lt;/code&gt;:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class="highlight ruby"&gt;&lt;span class="n"&gt;namespace&lt;/span&gt; &lt;span class="ss"&gt;:deploy&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-  &lt;span class="n"&gt;namespace&lt;/span&gt; &lt;span class="ss"&gt;:assets&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-   &lt;span class="n"&gt;desc&lt;/span&gt; &lt;span class="s2"&gt;"Precompile assets locally and then rsync to deploy server"&lt;/span&gt;
-    &lt;span class="n"&gt;task&lt;/span&gt; &lt;span class="ss"&gt;:precompile&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:only&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="ss"&gt;:primary&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="kp"&gt;true&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-      &lt;span class="n"&gt;run_locally&lt;/span&gt; &lt;span class="s2"&gt;"bundle exec rake assets:precompile"&lt;/span&gt;
-      &lt;span class="n"&gt;servers&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;find_servers&lt;/span&gt; &lt;span class="ss"&gt;:roles&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:app&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:except&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="ss"&gt;:no_release&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="kp"&gt;true&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
-      &lt;span class="n"&gt;servers&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;each&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;server&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
-        &lt;span class="n"&gt;run_locally&lt;/span&gt; &lt;span class="s2"&gt;"rsync -av ./public/&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;assets_prefix&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;/ &lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;@&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;server&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;:&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;current_path&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;/public/&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;assets_prefix&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;/"&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-      &lt;span class="n"&gt;run_locally&lt;/span&gt; &lt;span class="s2"&gt;"rm -rf public/&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;assets_prefix&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p class="panel callout radius"&gt;If you’re a Windows user you can obtain &lt;code&gt;rsync&lt;/code&gt; binaries &lt;a href="http://www.rsync.net/resources/howto/windows_rsync.html"&gt;here&lt;/a&gt;. 
-Just add the &lt;code&gt;cwRsync/bin&lt;/code&gt; folder to your system path and everything will be peaches.&lt;/p&gt;
-
-&lt;p&gt;To make sure assets are compiles we need to call &lt;code&gt;deploy:assets:precompile&lt;/code&gt; after each deployment. 
-The order in which the task is called is no so critical here since Rails will be compiling assets from the local repository, but just in case anything else fails it would be best to call it after other tasks so we won’t have run a costly task for nothing.&lt;/p&gt;
-
-&lt;p&gt;A good time to run the task is after &lt;code&gt;deploy:finalize_update&lt;/code&gt; like so:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class="highlight ruby"&gt;&lt;span class="n"&gt;after&lt;/span&gt; &lt;span class="s2"&gt;"deploy:finalize_update"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;"deploy:assets:precompile"&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
 </content>
   </entry>
 </feed>

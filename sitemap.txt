@@ -42,6 +42,7 @@ http://sourcey.com/comparing-version-strings-in-cpp/
 http://sourcey.com/building-a-simple-cpp-cross-platform-plugin-system/
 http://sourcey.com/understanding-psychedelics/
 http://sourcey.com/engineering-the-mind/
+http://sourcey.com/making-the-world-a-better-place/
 http://sourcey.com/archives/
 http://sourcey.com/article_item/
 http://sourcey.com/CNAME
@@ -107,3 +108,5 @@ http://sourcey.com/tags/themes/
 http://sourcey.com/tags/capistrano/
 http://sourcey.com/tags/chemistry/
 http://sourcey.com/tags/psychedelics/
+http://sourcey.com/tags/startups/
+http://sourcey.com/tags/technology/
