@@ -54,18 +54,16 @@ http://sourcey.com/initial-commit/
 http://sourcey.com/pinterest-api-pinit-button-callback-tracking/
 
 
-
-
-
-
-
-
+http://sourcey.com/engineering-the-mind/
 
 
 http://sourcey.com/building-a-simple-cpp-cross-platform-plugin-system/
 
 
 http://sourcey.com/javascript-object-to-flash-swf-externalinterface-bridge/
+
+
+http://sourcey.com/understanding-psychedelics/
 
 
 
@@ -81,6 +79,14 @@ http://sourcey.com/javascript-object-to-flash-swf-externalinterface-bridge/
 
 
 http://sourcey.com/the-art-of-the-internet/
+
+
+
+
+
+
+
+
 
 
 
@@ -314,28 +320,7 @@ http://sourcey.com/precompiling-assets-for-large-rails-deployments-with-capistra
 http://sourcey.com/darkly-pygments-css-theme/
 
 
-http://sourcey.com/bak/2014-07-05-engineering-the-mind/
-
-
-
-
-
-
-
-
-http://sourcey.com/bak/2014-07-01-understanding-psychedelics/
-
-
-http://sourcey.com/bak/2015-02-03-economic-decline-and-collapse/
-
-
-http://sourcey.com/understanding-psychedelics
-
-
 http://sourcey.com/understanding-psychedelics/
-
-
-http://sourcey.com/engineering-the-mind
 
 
 http://sourcey.com/engineering-the-mind/
