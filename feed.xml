@@ -5,7 +5,107 @@
   <id>http://sourcey.com</id>
   <link href="http://sourcey.com"/>
   <link href="http://sourcey.com/feed.xml" rel="self"/>
-  <updated>2015-02-09T00:00:00Z</updated>
+  <updated>2015-02-09T00:58:07Z</updated>
+  <entry>
+    <title>Recliner.js</title>
+    <link rel="alternate" href="http://sourcey.com/recliner/"/>
+    <id>http://sourcey.com/recliner/</id>
+    <published>2015-02-09T00:58:07Z</published>
+    <updated>2015-02-09T18:58:54+01:00</updated>
+    <author>
+      <name/>
+    </author>
+    <content type="html">&lt;div class="sidebar-section toc"&gt;
+  &lt;h4 class="no_toc" id="contents"&gt;Contents&lt;/h4&gt;
+
+&lt;ul id="markdown-toc"&gt;
+  &lt;li&gt;&lt;a href="#why-use-recliner"&gt;Why use Recliner?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#using-recliner"&gt;Using Recliner&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#contributing"&gt;Contributing&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#issues"&gt;Issues&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/div&gt;
+
+&lt;dl class="status"&gt;
+  &lt;dt&gt;Repository&lt;/dt&gt;
+  &lt;dd&gt;&lt;a href="https://github.com/sourcey/recliner"&gt;https://github.com/sourcey/recliner&lt;/a&gt;&lt;/dd&gt;
+  &lt;dt&gt;Licence&lt;/dt&gt;
+  &lt;dd&gt;MIT&lt;/dd&gt;
+  &lt;dt&gt;Dependencies&lt;/dt&gt;
+  &lt;dd&gt;JQuery&lt;/dd&gt;
+&lt;/dl&gt;
+
+&lt;p&gt;Recliner is a super-lightweight (1KB), jQuery plugin for lazy loading images and other dynamic content. Being lazy never felt so good, just hook it up, start sippin’ on your margarita!&lt;/p&gt;
+
+&lt;p&gt;The script is currently used in some very high traffic sites, so it’s well tested and production ready.&lt;/p&gt;
+
+&lt;h2 id="why-use-recliner"&gt;Why use Recliner?&lt;/h2&gt;
+
+&lt;p&gt;So why another lazy loading implementation? Recliner was born out of necessity when one of our clients was experiencing massive scrolling lag on the mobile version of their media heavy site. It turned out that &lt;code&gt;lazy-load-xt&lt;/code&gt; was the culprit, and after testing all the other lazy load scripts &lt;strong&gt;none&lt;/strong&gt; of them meet our simple criteria:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Lightweight&lt;/li&gt;
+  &lt;li&gt;Sets stateful CSS classes on elements&lt;/li&gt;
+  &lt;li&gt;Ability to override event callbacks for custom behaviour&lt;/li&gt;
+  &lt;li&gt;Can load both images and other dynamic (AJAX) content&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id="using-recliner"&gt;Using Recliner&lt;/h2&gt;
+
+&lt;p&gt;Instantiate Recliner like so:&lt;/p&gt;
+
+&lt;pre class="highlight javascript"&gt;&lt;code&gt;&lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;".lazy"&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;recliner&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
+    &lt;span class="na"&gt;attrib&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;"data-src"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="c1"&gt;// attribute selector containing the media src  &lt;/span&gt;
+    &lt;span class="na"&gt;throttle&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;300&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;      &lt;span class="c1"&gt;// millisecond interval at which to process events  &lt;/span&gt;
+    &lt;span class="na"&gt;threshold&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;     &lt;span class="c1"&gt;// scroll distance from element before its loaded  &lt;/span&gt;
+    &lt;span class="na"&gt;live&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;true&lt;/span&gt;          &lt;span class="c1"&gt;// auto bind lazy loading to ajax loaded elements  &lt;/span&gt;
+&lt;span class="p"&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Recliner uses a simple event based API for implementing custom behaviour:&lt;/p&gt;
+
+&lt;pre class="highlight javascript"&gt;&lt;code&gt;&lt;span class="c1"&gt;// Do something with elements that are about to be loaded&lt;/span&gt;
+&lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;document&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;on&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'lazyload'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'.lazy'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;$e&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'lazyshow after'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;$e&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;});&lt;/span&gt;
+    
+&lt;span class="c1"&gt;// Do something with elements after they have been loaded&lt;/span&gt;
+&lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;document&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;on&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'lazyshow'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'.lazy'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;$e&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'lazyshow after'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;$e&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;});&lt;/span&gt;
+
+&lt;span class="c1"&gt;// Force an update to check for new elements to be loaded&lt;/span&gt;
+&lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;window&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;trigger&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"lazyupdate"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Recliner will set the following stateful CSS classes of your elements:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;lazy-loading&lt;/code&gt;: The element is currently being loaded&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;lazy-loaded&lt;/code&gt;: The element has loaded&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;What more do you need?&lt;/p&gt;
+
+&lt;h2 id="contributing"&gt;Contributing&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Fork it&lt;/li&gt;
+  &lt;li&gt;Create your feature branch (&lt;code&gt;git checkout -b my-new-feature&lt;/code&gt;)&lt;/li&gt;
+  &lt;li&gt;Commit your changes (&lt;code&gt;git commit -am 'Add some feature'&lt;/code&gt;)&lt;/li&gt;
+  &lt;li&gt;Push to the branch (&lt;code&gt;git push origin my-new-feature&lt;/code&gt;)&lt;/li&gt;
+  &lt;li&gt;Create new Pull Request&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id="issues"&gt;Issues&lt;/h2&gt;
+
+&lt;p&gt;If you find any bugs please use the &lt;a href="https://github.com/sourcey/recliner/issues"&gt;Github issue tracker&lt;/a&gt;.&lt;/p&gt;
+
+</content>
+  </entry>
   <entry>
     <title>Middleman Automated GitHub Pages Deployments with Rake</title>
     <link rel="alternate" href="http://sourcey.com/middleman-automated-github-pages-deployments-with-rake/"/>
@@ -619,54 +719,6 @@ Enter &lt;a href="http://codebrag.com"&gt;Codebrag&lt;/a&gt;, the code review to
 &lt;p&gt;Codebrag is currently in 2.0 version with Git, SVN, local and cloud repositories and both post-commit and review of feature branches support. It’s developed by people from &lt;a href="http://softwaremill.com"&gt;SoftwareMill&lt;/a&gt; as a dogfood and startup project - we use Codebrag in our projects and decided to share it with the people. You can tweet us @codebrag and visit our &lt;a href="http://blog.codebrag.com"&gt;blog&lt;/a&gt; for code review guides and Codebrag news.&lt;/p&gt;
 
 &lt;iframe width="590" height="360" src="//www.youtube.com/embed/PxQflI7Bgxc" frameborder="0" allowfullscreen=""&gt;&lt;/iframe&gt;
-</content>
-  </entry>
-  <entry>
-    <title>Precompiling Assets for Large Rails Deployments with Capistrano</title>
-    <link rel="alternate" href="http://sourcey.com/precompiling-assets-for-large-rails-deployments-with-capistrano/"/>
-    <id>http://sourcey.com/precompiling-assets-for-large-rails-deployments-with-capistrano/</id>
-    <published>2014-05-20T00:00:00Z</published>
-    <updated>2014-06-01T07:36:21+02:00</updated>
-    <author>
-      <name>Kam Low</name>
-    </author>
-    <content type="html">&lt;p&gt;&lt;img alt="Capistrano" title="Capistrano" src="/images/logos/capistrano-600x228.png" /&gt;&lt;/p&gt;
-
-&lt;p&gt;If you’ve ever had to deploy a large Rails site using Capistrano, 
-then you’re probably aware of how time consuming it is to precompile the assets pipeline on the server-side.&lt;/p&gt;
-
-&lt;p&gt;This is not really an issue for a small sites with a few images and JavaScripts, 
-but when it starts taking upwards of half an hour to roll out a small or time critical patch you know somethings gotta give!&lt;/p&gt;
-
-&lt;p&gt;Some people store compiled assets using &lt;code&gt;git&lt;/code&gt; in either the master or a separate repository, but that’s kind of overkill and it also introduces an extra step. The most efficient way is just to use Capistrano’s &lt;code&gt;run_locally&lt;/code&gt; command to compile assets on the local machine and then &lt;code&gt;rsync&lt;/code&gt; them to the remote server.&lt;/p&gt;
-
-&lt;p&gt;The following Capistrano script is what we currently use on a Rails 3.2 site, but it should work with other Rails versions too. Stick the following task somewhere in your &lt;code&gt;deploy.rb&lt;/code&gt;:&lt;/p&gt;
-
-&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;namespace&lt;/span&gt; &lt;span class="ss"&gt;:deploy&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-  &lt;span class="n"&gt;namespace&lt;/span&gt; &lt;span class="ss"&gt;:assets&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-   &lt;span class="n"&gt;desc&lt;/span&gt; &lt;span class="s2"&gt;"Precompile assets locally and then rsync to deploy server"&lt;/span&gt;
-    &lt;span class="n"&gt;task&lt;/span&gt; &lt;span class="ss"&gt;:precompile&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:only&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="ss"&gt;:primary&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="kp"&gt;true&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-      &lt;span class="n"&gt;run_locally&lt;/span&gt; &lt;span class="s2"&gt;"bundle exec rake assets:precompile"&lt;/span&gt;
-      &lt;span class="n"&gt;servers&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;find_servers&lt;/span&gt; &lt;span class="ss"&gt;:roles&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:app&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="ss"&gt;:except&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="ss"&gt;:no_release&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="kp"&gt;true&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
-      &lt;span class="n"&gt;servers&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;each&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;server&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
-        &lt;span class="n"&gt;run_locally&lt;/span&gt; &lt;span class="s2"&gt;"rsync -av ./public/&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;assets_prefix&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;/ &lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;@&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;server&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;:&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;current_path&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;/public/&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;assets_prefix&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;/"&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-      &lt;span class="n"&gt;run_locally&lt;/span&gt; &lt;span class="s2"&gt;"rm -rf public/&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;assets_prefix&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p class="panel callout radius"&gt;If you’re a Windows user you can obtain &lt;code&gt;rsync&lt;/code&gt; binaries &lt;a href="http://www.rsync.net/resources/howto/windows_rsync.html"&gt;here&lt;/a&gt;. 
-Just add the &lt;code&gt;cwRsync/bin&lt;/code&gt; folder to your system path and everything will be peaches.&lt;/p&gt;
-
-&lt;p&gt;To make sure assets are compiles we need to call &lt;code&gt;deploy:assets:precompile&lt;/code&gt; after each deployment. 
-The order in which the task is called is no so critical here since Rails will be compiling assets from the local repository, but just in case anything else fails it would be best to call it after other tasks so we won’t have run a costly task for nothing.&lt;/p&gt;
-
-&lt;p&gt;A good time to run the task is after &lt;code&gt;deploy:finalize_update&lt;/code&gt; like so:&lt;/p&gt;
-
-&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;after&lt;/span&gt; &lt;span class="s2"&gt;"deploy:finalize_update"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;"deploy:assets:precompile"&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
 </content>
   </entry>
 </feed>
