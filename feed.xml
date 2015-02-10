@@ -11,7 +11,7 @@
     <link rel="alternate" href="http://sourcey.com/recliner/"/>
     <id>http://sourcey.com/recliner/</id>
     <published>2015-02-09T00:58:07Z</published>
-    <updated>2015-02-10T16:38:11+01:00</updated>
+    <updated>2015-02-10T20:04:16+01:00</updated>
     <author>
       <name/>
     </author>
@@ -31,6 +31,7 @@
     &lt;/ul&gt;
   &lt;/li&gt;
   &lt;li&gt;&lt;a href="#styling"&gt;Styling&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#demo"&gt;Demo&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href="#contributing"&gt;Contributing&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href="#issues"&gt;Issues&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -43,7 +44,7 @@
   &lt;dt&gt;Licence&lt;/dt&gt;
   &lt;dd&gt;MIT&lt;/dd&gt;
   &lt;dt&gt;Dependencies&lt;/dt&gt;
-  &lt;dd&gt;JQuery&lt;/dd&gt;
+  &lt;dd&gt;jQuery&lt;/dd&gt;
 &lt;/dl&gt;
 
 &lt;p&gt;Recliner is a super lightweight (1KB), jQuery plugin for lazy loading images, iframes and other dynamic (AJAX) content.&lt;/p&gt;
@@ -60,18 +61,16 @@
 
 &lt;p&gt;Recliner is currently used on some very high traffic sites, so it’s well tested and production ready. Being lazy never felt so good, just hook it up, and start sippin’ your margaritas!&lt;/p&gt;
 
+&lt;center&gt;
+&lt;a href="#demo" class="action-button button info radius"&gt;view the demo&lt;/a&gt;
+&lt;/center&gt;
+
 &lt;h2 id="usage"&gt;Usage&lt;/h2&gt;
-
-&lt;p&gt;You can use Recliner to dynamically load a range of different content. &lt;/p&gt;
-
-&lt;div class="panel callout radius"&gt;
-  &lt;p&gt;Note: It’s good practice to manually specify image dimensions so your page height doesn’t go berserk as lazy content is loading.&lt;/p&gt;
-&lt;/div&gt;
 
 &lt;p&gt;Add jQuery (2.x or 1.x) and Recliner to your HTML source:&lt;/p&gt;
 
 &lt;pre class="highlight html"&gt;&lt;code&gt;&lt;span class="nt"&gt;&amp;lt;script &lt;/span&gt;&lt;span class="na"&gt;src=&lt;/span&gt;&lt;span class="s"&gt;"//code.jquery.com/jquery-1.11.2.min.js"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;script &lt;/span&gt;&lt;span class="na"&gt;src=&lt;/span&gt;&lt;span class="s"&gt;"jquery.recliner.min.js"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;script &lt;/span&gt;&lt;span class="na"&gt;src=&lt;/span&gt;&lt;span class="s"&gt;"recliner.min.js"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Instantiate Recliner on elements with the &lt;code&gt;.lazy&lt;/code&gt; class on document load:&lt;/p&gt;
@@ -90,6 +89,12 @@
 
 &lt;pre class="highlight javascript"&gt;&lt;code&gt;&lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;window&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;trigger&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"lazyupdate"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can use Recliner to load a range of different dynamic content. &lt;/p&gt;
+
+&lt;div class="panel callout radius"&gt;
+  &lt;p&gt;Note: It’s good practice to manually specify image dimensions so your page height doesn’t go berserk as lazy content is loading.&lt;/p&gt;
+&lt;/div&gt;
 
 &lt;h4 id="images"&gt;Images&lt;/h4&gt;
 
@@ -145,15 +150,88 @@
 
 &lt;p&gt;Using the stateful classes you can add some fancy transitions to your images:&lt;/p&gt;
 
-&lt;p&gt;``` css
-img {
-  opacity: 0;
-  transition: opacity .333s ease-in;
-}&lt;/p&gt;
+&lt;pre class="highlight css"&gt;&lt;code&gt;&lt;span class="nt"&gt;img&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nl"&gt;opacity&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nl"&gt;transition&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;opacity&lt;/span&gt; &lt;span class="m"&gt;.333s&lt;/span&gt; &lt;span class="n"&gt;ease-in&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
 
-&lt;p&gt;img.lazy-loaded {
-  opacity: 1;
-} &lt;/p&gt;
+&lt;span class="nt"&gt;img&lt;/span&gt;&lt;span class="nc"&gt;.lazy-loaded&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nl"&gt;opacity&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id="demo"&gt;Demo&lt;/h2&gt;
+
+&lt;h5 id="image-1"&gt;Image #1&lt;/h5&gt;
+&lt;div class="lazy-container"&gt;
+  &lt;p&gt;&lt;img class="lazy" data-src="http://sourcey.com/images/stock/xiao-feng-lsd-320x200.jpg" /&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;h5 id="image-2"&gt;Image #2&lt;/h5&gt;
+&lt;div class="lazy-container"&gt;
+  &lt;p&gt;&lt;img class="lazy" data-src="http://sourcey.com/images/stock/xiao-feng-dmt-320x200.jpg" /&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;h5 id="image-3"&gt;Image #3&lt;/h5&gt;
+&lt;div class="lazy-container"&gt;
+  &lt;p&gt;&lt;img class="lazy" data-src="http://sourcey.com/images/stock/miyamoto-musashi-320x200.jpg" /&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;h5 id="image-4"&gt;Image #4&lt;/h5&gt;
+&lt;div class="lazy-container"&gt;
+  &lt;p&gt;&lt;img class="lazy" data-src="http://sourcey.com/images/stock/logic-vs-art-320x200.jpg" /&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;h5 id="iframe-element"&gt;IFrame Element&lt;/h5&gt;
+&lt;div class="lazy-container"&gt;
+  &lt;iframe class="lazy" data-src="/recliner/randomcontent" frameborder="0" vspace="0" hspace="0"&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+
+&lt;h5 id="ajax-element"&gt;AJAX Element&lt;/h5&gt;
+&lt;div class="lazy-container"&gt;
+  &lt;div class="lazy" data-src="/recliner/randomcontent"&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script src="//code.jquery.com/jquery-1.11.2.min.js"&gt;&lt;/script&gt;
+
+&lt;script src="/javascripts/recliner.min.js"&gt;&lt;/script&gt;
+
+&lt;script&gt;
+    //$(function() {
+        // instantiate recliner
+        $('.lazy').recliner({
+            attrib: "data-src", // selector for attribute containing the media src
+            throttle: 300,      // millisecond interval at which to process events
+            threshold: 100,     // scroll distance from element before its loaded
+            live: true          // auto bind lazy loading to ajax loaded elements          
+        });
+    //});
+&lt;/script&gt;
+
+&lt;style&gt;
+    .lazy-container {
+        padding: 15px;
+        background: #eee;
+        margin-bottom: 30px;
+        border-radius: 3px;
+    }
+    .lazy-container p {
+        margin-bottom: 0px;
+    }
+    .lazy {
+        margin: 0 auto !important;
+        width: 320px !important;
+        height: 200px !important;
+        outline: 0 !important;
+        border: none !important;
+        display: block !important;
+        box-shadow: 0px 2px 4px #999 !important;
+        background: url(/images/loader.gif) no-repeat center;
+    }
+    .lazy-loaded {
+        background-image: none;
+    }
+&lt;/style&gt;
 
 &lt;h2 id="contributing"&gt;Contributing&lt;/h2&gt;
 

@@ -12,6 +12,8 @@
 
 
 
+
+
 http://sourcey.com/mesh/
 
 
@@ -111,6 +113,9 @@ http://sourcey.com/the-art-of-the-internet/
 
 
 
+
+
+http://sourcey.com/images/loader.gif
 
 
 
@@ -268,11 +273,6 @@ http://sourcey.com/recliner/demo/
 
 
 http://sourcey.com/recliner/randomcontent/
-
-
-
-
-http://sourcey.com/recliner/loader.gif
 
 
 http://sourcey.com/sitemap.txt
