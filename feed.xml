@@ -11,7 +11,7 @@
     <link rel="alternate" href="http://sourcey.com/recliner/"/>
     <id>http://sourcey.com/recliner/</id>
     <published>2015-02-09T00:58:07Z</published>
-    <updated>2015-02-10T20:04:16+01:00</updated>
+    <updated>2015-02-10T20:13:31+01:00</updated>
     <author>
       <name/>
     </author>
@@ -21,7 +21,7 @@
 &lt;ul id="markdown-toc"&gt;
   &lt;li&gt;&lt;a href="#usage"&gt;Usage&lt;/a&gt;    &lt;ul&gt;
       &lt;li&gt;&lt;a href="#images"&gt;Images&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href="#iframes"&gt;iFrames&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="#iframes"&gt;IFrames&lt;/a&gt;&lt;/li&gt;
       &lt;li&gt;&lt;a href="#ajax"&gt;AJAX&lt;/a&gt;&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
@@ -101,7 +101,7 @@
 &lt;pre class="highlight html"&gt;&lt;code&gt;&lt;span class="nt"&gt;&amp;lt;img&lt;/span&gt; &lt;span class="na"&gt;src=&lt;/span&gt;&lt;span class="s"&gt;"some-placeholder-image.png"&lt;/span&gt; &lt;span class="na"&gt;data-src=&lt;/span&gt;&lt;span class="s"&gt;"image-to-lazy-load.png"&lt;/span&gt; &lt;span class="na"&gt;width=&lt;/span&gt;&lt;span class="s"&gt;"333"&lt;/span&gt; &lt;span class="na"&gt;height=&lt;/span&gt;&lt;span class="s"&gt;"333"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt; 
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h4 id="iframes"&gt;iFrames&lt;/h4&gt;
+&lt;h4 id="iframes"&gt;IFrames&lt;/h4&gt;
 
 &lt;pre class="highlight html"&gt;&lt;code&gt;&lt;span class="nt"&gt;&amp;lt;iframe&lt;/span&gt; &lt;span class="na"&gt;data-src=&lt;/span&gt;&lt;span class="s"&gt;"http://sourcey.com"&lt;/span&gt; &lt;span class="na"&gt;width=&lt;/span&gt;&lt;span class="s"&gt;"333"&lt;/span&gt; &lt;span class="na"&gt;height=&lt;/span&gt;&lt;span class="s"&gt;"333"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/iframe&amp;gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
@@ -182,14 +182,14 @@
   &lt;p&gt;&lt;img class="lazy" data-src="http://sourcey.com/images/stock/logic-vs-art-320x200.jpg" /&gt;&lt;/p&gt;
 &lt;/div&gt;
 
-&lt;h5 id="iframe-element"&gt;IFrame Element&lt;/h5&gt;
-&lt;div class="lazy-container"&gt;
-  &lt;iframe class="lazy" data-src="/recliner/randomcontent" frameborder="0" vspace="0" hspace="0"&gt;&lt;/iframe&gt;
-&lt;/div&gt;
-
 &lt;h5 id="ajax-element"&gt;AJAX Element&lt;/h5&gt;
 &lt;div class="lazy-container"&gt;
   &lt;div class="lazy" data-src="/recliner/randomcontent"&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h5 id="iframe-element"&gt;IFrame Element&lt;/h5&gt;
+&lt;div class="lazy-container"&gt;
+  &lt;iframe class="lazy" data-src="/recliner/randomcontent" frameborder="0" vspace="0" hspace="0"&gt;&lt;/iframe&gt;
 &lt;/div&gt;
 
 &lt;script src="//code.jquery.com/jquery-1.11.2.min.js"&gt;&lt;/script&gt;
