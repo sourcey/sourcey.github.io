@@ -11,7 +11,7 @@
     <link rel="alternate" href="http://sourcey.com/recliner/"/>
     <id>http://sourcey.com/recliner/</id>
     <published>2015-02-09T00:58:07Z</published>
-    <updated>2015-02-09T18:58:54+01:00</updated>
+    <updated>2015-02-10T15:40:34+01:00</updated>
     <author>
       <name/>
     </author>
@@ -19,8 +19,18 @@
   &lt;h4 class="no_toc" id="contents"&gt;Contents&lt;/h4&gt;
 
 &lt;ul id="markdown-toc"&gt;
-  &lt;li&gt;&lt;a href="#why-use-recliner"&gt;Why use Recliner?&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="#using-recliner"&gt;Using Recliner&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#usage"&gt;Usage&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href="#images"&gt;Images&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="#iframes"&gt;iFrames&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="#ajax"&gt;AJAX&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href="#callbacks"&gt;Callbacks&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href="#lazyload"&gt;lazyload&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="#lazyshow"&gt;lazyshow&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href="#stateful-classes"&gt;Stateful Classes&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href="#contributing"&gt;Contributing&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href="#issues"&gt;Issues&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -36,50 +46,89 @@
   &lt;dd&gt;JQuery&lt;/dd&gt;
 &lt;/dl&gt;
 
-&lt;p&gt;Recliner is a super-lightweight (1KB), jQuery plugin for lazy loading images and other dynamic content. Being lazy never felt so good, just hook it up, start sippin’ on your margarita!&lt;/p&gt;
+&lt;p&gt;Recliner is a super lightweight (1KB), jQuery plugin for lazy loading images, iframes and other dynamic (AJAX) content.&lt;/p&gt;
 
-&lt;p&gt;The script is currently used in some very high traffic sites, so it’s well tested and production ready.&lt;/p&gt;
-
-&lt;h2 id="why-use-recliner"&gt;Why use Recliner?&lt;/h2&gt;
-
-&lt;p&gt;So why another lazy loading implementation? Recliner was born out of necessity when one of our clients was experiencing massive scrolling lag on the mobile version of their media heavy site. It turned out that &lt;code&gt;lazy-load-xt&lt;/code&gt; was the culprit, and after testing all the other lazy load scripts &lt;strong&gt;none&lt;/strong&gt; of them meet our simple criteria:&lt;/p&gt;
+&lt;p&gt;The script was born out of necessity when one of our clients was experiencing massive scroll lag on the mobile version of one of their media heavy news sites. It turned out that &lt;code&gt;lazy-load-xt&lt;/code&gt; was the culprit, so we tested the other lazy load scripts out there but &lt;strong&gt;none&lt;/strong&gt; of them meet our simple criteria:&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;Lightweight&lt;/li&gt;
   &lt;li&gt;Sets stateful CSS classes on elements&lt;/li&gt;
   &lt;li&gt;Ability to override event callbacks for custom behaviour&lt;/li&gt;
-  &lt;li&gt;Can load both images and other dynamic (AJAX) content&lt;/li&gt;
+  &lt;li&gt;Can load &lt;em&gt;any&lt;/em&gt; dynamic content (images, iframes, AJAX) &lt;/li&gt;
+  &lt;li&gt;Mobile friendly&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id="using-recliner"&gt;Using Recliner&lt;/h2&gt;
+&lt;p&gt;Recliner is currently used on some very high traffic sites, so it’s well tested and production ready. Being lazy never felt so good, just hook it up, and start sippin’ your margaritas!&lt;/p&gt;
 
-&lt;p&gt;Instantiate Recliner like so:&lt;/p&gt;
+&lt;h2 id="usage"&gt;Usage&lt;/h2&gt;
 
-&lt;pre class="highlight javascript"&gt;&lt;code&gt;&lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;".lazy"&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;recliner&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
-    &lt;span class="na"&gt;attrib&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;"data-src"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="c1"&gt;// attribute selector containing the media src  &lt;/span&gt;
-    &lt;span class="na"&gt;throttle&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;300&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;      &lt;span class="c1"&gt;// millisecond interval at which to process events  &lt;/span&gt;
-    &lt;span class="na"&gt;threshold&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;     &lt;span class="c1"&gt;// scroll distance from element before its loaded  &lt;/span&gt;
-    &lt;span class="na"&gt;live&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;true&lt;/span&gt;          &lt;span class="c1"&gt;// auto bind lazy loading to ajax loaded elements  &lt;/span&gt;
+&lt;p&gt;You can use Recliner to dynamically load a range of different content. &lt;/p&gt;
+
+&lt;div class="panel callout radius"&gt;
+  &lt;p&gt;Note: It’s good practice to manually specify image dimensions so your page height doesn’t go berserk as lazy content is loading.&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;h4 id="images"&gt;Images&lt;/h4&gt;
+
+&lt;pre class="highlight html"&gt;&lt;code&gt;&lt;span class="nt"&gt;&amp;lt;img&lt;/span&gt; &lt;span class="na"&gt;src=&lt;/span&gt;&lt;span class="s"&gt;"some-placeholder-image.png"&lt;/span&gt; &lt;span class="na"&gt;data-src=&lt;/span&gt;&lt;span class="s"&gt;"image-to-lazy-load.png"&lt;/span&gt; &lt;span class="na"&gt;width=&lt;/span&gt;&lt;span class="s"&gt;"333"&lt;/span&gt; &lt;span class="na"&gt;height=&lt;/span&gt;&lt;span class="s"&gt;"333"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id="iframes"&gt;iFrames&lt;/h4&gt;
+
+&lt;pre class="highlight html"&gt;&lt;code&gt;&lt;span class="nt"&gt;&amp;lt;iframe&lt;/span&gt; &lt;span class="na"&gt;data-src=&lt;/span&gt;&lt;span class="s"&gt;"http://sourcey.com"&lt;/span&gt; &lt;span class="na"&gt;width=&lt;/span&gt;&lt;span class="s"&gt;"333"&lt;/span&gt; &lt;span class="na"&gt;height=&lt;/span&gt;&lt;span class="s"&gt;"333"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/iframe&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id="ajax"&gt;AJAX&lt;/h4&gt;
+
+&lt;pre class="highlight html"&gt;&lt;code&gt;&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;data-src=&lt;/span&gt;&lt;span class="s"&gt;"http://sourcey.com"&lt;/span&gt; &lt;span class="na"&gt;style=&lt;/span&gt;&lt;span class="s"&gt;"width:333px;height:333px"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+    Loading, be patient damnit!
+&lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Instantiate Recliner on document load like so:&lt;/p&gt;
+
+&lt;pre class="highlight javascript"&gt;&lt;code&gt;&lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;".lazy"&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;recliner&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
+        &lt;span class="na"&gt;attrib&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;"data-src"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="c1"&gt;// attribute selector that contains the media src&lt;/span&gt;
+        &lt;span class="na"&gt;throttle&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;300&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;      &lt;span class="c1"&gt;// millisecond interval at which to process events&lt;/span&gt;
+        &lt;span class="na"&gt;threshold&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;     &lt;span class="c1"&gt;// scroll distance from element before its loaded&lt;/span&gt;
+        &lt;span class="na"&gt;live&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;true&lt;/span&gt;          &lt;span class="c1"&gt;// auto bind lazy loading to ajax loaded elements&lt;/span&gt;
+    &lt;span class="p"&gt;});&lt;/span&gt;
 &lt;span class="p"&gt;});&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can also progrmatically trigger an update to check for new elements to be loaded (this may be necessary in some egde cases):&lt;/p&gt;
+
+&lt;pre class="highlight javascript"&gt;&lt;code&gt;&lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;window&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;trigger&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"lazyupdate"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id="callbacks"&gt;Callbacks&lt;/h2&gt;
 
 &lt;p&gt;Recliner uses a simple event based API for implementing custom behaviour:&lt;/p&gt;
 
-&lt;pre class="highlight javascript"&gt;&lt;code&gt;&lt;span class="c1"&gt;// Do something with elements that are about to be loaded&lt;/span&gt;
-&lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;document&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;on&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'lazyload'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'.lazy'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;$e&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-    &lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'lazyshow after'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;$e&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;span class="p"&gt;});&lt;/span&gt;
-    
-&lt;span class="c1"&gt;// Do something with elements after they have been loaded&lt;/span&gt;
-&lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;document&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;on&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'lazyshow'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'.lazy'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;$e&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-    &lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'lazyshow after'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;$e&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;span class="p"&gt;});&lt;/span&gt;
+&lt;h4 id="lazyload"&gt;lazyload&lt;/h4&gt;
 
-&lt;span class="c1"&gt;// Force an update to check for new elements to be loaded&lt;/span&gt;
-&lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;window&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;trigger&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"lazyupdate"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;p&gt;The &lt;code&gt;lazyload&lt;/code&gt; event will be triggered on elements that are about to be loaded.&lt;/p&gt;
+
+&lt;pre class="highlight javascript"&gt;&lt;code&gt;&lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;document&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;on&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'lazyload'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'.lazy'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;$e&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="c1"&gt;// do something with the element to be loaded...&lt;/span&gt;
+    &lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'lazyload'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;$e&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;});&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id="lazyshow"&gt;lazyshow&lt;/h4&gt;
+
+&lt;p&gt;The &lt;code&gt;lazyshow&lt;/code&gt; event will be triggered on elements after they have been loaded.&lt;/p&gt;
+
+&lt;pre class="highlight javascript"&gt;&lt;code&gt;&lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;document&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;on&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'lazyshow'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'.lazy'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;$e&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="c1"&gt;// do something with the loaded element...&lt;/span&gt;
+    &lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'lazyshow'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;$e&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id="stateful-classes"&gt;Stateful Classes&lt;/h2&gt;
 
 &lt;p&gt;Recliner will set the following stateful CSS classes of your elements:&lt;/p&gt;
 
@@ -87,8 +136,6 @@
   &lt;li&gt;&lt;code&gt;lazy-loading&lt;/code&gt;: The element is currently being loaded&lt;/li&gt;
   &lt;li&gt;&lt;code&gt;lazy-loaded&lt;/code&gt;: The element has loaded&lt;/li&gt;
 &lt;/ul&gt;
-
-&lt;p&gt;What more do you need?&lt;/p&gt;
 
 &lt;h2 id="contributing"&gt;Contributing&lt;/h2&gt;
 
