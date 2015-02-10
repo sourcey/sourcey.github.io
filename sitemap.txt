@@ -267,7 +267,12 @@ http://sourcey.com/youtube-html5-embed-from-url-with-php/
 http://sourcey.com/recliner/demo/
 
 
-http://sourcey.com/recliner/demo/ajaxcontent/
+http://sourcey.com/recliner/randomcontent/
+
+
+
+
+http://sourcey.com/recliner/loader.gif
 
 
 http://sourcey.com/sitemap.txt
