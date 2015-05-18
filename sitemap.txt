@@ -221,6 +221,9 @@ http://sourcey.com/add-grunt-to-your-projects/
 http://sourcey.com/comparing-version-strings-in-cpp/
 
 
+http://sourcey.com/simple-social-sharing-buttons-without-javascript-apis/
+
+
 http://sourcey.com/CNAME
 
 
@@ -473,6 +476,12 @@ http://sourcey.com/tags/productivity/
 
 
 http://sourcey.com/tags/automation/
+
+
+http://sourcey.com/tags/social/
+
+
+http://sourcey.com/tags/foundation/
 
 
 http://sourcey.com/tags/startups/

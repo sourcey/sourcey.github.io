@@ -5,7 +5,117 @@
   <id>http://sourcey.com</id>
   <link href="http://sourcey.com"/>
   <link href="http://sourcey.com/feed.xml" rel="self"/>
-  <updated>2015-02-09T00:58:07Z</updated>
+  <updated>2015-05-18T00:00:00Z</updated>
+  <entry>
+    <title>Simple Social Sharing Buttons Without JavaScript APIs</title>
+    <link rel="alternate" href="http://sourcey.com/simple-social-sharing-buttons-without-javascript-apis/"/>
+    <id>http://sourcey.com/simple-social-sharing-buttons-without-javascript-apis/</id>
+    <published>2015-05-18T00:00:00Z</published>
+    <updated>2015-05-18T13:31:59+02:00</updated>
+    <author>
+      <name>Kam Low</name>
+    </author>
+    <content type="html">&lt;p&gt;So you want to implement simple social sharing buttons on your site or application, but you don’t want the performance hit or resultant bloat from including each social network API just for these buttons. Good move!&lt;/p&gt;
+
+&lt;p&gt;The following code works with the glorious Foundation 5 and &lt;a href="http://zurb.com/playground/foundation-icon-fonts-3"&gt;Foundation Icons&lt;/a&gt; to display the buttons in a Reveal Modal. Alternatively, you can just remove the modal code to use the buttons without any JavaScript at all.&lt;/p&gt;
+
+&lt;p&gt;To implement the code on your site just replace the variables in curly brackets with your own data.&lt;/p&gt;
+
+&lt;center&gt;
+&lt;p&gt;&lt;a href="#" class="action-button button radius" target="_blank" data-reveal-id="share-buttons-modal" title="Share the Love"&gt;Try it out&lt;/a&gt;&lt;/p&gt;
+&lt;/center&gt;
+
+&lt;div id="share-buttons-modal" class="reveal-modal" data-reveal="" aria-hidden="true" role="dialog"&gt;
+  &lt;p&gt;&lt;a href="https://www.facebook.com/sharer/sharer.php?u={PAGEURL}&amp;amp;t={PAGETITLE}" target="_blank" title="Share on Facebook"&gt;&lt;i class="fi fi-social-facebook"&gt;&lt;/i&gt;&lt;/a&gt;
+  &lt;a href="https://twitter.com/intent/tweet?source={PAGEURL}&amp;amp;text={PAGETITLE}:{PAGEURL}&amp;amp;via={TWITTERUSERNAME}" target="_blank" title="Tweet"&gt;&lt;i class="fi fi-social-twitter"&gt;&lt;/i&gt;&lt;/a&gt;
+  &lt;a href="https://plus.google.com/share?url={PAGEURL}" target="_blank" title="Share on Google+"&gt;&lt;i class="fi fi-social-google-plus"&gt;&lt;/i&gt;&lt;/a&gt;
+  &lt;a href="http://pinterest.com/pin/create/button/?url={PAGEURL}&amp;amp;media={PAGEIMAGEURL}&amp;amp;description={PAGEDESCRIPTION}" target="_blank" title="Pin it"&gt;&lt;i class="fi fi-social-pinterest"&gt;&lt;/i&gt;&lt;/a&gt;
+  &lt;a href="mailto:?subject={PAGETITLE}&amp;amp;body={PAGEDESCRIPTION}:{PAGEURL}" target="_blank" title="Email"&gt;&lt;i class="fi fi-mail"&gt;&lt;/i&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;style&gt;
+#share-buttons-modal {
+  width: 375px;
+  border-radius: 3px;
+  
+  /* below definitions override Foundation responsive modal code */
+  min-height: initial;
+  margin: 0 auto;
+  padding: 0;
+  top: 100px;
+  left: 0;
+  right: 0;
+}
+#share-buttons-modal a {
+  border-right: 1px solid #eee;
+  height: 75px;
+  width: 20%; /* fix subpixel rendering issue */
+  float: left;
+  font-size: 60px;
+  line-height: 75px;
+  color: #c00;
+  text-align: center;
+  border-radius: 3px;
+}
+#share-buttons-modal a:hover {
+  background: #f6f6f6;
+}
+#share-buttons-modal a:focus {
+  background: #c00;
+  color: white;
+}
+#share-buttons-modal a:last-child {
+  border-right: none;
+}
+&lt;/style&gt;
+
+&lt;pre class="highlight html"&gt;&lt;code&gt;&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;id=&lt;/span&gt;&lt;span class="s"&gt;"share-buttons-modal"&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;"reveal-modal"&lt;/span&gt; &lt;span class="na"&gt;data-reveal&lt;/span&gt; &lt;span class="na"&gt;aria-hidden=&lt;/span&gt;&lt;span class="s"&gt;"true"&lt;/span&gt; &lt;span class="na"&gt;role=&lt;/span&gt;&lt;span class="s"&gt;"dialog"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;"https://www.facebook.com/sharer/sharer.php?u={PAGEURL}&amp;amp;t={PAGETITLE}"&lt;/span&gt; &lt;span class="na"&gt;target=&lt;/span&gt;&lt;span class="s"&gt;"_blank"&lt;/span&gt; &lt;span class="na"&gt;title=&lt;/span&gt;&lt;span class="s"&gt;"Share on Facebook"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;i&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;"fi fi-social-facebook"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/i&amp;gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;"https://twitter.com/intent/tweet?source={PAGEURL}&amp;amp;text={PAGETITLE}:{PAGEURL}&amp;amp;via={TWITTERUSERNAME}"&lt;/span&gt; &lt;span class="na"&gt;target=&lt;/span&gt;&lt;span class="s"&gt;"_blank"&lt;/span&gt; &lt;span class="na"&gt;title=&lt;/span&gt;&lt;span class="s"&gt;"Tweet"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;i&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;"fi fi-social-twitter"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/i&amp;gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;"https://plus.google.com/share?url={PAGEURL}"&lt;/span&gt; &lt;span class="na"&gt;target=&lt;/span&gt;&lt;span class="s"&gt;"_blank"&lt;/span&gt; &lt;span class="na"&gt;title=&lt;/span&gt;&lt;span class="s"&gt;"Share on Google+"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;i&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;"fi fi-social-google-plus"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/i&amp;gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;"http://pinterest.com/pin/create/button/?url={PAGEURL}&amp;amp;media={PAGEIMAGEURL}&amp;amp;description={PAGEDESCRIPTION}"&lt;/span&gt; &lt;span class="na"&gt;target=&lt;/span&gt;&lt;span class="s"&gt;"_blank"&lt;/span&gt; &lt;span class="na"&gt;title=&lt;/span&gt;&lt;span class="s"&gt;"Pin it"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;i&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;"fi fi-social-pinterest"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/i&amp;gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;"mailto:?subject={PAGETITLE}&amp;amp;body={PAGEDESCRIPTION}:{PAGEURL}"&lt;/span&gt; &lt;span class="na"&gt;target=&lt;/span&gt;&lt;span class="s"&gt;"_blank"&lt;/span&gt; &lt;span class="na"&gt;title=&lt;/span&gt;&lt;span class="s"&gt;"Email"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;i&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;"fi fi-mail"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/i&amp;gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre class="highlight css"&gt;&lt;code&gt;&lt;span class="nf"&gt;#share-buttons-modal&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nl"&gt;width&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;375px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  
+  &lt;span class="c"&gt;/* below definitions override Foundation responsive modal code */&lt;/span&gt;
+  &lt;span class="nl"&gt;min-height&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;initial&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nl"&gt;margin&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt; &lt;span class="nb"&gt;auto&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nl"&gt;padding&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nl"&gt;top&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;100px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nl"&gt;left&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nl"&gt;right&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nf"&gt;#share-buttons-modal&lt;/span&gt; &lt;span class="nt"&gt;a&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nl"&gt;border-right&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;1px&lt;/span&gt; &lt;span class="nb"&gt;solid&lt;/span&gt; &lt;span class="m"&gt;#eee&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nl"&gt;height&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;75px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nl"&gt;width&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;20%&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c"&gt;/* fix subpixel rendering issue */&lt;/span&gt;
+  &lt;span class="nl"&gt;float&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;left&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nl"&gt;font-size&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;60px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nl"&gt;line-height&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;75px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nl"&gt;color&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#c00&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nl"&gt;text-align&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;center&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nl"&gt;border-radius&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;3px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nf"&gt;#share-buttons-modal&lt;/span&gt; &lt;span class="nt"&gt;a&lt;/span&gt;&lt;span class="nd"&gt;:hover&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nl"&gt;background&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#f6f6f6&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nf"&gt;#share-buttons-modal&lt;/span&gt; &lt;span class="nt"&gt;a&lt;/span&gt;&lt;span class="nd"&gt;:focus&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nl"&gt;background&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#c00&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nl"&gt;color&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="no"&gt;white&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nf"&gt;#share-buttons-modal&lt;/span&gt; &lt;span class="nt"&gt;a&lt;/span&gt;&lt;span class="nd"&gt;:last-child&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nl"&gt;border-right&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;none&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Have fun!&lt;/p&gt;
+
+</content>
+  </entry>
   <entry>
     <title>Recliner.js</title>
     <link rel="alternate" href="http://sourcey.com/recliner/"/>
@@ -19,21 +129,21 @@
   &lt;h4 class="no_toc" id="contents"&gt;Contents&lt;/h4&gt;
 
 &lt;ul id="markdown-toc"&gt;
-  &lt;li&gt;&lt;a href="#usage"&gt;Usage&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href="#images"&gt;Images&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href="#iframes"&gt;IFrames&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href="#ajax"&gt;AJAX&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a id="markdown-toc-usage" href="#usage"&gt;Usage&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a id="markdown-toc-images" href="#images"&gt;Images&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a id="markdown-toc-iframes" href="#iframes"&gt;IFrames&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a id="markdown-toc-ajax" href="#ajax"&gt;AJAX&lt;/a&gt;&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-  &lt;li&gt;&lt;a href="#callbacks"&gt;Callbacks&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href="#lazyload"&gt;lazyload&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href="#lazyshow"&gt;lazyshow&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a id="markdown-toc-callbacks" href="#callbacks"&gt;Callbacks&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a id="markdown-toc-lazyload" href="#lazyload"&gt;lazyload&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a id="markdown-toc-lazyshow" href="#lazyshow"&gt;lazyshow&lt;/a&gt;&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
-  &lt;li&gt;&lt;a href="#styling"&gt;Styling&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="#demo"&gt;Demo&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="#contributing"&gt;Contributing&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="#issues"&gt;Issues&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a id="markdown-toc-styling" href="#styling"&gt;Styling&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a id="markdown-toc-demo" href="#demo"&gt;Demo&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a id="markdown-toc-contributing" href="#contributing"&gt;Contributing&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a id="markdown-toc-issues" href="#issues"&gt;Issues&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;/div&gt;
@@ -55,7 +165,7 @@
   &lt;li&gt;Lightweight&lt;/li&gt;
   &lt;li&gt;Sets stateful CSS classes on elements&lt;/li&gt;
   &lt;li&gt;Ability to override event callbacks for custom behaviour&lt;/li&gt;
-  &lt;li&gt;Can load &lt;em&gt;any&lt;/em&gt; dynamic content (images, iframes, AJAX) &lt;/li&gt;
+  &lt;li&gt;Can load &lt;em&gt;any&lt;/em&gt; dynamic content (images, iframes, AJAX)&lt;/li&gt;
   &lt;li&gt;Mobile friendly&lt;/li&gt;
 &lt;/ul&gt;
 
@@ -90,7 +200,7 @@
 &lt;pre class="highlight javascript"&gt;&lt;code&gt;&lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;window&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;trigger&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"lazyupdate"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;You can use Recliner to load a range of different dynamic content. &lt;/p&gt;
+&lt;p&gt;You can use Recliner to load a range of different dynamic content.&lt;/p&gt;
 
 &lt;div class="panel callout radius"&gt;
   &lt;p&gt;Note: It’s good practice to manually specify image dimensions so your page height doesn’t go berserk as lazy content is loading.&lt;/p&gt;
@@ -317,7 +427,7 @@
 
 &lt;p&gt;The world needs more startups tackling and solving real-life issues that affect people and improve society. Maybe then (in Australia especially), the government will start to recognise their importance and offer proper support and reforms.&lt;/p&gt;
 
-&lt;p&gt;Does your startup solve a genuine human issue, or is it just another useless tech gimmick? The next time I hear an entrepreneur saying he is making the world a better place with a crappy new social network I think I’m going to puke - right on the speaker! If that’s the case then you need to seriously consider what’s important and kind of world you want to be living in. &lt;/p&gt;
+&lt;p&gt;Does your startup solve a genuine human issue, or is it just another useless tech gimmick? The next time I hear an entrepreneur saying he is making the world a better place with a crappy new social network I think I’m going to puke - right on the speaker! If that’s the case then you need to seriously consider what’s important and kind of world you want to be living in.&lt;/p&gt;
 
 &lt;p&gt;Theres huge money for startups that are providing genuine solutions for global issues, and making them accessible for consumers and governments who’re scrambling for the light switch. As entrepreneurs we have to power to create the future, so let’s use it to build something brilliant and worthwhile!&lt;/p&gt;
 </content>
@@ -335,13 +445,13 @@
   &lt;h4 class="no_toc" id="contents"&gt;Contents&lt;/h4&gt;
 
 &lt;ul id="markdown-toc"&gt;
-  &lt;li&gt;&lt;a href="#abi-and-binary-compatibility"&gt;ABI and Binary Compatibility&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="#interprocess-memory-handling"&gt;Interprocess Memory Handling&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="#plugin-system-api"&gt;Plugin System API&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="#plugin-api"&gt;Plugin API&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="#implementing-plugins"&gt;Implementing Plugins&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="#a-simple-application"&gt;A Simple Application&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="#installing-pluga"&gt;Installing Pluga&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a id="markdown-toc-abi-and-binary-compatibility" href="#abi-and-binary-compatibility"&gt;ABI and Binary Compatibility&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a id="markdown-toc-interprocess-memory-handling" href="#interprocess-memory-handling"&gt;Interprocess Memory Handling&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a id="markdown-toc-plugin-system-api" href="#plugin-system-api"&gt;Plugin System API&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a id="markdown-toc-plugin-api" href="#plugin-api"&gt;Plugin API&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a id="markdown-toc-implementing-plugins" href="#implementing-plugins"&gt;Implementing Plugins&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a id="markdown-toc-a-simple-application" href="#a-simple-application"&gt;A Simple Application&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a id="markdown-toc-installing-pluga" href="#installing-pluga"&gt;Installing Pluga&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;/div&gt;
@@ -354,10 +464,10 @@
 
 &lt;p&gt;The first thing to consider when designing your &lt;a href="#plugin-api"&gt;Plugin API&lt;/a&gt; is &lt;a href="http://en.wikipedia.org/wiki/Application_binary_interface"&gt;ABI&lt;/a&gt; compatibility. Unlike dynamically scripted languages, C++ demands that any shared libraries loaded by the runtime are binary compatible, otherwise all hell breaks loose. Essentially, this means that both the application and plugins must be compiled using the exactly the same development environment.&lt;/p&gt;
 
-&lt;p&gt;If you can, try and stick to this one simple rule: only pass POD (plain old data) data types across process boundaries. By sticking to POD types the binaries will have no interdependent shared libraries, and you can avoid binary compatibility issues altogether. &lt;/p&gt;
+&lt;p&gt;If you can, try and stick to this one simple rule: only pass POD (plain old data) data types across process boundaries. By sticking to POD types the binaries will have no interdependent shared libraries, and you can avoid binary compatibility issues altogether.&lt;/p&gt;
 
 &lt;p&gt;The tradeoff is that standard libraries differ from compiler to compiler, platform to platform, even version to version, so they should always be deemed to be binary incompatible. This means that unless you want to force clients to use exactly the same OS, compiler and third party dependencies as you when buildng plugins for your application, then you’ll need to avoid using STL containers or other complex types in your &lt;a href="#plugin-api"&gt;Plugin API&lt;/a&gt;.
-“But this is C++!?”, you cry in anguish, and unless you’re rockin’ a mullet with a stubbie cooler then who could blame you? Unfortunately that’s just the way it is, so in this case all we can do is bite our collective upper lip and move on. &lt;/p&gt;
+“But this is C++!?”, you cry in anguish, and unless you’re rockin’ a mullet with a stubbie cooler then who could blame you? Unfortunately that’s just the way it is, so in this case all we can do is bite our collective upper lip and move on.&lt;/p&gt;
 
 &lt;!--
 Even the standard libraries themselves are not binary compatible, 
@@ -416,7 +526,7 @@ Even the standard libraries themselves are not binary compatible,
 
 &lt;h2 id="interprocess-memory-handling"&gt;Interprocess Memory Handling&lt;/h2&gt;
 
-&lt;p&gt;One other simple rule that will save you no small amount of frustration later on down the track is: any memory allocated by a process should be deallocated by the same process. &lt;/p&gt;
+&lt;p&gt;One other simple rule that will save you no small amount of frustration later on down the track is: any memory allocated by a process should be deallocated by the same process.&lt;/p&gt;
 
 &lt;p&gt;Let’s say the application asks the plugin to allocate and return a &lt;code&gt;char*&lt;/code&gt; buffer, and then proceeds to delete the buffer when it’s done with it. Honk! Big no no, you’re just asking for a crash.&lt;/p&gt;
 
@@ -804,64 +914,6 @@ All virtual plugin methods and functionality are exposed by ,
 	&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;"Printing version (3.7.8.0): "&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;Version&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"3.7.8.0"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
-</content>
-  </entry>
-  <entry>
-    <title>Agile Peer Code Reviews with Codebrag</title>
-    <link rel="alternate" href="http://sourcey.com/agile-peer-code-reviews-with-codebrag/"/>
-    <id>http://sourcey.com/agile-peer-code-reviews-with-codebrag/</id>
-    <published>2014-05-21T00:00:00Z</published>
-    <updated>2014-06-01T07:35:57+02:00</updated>
-    <author>
-      <name>Mirek Woźniak</name>
-    </author>
-    <content type="html">&lt;div class="sidebar-section toc"&gt;
-  &lt;h4 class="no_toc" id="contents"&gt;Contents&lt;/h4&gt;
-
-&lt;ul id="markdown-toc"&gt;
-  &lt;li&gt;&lt;a href="#fun--different"&gt;Fun = Different?&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="#less-loss"&gt;Less Loss&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="#lightweight-and-secure"&gt;Lightweight and Secure&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="#status--plans"&gt;Status &amp;amp; Plans&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;/div&gt;
-
-&lt;p&gt;It’s Friday afternoon and you’re sitting in the office, extinguishing the fire on the production server.
-You promise yourself that it won’t happen again, not after tonight. But it happened in the past. And might happen in the future. &lt;/p&gt;
-
-&lt;p&gt;Well, we’ve been there. Experienced the frustration and tiredness of staying late and fixing bugs. That’s why we’ve decided to do something about it.
-Enter &lt;a href="http://codebrag.com"&gt;Codebrag&lt;/a&gt;, the code review tool your team will actually use.&lt;/p&gt;
-
-&lt;p&gt;&lt;img alt="Codebrag" title="Codebrag" src="/agile-peer-code-reviews-with-codebrag/cbr-landing-snippet.png" /&gt;&lt;/p&gt;
-
-&lt;h2 id="fun--different"&gt;Fun = Different?&lt;/h2&gt;
-
-&lt;p&gt;Why you don’t like code reviews? &lt;/p&gt;
-
-&lt;p&gt;You get criticised. Your carefully crafted code gets smashed to bits and analysed like an insect under a microscope. You &lt;em&gt;have&lt;/em&gt; to do code reviews, not necessarily &lt;em&gt;want&lt;/em&gt; to do them. You get stressed and the code quality gets hurt as well.&lt;/p&gt;
-
-&lt;p&gt;What if code reviews could be… fun? &lt;/p&gt;
-
-&lt;p&gt;We’ve built Codebrag to make you enjoy code reviews. Starting from a game-like, friendly interface to adding “Likes” to blocks of code, Codebrag is built around the idea of a positive atmosphere of software craftsmanship.&lt;/p&gt;
-
-&lt;p&gt;&lt;img alt="Codebrag App Overview" title="Codebrag App Overview" src="/agile-peer-code-reviews-with-codebrag/cbr-app-overview.png" /&gt;&lt;/p&gt;
-
-&lt;h2 id="less-loss"&gt;Less Loss&lt;/h2&gt;
-
-&lt;p&gt;And it isn’t just for fun. You can’t really estimate the cost of an emotionally-wrecked developer. &lt;/p&gt;
-
-&lt;p&gt;Imagine that Amazon’s down for a minute. The loss toll would be &lt;em&gt;quite&lt;/em&gt; high. Or the recent Heartbleed security loophole - isn’t this all about people not getting enough support, proper feedback and rest? Once again, Codebrag addresses those issues by allowing you to introduce flexible code reviews methods, eliminating the possibility of bugs being overlooked.&lt;/p&gt;
-
-&lt;h2 id="lightweight-and-secure"&gt;Lightweight and Secure&lt;/h2&gt;
-
-&lt;p&gt;You set up Codebrag on your own terms, using your servers. Just &lt;a href="http://codebrag.com#get-codebrag"&gt;download the package&lt;/a&gt;, do a quick config, clone your repository start reviewing your friends’ code. Codebrag is simple with the workflow focused on finding and eradicating problems as well as mutual learning and team support. &lt;/p&gt;
-
-&lt;h2 id="status--plans"&gt;Status &amp;amp; Plans&lt;/h2&gt;
-
-&lt;p&gt;Codebrag is currently in 2.0 version with Git, SVN, local and cloud repositories and both post-commit and review of feature branches support. It’s developed by people from &lt;a href="http://softwaremill.com"&gt;SoftwareMill&lt;/a&gt; as a dogfood and startup project - we use Codebrag in our projects and decided to share it with the people. You can tweet us @codebrag and visit our &lt;a href="http://blog.codebrag.com"&gt;blog&lt;/a&gt; for code review guides and Codebrag news.&lt;/p&gt;
-
-&lt;iframe width="590" height="360" src="//www.youtube.com/embed/PxQflI7Bgxc" frameborder="0" allowfullscreen=""&gt;&lt;/iframe&gt;
 </content>
   </entry>
 </feed>
