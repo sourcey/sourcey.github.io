@@ -182,6 +182,8 @@ http://sourcey.com/images/loader.gif
 
 
 
+
+
 http://sourcey.com/installing-trac-with-monit-on-centos/
 
 
@@ -209,6 +211,9 @@ http://sourcey.com/favicon.ico
 http://sourcey.com/guest-posting-opportunities/
 
 
+http://sourcey.com/android-horizontally-scrolling-pan-scan-and-zoom-image-gallery/
+
+
 http://sourcey.com/conquering-the-internet/
 
 
@@ -231,6 +236,9 @@ http://sourcey.com/making-the-world-a-better-place/
 
 
 http://sourcey.com/
+
+
+http://sourcey.com/beautiful-android-login-and-signup-demo-with-material-design/
 
 
 http://sourcey.com/recliner/
@@ -469,6 +477,12 @@ http://sourcey.com/tags/demo/
 http://sourcey.com/tags/thumbnails/
 
 
+http://sourcey.com/tags/android/
+
+
+http://sourcey.com/tags/gallery/
+
+
 http://sourcey.com/tags/marketing/
 
 
@@ -488,6 +502,9 @@ http://sourcey.com/tags/startups/
 
 
 http://sourcey.com/tags/technology/
+
+
+http://sourcey.com/tags/material/
 
 
 http://sourcey.com/tags/google/

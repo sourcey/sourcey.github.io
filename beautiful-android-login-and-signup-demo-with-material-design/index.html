@@ -1,0 +1,444 @@
+<!doctype html> <html class=no-js lang=en> <head> <title>Beautiful Android Login and Signup Demo with Material Design | Sourcey</title> <meta charset=utf-8 /> <meta name=viewport content="width=device-width, initial-scale=1.0"/> <meta name=google-site-verification content=lC7-hHwqtiRqo7YTHc1fJ6t8ie-Hs7J4o5u3XRIF9Vw /> <link rel=alternate type="application/atom+xml" title="Atom Feed" href="/feed.xml"/> <link href="/stylesheets/app.css" media=screen rel=stylesheet /> <script src="/javascripts/all.js"></script> <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-836728-7', 'sourcey.com');
+      ga('send', 'pageview');
+    </script> </head> <body class="article beautiful-android-login-and-signup-demo-with-material-design beautiful-android-login-and-signup-demo-with-material-design_index"> <nav class=top-bar data-topbar=""> <div class=top-bar-inner> <div id=social> <a href="https://github.com/sourcey"><i class=fi-social-github></i></a> <a href="https://twitter.com/sourceydevel"><i class=fi-social-twitter></i></a> <a href="https://plus.google.com/+SourceyDevel"><i class=fi-social-google-plus></i></a> <a href="https://facebook.com/sourceydevel"><i class=fi-social-facebook></i></a> </div> <ul class=title-area> <li class=name></li> <li class="toggle-topbar menu-icon"><a href="#" class=left></a></li> </ul> <section class=top-bar-section style="left: 0%;"> <ul class=left> <li class=home><a href="/">Home</a></li> <li class=has-dropdown><a href="/#projects">Projects</a> <ul class=dropdown><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li> <li> <a href="/libsourcey"><b>LibSourcey</b><small>C++ networking evolved</small></a> </li> <li> <a href="/anionu"><b>Anionu</b><small>Cloud video surveillance</small></a> </li> <li> <a href="//stompstart.com"><b>StompStart</b><small>Promote your startup</small></a> </li> <li> <a href="/symple"><b>Symple</b><small>Messaging made Symple</small></a> </li> <li> <a href="/mesh"><b>Mesh</b><small>Elegant, modern design</small></a> </li> <li> <a href="/pacm"><b>Pacm</b><small>Redistributable package manager</small></a> </li> <li> <a href="/pluga"><b>Pluga</b><small>C++ plugin system</small></a> </li> <li> <a href="//avidsense.com"><b>Avid Sense</b><small>Freedom of expression</small></a> </li> <li> <a href="/recliner"><b>Recliner.js</b><small>Flexible lazy loading</small></a> </li> </ul> </li> <li class=has-dropdown><a href="/#articles">Articles</a> <ul class=dropdown> <li><a href="/archives">Archives</a></li> <li><a href="/feed.xml">Feed</a></li> </ul> </li> <li><a href="mailto:hello@sourcey.com">Contact</a></li> <li class=divider></li> </ul> </section> </div> </nav> <header id=header> <h1 id=logo> <a title=Sourcey rel=home href="//sourcey.com"><img height=150 width=150 title=Sourcey alt=Sourcey src="/images/logos/sourcey-glow-250x250.png"/></a> </h1> </header> <div id=main role=main> <article> <header class=article-header> <h1>Beautiful Android Login and Signup Demo with Material Design</h1> <div class=meta> By <a rel="author external" href="https://plus.google.com/+KamLow">Kam Low</a> &diams; <time class=updated datetime="Jun 18 2015">Jun 18 2015</time> </div> </header> <div class="article-wrap row"> <div class="large-8 columns"> <div class=content> <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"> <html><body> <p>This article provides you with everything you need to implement your own beautiful login and sinup pages using the <a href="">Material design spec</a>. Google’s new <a href="">design support library</a> implements a growing subset of the Material spec, and includes some great new UI widgets that we can use to give our Android apps that polished feel.</p> <p>The main element we will be using from the design library to beautify our forms is the <a href="">FloatingLabelInput</a>, which is implemented via the TextInputLayout tag. Then FloatingLabelInput consists basically of an EditText element, where the placeholder text hovers above the element when selected.</p> <p>Everything has been done for you, but you will need to implement your own authentication logic, weather it be via HTTP, SQL or some other method. Now let the fun stuff commence!</p> <center> <p><a class="action-button button radius" target=_blank href="https://github.com/sourcey/materiallogindemo" title="Get the Code on Github">Get the Code</a></p> </center> <h2 id=login-activity>Login Activity</h2> <p>Let’s begin by setting up the Login Activity, as it will be the first Activity that’s displayed to the user. The Login Activity can be started at any time, either at load time, or when the user is logged out.</p> <p>The code is below:</p> <pre class="highlight java"><code><span class="c1">// LoginActivity.java</span>
+
+<span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">sourcey</span><span class="o">.</span><span class="na">materiallogindemo</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">android.app.ProgressDialog</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.os.Bundle</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.support.v7.app.AppCompatActivity</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.util.Log</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">android.content.Intent</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.view.View</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.widget.Button</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.widget.EditText</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.widget.TextView</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.widget.Toast</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">butterknife.ButterKnife</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">butterknife.InjectView</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">LoginActivity</span> <span class="kd">extends</span> <span class="n">AppCompatActivity</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">TAG</span> <span class="o">=</span> <span class="s">"LoginActivity"</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">REQUEST_SIGNUP</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+
+    <span class="nd">@InjectView</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">input_email</span><span class="o">)</span> <span class="n">EditText</span> <span class="n">_emailText</span><span class="o">;</span>
+    <span class="nd">@InjectView</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">input_password</span><span class="o">)</span> <span class="n">EditText</span> <span class="n">_passwordText</span><span class="o">;</span>
+    <span class="nd">@InjectView</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">btn_login</span><span class="o">)</span> <span class="n">Button</span> <span class="n">_loginButton</span><span class="o">;</span>
+    <span class="nd">@InjectView</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">link_signup</span><span class="o">)</span> <span class="n">TextView</span> <span class="n">_signupLink</span><span class="o">;</span>
+    
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="n">onCreate</span><span class="o">(</span><span class="n">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">super</span><span class="o">.</span><span class="na">onCreate</span><span class="o">(</span><span class="n">savedInstanceState</span><span class="o">);</span>
+        <span class="n">setContentView</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">activity_login</span><span class="o">);</span>
+        <span class="n">ButterKnife</span><span class="o">.</span><span class="na">inject</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+        
+        <span class="n">_loginButton</span><span class="o">.</span><span class="na">setOnClickListener</span><span class="o">(</span><span class="k">new</span> <span class="n">View</span><span class="o">.</span><span class="na">OnClickListener</span><span class="o">()</span> <span class="o">{</span>
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="n">onClick</span><span class="o">(</span><span class="n">View</span> <span class="n">v</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">login</span><span class="o">();</span>
+            <span class="o">}</span>
+        <span class="o">});</span>
+
+        <span class="n">_signupLink</span><span class="o">.</span><span class="na">setOnClickListener</span><span class="o">(</span><span class="k">new</span> <span class="n">View</span><span class="o">.</span><span class="na">OnClickListener</span><span class="o">()</span> <span class="o">{</span>
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="n">onClick</span><span class="o">(</span><span class="n">View</span> <span class="n">v</span><span class="o">)</span> <span class="o">{</span>
+                <span class="c1">// Start the Signup activity</span>
+                <span class="n">Intent</span> <span class="n">intent</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Intent</span><span class="o">(</span><span class="n">getApplicationContext</span><span class="o">(),</span> <span class="n">SignupActivity</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+                <span class="n">startActivityForResult</span><span class="o">(</span><span class="n">intent</span><span class="o">,</span> <span class="n">REQUEST_SIGNUP</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">});</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="n">login</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">Log</span><span class="o">.</span><span class="na">d</span><span class="o">(</span><span class="n">TAG</span><span class="o">,</span> <span class="s">"Login"</span><span class="o">);</span>
+        
+        <span class="k">if</span> <span class="o">(!</span><span class="n">validate</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">onLoginFailed</span><span class="o">();</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="n">_loginButton</span><span class="o">.</span><span class="na">setEnabled</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+
+        <span class="kd">final</span> <span class="n">ProgressDialog</span> <span class="n">progressDialog</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ProgressDialog</span><span class="o">(</span><span class="n">LoginActivity</span><span class="o">.</span><span class="na">this</span><span class="o">,</span>
+                <span class="n">R</span><span class="o">.</span><span class="na">style</span><span class="o">.</span><span class="na">AppTheme_Dark_Dialog</span><span class="o">);</span>
+        <span class="n">progressDialog</span><span class="o">.</span><span class="na">setIndeterminate</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+        <span class="n">progressDialog</span><span class="o">.</span><span class="na">setMessage</span><span class="o">(</span><span class="s">"Authenticating..."</span><span class="o">);</span>
+        <span class="n">progressDialog</span><span class="o">.</span><span class="na">show</span><span class="o">();</span>
+
+        <span class="n">String</span> <span class="n">email</span> <span class="o">=</span> <span class="n">_emailText</span><span class="o">.</span><span class="na">getText</span><span class="o">().</span><span class="na">toString</span><span class="o">();</span>
+        <span class="n">String</span> <span class="n">password</span> <span class="o">=</span> <span class="n">_passwordText</span><span class="o">.</span><span class="na">getText</span><span class="o">().</span><span class="na">toString</span><span class="o">();</span>
+
+        <span class="c1">// Implement your authentication logic here. On complete call either onLoginSuccess</span>
+        <span class="c1">// or onLoginFailed</span>
+        <span class="n">onLoginSuccess</span><span class="o">();</span>
+        <span class="c1">// onLoginFailed();</span>
+
+        <span class="n">progressDialog</span><span class="o">.</span><span class="na">dismiss</span><span class="o">();</span>
+    <span class="o">}</span>
+
+
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="kt">void</span> <span class="n">onActivityResult</span><span class="o">(</span><span class="kt">int</span> <span class="n">requestCode</span><span class="o">,</span> <span class="kt">int</span> <span class="n">resultCode</span><span class="o">,</span> <span class="n">Intent</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">requestCode</span> <span class="o">==</span> <span class="n">REQUEST_SIGNUP</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">resultCode</span> <span class="o">==</span> <span class="n">RESULT_OK</span><span class="o">)</span> <span class="o">{</span>
+
+                <span class="c1">// If the user signs up successfully we can log them in automatically</span>
+                <span class="k">this</span><span class="o">.</span><span class="na">finish</span><span class="o">();</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="n">onLoginSuccess</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">_loginButton</span><span class="o">.</span><span class="na">setEnabled</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+        <span class="n">finish</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="n">onLoginFailed</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">Toast</span><span class="o">.</span><span class="na">makeText</span><span class="o">(</span><span class="n">getBaseContext</span><span class="o">(),</span> <span class="s">"Login failed"</span><span class="o">,</span> <span class="n">Toast</span><span class="o">.</span><span class="na">LENGTH_LONG</span><span class="o">).</span><span class="na">show</span><span class="o">();</span>
+
+        <span class="n">_loginButton</span><span class="o">.</span><span class="na">setEnabled</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="n">validate</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kt">boolean</span> <span class="n">valid</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+
+        <span class="n">String</span> <span class="n">email</span> <span class="o">=</span> <span class="n">_emailText</span><span class="o">.</span><span class="na">getText</span><span class="o">().</span><span class="na">toString</span><span class="o">();</span>
+        <span class="n">String</span> <span class="n">password</span> <span class="o">=</span> <span class="n">_passwordText</span><span class="o">.</span><span class="na">getText</span><span class="o">().</span><span class="na">toString</span><span class="o">();</span>
+
+        <span class="k">if</span> <span class="o">(</span><span class="n">email</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">()</span> <span class="o">||</span> <span class="o">!</span><span class="n">android</span><span class="o">.</span><span class="na">util</span><span class="o">.</span><span class="na">Patterns</span><span class="o">.</span><span class="na">EMAIL_ADDRESS</span><span class="o">.</span><span class="na">matcher</span><span class="o">(</span><span class="n">email</span><span class="o">).</span><span class="na">matches</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">_emailText</span><span class="o">.</span><span class="na">setError</span><span class="o">(</span><span class="s">"enter a valid email address"</span><span class="o">);</span>
+            <span class="n">valid</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="n">_emailText</span><span class="o">.</span><span class="na">setError</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="k">if</span> <span class="o">(</span><span class="n">password</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">()</span> <span class="o">||</span> <span class="n">password</span><span class="o">.</span><span class="na">length</span><span class="o">()</span> <span class="o">&lt;</span> <span class="mi">4</span> <span class="o">||</span> <span class="n">password</span><span class="o">.</span><span class="na">length</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">_passwordText</span><span class="o">.</span><span class="na">setError</span><span class="o">(</span><span class="s">"between 4 and 10 alphanumeric characters"</span><span class="o">);</span>
+            <span class="n">valid</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="n">_passwordText</span><span class="o">.</span><span class="na">setError</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="k">return</span> <span class="n">valid</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre> <p>Go ahead and save the following layout code into <code>res/layout/activity_login.xml</code></p> <pre class="highlight xml"><code><span class="cp">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span>
+<span class="nt">&lt;ScrollView</span> <span class="na">xmlns:android=</span><span class="s">"http://schemas.android.com/apk/res/android"</span>
+    <span class="na">android:layout_width=</span><span class="s">"fill_parent"</span>
+    <span class="na">android:layout_height=</span><span class="s">"fill_parent"</span><span class="nt">&gt;</span>
+
+    <span class="nt">&lt;LinearLayout</span>
+        <span class="na">android:orientation=</span><span class="s">"vertical"</span>
+        <span class="na">android:layout_width=</span><span class="s">"match_parent"</span>
+        <span class="na">android:layout_height=</span><span class="s">"wrap_content"</span>
+        <span class="na">android:paddingTop=</span><span class="s">"56dp"</span>
+        <span class="na">android:paddingLeft=</span><span class="s">"24dp"</span>
+        <span class="na">android:paddingRight=</span><span class="s">"24dp"</span><span class="nt">&gt;</span>
+
+        <span class="nt">&lt;ImageView</span> <span class="na">android:src=</span><span class="s">"@drawable/logo"</span>
+            <span class="na">android:layout_width=</span><span class="s">"wrap_content"</span>
+            <span class="na">android:layout_height=</span><span class="s">"72dp"</span>
+            <span class="na">android:layout_marginBottom=</span><span class="s">"24dp"</span>
+            <span class="na">android:layout_gravity=</span><span class="s">"center_horizontal"</span> <span class="nt">/&gt;</span>
+
+        <span class="c">&lt;!-- Email Label --&gt;</span>
+        <span class="nt">&lt;android.support.design.widget.TextInputLayout</span>
+            <span class="na">android:layout_width=</span><span class="s">"match_parent"</span>
+            <span class="na">android:layout_height=</span><span class="s">"wrap_content"</span>
+            <span class="na">android:layout_marginTop=</span><span class="s">"8dp"</span>
+            <span class="na">android:layout_marginBottom=</span><span class="s">"8dp"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;EditText</span> <span class="na">android:id=</span><span class="s">"@+id/input_email"</span>
+                <span class="na">android:layout_width=</span><span class="s">"match_parent"</span>
+                <span class="na">android:layout_height=</span><span class="s">"wrap_content"</span>
+                <span class="na">android:inputType=</span><span class="s">"textEmailAddress"</span>
+                <span class="na">android:hint=</span><span class="s">"Email"</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;/android.support.design.widget.TextInputLayout&gt;</span>
+
+        <span class="c">&lt;!-- Password Label --&gt;</span>
+        <span class="nt">&lt;android.support.design.widget.TextInputLayout</span>
+            <span class="na">android:layout_width=</span><span class="s">"match_parent"</span>
+            <span class="na">android:layout_height=</span><span class="s">"wrap_content"</span>
+            <span class="na">android:layout_marginTop=</span><span class="s">"8dp"</span>
+            <span class="na">android:layout_marginBottom=</span><span class="s">"8dp"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;EditText</span> <span class="na">android:id=</span><span class="s">"@+id/input_password"</span>
+                <span class="na">android:layout_width=</span><span class="s">"match_parent"</span>
+                <span class="na">android:layout_height=</span><span class="s">"wrap_content"</span>
+                <span class="na">android:inputType=</span><span class="s">"textPassword"</span>
+                <span class="na">android:hint=</span><span class="s">"Password"</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;/android.support.design.widget.TextInputLayout&gt;</span>
+
+        <span class="nt">&lt;android.support.v7.widget.AppCompatButton</span>
+            <span class="na">android:id=</span><span class="s">"@+id/btn_login"</span>
+            <span class="na">android:layout_width=</span><span class="s">"fill_parent"</span>
+            <span class="na">android:layout_height=</span><span class="s">"wrap_content"</span>
+            <span class="na">android:layout_marginTop=</span><span class="s">"24dp"</span>
+            <span class="na">android:layout_marginBottom=</span><span class="s">"24dp"</span>
+            <span class="na">android:padding=</span><span class="s">"12dp"</span>
+            <span class="na">android:text=</span><span class="s">"Login"</span><span class="nt">/&gt;</span>
+
+        <span class="nt">&lt;TextView</span> <span class="na">android:id=</span><span class="s">"@+id/link_signup"</span>
+            <span class="na">android:layout_width=</span><span class="s">"fill_parent"</span>
+            <span class="na">android:layout_height=</span><span class="s">"wrap_content"</span>
+            <span class="na">android:layout_marginBottom=</span><span class="s">"24dp"</span>
+            <span class="na">android:text=</span><span class="s">"No account yet? Create one"</span>
+            <span class="na">android:gravity=</span><span class="s">"center"</span>
+            <span class="na">android:textSize=</span><span class="s">"16dip"</span><span class="nt">/&gt;</span>
+
+    <span class="nt">&lt;/LinearLayout&gt;</span>
+<span class="nt">&lt;/ScrollView&gt;</span>
+</code></pre> <h2 id=signup-activity>Signup Activity</h2> <p>The Signup Activity enables the user to create an account on your app, and is generally displayed via the link on the Login Activity.</p> <p>Note that we set a <code>RESULT_OK</code> result when the user signs up successfully. This result can be handled via the <code>onActivityResult</code> method of the Login Activity to determine how a successfull signup is handled. The current logic is simply to log the user in straight away after a successfull signup, but if you want to implement some kind of email validation then you will need to do that part yourself.</p> <pre class="highlight java"><code><span class="c1">// SignupActivity.java</span>
+
+<span class="kn">package</span> <span class="n">com</span><span class="o">.</span><span class="na">sourcey</span><span class="o">.</span><span class="na">materiallogindemo</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">android.app.ProgressDialog</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.os.Bundle</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.support.v7.app.AppCompatActivity</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.util.Log</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.view.View</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.widget.Button</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.widget.EditText</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.widget.TextView</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">android.widget.Toast</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">butterknife.ButterKnife</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">butterknife.InjectView</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SignupActivity</span> <span class="kd">extends</span> <span class="n">AppCompatActivity</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">TAG</span> <span class="o">=</span> <span class="s">"SignupActivity"</span><span class="o">;</span>
+
+    <span class="nd">@InjectView</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">input_name</span><span class="o">)</span> <span class="n">EditText</span> <span class="n">_nameText</span><span class="o">;</span>
+    <span class="nd">@InjectView</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">input_email</span><span class="o">)</span> <span class="n">EditText</span> <span class="n">_emailText</span><span class="o">;</span>
+    <span class="nd">@InjectView</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">input_password</span><span class="o">)</span> <span class="n">EditText</span> <span class="n">_passwordText</span><span class="o">;</span>
+    <span class="nd">@InjectView</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">btn_signup</span><span class="o">)</span> <span class="n">Button</span> <span class="n">_signupButton</span><span class="o">;</span>
+    <span class="nd">@InjectView</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">link_login</span><span class="o">)</span> <span class="n">TextView</span> <span class="n">_loginLink</span><span class="o">;</span>
+    
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="n">onCreate</span><span class="o">(</span><span class="n">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">super</span><span class="o">.</span><span class="na">onCreate</span><span class="o">(</span><span class="n">savedInstanceState</span><span class="o">);</span>
+        <span class="n">setContentView</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">activity_signup</span><span class="o">);</span>
+        <span class="n">ButterKnife</span><span class="o">.</span><span class="na">inject</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+
+        <span class="n">_signupButton</span><span class="o">.</span><span class="na">setOnClickListener</span><span class="o">(</span><span class="k">new</span> <span class="n">View</span><span class="o">.</span><span class="na">OnClickListener</span><span class="o">()</span> <span class="o">{</span>
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="n">onClick</span><span class="o">(</span><span class="n">View</span> <span class="n">v</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">signup</span><span class="o">();</span>
+            <span class="o">}</span>
+        <span class="o">});</span>
+
+        <span class="n">_loginLink</span><span class="o">.</span><span class="na">setOnClickListener</span><span class="o">(</span><span class="k">new</span> <span class="n">View</span><span class="o">.</span><span class="na">OnClickListener</span><span class="o">()</span> <span class="o">{</span>
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="n">onClick</span><span class="o">(</span><span class="n">View</span> <span class="n">v</span><span class="o">)</span> <span class="o">{</span>
+                <span class="c1">// Finish the registration screen and return to the Login activity</span>
+                <span class="n">finish</span><span class="o">();</span>
+            <span class="o">}</span>
+        <span class="o">});</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="n">signup</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">Log</span><span class="o">.</span><span class="na">d</span><span class="o">(</span><span class="n">TAG</span><span class="o">,</span> <span class="s">"Register"</span><span class="o">);</span>
+
+        <span class="k">if</span> <span class="o">(!</span><span class="n">validate</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">onSignupFailed</span><span class="o">();</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="n">_signupButton</span><span class="o">.</span><span class="na">setEnabled</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+
+        <span class="kd">final</span> <span class="n">ProgressDialog</span> <span class="n">progressDialog</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ProgressDialog</span><span class="o">(</span><span class="n">SignupActivity</span><span class="o">.</span><span class="na">this</span><span class="o">,</span>
+                <span class="n">R</span><span class="o">.</span><span class="na">style</span><span class="o">.</span><span class="na">AppTheme_Dark_Dialog</span><span class="o">);</span>
+        <span class="n">progressDialog</span><span class="o">.</span><span class="na">setIndeterminate</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+        <span class="n">progressDialog</span><span class="o">.</span><span class="na">setMessage</span><span class="o">(</span><span class="s">"Creating Account..."</span><span class="o">);</span>
+        <span class="n">progressDialog</span><span class="o">.</span><span class="na">show</span><span class="o">();</span>
+
+        <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="n">_nameText</span><span class="o">.</span><span class="na">getText</span><span class="o">().</span><span class="na">toString</span><span class="o">();</span>
+        <span class="n">String</span> <span class="n">email</span> <span class="o">=</span> <span class="n">_emailText</span><span class="o">.</span><span class="na">getText</span><span class="o">().</span><span class="na">toString</span><span class="o">();</span>
+        <span class="n">String</span> <span class="n">password</span> <span class="o">=</span> <span class="n">_passwordText</span><span class="o">.</span><span class="na">getText</span><span class="o">().</span><span class="na">toString</span><span class="o">();</span>
+
+        <span class="c1">// Implement your authentication logic here. On complete call either onSignupSuccess</span>
+        <span class="c1">// or onSignupFailed</span>
+        <span class="n">onSignupSuccess</span><span class="o">();</span>
+        <span class="c1">// onSignupFailed();</span>
+
+        <span class="n">progressDialog</span><span class="o">.</span><span class="na">dismiss</span><span class="o">();</span>
+    <span class="o">}</span>
+
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="n">onSignupSuccess</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">_signupButton</span><span class="o">.</span><span class="na">setEnabled</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+        <span class="n">setResult</span><span class="o">(</span><span class="n">RESULT_OK</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+        <span class="n">finish</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="n">onSignupFailed</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">Toast</span><span class="o">.</span><span class="na">makeText</span><span class="o">(</span><span class="n">getBaseContext</span><span class="o">(),</span> <span class="s">"Login failed"</span><span class="o">,</span> <span class="n">Toast</span><span class="o">.</span><span class="na">LENGTH_LONG</span><span class="o">).</span><span class="na">show</span><span class="o">();</span>
+
+        <span class="n">_signupButton</span><span class="o">.</span><span class="na">setEnabled</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="n">validate</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kt">boolean</span> <span class="n">valid</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+
+        <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="n">_nameText</span><span class="o">.</span><span class="na">getText</span><span class="o">().</span><span class="na">toString</span><span class="o">();</span>
+        <span class="n">String</span> <span class="n">email</span> <span class="o">=</span> <span class="n">_emailText</span><span class="o">.</span><span class="na">getText</span><span class="o">().</span><span class="na">toString</span><span class="o">();</span>
+        <span class="n">String</span> <span class="n">password</span> <span class="o">=</span> <span class="n">_passwordText</span><span class="o">.</span><span class="na">getText</span><span class="o">().</span><span class="na">toString</span><span class="o">();</span>
+
+        <span class="k">if</span> <span class="o">(</span><span class="n">name</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">()</span> <span class="o">||</span> <span class="n">name</span><span class="o">.</span><span class="na">length</span><span class="o">()</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">_nameText</span><span class="o">.</span><span class="na">setError</span><span class="o">(</span><span class="s">"at least 3 characters"</span><span class="o">);</span>
+            <span class="n">valid</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="n">_nameText</span><span class="o">.</span><span class="na">setError</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="k">if</span> <span class="o">(</span><span class="n">email</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">()</span> <span class="o">||</span> <span class="o">!</span><span class="n">android</span><span class="o">.</span><span class="na">util</span><span class="o">.</span><span class="na">Patterns</span><span class="o">.</span><span class="na">EMAIL_ADDRESS</span><span class="o">.</span><span class="na">matcher</span><span class="o">(</span><span class="n">email</span><span class="o">).</span><span class="na">matches</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">_emailText</span><span class="o">.</span><span class="na">setError</span><span class="o">(</span><span class="s">"enter a valid email address"</span><span class="o">);</span>
+            <span class="n">valid</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="n">_emailText</span><span class="o">.</span><span class="na">setError</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="k">if</span> <span class="o">(</span><span class="n">password</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">()</span> <span class="o">||</span> <span class="n">password</span><span class="o">.</span><span class="na">length</span><span class="o">()</span> <span class="o">&lt;</span> <span class="mi">4</span> <span class="o">||</span> <span class="n">password</span><span class="o">.</span><span class="na">length</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">_passwordText</span><span class="o">.</span><span class="na">setError</span><span class="o">(</span><span class="s">"between 4 and 10 alphanumeric characters"</span><span class="o">);</span>
+            <span class="n">valid</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="n">_passwordText</span><span class="o">.</span><span class="na">setError</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="k">return</span> <span class="n">valid</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre> <p>Save the following layout code into <code>res/layout/activity_signup.xml</code></p> <pre class="highlight xml"><code><span class="cp">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span>
+<span class="nt">&lt;ScrollView</span>
+    <span class="na">xmlns:android=</span><span class="s">"http://schemas.android.com/apk/res/android"</span>
+    <span class="na">android:layout_width=</span><span class="s">"fill_parent"</span>
+    <span class="na">android:layout_height=</span><span class="s">"fill_parent"</span>
+    <span class="na">android:fitsSystemWindows=</span><span class="s">"true"</span><span class="nt">&gt;</span>
+
+    <span class="nt">&lt;LinearLayout</span>
+        <span class="na">android:orientation=</span><span class="s">"vertical"</span>
+        <span class="na">android:layout_width=</span><span class="s">"match_parent"</span>
+        <span class="na">android:layout_height=</span><span class="s">"wrap_content"</span>
+        <span class="na">android:paddingTop=</span><span class="s">"56dp"</span>
+        <span class="na">android:paddingLeft=</span><span class="s">"24dp"</span>
+        <span class="na">android:paddingRight=</span><span class="s">"24dp"</span><span class="nt">&gt;</span>
+
+        <span class="nt">&lt;ImageView</span> <span class="na">android:src=</span><span class="s">"@drawable/logo"</span>
+            <span class="na">android:layout_width=</span><span class="s">"wrap_content"</span>
+            <span class="na">android:layout_height=</span><span class="s">"72dp"</span>
+            <span class="na">android:layout_marginBottom=</span><span class="s">"24dp"</span>
+            <span class="na">android:layout_gravity=</span><span class="s">"center_horizontal"</span> <span class="nt">/&gt;</span>
+
+        <span class="c">&lt;!--  Name Label --&gt;</span>
+        <span class="nt">&lt;android.support.design.widget.TextInputLayout</span>
+            <span class="na">android:layout_width=</span><span class="s">"match_parent"</span>
+            <span class="na">android:layout_height=</span><span class="s">"wrap_content"</span>
+            <span class="na">android:layout_marginTop=</span><span class="s">"8dp"</span>
+            <span class="na">android:layout_marginBottom=</span><span class="s">"8dp"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;EditText</span> <span class="na">android:id=</span><span class="s">"@+id/input_name"</span>
+                <span class="na">android:layout_width=</span><span class="s">"match_parent"</span>
+                <span class="na">android:layout_height=</span><span class="s">"wrap_content"</span>
+                <span class="na">android:inputType=</span><span class="s">"textCapWords"</span>
+                <span class="na">android:hint=</span><span class="s">"Name"</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;/android.support.design.widget.TextInputLayout&gt;</span>
+
+        <span class="c">&lt;!-- Email Label --&gt;</span>
+        <span class="nt">&lt;android.support.design.widget.TextInputLayout</span>
+            <span class="na">android:layout_width=</span><span class="s">"match_parent"</span>
+            <span class="na">android:layout_height=</span><span class="s">"wrap_content"</span>
+            <span class="na">android:layout_marginTop=</span><span class="s">"8dp"</span>
+            <span class="na">android:layout_marginBottom=</span><span class="s">"8dp"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;EditText</span> <span class="na">android:id=</span><span class="s">"@+id/input_email"</span>
+                <span class="na">android:layout_width=</span><span class="s">"match_parent"</span>
+                <span class="na">android:layout_height=</span><span class="s">"wrap_content"</span>
+                <span class="na">android:inputType=</span><span class="s">"textEmailAddress"</span>
+                <span class="na">android:hint=</span><span class="s">"Email"</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;/android.support.design.widget.TextInputLayout&gt;</span>
+
+        <span class="c">&lt;!-- Password Label --&gt;</span>
+        <span class="nt">&lt;android.support.design.widget.TextInputLayout</span>
+            <span class="na">android:layout_width=</span><span class="s">"match_parent"</span>
+            <span class="na">android:layout_height=</span><span class="s">"wrap_content"</span>
+            <span class="na">android:layout_marginTop=</span><span class="s">"8dp"</span>
+            <span class="na">android:layout_marginBottom=</span><span class="s">"8dp"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;EditText</span> <span class="na">android:id=</span><span class="s">"@+id/input_password"</span>
+                <span class="na">android:layout_width=</span><span class="s">"match_parent"</span>
+                <span class="na">android:layout_height=</span><span class="s">"wrap_content"</span>
+                <span class="na">android:inputType=</span><span class="s">"textPassword"</span>
+                <span class="na">android:hint=</span><span class="s">"Password"</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;/android.support.design.widget.TextInputLayout&gt;</span>
+
+        <span class="c">&lt;!-- Signup Button --&gt;</span>
+        <span class="nt">&lt;android.support.v7.widget.AppCompatButton</span>
+            <span class="na">android:id=</span><span class="s">"@+id/btn_signup"</span>
+            <span class="na">android:layout_width=</span><span class="s">"fill_parent"</span>
+            <span class="na">android:layout_height=</span><span class="s">"wrap_content"</span>
+            <span class="na">android:layout_marginTop=</span><span class="s">"24dp"</span>
+            <span class="na">android:layout_marginBottom=</span><span class="s">"24dp"</span>
+            <span class="na">android:padding=</span><span class="s">"12dp"</span>
+            <span class="na">android:text=</span><span class="s">"Create Account"</span><span class="nt">/&gt;</span>
+
+        <span class="nt">&lt;TextView</span> <span class="na">android:id=</span><span class="s">"@+id/link_login"</span>
+            <span class="na">android:layout_width=</span><span class="s">"fill_parent"</span>
+            <span class="na">android:layout_height=</span><span class="s">"wrap_content"</span>
+            <span class="na">android:layout_marginBottom=</span><span class="s">"24dp"</span>
+            <span class="na">android:text=</span><span class="s">"Already a member? Login"</span>
+            <span class="na">android:gravity=</span><span class="s">"center"</span>
+            <span class="na">android:textSize=</span><span class="s">"16dip"</span><span class="nt">/&gt;</span>
+
+    <span class="nt">&lt;/LinearLayout&gt;</span>
+<span class="nt">&lt;/ScrollView&gt;</span>
+</code></pre> <h2 id=configuration>Configuration</h2> <p>In order to make everything work we need to add a couple of dependencies to the <code>build.gradle</code> file in your <code>app</code> directory. ButterKnife is optional, but we like to use it to clean up our Java code a bit.</p> <pre class="highlight plaintext"><code>dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.android.support:design:22.2.0'
+    compile 'com.jakewharton:butterknife:6.1.0'
+}
+</code></pre> <p>Next add the necessary Activity declarations to your AndroidManifest. I have posted the complete AndroidManifest.xml for clarity.</p> <pre class="highlight xml"><code><span class="cp">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span>
+<span class="nt">&lt;manifest</span> <span class="na">xmlns:android=</span><span class="s">"http://schemas.android.com/apk/res/android"</span>
+    <span class="na">package=</span><span class="s">"com.sourcey.materiallogindemo"</span> <span class="nt">&gt;</span>
+
+    <span class="nt">&lt;application</span>
+        <span class="na">android:allowBackup=</span><span class="s">"true"</span>
+        <span class="na">android:icon=</span><span class="s">"@mipmap/ic_launcher"</span>
+        <span class="na">android:label=</span><span class="s">"@string/app_name"</span>
+        <span class="na">android:theme=</span><span class="s">"@style/AppTheme"</span> <span class="nt">&gt;</span>
+        <span class="nt">&lt;activity</span>
+            <span class="na">android:name=</span><span class="s">".MainActivity"</span>
+            <span class="na">android:label=</span><span class="s">"@string/app_name"</span> <span class="nt">&gt;</span>
+            <span class="nt">&lt;intent-filter&gt;</span>
+                <span class="nt">&lt;action</span> <span class="na">android:name=</span><span class="s">"android.intent.action.MAIN"</span> <span class="nt">/&gt;</span>
+
+                <span class="nt">&lt;category</span> <span class="na">android:name=</span><span class="s">"android.intent.category.LAUNCHER"</span> <span class="nt">/&gt;</span>
+            <span class="nt">&lt;/intent-filter&gt;</span>
+        <span class="nt">&lt;/activity&gt;</span>
+        <span class="nt">&lt;activity</span> <span class="na">android:name=</span><span class="s">".LoginActivity"</span> <span class="na">android:theme=</span><span class="s">"@style/AppTheme.Dark"</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;activity</span> <span class="na">android:name=</span><span class="s">".SignupActivity"</span> <span class="na">android:theme=</span><span class="s">"@style/AppTheme.Dark"</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;/application&gt;</span>
+
+<span class="nt">&lt;/manifest&gt;</span>
+
+</code></pre> <p>I hope you’ve found this article useful, and through it you can save some precious development hours. As usual, the full source code is up on Github:</p> <center> <p><a class="action-button button radius" target=_blank href="https://github.com/sourcey/materiallogindemo" title="Get the Code on Github">Get the Code on Github</a></p> </center> </body></html> </div> </div> <div class="large-4 columns"> <div class=sidebar> <div class="sidebar-section tags"> <h4>Tags</h4> <ul><li><a href="/tags/android/">Android</a></li><li><a href="/tags/material/">Material</a></li></ul> </div> <div class="sidebar-section ad ad-300x250 sidebar-float"> <ins class=adsbygoogle style="display:inline-block;width:300px;height:600px" data-ad-client=ca-pub-1397369873900370 data-ad-slot=7510590887></ins> <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+                </script> </div> </div> </div> </article> <ul class=social-buttons> <li> <a href="//twitter.com/share" class="socialite twitter-share" data-text="Beautiful Android Login and Signup Demo with Material Design" data-url="http://sourcey.com/beautiful-android-login-and-signup-demo-with-material-design/" data-count=vertical rel=nofollow target=_blank><span class=vhidden>Share on Twitter</span></a> </li> <li> <a href="https://plus.google.com/share?url=http://sourcey.com/beautiful-android-login-and-signup-demo-with-material-design/" class="socialite googleplus-one" data-size=tall data-href="//sourcey.com/beautiful-android-login-and-signup-demo-with-material-design/" rel=nofollow target=_blank><span class=vhidden>Share on Google+</span></a> </li> <li> <a href="//www.facebook.com/sharer.php?u=http://sourcey.com/beautiful-android-login-and-signup-demo-with-material-design/&amp;t=Beautiful Android Login and Signup Demo with Material Design" class="socialite facebook-like" data-href="http://sourcey.com/beautiful-android-login-and-signup-demo-with-material-design/" data-send=false data-layout=box_count data-width=60 data-show-faces=false rel=nofollow target=_blank><span class=vhidden>Share on Facebook</span></a> </li> <li> <a href="//www.linkedin.com/shareArticle?mini=true&amp;url=http://sourcey.com/beautiful-android-login-and-signup-demo-with-material-design/&amp;title=Beautiful Android Login and Signup Demo with Material Design" class="socialite linkedin-share" data-url="http://sourcey.com/beautiful-android-login-and-signup-demo-with-material-design/" data-counter=top rel=nofollow target=_blank><span class=vhidden>Share on LinkedIn</span></a> </li> </ul> <div class="row show-for-large-up"> <div class="ad ad-720x90 text-center"> <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> <ins class=adsbygoogle style="display:inline-block;width:728px;height:90px" data-ad-client=ca-pub-1397369873900370 data-ad-slot=8042301285></ins> <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+          </script> </div> </div> <div id=disqus_thread></div> <script>
+          /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+          var disqus_shortname = 'sourcey'; // required: replace example with your forum shortname
+
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+      </script> <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" rel=nofollow>comments powered by Disqus.</a></noscript> <a href="//disqus.com" rel=nofollow class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a> </div> <footer id=footer> <div class="ad ad-320x50 text-center"> <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> <ins class=adsbygoogle style="display:inline-block;width:320px;height:50px" data-ad-client=ca-pub-1397369873900370 data-ad-slot=1856166884></ins> <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+        </script> </div> <p> As with all business minded artists, we have fought the inevitable battle of conformity vs expression, and have emerged victorious with sanity intact to plunder the digiverse in search of new and interesting challenges. For more information, or a quote, drop us an email and tell us what you're working on. </p> <p> &copy;2014 Sourcey <p> </footer> </body> </html>

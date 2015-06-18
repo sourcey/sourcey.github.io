@@ -5,7 +5,770 @@
   <id>http://sourcey.com</id>
   <link href="http://sourcey.com"/>
   <link href="http://sourcey.com/feed.xml" rel="self"/>
-  <updated>2015-05-18T00:00:00Z</updated>
+  <updated>2015-06-18T00:00:00Z</updated>
+  <entry>
+    <title>Android Hotizontally Scrolling Pan Scan and Zoom Image Gallery</title>
+    <link rel="alternate" href="http://sourcey.com/android-horizontally-scrolling-pan-scan-and-zoom-image-gallery/"/>
+    <id>http://sourcey.com/android-horizontally-scrolling-pan-scan-and-zoom-image-gallery/</id>
+    <published>2015-06-18T00:00:00Z</published>
+    <updated>2015-06-18T15:23:59+02:00</updated>
+    <author>
+      <name>Kam Low</name>
+    </author>
+    <content type="html">&lt;p&gt;Since the depreciation of the Android Gallery module there has been no clear way to implement image galleries on Android, so in order to fill the need I’m sharing my own Gallery implementation.&lt;/p&gt;
+
+&lt;p&gt;The implementation is a horizontal scrolling image gallery, which is ideal for displaying smaller amounts of images (&amp;lt;10). However, if you need to display large amounts of images then you might be better served with a GridView based implementation.&lt;/p&gt;
+
+&lt;p&gt;Under the hood the Gallery consists of ViewPager element, and a HorizontalScroller for displaying selectable thumbnails. Inside the ViewPager view there is a modified ImageView which allows for panning, scanning and zooming of the main image.&lt;/p&gt;
+
+&lt;center&gt;
+&lt;p&gt;&lt;a class="action-button button radius" target="_blank" href="https://github.com/sourcey/imagegallerydemo" title="Get the Code on Github"&gt;Get the Code&lt;/a&gt;&lt;/p&gt;
+&lt;/center&gt;
+
+&lt;p&gt;The main activity code for &lt;code&gt;GalleryActivity.java&lt;/code&gt; is as follows:&lt;/p&gt;
+
+&lt;pre class="highlight java"&gt;&lt;code&gt;&lt;span class="kn"&gt;package&lt;/span&gt; &lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;sourcey&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;imagegallerydemo&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.content.Context&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.graphics.Bitmap&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.os.Bundle&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.support.v4.view.PagerAdapter&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.support.v7.app.AppCompatActivity&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.support.v4.view.ViewPager&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.util.Log&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.view.LayoutInflater&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.view.View&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.view.ViewGroup&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.widget.FrameLayout&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.widget.ImageButton&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.widget.ImageView&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.widget.LinearLayout&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;com.bumptech.glide.Glide&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;com.bumptech.glide.request.animation.GlideAnimation&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;com.bumptech.glide.request.target.SimpleTarget&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;com.davemorrissey.labs.subscaleview.ImageSource&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;junit.framework.Assert&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;java.util.ArrayList&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;butterknife.ButterKnife&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;butterknife.InjectView&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+&lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;GalleryActivity&lt;/span&gt; &lt;span class="kd"&gt;extends&lt;/span&gt; &lt;span class="n"&gt;AppCompatActivity&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+    &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;static&lt;/span&gt; &lt;span class="kd"&gt;final&lt;/span&gt; &lt;span class="n"&gt;String&lt;/span&gt; &lt;span class="n"&gt;TAG&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"GalleryActivity"&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+    &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;static&lt;/span&gt; &lt;span class="kd"&gt;final&lt;/span&gt; &lt;span class="n"&gt;String&lt;/span&gt; &lt;span class="n"&gt;EXTRA_NAME&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"images"&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+    &lt;span class="kd"&gt;private&lt;/span&gt; &lt;span class="n"&gt;ArrayList&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;String&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;_images&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+    &lt;span class="kd"&gt;private&lt;/span&gt; &lt;span class="n"&gt;GalleryPagerAdapter&lt;/span&gt; &lt;span class="n"&gt;_adapter&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+    &lt;span class="nd"&gt;@InjectView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;id&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;pager&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;ViewPager&lt;/span&gt; &lt;span class="n"&gt;_pager&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+    &lt;span class="nd"&gt;@InjectView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;id&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;thumbnails&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;LinearLayout&lt;/span&gt; &lt;span class="n"&gt;_thumbnails&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+    &lt;span class="nd"&gt;@InjectView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;id&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;btn_close&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;ImageButton&lt;/span&gt; &lt;span class="n"&gt;_closeButton&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+    &lt;span class="nd"&gt;@Override&lt;/span&gt;
+    &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;onCreate&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Bundle&lt;/span&gt; &lt;span class="n"&gt;savedInstanceState&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+        &lt;span class="kd"&gt;super&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;onCreate&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;savedInstanceState&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;setContentView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;layout&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;activity_gallery&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;ButterKnife&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;inject&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+
+        &lt;span class="n"&gt;_images&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ArrayList&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;String&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;)&lt;/span&gt; &lt;span class="n"&gt;getIntent&lt;/span&gt;&lt;span class="o"&gt;().&lt;/span&gt;&lt;span class="na"&gt;getSerializableExtra&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;EXTRA_NAME&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;Assert&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;assertNotNull&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_images&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+
+        &lt;span class="n"&gt;_adapter&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;GalleryPagerAdapter&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;_pager&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setAdapter&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_adapter&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;_pager&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setOffscreenPageLimit&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;// how many images to load into memory&lt;/span&gt;
+
+        &lt;span class="n"&gt;_closeButton&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setOnClickListener&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;View&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;OnClickListener&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="nd"&gt;@Override&lt;/span&gt;
+            &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;onClick&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;View&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+                &lt;span class="n"&gt;Log&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;d&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TAG&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"Close clicked"&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+                &lt;span class="n"&gt;finish&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+            &lt;span class="o"&gt;}&lt;/span&gt;
+        &lt;span class="o"&gt;});&lt;/span&gt;
+    &lt;span class="o"&gt;}&lt;/span&gt;
+
+    &lt;span class="kd"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;GalleryPagerAdapter&lt;/span&gt; &lt;span class="kd"&gt;extends&lt;/span&gt; &lt;span class="n"&gt;PagerAdapter&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+
+        &lt;span class="n"&gt;Context&lt;/span&gt; &lt;span class="n"&gt;_context&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;LayoutInflater&lt;/span&gt; &lt;span class="n"&gt;_inflater&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+        &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="n"&gt;GalleryPagerAdapter&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Context&lt;/span&gt; &lt;span class="n"&gt;context&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;_context&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;context&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+            &lt;span class="n"&gt;_inflater&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;LayoutInflater&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;_context&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;getSystemService&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Context&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;LAYOUT_INFLATER_SERVICE&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="o"&gt;}&lt;/span&gt;
+
+        &lt;span class="nd"&gt;@Override&lt;/span&gt;
+        &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;getCount&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;_images&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;size&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+        &lt;span class="o"&gt;}&lt;/span&gt;
+
+        &lt;span class="nd"&gt;@Override&lt;/span&gt;
+        &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;boolean&lt;/span&gt; &lt;span class="n"&gt;isViewFromObject&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;View&lt;/span&gt; &lt;span class="n"&gt;view&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Object&lt;/span&gt; &lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;view&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="o"&gt;((&lt;/span&gt;&lt;span class="n"&gt;LinearLayout&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="o"&gt;}&lt;/span&gt;
+
+        &lt;span class="nd"&gt;@Override&lt;/span&gt;
+        &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="n"&gt;Object&lt;/span&gt; &lt;span class="n"&gt;instantiateItem&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ViewGroup&lt;/span&gt; &lt;span class="n"&gt;container&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="kd"&gt;final&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;position&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;View&lt;/span&gt; &lt;span class="n"&gt;itemView&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;_inflater&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;inflate&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;layout&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;pager_gallery_item&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;container&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+            &lt;span class="n"&gt;container&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;addView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;itemView&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+
+            &lt;span class="c1"&gt;// Get the border size to show around each image&lt;/span&gt;
+            &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;borderSize&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;_thumbnails&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;getPaddingTop&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+            
+            &lt;span class="c1"&gt;// Get the size of the actual thumbnail image&lt;/span&gt;
+            &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;thumbnailSize&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;((&lt;/span&gt;&lt;span class="n"&gt;FrameLayout&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;LayoutParams&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+                    &lt;span class="n"&gt;_pager&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;getLayoutParams&lt;/span&gt;&lt;span class="o"&gt;()).&lt;/span&gt;&lt;span class="na"&gt;bottomMargin&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;borderSize&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+            
+            &lt;span class="c1"&gt;// Set the thumbnail layout parameters. Adjust as required&lt;/span&gt;
+            &lt;span class="n"&gt;LinearLayout&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;LayoutParams&lt;/span&gt; &lt;span class="n"&gt;params&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;LinearLayout&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;LayoutParams&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;thumbnailSize&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;thumbnailSize&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+            &lt;span class="n"&gt;params&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setMargins&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;borderSize&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+
+            &lt;span class="c1"&gt;// You could also set like so to remove borders&lt;/span&gt;
+            &lt;span class="c1"&gt;//ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(&lt;/span&gt;
+            &lt;span class="c1"&gt;//        ViewGroup.LayoutParams.WRAP_CONTENT,&lt;/span&gt;
+            &lt;span class="c1"&gt;//        ViewGroup.LayoutParams.WRAP_CONTENT);&lt;/span&gt;
+            
+            &lt;span class="kd"&gt;final&lt;/span&gt; &lt;span class="n"&gt;ImageView&lt;/span&gt; &lt;span class="n"&gt;thumbView&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;ImageView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_context&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+            &lt;span class="n"&gt;thumbView&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setScaleType&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ImageView&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;ScaleType&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;CENTER_CROP&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+            &lt;span class="n"&gt;thumbView&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setLayoutParams&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;params&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+            &lt;span class="n"&gt;thumbView&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setOnClickListener&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;View&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;OnClickListener&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+                &lt;span class="nd"&gt;@Override&lt;/span&gt;
+                &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;onClick&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;View&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+                    &lt;span class="n"&gt;Log&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;d&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TAG&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"Thumbnail clicked"&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+
+                    &lt;span class="c1"&gt;// Set the pager position when thumbnail clicked&lt;/span&gt;
+                    &lt;span class="n"&gt;_pager&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setCurrentItem&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;position&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+                &lt;span class="o"&gt;}&lt;/span&gt;
+            &lt;span class="o"&gt;});&lt;/span&gt;
+            &lt;span class="n"&gt;_thumbnails&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;addView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;thumbView&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+
+            &lt;span class="kd"&gt;final&lt;/span&gt; &lt;span class="n"&gt;SubsamplingScaleImageView&lt;/span&gt; &lt;span class="n"&gt;imageView&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;
+                    &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;SubsamplingScaleImageView&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;itemView&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;findViewById&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;id&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;image&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+
+            &lt;span class="c1"&gt;// Asynchronously load the image and set the thumbnail and pager view&lt;/span&gt;
+            &lt;span class="n"&gt;Glide&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;with&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_context&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+                    &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;load&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_images&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;get&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;position&lt;/span&gt;&lt;span class="o"&gt;))&lt;/span&gt;
+                    &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;asBitmap&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt;
+                    &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;into&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;SimpleTarget&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Bitmap&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+                        &lt;span class="nd"&gt;@Override&lt;/span&gt;
+                        &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;onResourceReady&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Bitmap&lt;/span&gt; &lt;span class="n"&gt;bitmap&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;GlideAnimation&lt;/span&gt; &lt;span class="n"&gt;anim&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+                            &lt;span class="n"&gt;imageView&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setImage&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ImageSource&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;bitmap&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;bitmap&lt;/span&gt;&lt;span class="o"&gt;));&lt;/span&gt;
+                            &lt;span class="n"&gt;thumbView&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setImageBitmap&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;bitmap&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+                        &lt;span class="o"&gt;}&lt;/span&gt;
+                    &lt;span class="o"&gt;});&lt;/span&gt;
+
+            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;itemView&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+        &lt;span class="o"&gt;}&lt;/span&gt;
+
+        &lt;span class="nd"&gt;@Override&lt;/span&gt;
+        &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;destroyItem&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ViewGroup&lt;/span&gt; &lt;span class="n"&gt;container&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;position&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Object&lt;/span&gt; &lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;container&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;removeView&lt;/span&gt;&lt;span class="o"&gt;((&lt;/span&gt;&lt;span class="n"&gt;LinearLayout&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="o"&gt;}&lt;/span&gt;
+    &lt;span class="o"&gt;}&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The layout consists of two items, one for the activity, and one for the pager items.&lt;/p&gt;
+
+&lt;p&gt;Paste the following activity layout into &lt;code&gt;res/layout/activity_gallery.xml&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre class="highlight xml"&gt;&lt;code&gt;&lt;span class="cp"&gt;&amp;lt;?xml version="1.0" encoding="utf-8"?&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;FrameLayout&lt;/span&gt; &lt;span class="na"&gt;xmlns:android=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res/android"&lt;/span&gt;
+    &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+    &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+    &lt;span class="na"&gt;android:background=&lt;/span&gt;&lt;span class="s"&gt;"@color/black"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+
+    &lt;span class="nt"&gt;&amp;lt;android.support.v4.view.ViewPager&lt;/span&gt;
+        &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/pager"&lt;/span&gt;
+        &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+        &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+        &lt;span class="na"&gt;android:layout_marginBottom=&lt;/span&gt;&lt;span class="s"&gt;"72dp"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;/android.support.v4.view.ViewPager&amp;gt;&lt;/span&gt;
+
+    &lt;span class="nt"&gt;&amp;lt;ImageButton&lt;/span&gt;
+        &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/btn_close"&lt;/span&gt;
+        &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"?attr/actionBarSize"&lt;/span&gt;
+        &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"?attr/actionBarSize"&lt;/span&gt;
+        &lt;span class="na"&gt;android:layout_gravity=&lt;/span&gt;&lt;span class="s"&gt;"top|right"&lt;/span&gt;
+        &lt;span class="na"&gt;android:src=&lt;/span&gt;&lt;span class="s"&gt;"@drawable/ic_close_grey600_24dp"&lt;/span&gt;
+        &lt;span class="na"&gt;android:scaleType=&lt;/span&gt;&lt;span class="s"&gt;"fitCenter"&lt;/span&gt;
+        &lt;span class="na"&gt;style=&lt;/span&gt;&lt;span class="s"&gt;"@style/Widget.AppCompat.ActionButton"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+
+    &lt;span class="nt"&gt;&amp;lt;HorizontalScrollView&lt;/span&gt;
+        &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+        &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"72dp"&lt;/span&gt;
+        &lt;span class="na"&gt;android:layout_gravity=&lt;/span&gt;&lt;span class="s"&gt;"bottom"&lt;/span&gt;
+        &lt;span class="na"&gt;android:background=&lt;/span&gt;&lt;span class="s"&gt;"@color/black"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;LinearLayout&lt;/span&gt;
+            &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/thumbnails"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"wrap_content"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+            &lt;span class="na"&gt;android:gravity=&lt;/span&gt;&lt;span class="s"&gt;"center_vertical"&lt;/span&gt;
+            &lt;span class="na"&gt;android:orientation=&lt;/span&gt;&lt;span class="s"&gt;"horizontal"&lt;/span&gt;
+            &lt;span class="na"&gt;android:paddingTop=&lt;/span&gt;&lt;span class="s"&gt;"2dp"&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;/HorizontalScrollView&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/FrameLayout&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And paste the view pager layout into &lt;code&gt;res/layout/pager_gallery_item.xml&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre class="highlight xml"&gt;&lt;code&gt;&lt;span class="cp"&gt;&amp;lt;?xml version="1.0" encoding="utf-8"?&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;LinearLayout&lt;/span&gt; &lt;span class="na"&gt;xmlns:android=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res/android"&lt;/span&gt;
+    &lt;span class="na"&gt;xmlns:app=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res-auto"&lt;/span&gt;
+    &lt;span class="na"&gt;android:orientation=&lt;/span&gt;&lt;span class="s"&gt;"vertical"&lt;/span&gt;
+    &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+    &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView&lt;/span&gt;
+        &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+        &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+        &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/image"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/LinearLayout&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id="configuration"&gt;Configuration&lt;/h2&gt;
+
+&lt;p&gt;In order to make everything work we need to add a couple of dependencies to the &lt;code&gt;build.gradle&lt;/code&gt; file in your &lt;code&gt;app&lt;/code&gt; directory. ButterKnife is optional, but we like to use it to clean up our Java code a bit.&lt;/p&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.github.bumptech.glide:glide:3.6.0'
+    compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.1.3'
+    compile 'com.jakewharton:butterknife:6.1.0'
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Next add the necessary Activity declarations to your AndroidManifest. I have posted the complete AndroidManifest.xml for clarity.&lt;/p&gt;
+
+&lt;pre class="highlight xml"&gt;&lt;code&gt;&lt;span class="cp"&gt;&amp;lt;?xml version="1.0" encoding="utf-8"?&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;manifest&lt;/span&gt; &lt;span class="na"&gt;xmlns:android=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res/android"&lt;/span&gt;
+    &lt;span class="na"&gt;package=&lt;/span&gt;&lt;span class="s"&gt;"com.sourcey.imagegallerydemo"&lt;/span&gt; &lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+
+    &lt;span class="nt"&gt;&amp;lt;application&lt;/span&gt;
+        &lt;span class="na"&gt;android:allowBackup=&lt;/span&gt;&lt;span class="s"&gt;"true"&lt;/span&gt;
+        &lt;span class="na"&gt;android:icon=&lt;/span&gt;&lt;span class="s"&gt;"@mipmap/ic_launcher"&lt;/span&gt;
+        &lt;span class="na"&gt;android:label=&lt;/span&gt;&lt;span class="s"&gt;"@string/app_name"&lt;/span&gt;
+        &lt;span class="na"&gt;android:theme=&lt;/span&gt;&lt;span class="s"&gt;"@style/AppTheme"&lt;/span&gt; &lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;activity&lt;/span&gt;
+            &lt;span class="na"&gt;android:name=&lt;/span&gt;&lt;span class="s"&gt;".MainActivity"&lt;/span&gt;
+            &lt;span class="na"&gt;android:label=&lt;/span&gt;&lt;span class="s"&gt;"@string/app_name"&lt;/span&gt; &lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class="nt"&gt;&amp;lt;intent-filter&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;action&lt;/span&gt; &lt;span class="na"&gt;android:name=&lt;/span&gt;&lt;span class="s"&gt;"android.intent.action.MAIN"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+
+                &lt;span class="nt"&gt;&amp;lt;category&lt;/span&gt; &lt;span class="na"&gt;android:name=&lt;/span&gt;&lt;span class="s"&gt;"android.intent.category.LAUNCHER"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+            &lt;span class="nt"&gt;&amp;lt;/intent-filter&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;/activity&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;activity&lt;/span&gt; &lt;span class="na"&gt;android:name=&lt;/span&gt;&lt;span class="s"&gt;".GalleryActivity"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;/application&amp;gt;&lt;/span&gt;
+
+&lt;span class="nt"&gt;&amp;lt;/manifest&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;When everything is setup you can instantiate the Gallery like so:&lt;/p&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;public void startGalleryActivity() {
+    ArrayList&amp;lt;String&amp;gt; images = new ArrayList&amp;lt;String&amp;gt;();
+    images.add("http://i.telegraph.co.uk/multimedia/archive/01421/flickr-pix6_1421814c.jpg");
+    images.add("http://farm1.staticflickr.com/162/416152814_8f7ffb4bb1_z.jpg");
+    images.add("http://a1.dspnimg.com/data/l/1627610726061_S8WvSbhk_l.jpg");
+    images.add("https://c4.staticflickr.com/8/7432/10111952905_7e58ecb32f_b.jpg");
+    Intent intent = new Intent(MainActivity.this, GalleryActivity.class);
+    intent.putStringArrayListExtra(GalleryActivity.EXTRA_NAME, images);
+    startActivity(intent);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The current code takes an array of image URLs and renders them asynchronously with &lt;code&gt;Glide&lt;/code&gt;, but if you want to modify the code to display local resources, or even exchange Glide with another rendering library, then it should be fairly straight forward as the implementation is very simple.&lt;/p&gt;
+
+&lt;p&gt;I hope you’ve found this article useful, and through it you can save some precious development hours. As usual, the full source code is up on Github:&lt;/p&gt;
+
+&lt;center&gt;
+&lt;p&gt;&lt;a class="action-button button radius" target="_blank" href="https://github.com/sourcey/imagegallerydemo" title="Get the Code on Github"&gt;Get the Code on Github&lt;/a&gt;&lt;/p&gt;
+&lt;/center&gt;
+</content>
+  </entry>
+  <entry>
+    <title>Beautiful Android Login and Signup Demo with Material Design</title>
+    <link rel="alternate" href="http://sourcey.com/beautiful-android-login-and-signup-demo-with-material-design/"/>
+    <id>http://sourcey.com/beautiful-android-login-and-signup-demo-with-material-design/</id>
+    <published>2015-06-18T00:00:00Z</published>
+    <updated>2015-06-18T10:35:33+02:00</updated>
+    <author>
+      <name>Kam Low</name>
+    </author>
+    <content type="html">&lt;p&gt;This article provides you with everything you need to implement your own beautiful login and sinup pages using the &lt;a href=""&gt;Material design spec&lt;/a&gt;. Google’s new &lt;a href=""&gt;design support library&lt;/a&gt; implements a growing subset of the Material spec, and includes some great new UI widgets that we can use to give our Android apps that polished feel.&lt;/p&gt;
+
+&lt;p&gt;The main element we will be using from the design library to beautify our forms is the &lt;a href=""&gt;FloatingLabelInput&lt;/a&gt;, which is implemented via the TextInputLayout tag. Then FloatingLabelInput consists basically of an EditText element, where the placeholder text hovers above the element when selected.&lt;/p&gt;
+
+&lt;p&gt;Everything has been done for you, but you will need to implement your own authentication logic, weather it be via HTTP, SQL or some other method. Now let the fun stuff commence!&lt;/p&gt;
+
+&lt;center&gt;
+&lt;p&gt;&lt;a class="action-button button radius" target="_blank" href="https://github.com/sourcey/materiallogindemo" title="Get the Code on Github"&gt;Get the Code&lt;/a&gt;&lt;/p&gt;
+&lt;/center&gt;
+
+&lt;h2 id="login-activity"&gt;Login Activity&lt;/h2&gt;
+
+&lt;p&gt;Let’s begin by setting up the Login Activity, as it will be the first Activity that’s displayed to the user. The Login Activity can be started at any time, either at load time, or when the user is logged out.&lt;/p&gt;
+
+&lt;p&gt;The code is below:&lt;/p&gt;
+
+&lt;pre class="highlight java"&gt;&lt;code&gt;&lt;span class="c1"&gt;// LoginActivity.java&lt;/span&gt;
+
+&lt;span class="kn"&gt;package&lt;/span&gt; &lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;sourcey&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;materiallogindemo&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.app.ProgressDialog&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.os.Bundle&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.support.v7.app.AppCompatActivity&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.util.Log&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.content.Intent&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.view.View&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.widget.Button&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.widget.EditText&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.widget.TextView&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.widget.Toast&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;butterknife.ButterKnife&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;butterknife.InjectView&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+&lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;LoginActivity&lt;/span&gt; &lt;span class="kd"&gt;extends&lt;/span&gt; &lt;span class="n"&gt;AppCompatActivity&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+    &lt;span class="kd"&gt;private&lt;/span&gt; &lt;span class="kd"&gt;static&lt;/span&gt; &lt;span class="kd"&gt;final&lt;/span&gt; &lt;span class="n"&gt;String&lt;/span&gt; &lt;span class="n"&gt;TAG&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"LoginActivity"&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+    &lt;span class="kd"&gt;private&lt;/span&gt; &lt;span class="kd"&gt;static&lt;/span&gt; &lt;span class="kd"&gt;final&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;REQUEST_SIGNUP&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+    &lt;span class="nd"&gt;@InjectView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;id&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;input_email&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;EditText&lt;/span&gt; &lt;span class="n"&gt;_emailText&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+    &lt;span class="nd"&gt;@InjectView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;id&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;input_password&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;EditText&lt;/span&gt; &lt;span class="n"&gt;_passwordText&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+    &lt;span class="nd"&gt;@InjectView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;id&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;btn_login&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;Button&lt;/span&gt; &lt;span class="n"&gt;_loginButton&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+    &lt;span class="nd"&gt;@InjectView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;id&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;link_signup&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;TextView&lt;/span&gt; &lt;span class="n"&gt;_signupLink&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+    
+    &lt;span class="nd"&gt;@Override&lt;/span&gt;
+    &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;onCreate&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Bundle&lt;/span&gt; &lt;span class="n"&gt;savedInstanceState&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+        &lt;span class="kd"&gt;super&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;onCreate&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;savedInstanceState&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;setContentView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;layout&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;activity_login&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;ButterKnife&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;inject&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        
+        &lt;span class="n"&gt;_loginButton&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setOnClickListener&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;View&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;OnClickListener&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="nd"&gt;@Override&lt;/span&gt;
+            &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;onClick&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;View&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+                &lt;span class="n"&gt;login&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+            &lt;span class="o"&gt;}&lt;/span&gt;
+        &lt;span class="o"&gt;});&lt;/span&gt;
+
+        &lt;span class="n"&gt;_signupLink&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setOnClickListener&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;View&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;OnClickListener&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="nd"&gt;@Override&lt;/span&gt;
+            &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;onClick&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;View&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+                &lt;span class="c1"&gt;// Start the Signup activity&lt;/span&gt;
+                &lt;span class="n"&gt;Intent&lt;/span&gt; &lt;span class="n"&gt;intent&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;Intent&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;getApplicationContext&lt;/span&gt;&lt;span class="o"&gt;(),&lt;/span&gt; &lt;span class="n"&gt;SignupActivity&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;class&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+                &lt;span class="n"&gt;startActivityForResult&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;intent&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;REQUEST_SIGNUP&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+            &lt;span class="o"&gt;}&lt;/span&gt;
+        &lt;span class="o"&gt;});&lt;/span&gt;
+    &lt;span class="o"&gt;}&lt;/span&gt;
+
+    &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;login&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;Log&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;d&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TAG&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"Login"&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;(!&lt;/span&gt;&lt;span class="n"&gt;validate&lt;/span&gt;&lt;span class="o"&gt;())&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;onLoginFailed&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+            &lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+        &lt;span class="o"&gt;}&lt;/span&gt;
+
+        &lt;span class="n"&gt;_loginButton&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setEnabled&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+
+        &lt;span class="kd"&gt;final&lt;/span&gt; &lt;span class="n"&gt;ProgressDialog&lt;/span&gt; &lt;span class="n"&gt;progressDialog&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;ProgressDialog&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;LoginActivity&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;this&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;
+                &lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;style&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;AppTheme_Dark_Dialog&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;progressDialog&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setIndeterminate&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;progressDialog&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setMessage&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Authenticating..."&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;progressDialog&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;show&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+
+        &lt;span class="n"&gt;String&lt;/span&gt; &lt;span class="n"&gt;email&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;_emailText&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;getText&lt;/span&gt;&lt;span class="o"&gt;().&lt;/span&gt;&lt;span class="na"&gt;toString&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+        &lt;span class="n"&gt;String&lt;/span&gt; &lt;span class="n"&gt;password&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;_passwordText&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;getText&lt;/span&gt;&lt;span class="o"&gt;().&lt;/span&gt;&lt;span class="na"&gt;toString&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+
+        &lt;span class="c1"&gt;// Implement your authentication logic here. On complete call either onLoginSuccess&lt;/span&gt;
+        &lt;span class="c1"&gt;// or onLoginFailed&lt;/span&gt;
+        &lt;span class="n"&gt;onLoginSuccess&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+        &lt;span class="c1"&gt;// onLoginFailed();&lt;/span&gt;
+
+        &lt;span class="n"&gt;progressDialog&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;dismiss&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+    &lt;span class="o"&gt;}&lt;/span&gt;
+
+
+    &lt;span class="nd"&gt;@Override&lt;/span&gt;
+    &lt;span class="kd"&gt;protected&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;onActivityResult&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;requestCode&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;resultCode&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Intent&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;requestCode&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;REQUEST_SIGNUP&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;resultCode&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;RESULT_OK&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+
+                &lt;span class="c1"&gt;// If the user signs up successfully we can log them in automatically&lt;/span&gt;
+                &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;finish&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+            &lt;span class="o"&gt;}&lt;/span&gt;
+        &lt;span class="o"&gt;}&lt;/span&gt;
+    &lt;span class="o"&gt;}&lt;/span&gt;
+
+    &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;onLoginSuccess&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;_loginButton&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setEnabled&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;finish&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+    &lt;span class="o"&gt;}&lt;/span&gt;
+
+    &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;onLoginFailed&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;Toast&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;makeText&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;getBaseContext&lt;/span&gt;&lt;span class="o"&gt;(),&lt;/span&gt; &lt;span class="s"&gt;"Login failed"&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Toast&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;LENGTH_LONG&lt;/span&gt;&lt;span class="o"&gt;).&lt;/span&gt;&lt;span class="na"&gt;show&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+
+        &lt;span class="n"&gt;_loginButton&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setEnabled&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+    &lt;span class="o"&gt;}&lt;/span&gt;
+
+    &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;boolean&lt;/span&gt; &lt;span class="n"&gt;validate&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+        &lt;span class="kt"&gt;boolean&lt;/span&gt; &lt;span class="n"&gt;valid&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+        &lt;span class="n"&gt;String&lt;/span&gt; &lt;span class="n"&gt;email&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;_emailText&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;getText&lt;/span&gt;&lt;span class="o"&gt;().&lt;/span&gt;&lt;span class="na"&gt;toString&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+        &lt;span class="n"&gt;String&lt;/span&gt; &lt;span class="n"&gt;password&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;_passwordText&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;getText&lt;/span&gt;&lt;span class="o"&gt;().&lt;/span&gt;&lt;span class="na"&gt;toString&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;email&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;isEmpty&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;android&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;util&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;Patterns&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;EMAIL_ADDRESS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;matcher&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;email&lt;/span&gt;&lt;span class="o"&gt;).&lt;/span&gt;&lt;span class="na"&gt;matches&lt;/span&gt;&lt;span class="o"&gt;())&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;_emailText&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setError&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"enter a valid email address"&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+            &lt;span class="n"&gt;valid&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+        &lt;span class="o"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;_emailText&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setError&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;null&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="o"&gt;}&lt;/span&gt;
+
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;password&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;isEmpty&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="n"&gt;password&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;length&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="n"&gt;password&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;length&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;_passwordText&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setError&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"between 4 and 10 alphanumeric characters"&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+            &lt;span class="n"&gt;valid&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+        &lt;span class="o"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;_passwordText&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setError&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;null&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="o"&gt;}&lt;/span&gt;
+
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;valid&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+    &lt;span class="o"&gt;}&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Go ahead and save the following layout code into &lt;code&gt;res/layout/activity_login.xml&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre class="highlight xml"&gt;&lt;code&gt;&lt;span class="cp"&gt;&amp;lt;?xml version="1.0" encoding="utf-8"?&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;ScrollView&lt;/span&gt; &lt;span class="na"&gt;xmlns:android=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res/android"&lt;/span&gt;
+    &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"fill_parent"&lt;/span&gt;
+    &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"fill_parent"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+
+    &lt;span class="nt"&gt;&amp;lt;LinearLayout&lt;/span&gt;
+        &lt;span class="na"&gt;android:orientation=&lt;/span&gt;&lt;span class="s"&gt;"vertical"&lt;/span&gt;
+        &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+        &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"wrap_content"&lt;/span&gt;
+        &lt;span class="na"&gt;android:paddingTop=&lt;/span&gt;&lt;span class="s"&gt;"56dp"&lt;/span&gt;
+        &lt;span class="na"&gt;android:paddingLeft=&lt;/span&gt;&lt;span class="s"&gt;"24dp"&lt;/span&gt;
+        &lt;span class="na"&gt;android:paddingRight=&lt;/span&gt;&lt;span class="s"&gt;"24dp"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+
+        &lt;span class="nt"&gt;&amp;lt;ImageView&lt;/span&gt; &lt;span class="na"&gt;android:src=&lt;/span&gt;&lt;span class="s"&gt;"@drawable/logo"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"wrap_content"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"72dp"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_marginBottom=&lt;/span&gt;&lt;span class="s"&gt;"24dp"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_gravity=&lt;/span&gt;&lt;span class="s"&gt;"center_horizontal"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+
+        &lt;span class="c"&gt;&amp;lt;!-- Email Label --&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;android.support.design.widget.TextInputLayout&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"wrap_content"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_marginTop=&lt;/span&gt;&lt;span class="s"&gt;"8dp"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_marginBottom=&lt;/span&gt;&lt;span class="s"&gt;"8dp"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class="nt"&gt;&amp;lt;EditText&lt;/span&gt; &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/input_email"&lt;/span&gt;
+                &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+                &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"wrap_content"&lt;/span&gt;
+                &lt;span class="na"&gt;android:inputType=&lt;/span&gt;&lt;span class="s"&gt;"textEmailAddress"&lt;/span&gt;
+                &lt;span class="na"&gt;android:hint=&lt;/span&gt;&lt;span class="s"&gt;"Email"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;/android.support.design.widget.TextInputLayout&amp;gt;&lt;/span&gt;
+
+        &lt;span class="c"&gt;&amp;lt;!-- Password Label --&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;android.support.design.widget.TextInputLayout&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"wrap_content"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_marginTop=&lt;/span&gt;&lt;span class="s"&gt;"8dp"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_marginBottom=&lt;/span&gt;&lt;span class="s"&gt;"8dp"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class="nt"&gt;&amp;lt;EditText&lt;/span&gt; &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/input_password"&lt;/span&gt;
+                &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+                &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"wrap_content"&lt;/span&gt;
+                &lt;span class="na"&gt;android:inputType=&lt;/span&gt;&lt;span class="s"&gt;"textPassword"&lt;/span&gt;
+                &lt;span class="na"&gt;android:hint=&lt;/span&gt;&lt;span class="s"&gt;"Password"&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;/android.support.design.widget.TextInputLayout&amp;gt;&lt;/span&gt;
+
+        &lt;span class="nt"&gt;&amp;lt;android.support.v7.widget.AppCompatButton&lt;/span&gt;
+            &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/btn_login"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"fill_parent"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"wrap_content"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_marginTop=&lt;/span&gt;&lt;span class="s"&gt;"24dp"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_marginBottom=&lt;/span&gt;&lt;span class="s"&gt;"24dp"&lt;/span&gt;
+            &lt;span class="na"&gt;android:padding=&lt;/span&gt;&lt;span class="s"&gt;"12dp"&lt;/span&gt;
+            &lt;span class="na"&gt;android:text=&lt;/span&gt;&lt;span class="s"&gt;"Login"&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+
+        &lt;span class="nt"&gt;&amp;lt;TextView&lt;/span&gt; &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/link_signup"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"fill_parent"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"wrap_content"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_marginBottom=&lt;/span&gt;&lt;span class="s"&gt;"24dp"&lt;/span&gt;
+            &lt;span class="na"&gt;android:text=&lt;/span&gt;&lt;span class="s"&gt;"No account yet? Create one"&lt;/span&gt;
+            &lt;span class="na"&gt;android:gravity=&lt;/span&gt;&lt;span class="s"&gt;"center"&lt;/span&gt;
+            &lt;span class="na"&gt;android:textSize=&lt;/span&gt;&lt;span class="s"&gt;"16dip"&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+
+    &lt;span class="nt"&gt;&amp;lt;/LinearLayout&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/ScrollView&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id="signup-activity"&gt;Signup Activity&lt;/h2&gt;
+
+&lt;p&gt;The Signup Activity enables the user to create an account on your app, and is generally displayed via the link on the Login Activity.&lt;/p&gt;
+
+&lt;p&gt;Note that we set a &lt;code&gt;RESULT_OK&lt;/code&gt; result when the user signs up successfully. This result can be handled via the &lt;code&gt;onActivityResult&lt;/code&gt; method of the Login Activity to determine how a successfull signup is handled. The current logic is simply to log the user in straight away after a successfull signup, but if you want to implement some kind of email validation then you will need to do that part yourself.&lt;/p&gt;
+
+&lt;pre class="highlight java"&gt;&lt;code&gt;&lt;span class="c1"&gt;// SignupActivity.java&lt;/span&gt;
+
+&lt;span class="kn"&gt;package&lt;/span&gt; &lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;sourcey&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;materiallogindemo&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.app.ProgressDialog&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.os.Bundle&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.support.v7.app.AppCompatActivity&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.util.Log&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.view.View&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.widget.Button&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.widget.EditText&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.widget.TextView&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.widget.Toast&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;butterknife.ButterKnife&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;butterknife.InjectView&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+&lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;SignupActivity&lt;/span&gt; &lt;span class="kd"&gt;extends&lt;/span&gt; &lt;span class="n"&gt;AppCompatActivity&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+    &lt;span class="kd"&gt;private&lt;/span&gt; &lt;span class="kd"&gt;static&lt;/span&gt; &lt;span class="kd"&gt;final&lt;/span&gt; &lt;span class="n"&gt;String&lt;/span&gt; &lt;span class="n"&gt;TAG&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"SignupActivity"&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+    &lt;span class="nd"&gt;@InjectView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;id&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;input_name&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;EditText&lt;/span&gt; &lt;span class="n"&gt;_nameText&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+    &lt;span class="nd"&gt;@InjectView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;id&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;input_email&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;EditText&lt;/span&gt; &lt;span class="n"&gt;_emailText&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+    &lt;span class="nd"&gt;@InjectView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;id&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;input_password&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;EditText&lt;/span&gt; &lt;span class="n"&gt;_passwordText&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+    &lt;span class="nd"&gt;@InjectView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;id&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;btn_signup&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;Button&lt;/span&gt; &lt;span class="n"&gt;_signupButton&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+    &lt;span class="nd"&gt;@InjectView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;id&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;link_login&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;TextView&lt;/span&gt; &lt;span class="n"&gt;_loginLink&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+    
+    &lt;span class="nd"&gt;@Override&lt;/span&gt;
+    &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;onCreate&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Bundle&lt;/span&gt; &lt;span class="n"&gt;savedInstanceState&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+        &lt;span class="kd"&gt;super&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;onCreate&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;savedInstanceState&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;setContentView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;layout&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;activity_signup&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;ButterKnife&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;inject&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+
+        &lt;span class="n"&gt;_signupButton&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setOnClickListener&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;View&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;OnClickListener&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="nd"&gt;@Override&lt;/span&gt;
+            &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;onClick&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;View&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+                &lt;span class="n"&gt;signup&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+            &lt;span class="o"&gt;}&lt;/span&gt;
+        &lt;span class="o"&gt;});&lt;/span&gt;
+
+        &lt;span class="n"&gt;_loginLink&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setOnClickListener&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;View&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;OnClickListener&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="nd"&gt;@Override&lt;/span&gt;
+            &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;onClick&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;View&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+                &lt;span class="c1"&gt;// Finish the registration screen and return to the Login activity&lt;/span&gt;
+                &lt;span class="n"&gt;finish&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+            &lt;span class="o"&gt;}&lt;/span&gt;
+        &lt;span class="o"&gt;});&lt;/span&gt;
+    &lt;span class="o"&gt;}&lt;/span&gt;
+
+    &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;signup&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;Log&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;d&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TAG&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"Register"&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;(!&lt;/span&gt;&lt;span class="n"&gt;validate&lt;/span&gt;&lt;span class="o"&gt;())&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;onSignupFailed&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+            &lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+        &lt;span class="o"&gt;}&lt;/span&gt;
+
+        &lt;span class="n"&gt;_signupButton&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setEnabled&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+
+        &lt;span class="kd"&gt;final&lt;/span&gt; &lt;span class="n"&gt;ProgressDialog&lt;/span&gt; &lt;span class="n"&gt;progressDialog&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;ProgressDialog&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;SignupActivity&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;this&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;
+                &lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;style&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;AppTheme_Dark_Dialog&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;progressDialog&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setIndeterminate&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;progressDialog&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setMessage&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Creating Account..."&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;progressDialog&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;show&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+
+        &lt;span class="n"&gt;String&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;_nameText&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;getText&lt;/span&gt;&lt;span class="o"&gt;().&lt;/span&gt;&lt;span class="na"&gt;toString&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+        &lt;span class="n"&gt;String&lt;/span&gt; &lt;span class="n"&gt;email&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;_emailText&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;getText&lt;/span&gt;&lt;span class="o"&gt;().&lt;/span&gt;&lt;span class="na"&gt;toString&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+        &lt;span class="n"&gt;String&lt;/span&gt; &lt;span class="n"&gt;password&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;_passwordText&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;getText&lt;/span&gt;&lt;span class="o"&gt;().&lt;/span&gt;&lt;span class="na"&gt;toString&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+
+        &lt;span class="c1"&gt;// Implement your authentication logic here. On complete call either onSignupSuccess&lt;/span&gt;
+        &lt;span class="c1"&gt;// or onSignupFailed&lt;/span&gt;
+        &lt;span class="n"&gt;onSignupSuccess&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+        &lt;span class="c1"&gt;// onSignupFailed();&lt;/span&gt;
+
+        &lt;span class="n"&gt;progressDialog&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;dismiss&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+    &lt;span class="o"&gt;}&lt;/span&gt;
+
+
+    &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;onSignupSuccess&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;_signupButton&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setEnabled&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;setResult&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;RESULT_OK&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="kc"&gt;null&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;finish&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+    &lt;span class="o"&gt;}&lt;/span&gt;
+
+    &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;onSignupFailed&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;Toast&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;makeText&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;getBaseContext&lt;/span&gt;&lt;span class="o"&gt;(),&lt;/span&gt; &lt;span class="s"&gt;"Login failed"&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Toast&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;LENGTH_LONG&lt;/span&gt;&lt;span class="o"&gt;).&lt;/span&gt;&lt;span class="na"&gt;show&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+
+        &lt;span class="n"&gt;_signupButton&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setEnabled&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+    &lt;span class="o"&gt;}&lt;/span&gt;
+
+    &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;boolean&lt;/span&gt; &lt;span class="n"&gt;validate&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+        &lt;span class="kt"&gt;boolean&lt;/span&gt; &lt;span class="n"&gt;valid&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+        &lt;span class="n"&gt;String&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;_nameText&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;getText&lt;/span&gt;&lt;span class="o"&gt;().&lt;/span&gt;&lt;span class="na"&gt;toString&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+        &lt;span class="n"&gt;String&lt;/span&gt; &lt;span class="n"&gt;email&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;_emailText&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;getText&lt;/span&gt;&lt;span class="o"&gt;().&lt;/span&gt;&lt;span class="na"&gt;toString&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+        &lt;span class="n"&gt;String&lt;/span&gt; &lt;span class="n"&gt;password&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;_passwordText&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;getText&lt;/span&gt;&lt;span class="o"&gt;().&lt;/span&gt;&lt;span class="na"&gt;toString&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;isEmpty&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;length&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;_nameText&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setError&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"at least 3 characters"&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+            &lt;span class="n"&gt;valid&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+        &lt;span class="o"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;_nameText&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setError&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;null&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="o"&gt;}&lt;/span&gt;
+
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;email&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;isEmpty&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;android&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;util&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;Patterns&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;EMAIL_ADDRESS&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;matcher&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;email&lt;/span&gt;&lt;span class="o"&gt;).&lt;/span&gt;&lt;span class="na"&gt;matches&lt;/span&gt;&lt;span class="o"&gt;())&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;_emailText&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setError&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"enter a valid email address"&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+            &lt;span class="n"&gt;valid&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+        &lt;span class="o"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;_emailText&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setError&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;null&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="o"&gt;}&lt;/span&gt;
+
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;password&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;isEmpty&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="n"&gt;password&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;length&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="n"&gt;password&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;length&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;_passwordText&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setError&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"between 4 and 10 alphanumeric characters"&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+            &lt;span class="n"&gt;valid&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+        &lt;span class="o"&gt;}&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;_passwordText&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setError&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;null&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="o"&gt;}&lt;/span&gt;
+
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;valid&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+    &lt;span class="o"&gt;}&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Save the following layout code into &lt;code&gt;res/layout/activity_signup.xml&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre class="highlight xml"&gt;&lt;code&gt;&lt;span class="cp"&gt;&amp;lt;?xml version="1.0" encoding="utf-8"?&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;ScrollView&lt;/span&gt;
+    &lt;span class="na"&gt;xmlns:android=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res/android"&lt;/span&gt;
+    &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"fill_parent"&lt;/span&gt;
+    &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"fill_parent"&lt;/span&gt;
+    &lt;span class="na"&gt;android:fitsSystemWindows=&lt;/span&gt;&lt;span class="s"&gt;"true"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+
+    &lt;span class="nt"&gt;&amp;lt;LinearLayout&lt;/span&gt;
+        &lt;span class="na"&gt;android:orientation=&lt;/span&gt;&lt;span class="s"&gt;"vertical"&lt;/span&gt;
+        &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+        &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"wrap_content"&lt;/span&gt;
+        &lt;span class="na"&gt;android:paddingTop=&lt;/span&gt;&lt;span class="s"&gt;"56dp"&lt;/span&gt;
+        &lt;span class="na"&gt;android:paddingLeft=&lt;/span&gt;&lt;span class="s"&gt;"24dp"&lt;/span&gt;
+        &lt;span class="na"&gt;android:paddingRight=&lt;/span&gt;&lt;span class="s"&gt;"24dp"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+
+        &lt;span class="nt"&gt;&amp;lt;ImageView&lt;/span&gt; &lt;span class="na"&gt;android:src=&lt;/span&gt;&lt;span class="s"&gt;"@drawable/logo"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"wrap_content"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"72dp"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_marginBottom=&lt;/span&gt;&lt;span class="s"&gt;"24dp"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_gravity=&lt;/span&gt;&lt;span class="s"&gt;"center_horizontal"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+
+        &lt;span class="c"&gt;&amp;lt;!--  Name Label --&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;android.support.design.widget.TextInputLayout&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"wrap_content"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_marginTop=&lt;/span&gt;&lt;span class="s"&gt;"8dp"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_marginBottom=&lt;/span&gt;&lt;span class="s"&gt;"8dp"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class="nt"&gt;&amp;lt;EditText&lt;/span&gt; &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/input_name"&lt;/span&gt;
+                &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+                &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"wrap_content"&lt;/span&gt;
+                &lt;span class="na"&gt;android:inputType=&lt;/span&gt;&lt;span class="s"&gt;"textCapWords"&lt;/span&gt;
+                &lt;span class="na"&gt;android:hint=&lt;/span&gt;&lt;span class="s"&gt;"Name"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;/android.support.design.widget.TextInputLayout&amp;gt;&lt;/span&gt;
+
+        &lt;span class="c"&gt;&amp;lt;!-- Email Label --&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;android.support.design.widget.TextInputLayout&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"wrap_content"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_marginTop=&lt;/span&gt;&lt;span class="s"&gt;"8dp"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_marginBottom=&lt;/span&gt;&lt;span class="s"&gt;"8dp"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class="nt"&gt;&amp;lt;EditText&lt;/span&gt; &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/input_email"&lt;/span&gt;
+                &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+                &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"wrap_content"&lt;/span&gt;
+                &lt;span class="na"&gt;android:inputType=&lt;/span&gt;&lt;span class="s"&gt;"textEmailAddress"&lt;/span&gt;
+                &lt;span class="na"&gt;android:hint=&lt;/span&gt;&lt;span class="s"&gt;"Email"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;/android.support.design.widget.TextInputLayout&amp;gt;&lt;/span&gt;
+
+        &lt;span class="c"&gt;&amp;lt;!-- Password Label --&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;android.support.design.widget.TextInputLayout&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"wrap_content"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_marginTop=&lt;/span&gt;&lt;span class="s"&gt;"8dp"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_marginBottom=&lt;/span&gt;&lt;span class="s"&gt;"8dp"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class="nt"&gt;&amp;lt;EditText&lt;/span&gt; &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/input_password"&lt;/span&gt;
+                &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+                &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"wrap_content"&lt;/span&gt;
+                &lt;span class="na"&gt;android:inputType=&lt;/span&gt;&lt;span class="s"&gt;"textPassword"&lt;/span&gt;
+                &lt;span class="na"&gt;android:hint=&lt;/span&gt;&lt;span class="s"&gt;"Password"&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;/android.support.design.widget.TextInputLayout&amp;gt;&lt;/span&gt;
+
+        &lt;span class="c"&gt;&amp;lt;!-- Signup Button --&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;android.support.v7.widget.AppCompatButton&lt;/span&gt;
+            &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/btn_signup"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"fill_parent"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"wrap_content"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_marginTop=&lt;/span&gt;&lt;span class="s"&gt;"24dp"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_marginBottom=&lt;/span&gt;&lt;span class="s"&gt;"24dp"&lt;/span&gt;
+            &lt;span class="na"&gt;android:padding=&lt;/span&gt;&lt;span class="s"&gt;"12dp"&lt;/span&gt;
+            &lt;span class="na"&gt;android:text=&lt;/span&gt;&lt;span class="s"&gt;"Create Account"&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+
+        &lt;span class="nt"&gt;&amp;lt;TextView&lt;/span&gt; &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/link_login"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"fill_parent"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"wrap_content"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_marginBottom=&lt;/span&gt;&lt;span class="s"&gt;"24dp"&lt;/span&gt;
+            &lt;span class="na"&gt;android:text=&lt;/span&gt;&lt;span class="s"&gt;"Already a member? Login"&lt;/span&gt;
+            &lt;span class="na"&gt;android:gravity=&lt;/span&gt;&lt;span class="s"&gt;"center"&lt;/span&gt;
+            &lt;span class="na"&gt;android:textSize=&lt;/span&gt;&lt;span class="s"&gt;"16dip"&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+
+    &lt;span class="nt"&gt;&amp;lt;/LinearLayout&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/ScrollView&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id="configuration"&gt;Configuration&lt;/h2&gt;
+
+&lt;p&gt;In order to make everything work we need to add a couple of dependencies to the &lt;code&gt;build.gradle&lt;/code&gt; file in your &lt;code&gt;app&lt;/code&gt; directory. ButterKnife is optional, but we like to use it to clean up our Java code a bit.&lt;/p&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.android.support:design:22.2.0'
+    compile 'com.jakewharton:butterknife:6.1.0'
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Next add the necessary Activity declarations to your AndroidManifest. I have posted the complete AndroidManifest.xml for clarity.&lt;/p&gt;
+
+&lt;pre class="highlight xml"&gt;&lt;code&gt;&lt;span class="cp"&gt;&amp;lt;?xml version="1.0" encoding="utf-8"?&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;manifest&lt;/span&gt; &lt;span class="na"&gt;xmlns:android=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res/android"&lt;/span&gt;
+    &lt;span class="na"&gt;package=&lt;/span&gt;&lt;span class="s"&gt;"com.sourcey.materiallogindemo"&lt;/span&gt; &lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+
+    &lt;span class="nt"&gt;&amp;lt;application&lt;/span&gt;
+        &lt;span class="na"&gt;android:allowBackup=&lt;/span&gt;&lt;span class="s"&gt;"true"&lt;/span&gt;
+        &lt;span class="na"&gt;android:icon=&lt;/span&gt;&lt;span class="s"&gt;"@mipmap/ic_launcher"&lt;/span&gt;
+        &lt;span class="na"&gt;android:label=&lt;/span&gt;&lt;span class="s"&gt;"@string/app_name"&lt;/span&gt;
+        &lt;span class="na"&gt;android:theme=&lt;/span&gt;&lt;span class="s"&gt;"@style/AppTheme"&lt;/span&gt; &lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;activity&lt;/span&gt;
+            &lt;span class="na"&gt;android:name=&lt;/span&gt;&lt;span class="s"&gt;".MainActivity"&lt;/span&gt;
+            &lt;span class="na"&gt;android:label=&lt;/span&gt;&lt;span class="s"&gt;"@string/app_name"&lt;/span&gt; &lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class="nt"&gt;&amp;lt;intent-filter&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;action&lt;/span&gt; &lt;span class="na"&gt;android:name=&lt;/span&gt;&lt;span class="s"&gt;"android.intent.action.MAIN"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+
+                &lt;span class="nt"&gt;&amp;lt;category&lt;/span&gt; &lt;span class="na"&gt;android:name=&lt;/span&gt;&lt;span class="s"&gt;"android.intent.category.LAUNCHER"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+            &lt;span class="nt"&gt;&amp;lt;/intent-filter&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;/activity&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;activity&lt;/span&gt; &lt;span class="na"&gt;android:name=&lt;/span&gt;&lt;span class="s"&gt;".LoginActivity"&lt;/span&gt; &lt;span class="na"&gt;android:theme=&lt;/span&gt;&lt;span class="s"&gt;"@style/AppTheme.Dark"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;activity&lt;/span&gt; &lt;span class="na"&gt;android:name=&lt;/span&gt;&lt;span class="s"&gt;".SignupActivity"&lt;/span&gt; &lt;span class="na"&gt;android:theme=&lt;/span&gt;&lt;span class="s"&gt;"@style/AppTheme.Dark"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;/application&amp;gt;&lt;/span&gt;
+
+&lt;span class="nt"&gt;&amp;lt;/manifest&amp;gt;&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I hope you’ve found this article useful, and through it you can save some precious development hours. As usual, the full source code is up on Github:&lt;/p&gt;
+
+&lt;center&gt;
+&lt;p&gt;&lt;a class="action-button button radius" target="_blank" href="https://github.com/sourcey/materiallogindemo" title="Get the Code on Github"&gt;Get the Code on Github&lt;/a&gt;&lt;/p&gt;
+&lt;/center&gt;
+</content>
+  </entry>
   <entry>
     <title>Simple Social Sharing Buttons Without JavaScript APIs</title>
     <link rel="alternate" href="http://sourcey.com/simple-social-sharing-buttons-without-javascript-apis/"/>
@@ -121,7 +884,7 @@
     <link rel="alternate" href="http://sourcey.com/recliner/"/>
     <id>http://sourcey.com/recliner/</id>
     <published>2015-02-09T00:58:07Z</published>
-    <updated>2015-02-10T20:13:31+01:00</updated>
+    <updated>2015-06-18T15:31:26+02:00</updated>
     <author>
       <name/>
     </author>
@@ -274,22 +1037,22 @@
 
 &lt;h5 id="image-1"&gt;Image #1&lt;/h5&gt;
 &lt;div class="lazy-container"&gt;
-  &lt;p&gt;&lt;img class="lazy" data-src="http://sourcey.com/images/stock/xiao-feng-lsd-320x200.jpg" /&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;img class="lazy" data-src="/images/stock/xiao-feng-lsd-320x200.jpg" /&gt;&lt;/p&gt;
 &lt;/div&gt;
 
 &lt;h5 id="image-2"&gt;Image #2&lt;/h5&gt;
 &lt;div class="lazy-container"&gt;
-  &lt;p&gt;&lt;img class="lazy" data-src="http://sourcey.com/images/stock/xiao-feng-dmt-320x200.jpg" /&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;img class="lazy" data-src="/images/stock/xiao-feng-dmt-320x200.jpg" /&gt;&lt;/p&gt;
 &lt;/div&gt;
 
 &lt;h5 id="image-3"&gt;Image #3&lt;/h5&gt;
 &lt;div class="lazy-container"&gt;
-  &lt;p&gt;&lt;img class="lazy" data-src="http://sourcey.com/images/stock/miyamoto-musashi-320x200.jpg" /&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;img class="lazy" data-src="/images/stock/miyamoto-musashi-320x200.jpg" /&gt;&lt;/p&gt;
 &lt;/div&gt;
 
 &lt;h5 id="image-4"&gt;Image #4&lt;/h5&gt;
 &lt;div class="lazy-container"&gt;
-  &lt;p&gt;&lt;img class="lazy" data-src="http://sourcey.com/images/stock/logic-vs-art-320x200.jpg" /&gt;&lt;/p&gt;
+  &lt;p&gt;&lt;img class="lazy" data-src="/images/stock/logic-vs-art-320x200.jpg" /&gt;&lt;/p&gt;
 &lt;/div&gt;
 
 &lt;h5 id="ajax-element"&gt;AJAX Element&lt;/h5&gt;
@@ -302,12 +1065,11 @@
   &lt;iframe class="lazy" data-src="/recliner/randomcontent" frameborder="0" vspace="0" hspace="0"&gt;&lt;/iframe&gt;
 &lt;/div&gt;
 
-&lt;script src="//code.jquery.com/jquery-1.11.2.min.js"&gt;&lt;/script&gt;
-
+&lt;!--&lt;script src="//code.jquery.com/jquery-1.11.2.min.js"&gt;&lt;/script&gt;--&gt;
 &lt;script src="/javascripts/recliner.min.js"&gt;&lt;/script&gt;
 
 &lt;script&gt;
-    //$(function() {
+    $(function() {
         // instantiate recliner
         $('.lazy').recliner({
             attrib: "data-src", // selector for attribute containing the media src
@@ -315,7 +1077,7 @@
             threshold: 100,     // scroll distance from element before its loaded
             live: true          // auto bind lazy loading to ajax loaded elements          
         });
-    //});
+    });
 &lt;/script&gt;
 
 &lt;style&gt;
@@ -430,490 +1192,6 @@
 &lt;p&gt;Does your startup solve a genuine human issue, or is it just another useless tech gimmick? The next time I hear an entrepreneur saying he is making the world a better place with a crappy new social network I think I’m going to puke - right on the speaker! If that’s the case then you need to seriously consider what’s important and kind of world you want to be living in.&lt;/p&gt;
 
 &lt;p&gt;Theres huge money for startups that are providing genuine solutions for global issues, and making them accessible for consumers and governments who’re scrambling for the light switch. As entrepreneurs we have to power to create the future, so let’s use it to build something brilliant and worthwhile!&lt;/p&gt;
-</content>
-  </entry>
-  <entry>
-    <title>Building a Simple C++ Cross-platform Plugin System</title>
-    <link rel="alternate" href="http://sourcey.com/building-a-simple-cpp-cross-platform-plugin-system/"/>
-    <id>http://sourcey.com/building-a-simple-cpp-cross-platform-plugin-system/</id>
-    <published>2014-05-29T00:00:00Z</published>
-    <updated>2014-06-02T13:48:16+02:00</updated>
-    <author>
-      <name>Kam Low</name>
-    </author>
-    <content type="html">&lt;div class="sidebar-section toc"&gt;
-  &lt;h4 class="no_toc" id="contents"&gt;Contents&lt;/h4&gt;
-
-&lt;ul id="markdown-toc"&gt;
-  &lt;li&gt;&lt;a id="markdown-toc-abi-and-binary-compatibility" href="#abi-and-binary-compatibility"&gt;ABI and Binary Compatibility&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a id="markdown-toc-interprocess-memory-handling" href="#interprocess-memory-handling"&gt;Interprocess Memory Handling&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a id="markdown-toc-plugin-system-api" href="#plugin-system-api"&gt;Plugin System API&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a id="markdown-toc-plugin-api" href="#plugin-api"&gt;Plugin API&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a id="markdown-toc-implementing-plugins" href="#implementing-plugins"&gt;Implementing Plugins&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a id="markdown-toc-a-simple-application" href="#a-simple-application"&gt;A Simple Application&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a id="markdown-toc-installing-pluga" href="#installing-pluga"&gt;Installing Pluga&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;/div&gt;
-
-&lt;p&gt;This article talks about some key factors to consider when designing a plugin system in C++, and also provides some practical examples of how we’ve addressed these issues in our own code. There’s a lot to cover here, such as binary compatibility, strict API versioning, and interprocess memory management. Sounds like fun right? Well, if you get it wrong then it sure as hell won’t be, sometime in the near future you’ll most likely have a suicide inducing customer support nightmare on your hands, but if you get it right then it’s really not so bad.&lt;/p&gt;
-
-&lt;p&gt;If you’re looking for the code, we’ve released it as an open source &lt;a href="http://sourcey.com/LibSourcey"&gt;LibSourcey&lt;/a&gt; module called &lt;a href="http://sourcey.com/pluga"&gt;Pluga&lt;/a&gt; on &lt;a href="https://github.com/sourcey/pluga"&gt;Github&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h2 id="abi-and-binary-compatibility"&gt;ABI and Binary Compatibility&lt;/h2&gt;
-
-&lt;p&gt;The first thing to consider when designing your &lt;a href="#plugin-api"&gt;Plugin API&lt;/a&gt; is &lt;a href="http://en.wikipedia.org/wiki/Application_binary_interface"&gt;ABI&lt;/a&gt; compatibility. Unlike dynamically scripted languages, C++ demands that any shared libraries loaded by the runtime are binary compatible, otherwise all hell breaks loose. Essentially, this means that both the application and plugins must be compiled using the exactly the same development environment.&lt;/p&gt;
-
-&lt;p&gt;If you can, try and stick to this one simple rule: only pass POD (plain old data) data types across process boundaries. By sticking to POD types the binaries will have no interdependent shared libraries, and you can avoid binary compatibility issues altogether.&lt;/p&gt;
-
-&lt;p&gt;The tradeoff is that standard libraries differ from compiler to compiler, platform to platform, even version to version, so they should always be deemed to be binary incompatible. This means that unless you want to force clients to use exactly the same OS, compiler and third party dependencies as you when buildng plugins for your application, then you’ll need to avoid using STL containers or other complex types in your &lt;a href="#plugin-api"&gt;Plugin API&lt;/a&gt;.
-“But this is C++!?”, you cry in anguish, and unless you’re rockin’ a mullet with a stubbie cooler then who could blame you? Unfortunately that’s just the way it is, so in this case all we can do is bite our collective upper lip and move on.&lt;/p&gt;
-
-&lt;!--
-Even the standard libraries themselves are not binary compatible, 
-    they
-, then stick to POD
-, and no throwing standard exceptions either.
---&gt;
-
-&lt;p&gt;There are alternatives, such as embedding the standard libraries in your project using &lt;a href="http://www.stlport.org"&gt;STLport&lt;/a&gt; or similar to ensure consistency between platforms, but why bother? It seems like overkill, wouldn’t it be easier to just to pass a &lt;code&gt;void*&lt;/code&gt; or a &lt;code&gt;char*&lt;/code&gt; buffer and encode/decode it as required across the process boundary?&lt;/p&gt;
-
-&lt;p&gt;The method we’ve been using recently is actually quite simple. The plugin implements a &lt;code&gt;onCommand&lt;/code&gt; method which accepts arbitrary commands from the application. The advantage of using this type of interface is that you’re able to implement almost any kind of functionality without having to add new methods and break the API each time you roll out a new feature. Obviously it doesn’t have it be this simple, but you get the idea!&lt;/p&gt;
-
-&lt;p&gt;Command nodes (see code below) are namespaced using a &lt;a href="http://en.wikipedia.org/wiki/Representational_state_transfer"&gt;REST&lt;/a&gt; style interface like so &lt;code&gt;resource:action&lt;/code&gt;, and the data buffer contains either a JSON encoded message which for representing and converting to an STL container such a &lt;code&gt;std::vector&lt;/code&gt; or &lt;code&gt;std::map&lt;/code&gt; to pass to the internal API, or it may just be a raw data buffer that can be used directly.&lt;/p&gt;
-
-&lt;p&gt;Take, for example, the following code:&lt;/p&gt;
-
-&lt;pre class="highlight cpp"&gt;&lt;code&gt;&lt;span class="n"&gt;bool&lt;/span&gt; &lt;span class="nf"&gt;onCommand&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;node&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="p"&gt;{&lt;/span&gt;    
-    &lt;span class="n"&gt;try&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="c1"&gt;// Handle a JSON encoded options hash
-&lt;/span&gt;        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;strcmp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;node&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"options:set"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;   
-            &lt;span class="n"&gt;json&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;Value&lt;/span&gt; &lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-            &lt;span class="n"&gt;json&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;Reader&lt;/span&gt; &lt;span class="n"&gt;reader&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-            &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;reader&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;parse&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;          
-                &lt;span class="k"&gt;throw&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;runtime_error&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Invalid JSON format: "&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;reader&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;getFormatedErrorMessages&lt;/span&gt;&lt;span class="p"&gt;());&lt;/span&gt;
-                
-            &lt;span class="c1"&gt;// Do something with JSON data here...
-&lt;/span&gt;        &lt;span class="p"&gt;}&lt;/span&gt;
-
-        &lt;span class="c1"&gt;// Handle raw file data
-&lt;/span&gt;        &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;strcmp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;node&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"file:write"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-            &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"test.bin"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-            &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;ofstream&lt;/span&gt; &lt;span class="n"&gt;ofs&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;ios&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;out&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;ios&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;binary&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-            &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;ofs&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;is_open&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
-                &lt;span class="k"&gt;throw&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;runtime_error&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Cannot write to output file: "&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-            &lt;span class="n"&gt;ofs&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;write&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-            &lt;span class="n"&gt;ofs&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;close&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
-        &lt;span class="p"&gt;}&lt;/span&gt;
-
-        &lt;span class="c1"&gt;// Handle unknown commands
-&lt;/span&gt;        &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="k"&gt;throw&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;runtime_error&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Unknown command"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
-    &lt;span class="k"&gt;catch&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;exception&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;exc&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="c1"&gt;// Catch exceptions here and return false.
-&lt;/span&gt;        &lt;span class="c1"&gt;// You could set a lastError string here which is exposed to
-&lt;/span&gt;        &lt;span class="c1"&gt;// the application that returns the error message as a char*.
-&lt;/span&gt;        &lt;span class="c1"&gt;// See the full example for details.
-&lt;/span&gt;        &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cerr&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;"Command error: "&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;exc&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;what&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
-    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;true&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;!-- TODO: Helper methods that convert to data structures and throw exceptions --&gt;
-
-&lt;h2 id="interprocess-memory-handling"&gt;Interprocess Memory Handling&lt;/h2&gt;
-
-&lt;p&gt;One other simple rule that will save you no small amount of frustration later on down the track is: any memory allocated by a process should be deallocated by the same process.&lt;/p&gt;
-
-&lt;p&gt;Let’s say the application asks the plugin to allocate and return a &lt;code&gt;char*&lt;/code&gt; buffer, and then proceeds to delete the buffer when it’s done with it. Honk! Big no no, you’re just asking for a crash.&lt;/p&gt;
-
-&lt;p&gt;This is good:&lt;/p&gt;
-
-&lt;pre class="highlight cpp"&gt;&lt;code&gt;&lt;span class="n"&gt;bool&lt;/span&gt; &lt;span class="nf"&gt;askPluginForSomeSugar&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Plugin&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;plugin&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="p"&gt;{&lt;/span&gt;    
-    &lt;span class="c1"&gt;// allocate buffer of some sort
-&lt;/span&gt;    &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;plugin&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;gimmeSomeSugarBaby&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
-
-    &lt;span class="c1"&gt;// do something cool with data
-&lt;/span&gt;
-    &lt;span class="c1"&gt;// hand the pointer back to the plugin to be deallocated
-&lt;/span&gt;    &lt;span class="n"&gt;plugin&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;putSugarBackInTheBowl&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;This is bad:&lt;/p&gt;
-
-&lt;pre class="highlight cpp"&gt;&lt;code&gt;&lt;span class="n"&gt;bool&lt;/span&gt; &lt;span class="nf"&gt;askPluginForSomeSugar&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Plugin&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;plugin&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="p"&gt;{&lt;/span&gt;    
-    &lt;span class="c1"&gt;// allocate buffer of some sort
-&lt;/span&gt;    &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;plugin&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;gimmeSomeSugarBaby&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
-
-    &lt;span class="c1"&gt;// do something cool with data
-&lt;/span&gt;
-    &lt;span class="c1"&gt;// don't manage memory data allocated by the other process!
-&lt;/span&gt;    &lt;span class="k"&gt;delete&lt;/span&gt;&lt;span class="p"&gt;[]&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id="plugin-system-api"&gt;Plugin System API&lt;/h2&gt;
-
-&lt;p&gt;The Pluga plugin system API consists of a single header file that defines a set of macros which export a &lt;code&gt;PluginDetails&lt;/code&gt; structure. The &lt;code&gt;PluginDetails&lt;/code&gt; structure exposes basic plugin information, a compile time API version, and a static initialiser function to the main application on runtime. By having an intermediary &lt;code&gt;PluginDetails&lt;/code&gt; structure that’s loaded on runtime before the plugin is instantiated, we can do things like sanity check the API version, and print information about the plugin.&lt;/p&gt;
-
-&lt;p&gt;Note that the system API also forward declares the &lt;code&gt;IPlugin&lt;/code&gt; type, which must be defined externally in your own code. See the &lt;a href="#plugin-api"&gt;Plugin API&lt;/a&gt; for more information about that.&lt;/p&gt;
-
-&lt;pre class="highlight cpp"&gt;&lt;code&gt;&lt;span class="c1"&gt;//
-// LibSourcey
-// Copyright (C) 2005, Sourcey &amp;lt;http://sourcey.com&amp;gt;
-//
-// LibSourcey is free software; you can redistribute it and/or
-// modify it under the terms of the GNU Lesser General Public
-// License as published by the Free Software Foundation; either
-// version 2.1 of the License, or (at your option) any later version.
-//
-// LibSourcey is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program. If not, see &amp;lt;http://www.gnu.org/licenses/&amp;gt;.
-//
-&lt;/span&gt;
-&lt;span class="cp"&gt;#ifndef SCY_Pluga_H
-#define SCY_Pluga_H
-&lt;/span&gt;
-
-&lt;span class="cp"&gt;#include "scy/base.h"
-&lt;/span&gt;
-
-&lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;scy&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;pluga&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-
-
-&lt;span class="c1"&gt;// Forward declare the plugin class which must be defined externally.
-&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;IPlugin&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-
-&lt;span class="c1"&gt;// Define the API version.
-// This value is incremented whenever there are ABI breaking changes.
-&lt;/span&gt;&lt;span class="cp"&gt;#define SCY_PLUGIN_API_VERSION 1
-&lt;/span&gt;    
-&lt;span class="cp"&gt;#ifdef WIN32
-# define SCY_PLUGIN_EXPORT __declspec(dllexport)
-#else
-# define SCY_PLUGIN_EXPORT // empty
-#endif
-&lt;/span&gt;
-&lt;span class="c1"&gt;// Define a type for the static function pointer.
-&lt;/span&gt;&lt;span class="n"&gt;SCY_EXTERN&lt;/span&gt; &lt;span class="k"&gt;typedef&lt;/span&gt; &lt;span class="n"&gt;IPlugin&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;GetPluginFunc&lt;/span&gt;&lt;span class="p"&gt;)();&lt;/span&gt;
-
-&lt;span class="c1"&gt;// Plugin details structure that's exposed to the application.
-&lt;/span&gt;&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;PluginDetails&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;apiVersion&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;fileName&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;className&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;pluginName&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;pluginVersion&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="n"&gt;GetPluginFunc&lt;/span&gt; &lt;span class="n"&gt;initializeFunc&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="p"&gt;};&lt;/span&gt;
-
-&lt;span class="cp"&gt;#define SCY_STANDARD_PLUGIN_STUFF \
-    SCY_PLUGIN_API_VERSION,       \
-    __FILE__
-&lt;/span&gt;
-&lt;span class="cp"&gt;#define SCY_PLUGIN(classType, pluginName, pluginVersion)     \
-  extern "C" {                                               \
-      SCY_PLUGIN_EXPORT scy::pluga::IPlugin* getPlugin()     \
-      {                                                      \
-          static classType singleton;                        \
-          return &amp;amp;singleton;                                 \
-      }                                                      \
-      SCY_PLUGIN_EXPORT scy::pluga::PluginDetails exports =  \
-      {                                                      \
-          SCY_STANDARD_PLUGIN_STUFF,                         \
-          #classType,                                        \
-          pluginName,                                        \
-          pluginVersion,                                     \
-          getPlugin,                                         \
-      };                                                     \
-  }
-&lt;/span&gt;
-
-&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="c1"&gt;// namespace scy::pluga
-&lt;/span&gt;
-
-&lt;span class="cp"&gt;#endif // SCY_Pluga_H
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id="plugin-api"&gt;Plugin API&lt;/h2&gt;
-
-&lt;p&gt;The plugin API defines the &lt;code&gt;IPlugin&lt;/code&gt; class that’s forward declared in the &lt;a href="#plugin-system-api"&gt;Plugin System API&lt;/a&gt; header. The &lt;code&gt;IPlugin&lt;/code&gt; class is the interface that the application uses to interact with the plugin, and as such it’s also the virtual base class that’s extended from when &lt;a href="#implementing-plugins"&gt;implementing plugins&lt;/a&gt;.&lt;/p&gt;
-
-&lt;!--
-which exposes all the methods 
-is the class that's extended when [implementing plugins](#implementing-plugins), and also
-
-This class defines all the 
-virtual plugin methods and functionality exposed by your application, and is also the class to be extended when [implementing plugins](#implementing-plugins).
-
-
-
-header file which 
-
-This is the header
-
-All virtual plugin methods and functionality are exposed by , 
-
- will be distributed to your clients and customers for extending and implementing their own plugins.
---&gt;
-
-&lt;p&gt;Below is a bare-bones example that only implements a single &lt;code&gt;onCommand&lt;/code&gt; method:&lt;/p&gt;
-
-&lt;pre class="highlight cpp"&gt;&lt;code&gt;&lt;span class="c1"&gt;// testpluginapi.h
-&lt;/span&gt;
-&lt;span class="cp"&gt;#ifndef SCY_TestPluginAPI_H
-#define SCY_TestPluginAPI_H
-&lt;/span&gt;
-
-&lt;span class="cp"&gt;#include "scy/pluga/pluga.h"
-&lt;/span&gt;
-
-&lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;scy&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;pluga&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-
-  
-&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;IPlugin&lt;/span&gt;
-    &lt;span class="c1"&gt;// Virtual plugin interface.
-&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-    &lt;span class="n"&gt;IPlugin&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{};&lt;/span&gt;
-    &lt;span class="k"&gt;virtual&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="n"&gt;IPlugin&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{};&lt;/span&gt;
-
-    &lt;span class="k"&gt;virtual&lt;/span&gt; &lt;span class="n"&gt;bool&lt;/span&gt; &lt;span class="n"&gt;onCommand&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;node&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-        &lt;span class="c1"&gt;// Handles a command from the application.
-&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
-
-
-&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="c1"&gt;// namespace scy::pluga
-&lt;/span&gt;
-
-&lt;span class="cp"&gt;#endif
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id="implementing-plugins"&gt;Implementing Plugins&lt;/h2&gt;
-
-&lt;p&gt;Plugin implementations extend from the &lt;a href="#plugin-api"&gt;Plugin API&lt;/a&gt; interface to implement plugin functionality.&lt;/p&gt;
-
-&lt;pre class="highlight cpp"&gt;&lt;code&gt;&lt;span class="c1"&gt;// testplugin.h
-&lt;/span&gt;
-&lt;span class="cp"&gt;#ifndef SCY_TestPlugin_H
-#define SCY_TestPlugin_H
-&lt;/span&gt;
-
-&lt;span class="cp"&gt;#include "testpluginapi.h"
-&lt;/span&gt;
-
-&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;TestPlugin&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;public&lt;/span&gt; &lt;span class="n"&gt;scy&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;pluga&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;IPlugin&lt;/span&gt; 
-    &lt;span class="c1"&gt;// Test plugin implementation.
-&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-    &lt;span class="n"&gt;TestPlugin&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
-    &lt;span class="k"&gt;virtual&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="n"&gt;TestPlugin&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
-
-    &lt;span class="k"&gt;virtual&lt;/span&gt; &lt;span class="n"&gt;bool&lt;/span&gt; &lt;span class="n"&gt;onCommand&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;node&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-        &lt;span class="c1"&gt;// Handles a command from the application.
-&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
-
-
-&lt;span class="cp"&gt;#endif
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre class="highlight cpp"&gt;&lt;code&gt;&lt;span class="c1"&gt;// testplugin.cpp
-&lt;/span&gt;
-&lt;span class="cp"&gt;#include "testplugin.h"
-#include &amp;lt;iostream&amp;gt;
-&lt;/span&gt;
-
-&lt;span class="n"&gt;SCY_PLUGIN&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TestPlugin&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"Test Plugin"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"0.1.1"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-
-
-&lt;span class="n"&gt;TestPlugin&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;TestPlugin&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;"TestPlugin: Create"&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-
-
-&lt;span class="n"&gt;TestPlugin&lt;/span&gt;&lt;span class="o"&gt;::~&lt;/span&gt;&lt;span class="n"&gt;TestPlugin&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; 
-&lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;"TestPlugin: Destroy"&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-  
-
-&lt;span class="n"&gt;bool&lt;/span&gt; &lt;span class="n"&gt;TestPlugin&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;onCommand&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;node&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;"TestPlugin: Command: "&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;node&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;": "&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-    &lt;span class="c1"&gt;// Process commands as required
-&lt;/span&gt;    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;true&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id="a-simple-application"&gt;A Simple Application&lt;/h2&gt;
-
-&lt;p&gt;The following is a totally minimal example application that shows how to use the LibSourcey &lt;code&gt;SharedLibrary&lt;/code&gt; class to load the plugin shared library, instantiate the &lt;code&gt;IPlugin&lt;/code&gt;, call it’s methods, and destroy it.&lt;/p&gt;
-
-&lt;pre class="highlight cpp"&gt;&lt;code&gt;&lt;span class="cp"&gt;#include "scy/pluga/pluga.h"
-#include "scy/sharedlibrary.h"
-#include "testpluginapi.h"
-#include &amp;lt;iostream&amp;gt;
-#include &amp;lt;assert.h&amp;gt;
-&lt;/span&gt;
-
-&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;scy&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-
-
-&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;argc&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="o"&gt;**&lt;/span&gt; &lt;span class="n"&gt;argv&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; 
-&lt;span class="p"&gt;{&lt;/span&gt; 
-    &lt;span class="c1"&gt;// Set the plugin shared library location
-&lt;/span&gt;    &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;SCY_INSTALL_PREFIX&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-    &lt;span class="n"&gt;path&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="s"&gt;"/bin/testplugin/testplugin"&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="cp"&gt;#if WIN32
-# ifdef _DEBUG
-&lt;/span&gt;    &lt;span class="n"&gt;path&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="s"&gt;"d.dll"&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="cp"&gt;# else
-&lt;/span&gt;    &lt;span class="n"&gt;path&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="s"&gt;".dll"&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="cp"&gt;# endif
-#else
-&lt;/span&gt;    &lt;span class="n"&gt;path&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="s"&gt;".so"&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="cp"&gt;#endif
-&lt;/span&gt;    
-    &lt;span class="n"&gt;try&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="c1"&gt;// Load the shared library        
-&lt;/span&gt;        &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;"Loading: "&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;path&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-        &lt;span class="n"&gt;SharedLibrary&lt;/span&gt; &lt;span class="n"&gt;lib&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-        &lt;span class="n"&gt;lib&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-        
-        &lt;span class="c1"&gt;// Get plugin descriptor and exports
-&lt;/span&gt;        &lt;span class="n"&gt;pluga&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;PluginDetails&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-        &lt;span class="n"&gt;lib&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sym&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"exports"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;reinterpret_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;void&lt;/span&gt;&lt;span class="o"&gt;**&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
-        &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;"Plugin Info: "&lt;/span&gt; 
-            &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;"&lt;/span&gt;&lt;span class="se"&gt;\n\t&lt;/span&gt;&lt;span class="s"&gt;API Version: "&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;apiVersion&lt;/span&gt; 
-            &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;"&lt;/span&gt;&lt;span class="se"&gt;\n\t&lt;/span&gt;&lt;span class="s"&gt;File Name: "&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;fileName&lt;/span&gt; 
-            &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;"&lt;/span&gt;&lt;span class="se"&gt;\n\t&lt;/span&gt;&lt;span class="s"&gt;Class Name: "&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;className&lt;/span&gt; 
-            &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;"&lt;/span&gt;&lt;span class="se"&gt;\n\t&lt;/span&gt;&lt;span class="s"&gt;Plugin Name: "&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;pluginName&lt;/span&gt; 
-            &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;"&lt;/span&gt;&lt;span class="se"&gt;\n\t&lt;/span&gt;&lt;span class="s"&gt;Plugin Version: "&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;pluginVersion&lt;/span&gt;
-            &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-        
-        &lt;span class="c1"&gt;// API Version checking 
-&lt;/span&gt;        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;apiVersion&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="n"&gt;SCY_PLUGIN_API_VERSION&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-            &lt;span class="k"&gt;throw&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;runtime_error&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
-                &lt;span class="n"&gt;util&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"Plugin ABI version mismatch. Expected %s, got %s."&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
-                    &lt;span class="n"&gt;SCY_PLUGIN_API_VERSION&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;apiVersion&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
-        
-        &lt;span class="c1"&gt;// Instantiate the plugin
-&lt;/span&gt;        &lt;span class="k"&gt;auto&lt;/span&gt; &lt;span class="n"&gt;plugin&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;reinterpret_cast&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;pluga&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;IPlugin&lt;/span&gt;&lt;span class="o"&gt;*&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;initializeFunc&lt;/span&gt;&lt;span class="p"&gt;());&lt;/span&gt;
-      
-        &lt;span class="c1"&gt;// Call plugin methods
-&lt;/span&gt;        &lt;span class="n"&gt;assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;plugin&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;onCommand&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"some:command"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"random:data"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;11&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;  
-
-        &lt;span class="c1"&gt;// Close the plugin and free memory
-&lt;/span&gt;        &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;"Closing"&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-        &lt;span class="n"&gt;lib&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;close&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
-    &lt;span class="k"&gt;catch&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;exception&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;exc&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cerr&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;"Error: "&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;exc&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;what&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-        &lt;span class="n"&gt;assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;   
-
-    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id="installing-pluga"&gt;Installing Pluga&lt;/h2&gt;
-
-&lt;p&gt;For more detailed instructions and full working example see the &lt;a href="http://sourcey.com/pluga#installation"&gt;Pluga insallation guide&lt;/a&gt;. All that’s requires is to build build &lt;a href="http://sourcey.com/libsourcey"&gt;LibSourcey&lt;/a&gt; with the &lt;a href="https://github.com/pluga"&gt;Pluga&lt;/a&gt; module enabled.&lt;/p&gt;
-
-&lt;p&gt;And there you have it, a super simple C++ plugin system that you can use in your own projects. Enjoy!&lt;/p&gt;
-</content>
-  </entry>
-  <entry>
-    <title>Comparing Version Strings in C++</title>
-    <link rel="alternate" href="http://sourcey.com/comparing-version-strings-in-cpp/"/>
-    <id>http://sourcey.com/comparing-version-strings-in-cpp/</id>
-    <published>2014-05-22T00:00:00Z</published>
-    <updated>2014-06-01T07:35:35+02:00</updated>
-    <author>
-      <name>Kam Low</name>
-    </author>
-    <content type="html">&lt;p&gt;If you’re building any kind of version management system in C++, such as a package manager or plugin system, then you’ll need to be able to maniulate, compare and print version strings. The &lt;code&gt;Version&lt;/code&gt; structure below is extracted from &lt;a href="/pacm"&gt;pacm&lt;/a&gt;, and does exactly that:&lt;/p&gt;
-
-&lt;pre class="highlight cpp"&gt;&lt;code&gt;&lt;span class="cp"&gt;#include &amp;lt;cstdio&amp;gt;
-#include &amp;lt;string&amp;gt;
-#include &amp;lt;iostream&amp;gt;
-&lt;/span&gt;
-&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;Version&lt;/span&gt;
-&lt;span class="p"&gt;{&lt;/span&gt;
-	&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;major&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;minor&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;revision&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;build&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-
-	&lt;span class="n"&gt;Version&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;version&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-	&lt;span class="p"&gt;{&lt;/span&gt;
-		&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;sscanf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;version&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;c_str&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="s"&gt;"%d.%d.%d.%d"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;major&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;minor&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;revision&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;build&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-		&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;major&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;major&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-		&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;minor&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;minor&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-		&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;revision&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;revision&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-		&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;build&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;build&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-	&lt;span class="p"&gt;}&lt;/span&gt;
-
-	&lt;span class="n"&gt;bool&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Version&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;other&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-	&lt;span class="p"&gt;{&lt;/span&gt;
-		&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;major&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;other&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;major&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-			&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;true&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-		&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;minor&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;other&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;minor&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-			&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;true&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-		&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;revision&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;other&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;revision&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-			&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;true&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-		&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;build&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;other&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;build&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-			&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;true&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-		&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-	&lt;span class="p"&gt;}&lt;/span&gt;
-
-	&lt;span class="n"&gt;bool&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Version&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;other&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-	&lt;span class="p"&gt;{&lt;/span&gt;
-		&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;major&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;other&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;major&lt;/span&gt; 
-			&lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;minor&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;other&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;minor&lt;/span&gt; 
-			&lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;revision&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;other&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;revision&lt;/span&gt; 
-			&lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;build&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;other&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;build&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-	&lt;span class="p"&gt;}&lt;/span&gt;
-
-	&lt;span class="k"&gt;friend&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;ostream&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="k"&gt;operator&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;ostream&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;stream&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;Version&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;ver&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; 
-	&lt;span class="p"&gt;{&lt;/span&gt;
-		&lt;span class="n"&gt;stream&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;ver&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;major&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-		&lt;span class="n"&gt;stream&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="sc"&gt;'.'&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-		&lt;span class="n"&gt;stream&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;ver&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;minor&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-		&lt;span class="n"&gt;stream&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="sc"&gt;'.'&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-		&lt;span class="n"&gt;stream&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;ver&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;revision&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-		&lt;span class="n"&gt;stream&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="sc"&gt;'.'&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-		&lt;span class="n"&gt;stream&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;ver&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;build&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-		&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;stream&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-	&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="p"&gt;};&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Example usage:&lt;/p&gt;
-
-&lt;pre class="highlight cpp"&gt;&lt;code&gt;&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;testVersionStringComparison&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; 
-&lt;span class="p"&gt;{&lt;/span&gt;
-	&lt;span class="n"&gt;assert&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;Version&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"3.7.8.0"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;Version&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"3.7.8.0"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="nb"&gt;true&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-	&lt;span class="n"&gt;assert&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;Version&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"3.7.8.0"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;Version&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"3.7.8"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="nb"&gt;true&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-	&lt;span class="n"&gt;assert&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;Version&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"3.7.8.0"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;Version&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"3.7.8"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-	&lt;span class="n"&gt;assert&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;Version&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"3.7.9"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;Version&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"3.7.8"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-	&lt;span class="n"&gt;assert&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;Version&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"3"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;Version&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"3.7.9"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="nb"&gt;true&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-	&lt;span class="n"&gt;assert&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;Version&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"1.7.9"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;Version&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"3.1"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="nb"&gt;true&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-	
-	&lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;"Printing version (3.7.8.0): "&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;Version&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"3.7.8.0"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
 </content>
   </entry>
 </feed>
