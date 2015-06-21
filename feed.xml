@@ -291,19 +291,30 @@
 </content>
   </entry>
   <entry>
-    <title>Beautiful Android Login and Signup Demo with Material Design</title>
-    <link rel="alternate" href="http://sourcey.com/beautiful-android-login-and-signup-demo-with-material-design/"/>
-    <id>http://sourcey.com/beautiful-android-login-and-signup-demo-with-material-design/</id>
+    <title>Beautiful Android Login and Signup Screens with Material Design</title>
+    <link rel="alternate" href="http://sourcey.com/beautiful-android-login-and-signup-screens-with-material-design/"/>
+    <id>http://sourcey.com/beautiful-android-login-and-signup-screens-with-material-design/</id>
     <published>2015-06-18T00:00:00Z</published>
-    <updated>2015-06-18T10:35:33+02:00</updated>
+    <updated>2015-06-20T18:33:48+02:00</updated>
     <author>
       <name>Kam Low</name>
     </author>
-    <content type="html">&lt;p&gt;This article provides you with everything you need to implement your own beautiful login and sinup pages using the &lt;a href=""&gt;Material design spec&lt;/a&gt;. Google’s new &lt;a href=""&gt;design support library&lt;/a&gt; implements a growing subset of the Material spec, and includes some great new UI widgets that we can use to give our Android apps that polished feel.&lt;/p&gt;
+    <content type="html">&lt;p&gt;Everyone loves a beautiful login screen, and since it’s often the very first impression users have about your app, it’s super important to get it right!&lt;/p&gt;
 
-&lt;p&gt;The main element we will be using from the design library to beautify our forms is the &lt;a href=""&gt;FloatingLabelInput&lt;/a&gt;, which is implemented via the TextInputLayout tag. Then FloatingLabelInput consists basically of an EditText element, where the placeholder text hovers above the element when selected.&lt;/p&gt;
+&lt;p&gt;This article shows you how to create your own beautiful login and sinup screens using the &lt;a href=""&gt;Material design spec&lt;/a&gt; using Google’s new &lt;a href=""&gt;design support library&lt;/a&gt;, which implements a growing subset of the Material spec, and also includes some UI widgets that can be used to give our Android apps that polished feel.&lt;/p&gt;
 
-&lt;p&gt;Everything has been done for you, but you will need to implement your own authentication logic, weather it be via HTTP, SQL or some other method. Now let the fun stuff commence!&lt;/p&gt;
+&lt;p&gt;For the design and layout we will be using the &lt;a href=""&gt;FloatingLabelInput&lt;/a&gt;, which is implemented viathe TextInputLayout tag from the design library. Then FloatingLabelInput consists of an EditText element, that when selected, it’s placeholder text hovers directly above the element like a floating label.&lt;/p&gt;
+
+&lt;p&gt;The Status Bar is also coloured on newer devices, which gives us another level of stylability on newer devices, and also adds a nice final touch to the interface&lt;/p&gt;
+
+&lt;p&gt;Nearly everything has been done for you, implemented is:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Full demo and demo examples and code up on Github.&lt;/li&gt;
+  &lt;li&gt;Custom ProgressDialog to signify when loading.&lt;/li&gt;
+  &lt;li&gt;Conforms to Material Design layout standards.&lt;/li&gt;
+  &lt;li&gt;Faux authentication via the &lt;code&gt;login&lt;/code&gt; and &lt;code&gt;signup&lt;/code&gt; meothds on each antivity. Implement your authentication logic - weather it be via HTTP, SQL or some other method.&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;center&gt;
 &lt;p&gt;&lt;a class="action-button button radius" target="_blank" href="https://github.com/sourcey/materiallogindemo" title="Get the Code on Github"&gt;Get the Code&lt;/a&gt;&lt;/p&gt;
@@ -311,9 +322,11 @@
 
 &lt;h2 id="login-activity"&gt;Login Activity&lt;/h2&gt;
 
-&lt;p&gt;Let’s begin by setting up the Login Activity, as it will be the first Activity that’s displayed to the user. The Login Activity can be started at any time, either at load time, or when the user is logged out.&lt;/p&gt;
+&lt;p&gt;Let’s begin by setting up the Login Activity, since it is generally the first Activity that you’ll display to the user. The Login Activity can be started at any time, either at load time, or when the user is logged out.&lt;/p&gt;
 
-&lt;p&gt;The code is below:&lt;/p&gt;
+&lt;p class="width-75 center"&gt;&lt;img alt="Login Screen" title="Login Screen" src="/beautiful-android-logn-and-signup-screens-with-material-design/screenshot-login.png" /&gt;&lt;/p&gt;
+
+&lt;p&gt;If you want to add social signin buttons then please go ahead, but they are outside the scope of this document. At minimum this code will give you a nice starting point for building your layout and authentication workflow.&lt;/p&gt;
 
 &lt;pre class="highlight java"&gt;&lt;code&gt;&lt;span class="c1"&gt;// LoginActivity.java&lt;/span&gt;
 
@@ -442,12 +455,13 @@
 
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Go ahead and save the following layout code into &lt;code&gt;res/layout/activity_login.xml&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Now save the following layout code into &lt;code&gt;res/layout/activity_login.xml&lt;/code&gt;&lt;/p&gt;
 
 &lt;pre class="highlight xml"&gt;&lt;code&gt;&lt;span class="cp"&gt;&amp;lt;?xml version="1.0" encoding="utf-8"?&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;ScrollView&lt;/span&gt; &lt;span class="na"&gt;xmlns:android=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res/android"&lt;/span&gt;
     &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"fill_parent"&lt;/span&gt;
-    &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"fill_parent"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"fill_parent"&lt;/span&gt;
+    &lt;span class="na"&gt;android:fitsSystemWindows=&lt;/span&gt;&lt;span class="s"&gt;"true"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
 
     &lt;span class="nt"&gt;&amp;lt;LinearLayout&lt;/span&gt;
         &lt;span class="na"&gt;android:orientation=&lt;/span&gt;&lt;span class="s"&gt;"vertical"&lt;/span&gt;
@@ -513,6 +527,8 @@
 &lt;h2 id="signup-activity"&gt;Signup Activity&lt;/h2&gt;
 
 &lt;p&gt;The Signup Activity enables the user to create an account on your app, and is generally displayed via the link on the Login Activity.&lt;/p&gt;
+
+&lt;p class="width-75 center"&gt;&lt;img alt="Signup Screen" title="Signup Screen" src="/beautiful-android-logn-and-signup-screens-with-material-design/screenshot-signup.png" /&gt;&lt;/p&gt;
 
 &lt;p&gt;Note that we set a &lt;code&gt;RESULT_OK&lt;/code&gt; result when the user signs up successfully. This result can be handled via the &lt;code&gt;onActivityResult&lt;/code&gt; method of the Login Activity to determine how a successfull signup is handled. The current logic is simply to log the user in straight away after a successfull signup, but if you want to implement some kind of email validation then you will need to do that part yourself.&lt;/p&gt;
 
@@ -638,7 +654,7 @@
 &lt;span class="o"&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Save the following layout code into &lt;code&gt;res/layout/activity_signup.xml&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Go ahead and save the following layout code into &lt;code&gt;res/layout/activity_signup.xml&lt;/code&gt;&lt;/p&gt;
 
 &lt;pre class="highlight xml"&gt;&lt;code&gt;&lt;span class="cp"&gt;&amp;lt;?xml version="1.0" encoding="utf-8"?&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;ScrollView&lt;/span&gt;

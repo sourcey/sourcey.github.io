@@ -238,9 +238,6 @@ http://sourcey.com/making-the-world-a-better-place/
 http://sourcey.com/
 
 
-http://sourcey.com/beautiful-android-login-and-signup-demo-with-material-design/
-
-
 http://sourcey.com/recliner/
 
 
@@ -256,6 +253,9 @@ http://sourcey.com/archives/
 http://sourcey.com/article_item/
 
 
+http://sourcey.com/beautiful-android-login-and-signup-screens-with-material-design/
+
+
 http://sourcey.com/libsourcey/
 
 
@@ -269,6 +269,12 @@ http://sourcey.com/anionu/
 
 
 http://sourcey.com/twitter-follow-unfollow-retweeter-ruby-bot/
+
+
+
+
+
+
 
 
 http://sourcey.com/sitemap.xml
@@ -504,9 +510,6 @@ http://sourcey.com/tags/startups/
 http://sourcey.com/tags/technology/
 
 
-http://sourcey.com/tags/material/
-
-
 http://sourcey.com/tags/google/
 
 
@@ -514,6 +517,9 @@ http://sourcey.com/tags/html5/
 
 
 http://sourcey.com/tags/optimisation/
+
+
+http://sourcey.com/tags/material/
 
 
 http://sourcey.com/tags/cloud/
