@@ -11,7 +11,7 @@
     <link rel="alternate" href="http://sourcey.com/android-horizontally-scrolling-pan-scan-and-zoom-image-gallery/"/>
     <id>http://sourcey.com/android-horizontally-scrolling-pan-scan-and-zoom-image-gallery/</id>
     <published>2015-06-18T00:00:00Z</published>
-    <updated>2015-06-18T15:23:59+02:00</updated>
+    <updated>2015-06-18T23:23:59+10:00</updated>
     <author>
       <name>Kam Low</name>
     </author>
@@ -295,26 +295,29 @@
     <link rel="alternate" href="http://sourcey.com/beautiful-android-login-and-signup-screens-with-material-design/"/>
     <id>http://sourcey.com/beautiful-android-login-and-signup-screens-with-material-design/</id>
     <published>2015-06-18T00:00:00Z</published>
-    <updated>2015-06-20T18:33:48+02:00</updated>
+    <updated>2015-06-22T00:31:54+10:00</updated>
     <author>
       <name>Kam Low</name>
     </author>
-    <content type="html">&lt;p&gt;Everyone loves a beautiful login screen, and since it’s often the very first impression users have about your app, it’s super important to get it right!&lt;/p&gt;
+    <content type="html">&lt;p&gt;Everyone loves a beautiful login screen, and since it’s usually the very first impression people have about your app it’s super important to get it right.&lt;/p&gt;
 
-&lt;p&gt;This article shows you how to create your own beautiful login and sinup screens using the &lt;a href=""&gt;Material design spec&lt;/a&gt; using Google’s new &lt;a href=""&gt;design support library&lt;/a&gt;, which implements a growing subset of the Material spec, and also includes some UI widgets that can be used to give our Android apps that polished feel.&lt;/p&gt;
+&lt;p&gt;This article shows you how to create beautiful login and signup screens the right way using &lt;a href="https://www.google.com/design/spec/material-design/introduction.html"&gt;Material design spec&lt;/a&gt; with the assistance of Google’s new &lt;a href="https://developer.android.com/tools/support-library/index.html"&gt;design support library&lt;/a&gt;. The design support library implements a growing subset of the Material spec, and also includes a bunch of sexy UI widgets that can be used to give our Android apps that polished feel.&lt;/p&gt;
 
-&lt;p&gt;For the design and layout we will be using the &lt;a href=""&gt;FloatingLabelInput&lt;/a&gt;, which is implemented viathe TextInputLayout tag from the design library. Then FloatingLabelInput consists of an EditText element, that when selected, it’s placeholder text hovers directly above the element like a floating label.&lt;/p&gt;
+&lt;p&gt;On the design and layout side of things the focus in on balancing all the screen elements in a way that’s pleasing to the eye. For an extra level of stylability and a nice custom touch we will also be styling the top status bar (on newer devices). &lt;a href="http://www.google.com/design/spec/components/text-fields.html#text-fields-floating-labels"&gt;Floating labels&lt;/a&gt; from the design support library are also used, which are implemented via the &lt;code&gt;TextInputLayout&lt;/code&gt; tag.&lt;/p&gt;
 
-&lt;p&gt;The Status Bar is also coloured on newer devices, which gives us another level of stylability on newer devices, and also adds a nice final touch to the interface&lt;/p&gt;
-
-&lt;p&gt;Nearly everything has been done for you, implemented is:&lt;/p&gt;
+&lt;p&gt;Nearly everything has been done for you:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Full demo and demo examples and code up on Github.&lt;/li&gt;
-  &lt;li&gt;Custom ProgressDialog to signify when loading.&lt;/li&gt;
-  &lt;li&gt;Conforms to Material Design layout standards.&lt;/li&gt;
-  &lt;li&gt;Faux authentication via the &lt;code&gt;login&lt;/code&gt; and &lt;code&gt;signup&lt;/code&gt; meothds on each antivity. Implement your authentication logic - weather it be via HTTP, SQL or some other method.&lt;/li&gt;
+  &lt;li&gt;Full demo and code examples on Github.&lt;/li&gt;
+  &lt;li&gt;Interface locking to prevent back button when logging in.&lt;/li&gt;
+  &lt;li&gt;Custom &lt;code&gt;ProgressDialog&lt;/code&gt; to signify loading state.&lt;/li&gt;
+  &lt;li&gt;Conforms to the Material design spec.&lt;/li&gt;
+  &lt;li&gt;Floating labels from the design library.&lt;/li&gt;
+  &lt;li&gt;Custom status bar style.&lt;/li&gt;
+  &lt;li&gt;Faux authentication methods for testing each activity.&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;p&gt;All that remains is to implement your authentication logic - weather it be via HTTP, SQL or some other method.&lt;/p&gt;
 
 &lt;center&gt;
 &lt;p&gt;&lt;a class="action-button button radius" target="_blank" href="https://github.com/sourcey/materiallogindemo" title="Get the Code on Github"&gt;Get the Code&lt;/a&gt;&lt;/p&gt;
@@ -322,15 +325,17 @@
 
 &lt;h2 id="login-activity"&gt;Login Activity&lt;/h2&gt;
 
-&lt;p&gt;Let’s begin by setting up the Login Activity, since it is generally the first Activity that you’ll display to the user. The Login Activity can be started at any time, either at load time, or when the user is logged out.&lt;/p&gt;
+&lt;p&gt;Let’s start by setting up the Login Activity, since it is usually the first Activity you’ll display when starting your app.&lt;/p&gt;
 
 &lt;p class="width-75 center"&gt;&lt;img alt="Login Screen" title="Login Screen" src="/beautiful-android-logn-and-signup-screens-with-material-design/screenshot-login.png" /&gt;&lt;/p&gt;
 
-&lt;p&gt;If you want to add social signin buttons then please go ahead, but they are outside the scope of this document. At minimum this code will give you a nice starting point for building your layout and authentication workflow.&lt;/p&gt;
+&lt;p&gt;If you want to add social signin buttons then please go ahead, but they are outside the scope of this document. At minimum this code will give you a solid starting point for building your layout and authentication workflow.&lt;/p&gt;
 
-&lt;pre class="highlight java"&gt;&lt;code&gt;&lt;span class="c1"&gt;// LoginActivity.java&lt;/span&gt;
+&lt;p&gt;Notice also that we override the &lt;code&gt;onBackPressed&lt;/code&gt; method so the user can’t close the Login Activity.&lt;/p&gt;
 
-&lt;span class="kn"&gt;package&lt;/span&gt; &lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;sourcey&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;materiallogindemo&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;p&gt;Save the following Activity file as &lt;code&gt;LoginActivity.java&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre class="highlight java"&gt;&lt;code&gt;&lt;span class="kn"&gt;package&lt;/span&gt; &lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;sourcey&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;materiallogindemo&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
 
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.app.ProgressDialog&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.os.Bundle&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
@@ -363,6 +368,7 @@
         &lt;span class="n"&gt;ButterKnife&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;inject&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
         
         &lt;span class="n"&gt;_loginButton&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setOnClickListener&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;View&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;OnClickListener&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+
             &lt;span class="nd"&gt;@Override&lt;/span&gt;
             &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;onClick&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;View&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
                 &lt;span class="n"&gt;login&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
@@ -370,6 +376,7 @@
         &lt;span class="o"&gt;});&lt;/span&gt;
 
         &lt;span class="n"&gt;_signupLink&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setOnClickListener&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;View&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;OnClickListener&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+
             &lt;span class="nd"&gt;@Override&lt;/span&gt;
             &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;onClick&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;View&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
                 &lt;span class="c1"&gt;// Start the Signup activity&lt;/span&gt;
@@ -398,12 +405,17 @@
         &lt;span class="n"&gt;String&lt;/span&gt; &lt;span class="n"&gt;email&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;_emailText&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;getText&lt;/span&gt;&lt;span class="o"&gt;().&lt;/span&gt;&lt;span class="na"&gt;toString&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
         &lt;span class="n"&gt;String&lt;/span&gt; &lt;span class="n"&gt;password&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;_passwordText&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;getText&lt;/span&gt;&lt;span class="o"&gt;().&lt;/span&gt;&lt;span class="na"&gt;toString&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
 
-        &lt;span class="c1"&gt;// Implement your authentication logic here. On complete call either onLoginSuccess&lt;/span&gt;
-        &lt;span class="c1"&gt;// or onLoginFailed&lt;/span&gt;
-        &lt;span class="n"&gt;onLoginSuccess&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
-        &lt;span class="c1"&gt;// onLoginFailed();&lt;/span&gt;
+        &lt;span class="c1"&gt;// TODO: Implement your own authentication logic here.&lt;/span&gt;
 
-        &lt;span class="n"&gt;progressDialog&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;dismiss&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+        &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;android&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;Handler&lt;/span&gt;&lt;span class="o"&gt;().&lt;/span&gt;&lt;span class="na"&gt;postDelayed&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;
+                &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;Runnable&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+                    &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+                        &lt;span class="c1"&gt;// On complete call either onLoginSuccess or onLoginFailed&lt;/span&gt;
+                        &lt;span class="n"&gt;onLoginSuccess&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+                        &lt;span class="c1"&gt;// onLoginFailed();&lt;/span&gt;
+                        &lt;span class="n"&gt;progressDialog&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;dismiss&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+                    &lt;span class="o"&gt;}&lt;/span&gt;
+                &lt;span class="o"&gt;},&lt;/span&gt; &lt;span class="mi"&gt;3000&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
     &lt;span class="o"&gt;}&lt;/span&gt;
 
 
@@ -412,10 +424,17 @@
         &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;requestCode&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;REQUEST_SIGNUP&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
             &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;resultCode&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;RESULT_OK&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
 
-                &lt;span class="c1"&gt;// If the user signs up successfully we can log them in automatically&lt;/span&gt;
+                &lt;span class="c1"&gt;// TODO: Implement successful signup logic here&lt;/span&gt;
+                &lt;span class="c1"&gt;// By default we just finish the Activity and log them in automatically&lt;/span&gt;
                 &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;finish&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
             &lt;span class="o"&gt;}&lt;/span&gt;
         &lt;span class="o"&gt;}&lt;/span&gt;
+    &lt;span class="o"&gt;}&lt;/span&gt;
+
+    &lt;span class="nd"&gt;@Override&lt;/span&gt;
+    &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;onBackPressed&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+        &lt;span class="c1"&gt;// disable going back to the MainActivity&lt;/span&gt;
+        &lt;span class="n"&gt;moveTaskToBack&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
     &lt;span class="o"&gt;}&lt;/span&gt;
 
     &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;onLoginSuccess&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
@@ -452,10 +471,9 @@
         &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;valid&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
     &lt;span class="o"&gt;}&lt;/span&gt;
 &lt;span class="o"&gt;}&lt;/span&gt;
-
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Now save the following layout code into &lt;code&gt;res/layout/activity_login.xml&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Now save the following layout code as &lt;code&gt;res/layout/activity_login.xml&lt;/code&gt;&lt;/p&gt;
 
 &lt;pre class="highlight xml"&gt;&lt;code&gt;&lt;span class="cp"&gt;&amp;lt;?xml version="1.0" encoding="utf-8"?&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;ScrollView&lt;/span&gt; &lt;span class="na"&gt;xmlns:android=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res/android"&lt;/span&gt;
@@ -530,11 +548,11 @@
 
 &lt;p class="width-75 center"&gt;&lt;img alt="Signup Screen" title="Signup Screen" src="/beautiful-android-logn-and-signup-screens-with-material-design/screenshot-signup.png" /&gt;&lt;/p&gt;
 
-&lt;p&gt;Note that we set a &lt;code&gt;RESULT_OK&lt;/code&gt; result when the user signs up successfully. This result can be handled via the &lt;code&gt;onActivityResult&lt;/code&gt; method of the Login Activity to determine how a successfull signup is handled. The current logic is simply to log the user in straight away after a successfull signup, but if you want to implement some kind of email validation then you will need to do that part yourself.&lt;/p&gt;
+&lt;p&gt;Note that we set a &lt;code&gt;RESULT_OK&lt;/code&gt; result when the user signs up successfully. This result can be handled via the &lt;code&gt;onActivityResult&lt;/code&gt; method of the Login Activity to determine how a successfull signup is handled. The current logic is simply to log the user in straight away after a successfull signup, but if you want some kind of email verification then you will need to implement that yourself.&lt;/p&gt;
 
-&lt;pre class="highlight java"&gt;&lt;code&gt;&lt;span class="c1"&gt;// SignupActivity.java&lt;/span&gt;
+&lt;p&gt;Go ahead and save the following file as &lt;code&gt;SignupActivity.java&lt;/code&gt;&lt;/p&gt;
 
-&lt;span class="kn"&gt;package&lt;/span&gt; &lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;sourcey&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;materiallogindemo&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;pre class="highlight java"&gt;&lt;code&gt;&lt;span class="kn"&gt;package&lt;/span&gt; &lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;sourcey&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;materiallogindemo&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
 
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.app.ProgressDialog&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.os.Bundle&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
@@ -581,7 +599,7 @@
     &lt;span class="o"&gt;}&lt;/span&gt;
 
     &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;signup&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
-        &lt;span class="n"&gt;Log&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;d&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TAG&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"Register"&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;Log&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;d&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TAG&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"Signup"&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
 
         &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;(!&lt;/span&gt;&lt;span class="n"&gt;validate&lt;/span&gt;&lt;span class="o"&gt;())&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
             &lt;span class="n"&gt;onSignupFailed&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
@@ -600,12 +618,18 @@
         &lt;span class="n"&gt;String&lt;/span&gt; &lt;span class="n"&gt;email&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;_emailText&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;getText&lt;/span&gt;&lt;span class="o"&gt;().&lt;/span&gt;&lt;span class="na"&gt;toString&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
         &lt;span class="n"&gt;String&lt;/span&gt; &lt;span class="n"&gt;password&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;_passwordText&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;getText&lt;/span&gt;&lt;span class="o"&gt;().&lt;/span&gt;&lt;span class="na"&gt;toString&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
 
-        &lt;span class="c1"&gt;// Implement your authentication logic here. On complete call either onSignupSuccess&lt;/span&gt;
-        &lt;span class="c1"&gt;// or onSignupFailed&lt;/span&gt;
-        &lt;span class="n"&gt;onSignupSuccess&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
-        &lt;span class="c1"&gt;// onSignupFailed();&lt;/span&gt;
+        &lt;span class="c1"&gt;// TODO: Implement your own signup logic here.&lt;/span&gt;
 
-        &lt;span class="n"&gt;progressDialog&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;dismiss&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+        &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;android&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;Handler&lt;/span&gt;&lt;span class="o"&gt;().&lt;/span&gt;&lt;span class="na"&gt;postDelayed&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;
+                &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;Runnable&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+                    &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+                        &lt;span class="c1"&gt;// On complete call either onSignupSuccess or onSignupFailed &lt;/span&gt;
+                        &lt;span class="c1"&gt;// depending on success&lt;/span&gt;
+                        &lt;span class="n"&gt;onSignupSuccess&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+                        &lt;span class="c1"&gt;// onSignupFailed();&lt;/span&gt;
+                        &lt;span class="n"&gt;progressDialog&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;dismiss&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+                    &lt;span class="o"&gt;}&lt;/span&gt;
+                &lt;span class="o"&gt;},&lt;/span&gt; &lt;span class="mi"&gt;3000&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
     &lt;span class="o"&gt;}&lt;/span&gt;
 
 
@@ -654,7 +678,7 @@
 &lt;span class="o"&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Go ahead and save the following layout code into &lt;code&gt;res/layout/activity_signup.xml&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Save the following layout code as &lt;code&gt;res/layout/activity_signup.xml&lt;/code&gt;&lt;/p&gt;
 
 &lt;pre class="highlight xml"&gt;&lt;code&gt;&lt;span class="cp"&gt;&amp;lt;?xml version="1.0" encoding="utf-8"?&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;ScrollView&lt;/span&gt;
@@ -775,7 +799,6 @@
     &lt;span class="nt"&gt;&amp;lt;/application&amp;gt;&lt;/span&gt;
 
 &lt;span class="nt"&gt;&amp;lt;/manifest&amp;gt;&lt;/span&gt;
-
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;I hope you’ve found this article useful, and through it you can save some precious development hours. As usual, the full source code is up on Github:&lt;/p&gt;
@@ -790,7 +813,7 @@
     <link rel="alternate" href="http://sourcey.com/simple-social-sharing-buttons-without-javascript-apis/"/>
     <id>http://sourcey.com/simple-social-sharing-buttons-without-javascript-apis/</id>
     <published>2015-05-18T00:00:00Z</published>
-    <updated>2015-05-18T13:31:59+02:00</updated>
+    <updated>2015-05-18T21:31:59+10:00</updated>
     <author>
       <name>Kam Low</name>
     </author>
@@ -900,7 +923,7 @@
     <link rel="alternate" href="http://sourcey.com/recliner/"/>
     <id>http://sourcey.com/recliner/</id>
     <published>2015-02-09T00:58:07Z</published>
-    <updated>2015-06-18T15:31:26+02:00</updated>
+    <updated>2015-06-18T23:31:26+10:00</updated>
     <author>
       <name/>
     </author>
@@ -1142,7 +1165,7 @@
     <link rel="alternate" href="http://sourcey.com/middleman-automated-github-pages-deployments-with-rake/"/>
     <id>http://sourcey.com/middleman-automated-github-pages-deployments-with-rake/</id>
     <published>2015-02-09T00:00:00Z</published>
-    <updated>2015-02-09T12:56:59+01:00</updated>
+    <updated>2015-02-09T21:56:59+10:00</updated>
     <author>
       <name>Kam Low</name>
     </author>
@@ -1187,7 +1210,7 @@
     <link rel="alternate" href="http://sourcey.com/making-the-world-a-better-place/"/>
     <id>http://sourcey.com/making-the-world-a-better-place/</id>
     <published>2014-08-28T00:00:00Z</published>
-    <updated>2014-08-29T10:26:12+02:00</updated>
+    <updated>2014-08-29T18:26:12+10:00</updated>
     <author>
       <name>Kam Low</name>
     </author>
