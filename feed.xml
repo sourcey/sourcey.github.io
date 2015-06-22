@@ -11,21 +11,21 @@
     <link rel="alternate" href="http://sourcey.com/android-horizontally-scrolling-pan-scan-and-zoom-image-gallery/"/>
     <id>http://sourcey.com/android-horizontally-scrolling-pan-scan-and-zoom-image-gallery/</id>
     <published>2015-06-18T00:00:00Z</published>
-    <updated>2015-06-18T23:23:59+10:00</updated>
+    <updated>2015-06-22T21:50:46+10:00</updated>
     <author>
       <name>Kam Low</name>
     </author>
-    <content type="html">&lt;p&gt;Since the depreciation of the Android Gallery module there has been no clear way to implement image galleries on Android, so in order to fill the need I’m sharing my own Gallery implementation.&lt;/p&gt;
+    <content type="html">&lt;p&gt;Since the depreciation of the Android Gallery module there has been no clear way to implement image galleries on Android, so I’m sharing my own Gallery implementation in order to fill the need.&lt;/p&gt;
 
-&lt;p&gt;The implementation is a horizontal scrolling image gallery, which is ideal for displaying smaller amounts of images (&amp;lt;10). However, if you need to display large amounts of images then you might be better served with a GridView based implementation.&lt;/p&gt;
+&lt;p&gt;The implementation is a horizontal scrolling image gallery that consists of &lt;code&gt;ViewPager&lt;/code&gt; element, and a &lt;code&gt;HorizontalScrollView&lt;/code&gt; for displaying selectable thumbnails. Inside the &lt;code&gt;ViewPager&lt;/code&gt; view there is a modified &lt;code&gt;ImageView&lt;/code&gt; that allows for panning, scanning and zooming of the main image.&lt;/p&gt;
 
-&lt;p&gt;Under the hood the Gallery consists of ViewPager element, and a HorizontalScroller for displaying selectable thumbnails. Inside the ViewPager view there is a modified ImageView which allows for panning, scanning and zooming of the main image.&lt;/p&gt;
+&lt;p&gt;Horizontal galleries are ideal for displaying smaller amounts of images (&amp;lt;10), although if you need to display lots of images then you might be better served with a &lt;code&gt;GridView&lt;/code&gt; based implementation.&lt;/p&gt;
 
 &lt;center&gt;
 &lt;p&gt;&lt;a class="action-button button radius" target="_blank" href="https://github.com/sourcey/imagegallerydemo" title="Get the Code on Github"&gt;Get the Code&lt;/a&gt;&lt;/p&gt;
 &lt;/center&gt;
 
-&lt;p&gt;The main activity code for &lt;code&gt;GalleryActivity.java&lt;/code&gt; is as follows:&lt;/p&gt;
+&lt;h4 id="galleryactivityjava"&gt;GalleryActivity.java:&lt;/h4&gt;
 
 &lt;pre class="highlight java"&gt;&lt;code&gt;&lt;span class="kn"&gt;package&lt;/span&gt; &lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;sourcey&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;imagegallerydemo&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
 
@@ -171,9 +171,9 @@
 &lt;span class="o"&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;The layout consists of two items, one for the activity, and one for the pager items.&lt;/p&gt;
+&lt;p&gt;The layout consists of two items, one for the activity, and one for the pager items. Both are provided below:&lt;/p&gt;
 
-&lt;p&gt;Paste the following activity layout into &lt;code&gt;res/layout/activity_gallery.xml&lt;/code&gt;&lt;/p&gt;
+&lt;h4 id="reslayoutactivitygalleryxml"&gt;res/layout/activity_gallery.xml&lt;/h4&gt;
 
 &lt;pre class="highlight xml"&gt;&lt;code&gt;&lt;span class="cp"&gt;&amp;lt;?xml version="1.0" encoding="utf-8"?&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;FrameLayout&lt;/span&gt; &lt;span class="na"&gt;xmlns:android=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res/android"&lt;/span&gt;
@@ -213,7 +213,7 @@
 &lt;span class="nt"&gt;&amp;lt;/FrameLayout&amp;gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;And paste the view pager layout into &lt;code&gt;res/layout/pager_gallery_item.xml&lt;/code&gt;&lt;/p&gt;
+&lt;h4 id="reslayoutpagergalleryitemxml"&gt;res/layout/pager_gallery_item.xml&lt;/h4&gt;
 
 &lt;pre class="highlight xml"&gt;&lt;code&gt;&lt;span class="cp"&gt;&amp;lt;?xml version="1.0" encoding="utf-8"?&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;LinearLayout&lt;/span&gt; &lt;span class="na"&gt;xmlns:android=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res/android"&lt;/span&gt;
@@ -247,6 +247,8 @@
 &lt;span class="nt"&gt;&amp;lt;manifest&lt;/span&gt; &lt;span class="na"&gt;xmlns:android=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res/android"&lt;/span&gt;
     &lt;span class="na"&gt;package=&lt;/span&gt;&lt;span class="s"&gt;"com.sourcey.imagegallerydemo"&lt;/span&gt; &lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
 
+    &lt;span class="nt"&gt;&amp;lt;uses-permission&lt;/span&gt; &lt;span class="na"&gt;android:name=&lt;/span&gt;&lt;span class="s"&gt;"android.permission.INTERNET"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+    
     &lt;span class="nt"&gt;&amp;lt;application&lt;/span&gt;
         &lt;span class="na"&gt;android:allowBackup=&lt;/span&gt;&lt;span class="s"&gt;"true"&lt;/span&gt;
         &lt;span class="na"&gt;android:icon=&lt;/span&gt;&lt;span class="s"&gt;"@mipmap/ic_launcher"&lt;/span&gt;
@@ -271,10 +273,11 @@
 
 &lt;pre class="highlight plaintext"&gt;&lt;code&gt;public void startGalleryActivity() {
     ArrayList&amp;lt;String&amp;gt; images = new ArrayList&amp;lt;String&amp;gt;();
-    images.add("http://i.telegraph.co.uk/multimedia/archive/01421/flickr-pix6_1421814c.jpg");
-    images.add("http://farm1.staticflickr.com/162/416152814_8f7ffb4bb1_z.jpg");
-    images.add("http://a1.dspnimg.com/data/l/1627610726061_S8WvSbhk_l.jpg");
-    images.add("https://c4.staticflickr.com/8/7432/10111952905_7e58ecb32f_b.jpg");
+    images.add("http://sourcey.com/images/stock/salvador-dali-metamorphosis-of-narcissus.jpg");
+    images.add("http://sourcey.com/images/stock/salvador-dali-the-dream.jpg");
+    images.add("http://sourcey.com/images/stock/salvador-dali-persistance-of-memory.jpg");
+    images.add("http://sourcey.com/images/stock/simpsons-persistance-of-memory.jpg");
+    images.add("http://sourcey.com/images/stock/salvador-dali-the-great-masturbator.jpg");
     Intent intent = new Intent(MainActivity.this, GalleryActivity.class);
     intent.putStringArrayListExtra(GalleryActivity.EXTRA_NAME, images);
     startActivity(intent);
@@ -283,7 +286,7 @@
 
 &lt;p&gt;The current code takes an array of image URLs and renders them asynchronously with &lt;code&gt;Glide&lt;/code&gt;, but if you want to modify the code to display local resources, or even exchange Glide with another rendering library, then it should be fairly straight forward as the implementation is very simple.&lt;/p&gt;
 
-&lt;p&gt;I hope you’ve found this article useful, and through it you can save some precious development hours. As usual, the full source code is up on Github:&lt;/p&gt;
+&lt;p&gt;I hope you’ve found this article useful, so feel free drop me a shout if it’s saved you precious development hours. As usual, the full source code is up on Github:&lt;/p&gt;
 
 &lt;center&gt;
 &lt;p&gt;&lt;a class="action-button button radius" target="_blank" href="https://github.com/sourcey/imagegallerydemo" title="Get the Code on Github"&gt;Get the Code on Github&lt;/a&gt;&lt;/p&gt;
@@ -295,29 +298,29 @@
     <link rel="alternate" href="http://sourcey.com/beautiful-android-login-and-signup-screens-with-material-design/"/>
     <id>http://sourcey.com/beautiful-android-login-and-signup-screens-with-material-design/</id>
     <published>2015-06-18T00:00:00Z</published>
-    <updated>2015-06-22T00:31:54+10:00</updated>
+    <updated>2015-06-22T21:50:36+10:00</updated>
     <author>
       <name>Kam Low</name>
     </author>
     <content type="html">&lt;p&gt;Everyone loves a beautiful login screen, and since it’s usually the very first impression people have about your app it’s super important to get it right.&lt;/p&gt;
 
-&lt;p&gt;This article shows you how to create beautiful login and signup screens the right way using &lt;a href="https://www.google.com/design/spec/material-design/introduction.html"&gt;Material design spec&lt;/a&gt; with the assistance of Google’s new &lt;a href="https://developer.android.com/tools/support-library/index.html"&gt;design support library&lt;/a&gt;. The design support library implements a growing subset of the Material spec, and also includes a bunch of sexy UI widgets that can be used to give our Android apps that polished feel.&lt;/p&gt;
+&lt;p&gt;This article shows you how to create beautiful login and signup screens the right way using &lt;a href="https://www.google.com/design/spec/material-design/introduction.html"&gt;Material design spec&lt;/a&gt; with the assistance of Google’s new &lt;a href="https://developer.android.com/tools/support-library/index.html"&gt;design support library&lt;/a&gt;. The design support library implements a growing subset of the Material spec, and also includes a bunch of sexy UI widgets that can be used to give your Android apps that polished feel.&lt;/p&gt;
 
-&lt;p&gt;On the design and layout side of things the focus in on balancing all the screen elements in a way that’s pleasing to the eye. For an extra level of stylability and a nice custom touch we will also be styling the top status bar (on newer devices). &lt;a href="http://www.google.com/design/spec/components/text-fields.html#text-fields-floating-labels"&gt;Floating labels&lt;/a&gt; from the design support library are also used, which are implemented via the &lt;code&gt;TextInputLayout&lt;/code&gt; tag.&lt;/p&gt;
+&lt;p&gt;On the design and layout side of things, the focus here is on balancing the screen elements in a way that’s pleasing to the eye. To add the finishing touches we will also be styling the top status bar on newer devices &lt;!-- an extra level of stylability --&gt;, and utilising &lt;a href="http://www.google.com/design/spec/components/text-fields.html#text-fields-floating-labels"&gt;floating labels&lt;/a&gt; from the design library (implemented via the &lt;code&gt;TextInputLayout&lt;/code&gt; tag).&lt;/p&gt;
 
-&lt;p&gt;Nearly everything has been done for you:&lt;/p&gt;
+&lt;p&gt;Pretty much everything has been taken care of for you:&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;Full demo and code examples on Github.&lt;/li&gt;
-  &lt;li&gt;Interface locking to prevent back button when logging in.&lt;/li&gt;
+  &lt;li&gt;Interface locking to prevent back button when the Login Activity is displayed.&lt;/li&gt;
   &lt;li&gt;Custom &lt;code&gt;ProgressDialog&lt;/code&gt; to signify loading state.&lt;/li&gt;
   &lt;li&gt;Conforms to the Material design spec.&lt;/li&gt;
   &lt;li&gt;Floating labels from the design library.&lt;/li&gt;
   &lt;li&gt;Custom status bar style.&lt;/li&gt;
-  &lt;li&gt;Faux authentication methods for testing each activity.&lt;/li&gt;
+  &lt;li&gt;Faux authentication methods for testing each Activity.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;All that remains is to implement your authentication logic - weather it be via HTTP, SQL or some other method.&lt;/p&gt;
+&lt;p&gt;All that remains is to implement your own authentication logic - weather it be via HTTP, SQL or some other method.&lt;/p&gt;
 
 &lt;center&gt;
 &lt;p&gt;&lt;a class="action-button button radius" target="_blank" href="https://github.com/sourcey/materiallogindemo" title="Get the Code on Github"&gt;Get the Code&lt;/a&gt;&lt;/p&gt;
@@ -325,15 +328,15 @@
 
 &lt;h2 id="login-activity"&gt;Login Activity&lt;/h2&gt;
 
-&lt;p&gt;Let’s start by setting up the Login Activity, since it is usually the first Activity you’ll display when starting your app.&lt;/p&gt;
+&lt;p&gt;Let’s start by setting up the Login Activity, which is usually the first Activity you’ll display to a user when they start your app.&lt;/p&gt;
 
 &lt;p class="width-75 center"&gt;&lt;img alt="Login Screen" title="Login Screen" src="/beautiful-android-logn-and-signup-screens-with-material-design/screenshot-login.png" /&gt;&lt;/p&gt;
 
-&lt;p&gt;If you want to add social signin buttons then please go ahead, but they are outside the scope of this document. At minimum this code will give you a solid starting point for building your layout and authentication workflow.&lt;/p&gt;
+&lt;p&gt;If you want to add social signin buttons then please go ahead, but they’re outside the scope of this document for now. At minimum this code will give you a solid starting point for building your authentication workflow.&lt;/p&gt;
 
-&lt;p&gt;Notice also that we override the &lt;code&gt;onBackPressed&lt;/code&gt; method so the user can’t close the Login Activity.&lt;/p&gt;
+&lt;p&gt;Notice also that the &lt;code&gt;onBackPressed&lt;/code&gt; method has been overriden, which prevents the user from closing the Login Activity.&lt;/p&gt;
 
-&lt;p&gt;Save the following Activity file as &lt;code&gt;LoginActivity.java&lt;/code&gt;&lt;/p&gt;
+&lt;h4 id="loginactivityjava"&gt;LoginActivity.java&lt;/h4&gt;
 
 &lt;pre class="highlight java"&gt;&lt;code&gt;&lt;span class="kn"&gt;package&lt;/span&gt; &lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;sourcey&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;materiallogindemo&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
 
@@ -473,7 +476,7 @@
 &lt;span class="o"&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Now save the following layout code as &lt;code&gt;res/layout/activity_login.xml&lt;/code&gt;&lt;/p&gt;
+&lt;h4 id="reslayoutactivityloginxml"&gt;res/layout/activity_login.xml&lt;/h4&gt;
 
 &lt;pre class="highlight xml"&gt;&lt;code&gt;&lt;span class="cp"&gt;&amp;lt;?xml version="1.0" encoding="utf-8"?&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;ScrollView&lt;/span&gt; &lt;span class="na"&gt;xmlns:android=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res/android"&lt;/span&gt;
@@ -550,7 +553,7 @@
 
 &lt;p&gt;Note that we set a &lt;code&gt;RESULT_OK&lt;/code&gt; result when the user signs up successfully. This result can be handled via the &lt;code&gt;onActivityResult&lt;/code&gt; method of the Login Activity to determine how a successfull signup is handled. The current logic is simply to log the user in straight away after a successfull signup, but if you want some kind of email verification then you will need to implement that yourself.&lt;/p&gt;
 
-&lt;p&gt;Go ahead and save the following file as &lt;code&gt;SignupActivity.java&lt;/code&gt;&lt;/p&gt;
+&lt;h4 id="signupactivityjava"&gt;SignupActivity.java&lt;/h4&gt;
 
 &lt;pre class="highlight java"&gt;&lt;code&gt;&lt;span class="kn"&gt;package&lt;/span&gt; &lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;sourcey&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;materiallogindemo&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
 
@@ -678,7 +681,7 @@
 &lt;span class="o"&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Save the following layout code as &lt;code&gt;res/layout/activity_signup.xml&lt;/code&gt;&lt;/p&gt;
+&lt;h4 id="reslayoutactivitysignupxml"&gt;res/layout/activity_signup.xml&lt;/h4&gt;
 
 &lt;pre class="highlight xml"&gt;&lt;code&gt;&lt;span class="cp"&gt;&amp;lt;?xml version="1.0" encoding="utf-8"?&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;ScrollView&lt;/span&gt;
@@ -774,12 +777,14 @@
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Next add the necessary Activity declarations to your AndroidManifest. I have posted the complete AndroidManifest.xml for clarity.&lt;/p&gt;
+&lt;p&gt;Next add the necessary Activity declarations to your AndroidManifest. I have posted the complete &lt;code&gt;AndroidManifest.xml&lt;/code&gt; for clarity.&lt;/p&gt;
 
 &lt;pre class="highlight xml"&gt;&lt;code&gt;&lt;span class="cp"&gt;&amp;lt;?xml version="1.0" encoding="utf-8"?&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;manifest&lt;/span&gt; &lt;span class="na"&gt;xmlns:android=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res/android"&lt;/span&gt;
     &lt;span class="na"&gt;package=&lt;/span&gt;&lt;span class="s"&gt;"com.sourcey.materiallogindemo"&lt;/span&gt; &lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
 
+    &lt;span class="nt"&gt;&amp;lt;uses-permission&lt;/span&gt; &lt;span class="na"&gt;android:name=&lt;/span&gt;&lt;span class="s"&gt;"android.permission.INTERNET"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+    
     &lt;span class="nt"&gt;&amp;lt;application&lt;/span&gt;
         &lt;span class="na"&gt;android:allowBackup=&lt;/span&gt;&lt;span class="s"&gt;"true"&lt;/span&gt;
         &lt;span class="na"&gt;android:icon=&lt;/span&gt;&lt;span class="s"&gt;"@mipmap/ic_launcher"&lt;/span&gt;
@@ -801,7 +806,7 @@
 &lt;span class="nt"&gt;&amp;lt;/manifest&amp;gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;I hope you’ve found this article useful, and through it you can save some precious development hours. As usual, the full source code is up on Github:&lt;/p&gt;
+&lt;p&gt;I hope you’ve found this article useful, so feel free drop me a shout if it’s saved you precious development hours.&lt;/p&gt;
 
 &lt;center&gt;
 &lt;p&gt;&lt;a class="action-button button radius" target="_blank" href="https://github.com/sourcey/materiallogindemo" title="Get the Code on Github"&gt;Get the Code on Github&lt;/a&gt;&lt;/p&gt;
