@@ -11,11 +11,13 @@
     <link rel="alternate" href="http://sourcey.com/android-horizontally-scrolling-pan-scan-and-zoom-image-gallery/"/>
     <id>http://sourcey.com/android-horizontally-scrolling-pan-scan-and-zoom-image-gallery/</id>
     <published>2015-06-18T00:00:00Z</published>
-    <updated>2015-06-22T21:50:46+10:00</updated>
+    <updated>2015-06-22T22:20:27+10:00</updated>
     <author>
       <name>Kam Low</name>
     </author>
     <content type="html">&lt;p&gt;Since the depreciation of the Android Gallery module there has been no clear way to implement image galleries on Android, so I’m sharing my own Gallery implementation in order to fill the need.&lt;/p&gt;
+
+&lt;p class="width-75 center"&gt;&lt;img alt="Android Gallery Demo" title="Android Gallery Demo" src="/android-horizontally-scrolling-pan-scan-and-zoom-image-gallery/screenshot-gallery.jpg" /&gt;&lt;/p&gt;
 
 &lt;p&gt;The implementation is a horizontal scrolling image gallery that consists of &lt;code&gt;ViewPager&lt;/code&gt; element, and a &lt;code&gt;HorizontalScrollView&lt;/code&gt; for displaying selectable thumbnails. Inside the &lt;code&gt;ViewPager&lt;/code&gt; view there is a modified &lt;code&gt;ImageView&lt;/code&gt; that allows for panning, scanning and zooming of the main image.&lt;/p&gt;
 
@@ -171,7 +173,7 @@
 &lt;span class="o"&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;The layout consists of two items, one for the activity, and one for the pager items. Both are provided below:&lt;/p&gt;
+&lt;p&gt;The layout consists of two items, one for the activity, and one for the pager items.&lt;/p&gt;
 
 &lt;h4 id="reslayoutactivitygalleryxml"&gt;res/layout/activity_gallery.xml&lt;/h4&gt;
 
@@ -298,7 +300,7 @@
     <link rel="alternate" href="http://sourcey.com/beautiful-android-login-and-signup-screens-with-material-design/"/>
     <id>http://sourcey.com/beautiful-android-login-and-signup-screens-with-material-design/</id>
     <published>2015-06-18T00:00:00Z</published>
-    <updated>2015-06-22T21:50:36+10:00</updated>
+    <updated>2015-06-22T22:41:40+10:00</updated>
     <author>
       <name>Kam Low</name>
     </author>
@@ -316,6 +318,7 @@
   &lt;li&gt;Custom &lt;code&gt;ProgressDialog&lt;/code&gt; to signify loading state.&lt;/li&gt;
   &lt;li&gt;Conforms to the Material design spec.&lt;/li&gt;
   &lt;li&gt;Floating labels from the design library.&lt;/li&gt;
+  &lt;li&gt;Form user input validation.&lt;/li&gt;
   &lt;li&gt;Custom status bar style.&lt;/li&gt;
   &lt;li&gt;Faux authentication methods for testing each Activity.&lt;/li&gt;
 &lt;/ul&gt;
@@ -475,6 +478,8 @@
     &lt;span class="o"&gt;}&lt;/span&gt;
 &lt;span class="o"&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p class="width-75 center"&gt;&lt;img alt="Login Screen Spinner" title="Login Screen Spinner" src="/beautiful-android-logn-and-signup-screens-with-material-design/screenshot-login-spinner.png" /&gt;&lt;/p&gt;
 
 &lt;h4 id="reslayoutactivityloginxml"&gt;res/layout/activity_login.xml&lt;/h4&gt;
 
