@@ -5,13 +5,75 @@
   <id>http://sourcey.com</id>
   <link href="http://sourcey.com"/>
   <link href="http://sourcey.com/feed.xml" rel="self"/>
-  <updated>2015-06-18T00:00:00Z</updated>
+  <updated>2015-06-29T00:00:00Z</updated>
+  <entry>
+    <title>Flash Android Sony Xperia on Linux</title>
+    <link rel="alternate" href="http://sourcey.com/flash-android-sony-xperia-on-linux/"/>
+    <id>http://sourcey.com/flash-android-sony-xperia-on-linux/</id>
+    <published>2015-06-29T00:00:00Z</published>
+    <updated>2015-06-29T20:11:00+10:00</updated>
+    <author>
+      <name>Kam Low</name>
+    </author>
+    <content type="html">&lt;p&gt;So your shiny Xperia Z3 has decided to shit itself, and is now a $600 brick. Perhaps is is stuck in a reboot loop, perhaps it just decided it just doesn’t want to switch on anymore. The time has come to Flash your device, and this is the guide that will help you do it on Linux without having to find a Windoze machine.&lt;/p&gt;
+
+&lt;p&gt;First thing we need to do is add some udev.d rules so our USB device can be recognised:&lt;/p&gt;
+
+&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="c"&gt;# run as root&lt;/span&gt;
+sudo -i
+
+&lt;span class="c"&gt;# add the ruled&lt;/span&gt;
+&lt;span class="nb"&gt;cd&lt;/span&gt; /etc/udev/rules.d
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s1"&gt;'SUBSYSTEM=="usb", ACTION=="add", SYSFS{idVendor}=="0fce", SYSFS{idProduct}=="*", MODE="0777"'&lt;/span&gt; &amp;gt; 63-sonyxperia.rules
+
+&lt;span class="c"&gt;# reload udev rules&lt;/span&gt;
+udevadm control --reload-rules
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Next grab the FlashTool app from (http://www.flashtool.net/downloads.php)[http://www.flashtool.net/downloads.php] and unzip it somewhere. There will be a couple of dependencies to grab in order to get this running, so go ahead and install them if need be:&lt;/p&gt;
+
+&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="c"&gt;# 7Zip for extracting the package&lt;/span&gt;
+sudo apt-get install p7zip-full
+
+&lt;span class="c"&gt;# Java to run the program&lt;/span&gt;
+&lt;span class="c"&gt;# http://openjdk.java.net/install/&lt;/span&gt;
+sudo apt-get install openjdk-7-jre
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You will also need to download the latest firmware update from Sony, which will weigh in at about 1.5GB. A good source is &lt;a href="http://xperiafirmware.com"&gt;http://xperiafirmware.com&lt;/a&gt;, but there are others. Just make sure you find an official/trusted source.&lt;/p&gt;
+
+&lt;p&gt;Next thing is to open the FlashTool GUI and begin flashing the device.&lt;/p&gt;
+
+&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="c"&gt;# run as root&lt;/span&gt;
+sudo -i
+
+&lt;span class="c"&gt;# navigate to the FlashTool directory and run it&lt;/span&gt;
+&lt;span class="nb"&gt;cd&lt;/span&gt; /etc/udev/rules.d
+./FlashTool
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The FlashTool is straight forward, just follow these steps.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Turn your phone off (hold the power key and back button(or volume down) simultaneously)&lt;/li&gt;
+  &lt;li&gt;Click the “Flash” icon and select “Flashmode”&lt;/li&gt;
+  &lt;li&gt;Check the “Source folder” to where you downloaded the firmware update (*.ftf file)&lt;/li&gt;
+  &lt;li&gt;Configure and options, or leave everything as default&lt;/li&gt;
+  &lt;li&gt;Click the “Flash” button!&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The FlashTool will ask you to start your phone in Flash mode, so go ahead and do that. The flash process might take a minute or two, after which you should have a shiny updated phone. If not, you may have an issue with the drivers (re-examine the udev steps), or a more serious issue with your device which I’m afraid I don’t have a magic wand for.&lt;/p&gt;
+
+&lt;p&gt;Good luck, and drop a line if something important was omitted, or this tutorial was useful to you.&lt;/p&gt;
+
+</content>
+  </entry>
   <entry>
     <title>Android Hotizontally Scrolling Pan Scan and Zoom Image Gallery</title>
     <link rel="alternate" href="http://sourcey.com/android-horizontally-scrolling-pan-scan-and-zoom-image-gallery/"/>
     <id>http://sourcey.com/android-horizontally-scrolling-pan-scan-and-zoom-image-gallery/</id>
     <published>2015-06-18T00:00:00Z</published>
-    <updated>2015-06-22T22:20:27+10:00</updated>
+    <updated>2015-06-23T07:53:05+10:00</updated>
     <author>
       <name>Kam Low</name>
     </author>
@@ -288,7 +350,7 @@
 
 &lt;p&gt;The current code takes an array of image URLs and renders them asynchronously with &lt;code&gt;Glide&lt;/code&gt;, but if you want to modify the code to display local resources, or even exchange Glide with another rendering library, then it should be fairly straight forward as the implementation is very simple.&lt;/p&gt;
 
-&lt;p&gt;I hope you’ve found this article useful, so feel free drop me a shout if it’s saved you precious development hours. As usual, the full source code is up on Github:&lt;/p&gt;
+&lt;p&gt;I hope you’ve found this article useful, so drop me a shout if it’s saved you some precious development hours. As usual, the full source code is up on Github:&lt;/p&gt;
 
 &lt;center&gt;
 &lt;p&gt;&lt;a class="action-button button radius" target="_blank" href="https://github.com/sourcey/imagegallerydemo" title="Get the Code on Github"&gt;Get the Code on Github&lt;/a&gt;&lt;/p&gt;
@@ -300,7 +362,7 @@
     <link rel="alternate" href="http://sourcey.com/beautiful-android-login-and-signup-screens-with-material-design/"/>
     <id>http://sourcey.com/beautiful-android-login-and-signup-screens-with-material-design/</id>
     <published>2015-06-18T00:00:00Z</published>
-    <updated>2015-06-22T22:41:40+10:00</updated>
+    <updated>2015-06-23T07:53:17+10:00</updated>
     <author>
       <name>Kam Low</name>
     </author>
@@ -811,7 +873,7 @@
 &lt;span class="nt"&gt;&amp;lt;/manifest&amp;gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;I hope you’ve found this article useful, so feel free drop me a shout if it’s saved you precious development hours.&lt;/p&gt;
+&lt;p&gt;I hope you’ve found this article useful, so drop me a shout if it’s saved you some precious development hours.&lt;/p&gt;
 
 &lt;center&gt;
 &lt;p&gt;&lt;a class="action-button button radius" target="_blank" href="https://github.com/sourcey/materiallogindemo" title="Get the Code on Github"&gt;Get the Code on Github&lt;/a&gt;&lt;/p&gt;
@@ -1213,34 +1275,6 @@
 
 &lt;p&gt;Now just type &lt;code&gt;rake publish&lt;/code&gt; And your changes will be live in a few moments. Easy a π!&lt;/p&gt;
 
-</content>
-  </entry>
-  <entry>
-    <title>Making the World a Better Place</title>
-    <link rel="alternate" href="http://sourcey.com/making-the-world-a-better-place/"/>
-    <id>http://sourcey.com/making-the-world-a-better-place/</id>
-    <published>2014-08-28T00:00:00Z</published>
-    <updated>2014-08-29T18:26:12+10:00</updated>
-    <author>
-      <name>Kam Low</name>
-    </author>
-    <content type="html">&lt;p&gt;Everything in nature has a half-life depending on it’s vibrational consistency, and so it is with the technology and trends that capture our imagination one day, and fade the next.&lt;/p&gt;
-
-&lt;p&gt;With the world and technology changing as fast as is, it sometimes seems impossible to keep up, and the startup community gets swept up in the whirlwind of trying to create the next best quick fix to fuel the world’s rampant tech addiction. It’s like a never ending game of catchup in a game that most likely has a limited life span.&lt;/p&gt;
-
-&lt;p&gt;Smart business people (especially investors) know how to look to the future, and it doesn’t take a genius to see that all over the world inflation and breaking economies have people running scared. This isn’t just a third world phenomenon either, it’s a global crisis that our shiny devices and news media won’t shield us from for long.&lt;/p&gt;
-
-&lt;!-- , due to the fact that their very existence is dependent of these crumbling economies --&gt;
-
-&lt;p&gt;The law of entropy dictates that all things are moving towards chaos, so what happens when effects of entropy become unbearable, and the breaking point is reached? Everything collapses and we hard reset back to zero (like a defaulting economy). All our frivolities are discarded, and the essentials become all that matters: food, water, energy, economy, transport and communication.&lt;/p&gt;
-
-&lt;p&gt;In Australia we live in a first world country, but there are so many aspects of our infrastructure that are archaic and broken as hell. Now the Government is trying to solve our growing budget defect with privitisation, by selling our infrastructure off to foreign owned companies. In short; nothing is getting fixed any time soon.&lt;/p&gt;
-
-&lt;p&gt;The world needs more startups tackling and solving real-life issues that affect people and improve society. Maybe then (in Australia especially), the government will start to recognise their importance and offer proper support and reforms.&lt;/p&gt;
-
-&lt;p&gt;Does your startup solve a genuine human issue, or is it just another useless tech gimmick? The next time I hear an entrepreneur saying he is making the world a better place with a crappy new social network I think I’m going to puke - right on the speaker! If that’s the case then you need to seriously consider what’s important and kind of world you want to be living in.&lt;/p&gt;
-
-&lt;p&gt;Theres huge money for startups that are providing genuine solutions for global issues, and making them accessible for consumers and governments who’re scrambling for the light switch. As entrepreneurs we have to power to create the future, so let’s use it to build something brilliant and worthwhile!&lt;/p&gt;
 </content>
   </entry>
 </feed>

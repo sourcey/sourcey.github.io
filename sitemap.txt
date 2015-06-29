@@ -212,6 +212,9 @@ http://sourcey.com/webrtc-native-to-browser-video-streaming-example/
 http://sourcey.com/anionu-technical-challenges/
 
 
+http://sourcey.com/flash-android-sony-xperia-on-linux/
+
+
 http://sourcey.com/symple-webrtc-video-chat-demo/
 
 
@@ -494,6 +497,12 @@ http://sourcey.com/tags/css3/
 http://sourcey.com/tags/htmll5/
 
 
+http://sourcey.com/tags/android/
+
+
+http://sourcey.com/tags/xperia/
+
+
 http://sourcey.com/tags/streaming/
 
 
@@ -501,9 +510,6 @@ http://sourcey.com/tags/demo/
 
 
 http://sourcey.com/tags/thumbnails/
-
-
-http://sourcey.com/tags/android/
 
 
 http://sourcey.com/tags/gallery/
