@@ -5,7 +5,234 @@
   <id>http://sourcey.com</id>
   <link href="http://sourcey.com"/>
   <link href="http://sourcey.com/feed.xml" rel="self"/>
-  <updated>2015-06-29T00:00:00Z</updated>
+  <updated>2015-07-11T00:00:00Z</updated>
+  <entry>
+    <title>Android Custom Centered ActionBar with Material Design</title>
+    <link rel="alternate" href="http://sourcey.com/android-custom-centered-actionbar-with-material-design/"/>
+    <id>http://sourcey.com/android-custom-centered-actionbar-with-material-design/</id>
+    <published>2015-07-11T00:00:00Z</published>
+    <updated>2015-07-11T22:50:17+10:00</updated>
+    <author>
+      <name>Kam Low</name>
+    </author>
+    <content type="html">&lt;p&gt;The Android ActionBar is now easier to customise than ever, due to the fact that the old &lt;code&gt;ActionBar&lt;/code&gt; element has been replaced with the more versitile &lt;code&gt;Toolbar&lt;/code&gt;. Since &lt;code&gt;Toolbar&lt;/code&gt; inherits directly from &lt;code&gt;ViewGroup&lt;/code&gt;, you can essentially style or add any element you want to the ActionBar. That is, with the exception of a few gotchas, but you’re in luck because this article is here so you don’t get got!&lt;/p&gt;
+
+&lt;p&gt;Just a foreward to say that this article makes the assumption that you are using the support library - and if you’re not then you’re only targeting about 10% of devices which is more than a little strange.&lt;/p&gt;
+
+&lt;p&gt;OK, let’s code.&lt;/p&gt;
+
+&lt;p&gt;Below is the completed &lt;code&gt;Toolbar&lt;/code&gt; layout. Go ahead and add it to your project, and you can make changes from there.&lt;/p&gt;
+
+&lt;h4 id="reslayouttoolbarxml"&gt;/res/layout/toolbar.xml&lt;/h4&gt;
+&lt;pre class="highlight xml"&gt;&lt;code&gt;&lt;span class="cp"&gt;&amp;lt;?xml version="1.0" encoding="utf-8"?&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;android.support.v7.widget.Toolbar&lt;/span&gt; 
+    &lt;span class="na"&gt;xmlns:android=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res/android"&lt;/span&gt;
+    &lt;span class="na"&gt;xmlns:app=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res-auto"&lt;/span&gt;
+    &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/toolbar"&lt;/span&gt;
+    &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+    &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"?attr/actionBarSize"&lt;/span&gt;
+    &lt;span class="na"&gt;android:background=&lt;/span&gt;&lt;span class="s"&gt;"?attr/colorPrimary"&lt;/span&gt;
+    &lt;span class="na"&gt;app:popupTheme=&lt;/span&gt;&lt;span class="s"&gt;"@style/ThemeOverlay.AppCompat.Light"&lt;/span&gt;
+    &lt;span class="na"&gt;app:layout_scrollFlags=&lt;/span&gt;&lt;span class="s"&gt;"scroll|enterAlways"&lt;/span&gt;
+    &lt;span class="na"&gt;app:layout_collapseMode=&lt;/span&gt;&lt;span class="s"&gt;"pin"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;FrameLayout&lt;/span&gt;
+        &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+        &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+
+        &lt;span class="c"&gt;&amp;lt;!-- This is a centered logo --&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;ImageView&lt;/span&gt;
+            &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/toolbar_logo"&lt;/span&gt;
+            &lt;span class="na"&gt;android:src=&lt;/span&gt;&lt;span class="s"&gt;"@drawable/logo"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"wrap_content"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"fill_parent"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_marginRight=&lt;/span&gt;&lt;span class="s"&gt;"?attr/actionBarSize"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_marginTop=&lt;/span&gt;&lt;span class="s"&gt;"4dp"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_marginBottom=&lt;/span&gt;&lt;span class="s"&gt;"4dp"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_gravity=&lt;/span&gt;&lt;span class="s"&gt;"center"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+
+        &lt;span class="c"&gt;&amp;lt;!-- This is a centered title --&amp;gt;&lt;/span&gt;
+        &lt;span class="c"&gt;&amp;lt;!--
+        &amp;lt;TextView
+            android:id="@+id/toolbar_title"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_marginRight="?attr/actionBarSize"
+            android:layout_gravity="center"
+            android:gravity="center_vertical"
+            android:visibility="gone"
+            android:text="@string/app_name"
+            android:textColor="@color/white"
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse"
+            /&amp;gt;
+            --&amp;gt;&lt;/span&gt;
+        
+        &lt;span class="c"&gt;&amp;lt;!-- This is a custom left side button --&amp;gt;&lt;/span&gt;
+        &lt;span class="c"&gt;&amp;lt;!--
+        &amp;lt;ImageButton
+            android:id="@+id/btn_settings"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginRight="?attr/actionBarSize"
+            android:layout_gravity="start|center_vertical"
+            android:visibility="invisible"
+            android:src="@drawable/ic_settings_white_24dp"
+            style="@style/Widget.AppCompat.ActionButton" /&amp;gt;
+            --&amp;gt;&lt;/span&gt;
+
+        &lt;span class="c"&gt;&amp;lt;!-- This is a custom right side button --&amp;gt;&lt;/span&gt;
+        &lt;span class="c"&gt;&amp;lt;!--
+        &amp;lt;ImageButton
+            android:id="@+id/btn_search"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="end"
+            android:src="@drawable/ic_magnify_white_24dp"
+            style="@style/Widget.AppCompat.ActionButton" /&amp;gt;
+            --&amp;gt;&lt;/span&gt;
+
+    &lt;span class="nt"&gt;&amp;lt;/FrameLayout&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/android.support.v7.widget.Toolbar&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Below is a very minimal &lt;code&gt;MainActivity.java&lt;/code&gt; class which shows how to override the default ActionBar as simple as possible, and outlines some options that can be used to configure how the ActionBar behaves.&lt;/p&gt;
+
+&lt;h4 id="mainactivityjava"&gt;MainActivity.java&lt;/h4&gt;
+&lt;pre class="highlight java"&gt;&lt;code&gt;&lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;MainActivity&lt;/span&gt; &lt;span class="kd"&gt;extends&lt;/span&gt; &lt;span class="n"&gt;AppCompatActivity&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+    &lt;span class="nd"&gt;@Override&lt;/span&gt;
+    &lt;span class="kd"&gt;protected&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;onCreate&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Bundle&lt;/span&gt; &lt;span class="n"&gt;savedInstanceState&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+        &lt;span class="kd"&gt;super&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;onCreate&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;savedInstanceState&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;setContentView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;layout&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;activity_main&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;// an example activity_main.xml is provided below&lt;/span&gt;
+
+        &lt;span class="c1"&gt;// Always cast your custom Toolbar here, and set it as the ActionBar.&lt;/span&gt;
+        &lt;span class="n"&gt;Toolbar&lt;/span&gt; &lt;span class="n"&gt;tb&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Toolbar&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;findViewById&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;id&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;toolbar&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;setSupportActionBar&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tb&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+
+        &lt;span class="c1"&gt;// Get the ActionBar here to configure the way it behaves.&lt;/span&gt;
+        &lt;span class="kd"&gt;final&lt;/span&gt; &lt;span class="n"&gt;ActionBar&lt;/span&gt; &lt;span class="n"&gt;ab&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;getSupportActionBar&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+        &lt;span class="c1"&gt;//ab.setHomeAsUpIndicator(R.drawable.ic_menu); // set a custom icon for the default home button &lt;/span&gt;
+        &lt;span class="n"&gt;ab&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setDisplayShowHomeEnabled&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;// show or hide the default home button&lt;/span&gt;
+        &lt;span class="n"&gt;ab&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setDisplayHomeAsUpEnabled&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;ab&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setDisplayShowCustomEnabled&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;// enable overriding the default toolbar layout&lt;/span&gt;
+        &lt;span class="n"&gt;ab&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setDisplayShowTitleEnabled&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;// disable the default title element here (for centered title)&lt;/span&gt;
+    &lt;span class="o"&gt;}&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id="centering-the-title-or-logo"&gt;Centering the Title or Logo&lt;/h2&gt;
+
+&lt;p&gt;Our custom ActionBar layout uses a centered title element by default (or logo depending on your preference of text or image as a title). This deviates from the Android stardard a little, which is to left align the title text and position it just to the right of the home button. Many apps still opt for the centered title design though, probably because it has been made popular on iOS.&lt;/p&gt;
+
+&lt;p&gt;A common gotcha here is that if we are aligning the title element with center gravity, and we are using any of the default toolbar buttons, then our custom toolbar will be pushed to the side of the default buttons, causing our title centering will be off by the width of the default button (unless of course you are using the default buttons on either side, in which case our cusorm toolbar will still be centered). To counter this, just add &lt;code&gt;android:layout_marginLeft|Right="?attr/actionBarSize"&lt;/code&gt;to the custom &lt;code&gt;TextView&lt;/code&gt; or &lt;code&gt;ImageView&lt;/code&gt; that’s acting as the centered title. Easy.&lt;/p&gt;
+
+&lt;p&gt;If you don’t want a centered title and would prefer to use the default left aligned ActionBar title, then just remove the &lt;code&gt;toolbar_logo&lt;/code&gt; and &lt;code&gt;toolbar_logo&lt;/code&gt; elements from the &lt;code&gt;toolbar.xml&lt;/code&gt; file, and remove the call to &lt;code&gt;ab.setDisplayShowTitleEnabled(false);&lt;/code&gt; from your &lt;code&gt;MainActivity.java&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id="material-design-buttons"&gt;Material Design Buttons&lt;/h2&gt;
+
+&lt;p&gt;To make your custom buttons play nicely inside the ActionBar and have transparent ripple effects just add the &lt;code&gt;Widget.AppCompat.ActionButton&lt;/code&gt; style to each &lt;code&gt;ImageButton&lt;/code&gt;, like so:&lt;/p&gt;
+
+&lt;pre class="highlight xml"&gt;&lt;code&gt;&lt;span class="nt"&gt;&amp;lt;ImageButton&lt;/span&gt;
+    &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/btn_search"&lt;/span&gt;
+    &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"?attr/actionBarSize"&lt;/span&gt;
+    &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"?attr/actionBarSize"&lt;/span&gt;
+    &lt;span class="na"&gt;android:src=&lt;/span&gt;&lt;span class="s"&gt;"@drawable/ic_magnify_white_24dp"&lt;/span&gt;
+    &lt;span class="na"&gt;style=&lt;/span&gt;&lt;span class="s"&gt;"@style/Widget.AppCompat.ActionButton"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;A m ore complete example has already been provided in the &lt;code&gt;toolbar.xml&lt;/code&gt; file above.&lt;/p&gt;
+
+&lt;p&gt;Obviously, if you wanted to extend the default &lt;code&gt;Widget.AppCompat.ActionButton&lt;/code&gt; style, you could do so via &lt;code&gt;styles.xml&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre class="highlight xml"&gt;&lt;code&gt;    &lt;span class="nt"&gt;&amp;lt;style&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;"AppTheme.ActionButton"&lt;/span&gt; &lt;span class="na"&gt;parent=&lt;/span&gt;&lt;span class="s"&gt;"Widget.AppCompat.ActionButton"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class="c"&gt;&amp;lt;!-- Your custom styles here --&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;/style&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To enable your custom style just replace &lt;code&gt;style="@style/Widget.AppCompat.ActionButton"&lt;/code&gt; with &lt;code&gt;style="@style/AppTheme.ActionButton"&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id="using-appbarlayout-with-the-coordinatorlayout"&gt;Using AppBarLayout with the CoordinatorLayout&lt;/h2&gt;
+
+&lt;p&gt;If you’re going for a real Material Design interface, then you will probably want to utilise the &lt;code&gt;CoordinatorLayout&lt;/code&gt; class, and wrap your custom toolbar inside an &lt;code&gt;AppBarLayout&lt;/code&gt;. The &lt;code&gt;CoordinatorLayout&lt;/code&gt; lets you sprinkle some magic UX powder into your app by intelligently positioning and interacting with elements based on current scroll position. In the context of the &lt;code&gt;ActionBar&lt;/code&gt;, the &lt;code&gt;CoordinatorLayout&lt;/code&gt; provides the ability to automaticly expand and collapse the toolbar with parralax background images.&lt;/p&gt;
+
+&lt;p&gt;An example layout would look like so:&lt;/p&gt;
+
+&lt;h4 id="reslayoutappbarxml"&gt;/res/layout/appbar.xml&lt;/h4&gt;
+&lt;pre class="highlight xml"&gt;&lt;code&gt;&lt;span class="cp"&gt;&amp;lt;?xml version="1.0" encoding="utf-8"?&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;android.support.design.widget.AppBarLayout&lt;/span&gt;
+    &lt;span class="na"&gt;xmlns:android=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res/android"&lt;/span&gt;
+    &lt;span class="na"&gt;xmlns:app=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res-auto"&lt;/span&gt;
+    &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/appbar"&lt;/span&gt;
+    &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+    &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"wrap_content"&lt;/span&gt;
+    &lt;span class="na"&gt;android:theme=&lt;/span&gt;&lt;span class="s"&gt;"@style/ThemeOverlay.AppCompat.Dark.ActionBar"&lt;/span&gt;
+    &lt;span class="na"&gt;android:fitsSystemWindows=&lt;/span&gt;&lt;span class="s"&gt;"true"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+    
+    &lt;span class="c"&gt;&amp;lt;!-- 
+      Make your toolbar expandable with CollapsingToolbarLayout
+      Note that a centered ActionBar won't play nicely with the CollapsingToolbarLayout
+    --&amp;gt;&lt;/span&gt;
+    &lt;span class="c"&gt;&amp;lt;!--
+    &amp;lt;android.support.design.widget.CollapsingToolbarLayout
+        android:id="@+id/collapsing_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_scrollFlags="scroll|exitUntilCollapsed"
+        android:fitsSystemWindows="true"
+        app:contentScrim="?attr/colorPrimary"
+        app:expandedTitleMarginStart="48dp"
+        app:expandedTitleMarginEnd="64dp"&amp;gt;
+        --&amp;gt;&lt;/span&gt;
+
+        &lt;span class="c"&gt;&amp;lt;!-- Add a parallax background image if using CollapsingToolbarLayout --&amp;gt;&lt;/span&gt;
+        &lt;span class="c"&gt;&amp;lt;!--
+        &amp;lt;ImageView
+            android:id="@+id/backdrop"
+            android:src="@drawable/backdrop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            app:layout_collapseMode="parallax" /&amp;gt;
+            --&amp;gt;&lt;/span&gt;
+                
+        &lt;span class="c"&gt;&amp;lt;!-- Include our custom Toolbar --&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;include&lt;/span&gt; &lt;span class="na"&gt;layout=&lt;/span&gt;&lt;span class="s"&gt;"@layout/toolbar"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+        
+    &lt;span class="c"&gt;&amp;lt;!--
+    &amp;lt;/android.support.design.widget.CollapsingToolbarLayout&amp;gt;
+    --&amp;gt;&lt;/span&gt;
+    
+&lt;span class="nt"&gt;&amp;lt;/android.support.design.widget.AppBarLayout&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id="reslayoutmainactivityxml"&gt;/res/layout/main_activity.xml&lt;/h4&gt;
+&lt;pre class="highlight xml"&gt;&lt;code&gt;&lt;span class="cp"&gt;&amp;lt;?xml version="1.0" encoding="utf-8"?&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;android.support.design.widget.CoordinatorLayout&lt;/span&gt;
+    &lt;span class="na"&gt;xmlns:android=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res/android"&lt;/span&gt;
+    &lt;span class="na"&gt;xmlns:app=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res-auto"&lt;/span&gt;
+    &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/coordinator"&lt;/span&gt;
+    &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+    &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+    &lt;span class="na"&gt;android:fitsSystemWindows=&lt;/span&gt;&lt;span class="s"&gt;"true"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+
+    &lt;span class="c"&gt;&amp;lt;!-- Include the AppBarLayout --&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;include&lt;/span&gt; &lt;span class="na"&gt;layout=&lt;/span&gt;&lt;span class="s"&gt;"@layout/appbar"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+
+    &lt;span class="nt"&gt;&amp;lt;FrameLayout&lt;/span&gt;
+        &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/main_fragment"&lt;/span&gt;
+        &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+        &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+        &lt;span class="na"&gt;app:layout_behavior=&lt;/span&gt;&lt;span class="s"&gt;"@string/appbar_scrolling_view_behavior"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+        
+        &lt;span class="c"&gt;&amp;lt;!-- Add you content here --&amp;gt;&lt;/span&gt;
+        
+    &lt;span class="nt"&gt;&amp;lt;/FrameLayout&amp;gt;&lt;/span&gt;
+
+&lt;span class="nt"&gt;&amp;lt;/android.support.design.widget.CoordinatorLayout&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That should get you started. Please drop a line if you have anything to add, or just want to say thanks. Now go fourth and create!&lt;/p&gt;
+</content>
+  </entry>
   <entry>
     <title>Flash Android Sony Xperia on Linux</title>
     <link rel="alternate" href="http://sourcey.com/flash-android-sony-xperia-on-linux/"/>
@@ -1229,51 +1456,6 @@ sudo -i
 &lt;h2 id="issues"&gt;Issues&lt;/h2&gt;
 
 &lt;p&gt;If you find any bugs please use the &lt;a href="https://github.com/sourcey/recliner/issues"&gt;Github issue tracker&lt;/a&gt;.&lt;/p&gt;
-
-</content>
-  </entry>
-  <entry>
-    <title>Middleman Automated GitHub Pages Deployments with Rake</title>
-    <link rel="alternate" href="http://sourcey.com/middleman-automated-github-pages-deployments-with-rake/"/>
-    <id>http://sourcey.com/middleman-automated-github-pages-deployments-with-rake/</id>
-    <published>2015-02-09T00:00:00Z</published>
-    <updated>2015-02-09T21:56:59+10:00</updated>
-    <author>
-      <name>Kam Low</name>
-    </author>
-    <content type="html">&lt;p&gt;Supposing you use GitHub pages to host your middleman site, like we do, you will probably want to speed up your deployments with some rakey goodness!&lt;/p&gt;
-
-&lt;p&gt;Stick the following &lt;code&gt;deploy.rake&lt;/code&gt; file in your middleman root directory:&lt;/p&gt;
-
-&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;desc&lt;/span&gt; &lt;span class="s2"&gt;"build static pages"&lt;/span&gt;
-&lt;span class="n"&gt;task&lt;/span&gt; &lt;span class="ss"&gt;:build&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-  &lt;span class="nb"&gt;p&lt;/span&gt; &lt;span class="s2"&gt;"## Compiling static pages"&lt;/span&gt;
-  &lt;span class="nb"&gt;system&lt;/span&gt; &lt;span class="s2"&gt;"bundle exec middleman build"&lt;/span&gt;
-&lt;span class="k"&gt;end&lt;/span&gt;
-
-&lt;span class="n"&gt;desc&lt;/span&gt; &lt;span class="s2"&gt;"deploy to github pages"&lt;/span&gt;
-&lt;span class="n"&gt;task&lt;/span&gt; &lt;span class="ss"&gt;:deploy&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-  &lt;span class="nb"&gt;p&lt;/span&gt; &lt;span class="s2"&gt;"## Deploying to Github Pages"&lt;/span&gt;
-  &lt;span class="n"&gt;cp_r&lt;/span&gt; &lt;span class="s2"&gt;".nojekyll"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;"build/.nojekyll"&lt;/span&gt;
-  &lt;span class="n"&gt;cd&lt;/span&gt; &lt;span class="s2"&gt;"build"&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-    &lt;span class="nb"&gt;system&lt;/span&gt; &lt;span class="s2"&gt;"git add -A"&lt;/span&gt;
-    &lt;span class="n"&gt;message&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"Site updated at &lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="no"&gt;Time&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;now&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;utc&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-    &lt;span class="nb"&gt;p&lt;/span&gt; &lt;span class="s2"&gt;"## Commiting: &lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-    &lt;span class="nb"&gt;system&lt;/span&gt; &lt;span class="s2"&gt;"git commit -m &lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-    &lt;span class="nb"&gt;p&lt;/span&gt; &lt;span class="s2"&gt;"## Pushing generated website"&lt;/span&gt;
-    &lt;span class="nb"&gt;system&lt;/span&gt; &lt;span class="s2"&gt;"git push origin master"&lt;/span&gt;
-    &lt;span class="nb"&gt;p&lt;/span&gt; &lt;span class="s2"&gt;"## Github Pages deploy complete"&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;span class="k"&gt;end&lt;/span&gt;
-
-&lt;span class="n"&gt;desc&lt;/span&gt; &lt;span class="s2"&gt;"build and deploy to github pages"&lt;/span&gt;
-&lt;span class="n"&gt;task&lt;/span&gt; &lt;span class="ss"&gt;:publish&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-  &lt;span class="no"&gt;Rake&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Task&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"build"&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="nf"&gt;invoke&lt;/span&gt;
-  &lt;span class="no"&gt;Rake&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Task&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"deploy"&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="nf"&gt;invoke&lt;/span&gt;
-&lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Now just type &lt;code&gt;rake publish&lt;/code&gt; And your changes will be live in a few moments. Easy a π!&lt;/p&gt;
 
 </content>
   </entry>

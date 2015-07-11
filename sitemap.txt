@@ -261,6 +261,9 @@ http://sourcey.com/
 
 
 
+http://sourcey.com/android-custom-centered-actionbar-with-material-design/
+
+
 http://sourcey.com/recliner/
 
 
@@ -536,6 +539,9 @@ http://sourcey.com/tags/startups/
 http://sourcey.com/tags/technology/
 
 
+http://sourcey.com/tags/material/
+
+
 http://sourcey.com/tags/google/
 
 
@@ -543,9 +549,6 @@ http://sourcey.com/tags/html5/
 
 
 http://sourcey.com/tags/optimisation/
-
-
-http://sourcey.com/tags/material/
 
 
 http://sourcey.com/tags/cloud/
