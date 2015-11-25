@@ -11,7 +11,7 @@
     <link rel="alternate" href="http://sourcey.com/android-custom-centered-actionbar-with-material-design/"/>
     <id>http://sourcey.com/android-custom-centered-actionbar-with-material-design/</id>
     <published>2015-07-11T00:00:00Z</published>
-    <updated>2015-07-11T22:50:17+10:00</updated>
+    <updated>2015-11-25T13:56:14+10:00</updated>
     <author>
       <name>Kam Low</name>
     </author>
@@ -25,7 +25,7 @@
 
 &lt;h4 id="reslayouttoolbarxml"&gt;/res/layout/toolbar.xml&lt;/h4&gt;
 &lt;pre class="highlight xml"&gt;&lt;code&gt;&lt;span class="cp"&gt;&amp;lt;?xml version="1.0" encoding="utf-8"?&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;android.support.v7.widget.Toolbar&lt;/span&gt; 
+&lt;span class="nt"&gt;&amp;lt;android.support.v7.widget.Toolbar&lt;/span&gt;
     &lt;span class="na"&gt;xmlns:android=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res/android"&lt;/span&gt;
     &lt;span class="na"&gt;xmlns:app=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res-auto"&lt;/span&gt;
     &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/toolbar"&lt;/span&gt;
@@ -66,7 +66,7 @@
             style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse"
             /&amp;gt;
             --&amp;gt;&lt;/span&gt;
-        
+
         &lt;span class="c"&gt;&amp;lt;!-- This is a custom left side button --&amp;gt;&lt;/span&gt;
         &lt;span class="c"&gt;&amp;lt;!--
         &amp;lt;ImageButton
@@ -110,7 +110,7 @@
 
         &lt;span class="c1"&gt;// Get the ActionBar here to configure the way it behaves.&lt;/span&gt;
         &lt;span class="kd"&gt;final&lt;/span&gt; &lt;span class="n"&gt;ActionBar&lt;/span&gt; &lt;span class="n"&gt;ab&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;getSupportActionBar&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
-        &lt;span class="c1"&gt;//ab.setHomeAsUpIndicator(R.drawable.ic_menu); // set a custom icon for the default home button &lt;/span&gt;
+        &lt;span class="c1"&gt;//ab.setHomeAsUpIndicator(R.drawable.ic_menu); // set a custom icon for the default home button&lt;/span&gt;
         &lt;span class="n"&gt;ab&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setDisplayShowHomeEnabled&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;// show or hide the default home button&lt;/span&gt;
         &lt;span class="n"&gt;ab&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setDisplayHomeAsUpEnabled&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
         &lt;span class="n"&gt;ab&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setDisplayShowCustomEnabled&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;// enable overriding the default toolbar layout&lt;/span&gt;
@@ -166,8 +166,8 @@
     &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"wrap_content"&lt;/span&gt;
     &lt;span class="na"&gt;android:theme=&lt;/span&gt;&lt;span class="s"&gt;"@style/ThemeOverlay.AppCompat.Dark.ActionBar"&lt;/span&gt;
     &lt;span class="na"&gt;android:fitsSystemWindows=&lt;/span&gt;&lt;span class="s"&gt;"true"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-    
-    &lt;span class="c"&gt;&amp;lt;!-- 
+
+    &lt;span class="c"&gt;&amp;lt;!--
       Make your toolbar expandable with CollapsingToolbarLayout
       Note that a centered ActionBar won't play nicely with the CollapsingToolbarLayout
     --&amp;gt;&lt;/span&gt;
@@ -193,14 +193,14 @@
             android:scaleType="centerCrop"
             app:layout_collapseMode="parallax" /&amp;gt;
             --&amp;gt;&lt;/span&gt;
-                
+
         &lt;span class="c"&gt;&amp;lt;!-- Include our custom Toolbar --&amp;gt;&lt;/span&gt;
         &lt;span class="nt"&gt;&amp;lt;include&lt;/span&gt; &lt;span class="na"&gt;layout=&lt;/span&gt;&lt;span class="s"&gt;"@layout/toolbar"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
-        
+
     &lt;span class="c"&gt;&amp;lt;!--
     &amp;lt;/android.support.design.widget.CollapsingToolbarLayout&amp;gt;
     --&amp;gt;&lt;/span&gt;
-    
+
 &lt;span class="nt"&gt;&amp;lt;/android.support.design.widget.AppBarLayout&amp;gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -222,15 +222,21 @@
         &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
         &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
         &lt;span class="na"&gt;app:layout_behavior=&lt;/span&gt;&lt;span class="s"&gt;"@string/appbar_scrolling_view_behavior"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-        
+
         &lt;span class="c"&gt;&amp;lt;!-- Add you content here --&amp;gt;&lt;/span&gt;
-        
+
     &lt;span class="nt"&gt;&amp;lt;/FrameLayout&amp;gt;&lt;/span&gt;
 
 &lt;span class="nt"&gt;&amp;lt;/android.support.design.widget.CoordinatorLayout&amp;gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;That should get you started. Please drop a line if you have anything to add, or just want to say thanks. Now go fourth and create!&lt;/p&gt;
+
+&lt;h2 id="watch-the-video"&gt;Watch the Video&lt;/h2&gt;
+
+&lt;p&gt;The guys and gals over at &lt;a href="https://www.webucator.com/programming/android-training.cfm"&gt;Webucator&lt;/a&gt; have created a video tutorial from this post. Check it out:&lt;/p&gt;
+
+&lt;iframe width="640" height="360" src="https://www.youtube.com/embed/kUIn8NJTEhk" frameborder="0" allowfullscreen=""&gt;&lt;/iframe&gt;
 </content>
   </entry>
   <entry>
