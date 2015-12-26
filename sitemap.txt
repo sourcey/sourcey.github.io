@@ -28,6 +28,9 @@ http://sourcey.com/combining-multiple-rss-feeds/
 http://sourcey.com/rails-4-omniauth-using-devise-with-twitter-facebook-and-linkedin/
 
 
+http://sourcey.com/building-a-complete-rails-5-api-guide/
+
+
 http://sourcey.com/middleman-automated-github-pages-deployments-with-rake/
 
 
@@ -415,6 +418,9 @@ http://sourcey.com/tags/ruby/
 http://sourcey.com/tags/rails/
 
 
+http://sourcey.com/tags/api/
+
+
 http://sourcey.com/tags/middleman/
 
 
@@ -467,9 +473,6 @@ http://sourcey.com/tags/php/
 
 
 http://sourcey.com/tags/pinterest/
-
-
-http://sourcey.com/tags/api/
 
 
 http://sourcey.com/tags/javascript/

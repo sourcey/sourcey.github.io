@@ -5,7 +5,447 @@
   <id>http://sourcey.com</id>
   <link href="http://sourcey.com"/>
   <link href="http://sourcey.com/feed.xml" rel="self"/>
-  <updated>2015-07-11T00:00:00Z</updated>
+  <updated>2015-12-26T00:00:00Z</updated>
+  <entry>
+    <title>Building a Complete Rails 5 API Guide</title>
+    <link rel="alternate" href="http://sourcey.com/building-a-complete-rails-5-api-guide/"/>
+    <id>http://sourcey.com/building-a-complete-rails-5-api-guide/</id>
+    <published>2015-12-26T00:00:00Z</published>
+    <updated>2015-12-26T23:23:47+10:00</updated>
+    <author>
+      <name>Kam Low</name>
+    </author>
+    <content type="html">&lt;p&gt;Thanks to the new &lt;code&gt;rails-api&lt;/code&gt; gem that ships as part of the Rails 5 core, Rails is now an ideal candidate for building streamlined APIs quickly and easily.&lt;/p&gt;
+
+&lt;p&gt;Until now, the best option for creating simple APIs in Ruby has arguably been Grape, and while Grape is still a fantastic option (especially if you like to DIY), there are some great advantages to using Rails 5 in API mode, such as; ActiveRecord by default, a strong developer community, and having the asset pipeline and front end features available should you need them later as your project evolves.&lt;/p&gt;
+
+&lt;h2 id="setting-up-rails-5"&gt;Setting up Rails 5&lt;/h2&gt;
+
+&lt;p&gt;To install Rails in API mode all you need to do is pass the &lt;code&gt;--api&lt;/code&gt; option at the command line when creating a new Rails app, and you will get a Rails API only app without any of the incumbent front end bloat, and all the inherent Railsy goodness.&lt;/p&gt;
+
+&lt;p&gt;First, make sure you are running Ruby 2.2.2+ or newer as it’s required by Rails 5.&lt;/p&gt;
+
+&lt;p&gt;According to the &lt;a href="http://edgeguides.rubyonrails.org/api_app.html"&gt;Rails guide&lt;/a&gt; you will be able to generate an API app using the following command:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;bash
+rails new api_app_name --api
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;However as Rails 5 isn’t officially released yet so we have to generate our Rails API app using the latest version. Simply clone the master branch from the Rails repo:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;bash
+git clone git@github.com:rails/rails.git
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Now we generate new Rails API application by passing the &lt;code&gt;--api&lt;/code&gt; directive to the rails new command:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;bash
+bundle exec railties/exe/rails new &amp;lt;parent-folder-path&amp;gt;/api_app_name --api --edge
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Nice! Now you have a shiny new API only Rails 5 project to play with.&lt;/p&gt;
+
+&lt;p&gt;The next thing is to run &lt;code&gt;bundle&lt;/code&gt; and &lt;code&gt;rake&lt;/code&gt; to install the default gems and setup the database:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;bash
+cd  &amp;lt;parent-folder-path&amp;gt;/api_app_name
+bundle install
+bin/rake db:setup
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id="using-rspec-for-testing"&gt;Using RSpec For Testing&lt;/h2&gt;
+
+&lt;p&gt;Let’s setup RSpec for testing your application before we start generating any resources. To do this, go ahead and add the &lt;a href="https://github.com/rspec/rspec-rails"&gt;rspec-rails&lt;/a&gt; gem to your Gemfile in the &lt;code&gt;:development, :test&lt;/code&gt; group:&lt;/p&gt;
+
+&lt;p&gt;```ruby
+group :development, :test do&lt;/p&gt;
+
+&lt;p&gt;# Use RSpec for specs
+  gem ‘rspec-rails’, ‘3.1.0’&lt;/p&gt;
+
+&lt;p&gt;# Use Factory Girl for generating random test data
+  gem ‘factory_girl_rails’
+end
+```&lt;/p&gt;
+
+&lt;p&gt;Update your bundle:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;bash
+bundle
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Run the RSpec installer:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;bash
+bin/rails g rspec:install  
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Finally, you can get rid of the &lt;code&gt;test&lt;/code&gt; directory in Rails, since we won’t be writing unit tests, but specifications instead.&lt;/p&gt;
+
+&lt;h2 id="bulding-your-api"&gt;Bulding Your API&lt;/h2&gt;
+
+&lt;p&gt;With all the basic dependencies installed, lets start building out our API controllers.&lt;/p&gt;
+
+&lt;p&gt;When an app is created with the &lt;code&gt;--api&lt;/code&gt; flag you can use the scaffold generators to generate your API resources as normal, without the need for any special arguments.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;bash
+bin/rails g scaffold user name email
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;This will generate the following file structure:&lt;/p&gt;
+
+&lt;p&gt;```bash
+      invoke  active_record
+   identical    db/migrate/20151222022044_create_users.rb
+   identical    app/models/user.rb
+      invoke    rspec
+      create      spec/models/user_spec.rb
+      invoke      factory_girl
+      create        spec/factories/users.rb
+      invoke  resource_route
+       route    resources :users
+      invoke  scaffold_controller
+   identical    app/controllers/users_controller.rb
+      invoke    rspec
+      create      spec/controllers/users_controller_spec.rb
+      create      spec/routing/users_routing_spec.rb
+      invoke      rspec
+      create        spec/requests/users_spec.rb&lt;/p&gt;
+
+&lt;p&gt;```&lt;/p&gt;
+
+&lt;p&gt;Now all that’s left is to migrate and run the app:&lt;/p&gt;
+
+&lt;p&gt;```bash
+bin/rake db:migrate&lt;/p&gt;
+
+&lt;h1 id="run-the-default-server-on-port-3000"&gt;run the default server on port 3000&lt;/h1&gt;
+&lt;p&gt;bin/rails s
+```&lt;/p&gt;
+
+&lt;p&gt;Your new API is now up and running on &lt;a href="http://localhost:3000"&gt;http://localhost:3000&lt;/a&gt;. Sweet!&lt;/p&gt;
+
+&lt;p&gt;You’re not done yet though, there are still a bunch of important points for consideration…&lt;/p&gt;
+
+&lt;h2 id="serializing-api-output"&gt;Serializing API Output&lt;/h2&gt;
+
+&lt;p&gt;In it’s current state our app will just spit out every column in the database in JSON format, so we need a way to control what data gets served through the API.&lt;/p&gt;
+
+&lt;p&gt;Usually we would use a front end templating engines such as &lt;code&gt;jbuilder&lt;/code&gt; for this purpose,
+but since we’ve disabled views in our super awesome streamlined API app, that’s not going to be an option.&lt;/p&gt;
+
+&lt;p&gt;Fortunately there’s an ideal solution using AMS (Active Model Serializers) via the &lt;a href="https://github.com/rails-api/active_model_serializers"&gt;active_model_serializers&lt;/a&gt; gem.&lt;/p&gt;
+
+&lt;p&gt;Go ahead and add the &lt;code&gt;active_model_serializers&lt;/code&gt; dependency to your Gemfile:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ruby
+gem 'active_model_serializers'
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Update your bundle:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;bash
+bundle
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Now lets create a serializer for our User model:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;bash
+rails g serializer user
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;In &lt;code&gt;app/serializers/user_serializer.rb&lt;/code&gt;, we find this code:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ruby
+class UserSerializer &amp;lt; ActiveModel::Serializer
+  attributes :id
+end
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Go ahead and add the &lt;code&gt;:name&lt;/code&gt; and &lt;code&gt;:email&lt;/code&gt; attributes to the serializer:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ruby
+class UserSerializer &amp;lt; ActiveModel::Serializer
+  attributes :id, :name, :email
+end
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p class="panel callout radius"&gt;If your model has relationships just add them to the serializer as you would an attributes to be serialized in the output.&lt;/p&gt;
+
+&lt;p&gt;You may also need to include the &lt;code&gt;ActionController::Serialization&lt;/code&gt; dependency in your controller like so:&lt;/p&gt;
+
+&lt;p&gt;```ruby
+class ApplicationController &amp;lt; ActionController::API
+  include ActionController::Serialization&lt;/p&gt;
+
+&lt;p&gt;# …
+end
+```&lt;/p&gt;
+
+&lt;p&gt;Now when you hit and User related API endpoint only the attributes in the &lt;code&gt;UserSerializer&lt;/code&gt; will be rendered. Nice!&lt;/p&gt;
+
+&lt;h2 id="enabling-cors"&gt;Enabling CORS&lt;/h2&gt;
+
+&lt;p&gt;If you’re building a public API you’ll probably want to enable Cross-Origin Resource Sharing (CORS), in order to make cross-origin AJAX requests possible.&lt;/p&gt;
+
+&lt;p&gt;This is made very simple by the &lt;code&gt;rack-cors&lt;/code&gt; gem. Just stick it in your Gemfile like so:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ruby
+gem 'rack-cors'
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Update your bundle:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;bash
+bundle
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;And put something like the code below in &lt;code&gt;config/application.rb&lt;/code&gt; of your Rails application. For example, this will allow GET, POST or OPTIONS requests from any origin on any resource.&lt;/p&gt;
+
+&lt;p&gt;```ruby
+module YourApp
+  class Application &amp;lt; Rails::Application&lt;/p&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;# ...
+
+config.middleware.insert_before 0, "Rack::Cors" do
+  allow do
+    origins '*'
+    resource '*', :headers =&amp;gt; :any, :methods =&amp;gt; [:get, :post, :options]
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;end
+end
+```&lt;/p&gt;
+
+&lt;p&gt;For more detailed configuration options please see the gem documentation: https://github.com/cyu/rack-cors&lt;/p&gt;
+
+&lt;h2 id="versioning-your-api"&gt;Versioning your API&lt;/h2&gt;
+
+&lt;p&gt;Before releasing your public API into the wild, you should consider implementing some form of versioning.
+Versioning breaks your API up into multiple version namespaces, such as &lt;code&gt;v1&lt;/code&gt; and &lt;code&gt;v2&lt;/code&gt;,
+so that you can maintain backwards compatibility for existing clients whenever you introduce breaking changes into your API, simply by incrementing your API version.&lt;/p&gt;
+
+&lt;p&gt;This guide will show you how to setup versioning with the following URL format:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+GET http://api.mysite.com/v1/users/
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Using a subdomain instead of something like &lt;code&gt;/api/v1/users/&lt;/code&gt; is just a preference, although both are easy to accomplish in Rails.&lt;/p&gt;
+
+&lt;p&gt;We can use a directory structure like this to keep our controller code clean by defining all our &lt;code&gt;v1&lt;/code&gt; controllers within the &lt;code&gt;Api::V1&lt;/code&gt; namespace:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+app/controllers/
+.
+|-- api
+|   `-- v1
+|       |-- api_controller.rb
+|       `-- users_controller.rb
+|-- application_controller.rb
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Here’s what the controllers look like:&lt;/p&gt;
+
+&lt;p&gt;```ruby
+# app/controllers/api/v1/api_controller.rb&lt;/p&gt;
+
+&lt;p&gt;module Api::V1
+  class ApiController &amp;lt; ApplicationController
+    # Generic API stuff here
+  end
+end
+```&lt;/p&gt;
+
+&lt;p&gt;```ruby
+# app/controllers/api/v1/users_controller.rb&lt;/p&gt;
+
+&lt;p&gt;module Api::V1
+  class UsersController &amp;lt; ApiController&lt;/p&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;# GET /v1/users
+def index
+  render json: User.all
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;end
+end
+```&lt;/p&gt;
+
+&lt;p&gt;Now let’s setup our &lt;code&gt;config/routes.rb&lt;/code&gt; to tie everything together:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ruby
+constraints subdomain: 'api' do
+  scope module: 'api' do
+    namespace :v1 do
+      resources :users
+    end
+  end
+end
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;The &lt;code&gt;scope module: 'api'&lt;/code&gt; bit lets us route to controllers in the API module without explicitly including it in the URL. However, the version &lt;code&gt;v1/&lt;/code&gt; is part of the URL, and we also want to route to the V1 module, so we use &lt;code&gt;namespace&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now you’re API routes are looking pretty sharp!&lt;/p&gt;
+
+&lt;h2 id="rate-limiting-and-throttling"&gt;Rate Limiting and Throttling&lt;/h2&gt;
+
+&lt;p&gt;To protect our API from DDoS, brute force attacks, hammering, or even to monetize with paid usage limits, we can use a Rake &lt;a href="http://guides.rubyonrails.org/rails_on_rack.html"&gt;middleware&lt;/a&gt; called &lt;code&gt;Rack::Attack&lt;/code&gt;. The &lt;a href="https://github.com/kickstarter/rack-attack"&gt;rack-attack&lt;/a&gt; gem was released by Kickstarter, and it allows us to:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;whitelist: Allowing it to process normally if certain conditions are true&lt;/li&gt;
+  &lt;li&gt;blacklist: Sending a denied message instantly for certain requests&lt;/li&gt;
+  &lt;li&gt;throttle: Checking if the user is within their allowed usage&lt;/li&gt;
+  &lt;li&gt;track: Tracking this request to be able to log certain information about our requests&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Get started by adding the dependency to your Gemfile:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ruby
+gem 'rack-attack'
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Update your bundle:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;bash
+bundle
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Now update your &lt;code&gt;config/application.rb&lt;/code&gt; file to include it into your middleware stack:&lt;/p&gt;
+
+&lt;p&gt;```ruby
+module YourApp
+  class Application &amp;lt; Rails::Application&lt;/p&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;# ...
+
+config.middleware.use Rack::Attack
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;end
+end
+```&lt;/p&gt;
+
+&lt;p&gt;Create a new initializer file in &lt;code&gt;config/initializers/rack_attack.rb&lt;/code&gt; to configure your &lt;code&gt;Rack::Attack&lt;/code&gt; rules.
+The example below is very basic, and you might have different requirements altogether,
+but it should give a good starting point.&lt;/p&gt;
+
+&lt;p&gt;```ruby
+class Rack::Attack&lt;/p&gt;
+
+&lt;p&gt;# &lt;code&gt;Rack::Attack&lt;/code&gt; is configured to use the &lt;code&gt;Rails.cache&lt;/code&gt; value by default,
+  # but you can override that by setting the &lt;code&gt;Rack::Attack.cache.store&lt;/code&gt; value
+  Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new&lt;/p&gt;
+
+&lt;p&gt;# Allow all local traffic
+  whitelist(‘allow-localhost’) do |req|
+    ‘127.0.0.1’ == req.ip || ‘::1’ == req.ip
+  end&lt;/p&gt;
+
+&lt;p&gt;# Allow an IP address to make 5 requests every 5 seconds
+  throttle(‘req/ip’, limit: 5, period: 5) do |req|
+    req.ip
+  end&lt;/p&gt;
+
+&lt;p&gt;# Send the following response to throttled clients
+  self.throttled_response = -&amp;gt;(env) {
+    retry_after = (env[‘rack.attack.match_data’] || {})[:period]
+    [
+      429,
+      {‘Content-Type’ =&amp;gt; ‘application/json’, ‘Retry-After’ =&amp;gt; retry_after.to_s},
+      [{error: “Throttle limit reached. Retry later.”}.to_json]
+    ]
+  }
+end
+```&lt;/p&gt;
+
+&lt;p&gt;For a full list of configuration options check the &lt;a href="https://github.com/kickstarter/rack-attack"&gt;Rack::Attack&lt;/a&gt; gem homepage.&lt;/p&gt;
+
+&lt;p&gt;Now that our API is safe from brute force attacks we can sleep a little better at night!&lt;/p&gt;
+
+&lt;h2 id="authenticating-your-api"&gt;Authenticating Your API&lt;/h2&gt;
+
+&lt;p&gt;Let’s lock our API down with some authentication.&lt;/p&gt;
+
+&lt;p&gt;As a rule API’s should be stateless, and therefore should not have any knowledge of cookies or sessions.&lt;/p&gt;
+
+&lt;p class="panel callout radius"&gt;If you require sessions then you should be looking at implementing some form of &lt;a href="http://oauth.net/2"&gt;OAuth&lt;/a&gt; based authentication, but that won’t be covered in this guide.&lt;/p&gt;
+
+&lt;p&gt;A good way of authenticating API requests is using token based authentication, which involves clients including a API key of some sort in the HTTP headers of each request, like so:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+Authorization: Token token="WCZZYjnOQFUYfJIN2ShH1iD24UHo58A6TI"
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;First let’s update create a migration to add the &lt;code&gt;api_key&lt;/code&gt; attribute to our &lt;code&gt;User&lt;/code&gt; model:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ruby
+rails g migration AddApiKeyToUsers api_key:string
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Now update the &lt;code&gt;User&lt;/code&gt; model and include the following methods:&lt;/p&gt;
+
+&lt;p&gt;```ruby
+class User &amp;lt; ActiveRecord::Base&lt;/p&gt;
+
+&lt;p&gt;# Assign an API key on create
+  before_create do |user|
+    user.api_key = user.generate_api_key
+  end&lt;/p&gt;
+
+&lt;p&gt;# Generate a unique API key
+  def generate_api_key
+    loop do
+      token = SecureRandom.base64.tr(‘+/=’, ‘Qrt’)
+      break token unless User.exists?(api_key: token).any?
+    end
+  end
+end
+```&lt;/p&gt;
+
+&lt;p&gt;On the controller side we can implement the authentication using the built in &lt;code&gt;authenticate_or_request_with_http_token&lt;/code&gt; Rails method.&lt;/p&gt;
+
+&lt;p&gt;```ruby
+class Api::ApiController &amp;lt; ActionController::Base&lt;/p&gt;
+
+&lt;p&gt;# Add a before_action to authenticate all requests.
+  # Move this to subclassed controllers if you only
+  # want to authenticate certain methods.
+  before_action :authenticate&lt;/p&gt;
+
+&lt;p&gt;# Expose &lt;code&gt;current_user&lt;/code&gt; to subclassed controllers
+  helper_method :current_user&lt;/p&gt;
+
+&lt;p&gt;private&lt;/p&gt;
+
+&lt;p&gt;# Authenticate the user with token based authentication
+  def authenticate
+    authenticate_or_request_with_http_token do |token, options|
+      @current_user = User.where(api_key: token).first
+    end
+  end
+end
+```&lt;/p&gt;
+
+&lt;p&gt;Now we can test our authenticated API using &lt;code&gt;curl&lt;/code&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;bash
+curl -H "Authorization: Token token=PsmmvKBqQDOaWwEsPpOCYMsy" http://localhost:3000/users
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id="conclusion"&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Now you have the keys to the castle, and all the basics for building an API the Rails way.&lt;/p&gt;
+
+&lt;p&gt;Hopefully then guide was helpful for you, and if you want any points clarified or just want to say thanks then please use the comments below.&lt;/p&gt;
+
+&lt;p&gt;Cheers, and happy coding!&lt;/p&gt;
+</content>
+  </entry>
   <entry>
     <title>Android Custom Centered ActionBar with Material Design</title>
     <link rel="alternate" href="http://sourcey.com/android-custom-centered-actionbar-with-material-design/"/>
@@ -299,295 +739,6 @@ sudo -i
 
 &lt;p&gt;Good luck, and drop a line if something important was omitted, or this tutorial was useful to you.&lt;/p&gt;
 
-</content>
-  </entry>
-  <entry>
-    <title>Android Hotizontally Scrolling Pan Scan and Zoom Image Gallery</title>
-    <link rel="alternate" href="http://sourcey.com/android-horizontally-scrolling-pan-scan-and-zoom-image-gallery/"/>
-    <id>http://sourcey.com/android-horizontally-scrolling-pan-scan-and-zoom-image-gallery/</id>
-    <published>2015-06-18T00:00:00Z</published>
-    <updated>2015-06-23T07:53:05+10:00</updated>
-    <author>
-      <name>Kam Low</name>
-    </author>
-    <content type="html">&lt;p&gt;Since the depreciation of the Android Gallery module there has been no clear way to implement image galleries on Android, so I’m sharing my own Gallery implementation in order to fill the need.&lt;/p&gt;
-
-&lt;p class="width-75 center"&gt;&lt;img alt="Android Gallery Demo" title="Android Gallery Demo" src="/android-horizontally-scrolling-pan-scan-and-zoom-image-gallery/screenshot-gallery.jpg" /&gt;&lt;/p&gt;
-
-&lt;p&gt;The implementation is a horizontal scrolling image gallery that consists of &lt;code&gt;ViewPager&lt;/code&gt; element, and a &lt;code&gt;HorizontalScrollView&lt;/code&gt; for displaying selectable thumbnails. Inside the &lt;code&gt;ViewPager&lt;/code&gt; view there is a modified &lt;code&gt;ImageView&lt;/code&gt; that allows for panning, scanning and zooming of the main image.&lt;/p&gt;
-
-&lt;p&gt;Horizontal galleries are ideal for displaying smaller amounts of images (&amp;lt;10), although if you need to display lots of images then you might be better served with a &lt;code&gt;GridView&lt;/code&gt; based implementation.&lt;/p&gt;
-
-&lt;center&gt;
-&lt;p&gt;&lt;a class="action-button button radius" target="_blank" href="https://github.com/sourcey/imagegallerydemo" title="Get the Code on Github"&gt;Get the Code&lt;/a&gt;&lt;/p&gt;
-&lt;/center&gt;
-
-&lt;h4 id="galleryactivityjava"&gt;GalleryActivity.java:&lt;/h4&gt;
-
-&lt;pre class="highlight java"&gt;&lt;code&gt;&lt;span class="kn"&gt;package&lt;/span&gt; &lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;sourcey&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;imagegallerydemo&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.content.Context&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.graphics.Bitmap&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.os.Bundle&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.support.v4.view.PagerAdapter&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.support.v7.app.AppCompatActivity&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.support.v4.view.ViewPager&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.util.Log&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.view.LayoutInflater&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.view.View&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.view.ViewGroup&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.widget.FrameLayout&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.widget.ImageButton&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.widget.ImageView&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.widget.LinearLayout&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;com.bumptech.glide.Glide&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;com.bumptech.glide.request.animation.GlideAnimation&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;com.bumptech.glide.request.target.SimpleTarget&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;com.davemorrissey.labs.subscaleview.ImageSource&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;junit.framework.Assert&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;java.util.ArrayList&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;butterknife.ButterKnife&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;butterknife.InjectView&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-
-&lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;GalleryActivity&lt;/span&gt; &lt;span class="kd"&gt;extends&lt;/span&gt; &lt;span class="n"&gt;AppCompatActivity&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
-    &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;static&lt;/span&gt; &lt;span class="kd"&gt;final&lt;/span&gt; &lt;span class="n"&gt;String&lt;/span&gt; &lt;span class="n"&gt;TAG&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"GalleryActivity"&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-    &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;static&lt;/span&gt; &lt;span class="kd"&gt;final&lt;/span&gt; &lt;span class="n"&gt;String&lt;/span&gt; &lt;span class="n"&gt;EXTRA_NAME&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"images"&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-
-    &lt;span class="kd"&gt;private&lt;/span&gt; &lt;span class="n"&gt;ArrayList&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;String&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;_images&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-    &lt;span class="kd"&gt;private&lt;/span&gt; &lt;span class="n"&gt;GalleryPagerAdapter&lt;/span&gt; &lt;span class="n"&gt;_adapter&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-
-    &lt;span class="nd"&gt;@InjectView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;id&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;pager&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;ViewPager&lt;/span&gt; &lt;span class="n"&gt;_pager&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-    &lt;span class="nd"&gt;@InjectView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;id&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;thumbnails&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;LinearLayout&lt;/span&gt; &lt;span class="n"&gt;_thumbnails&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-    &lt;span class="nd"&gt;@InjectView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;id&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;btn_close&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;ImageButton&lt;/span&gt; &lt;span class="n"&gt;_closeButton&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-
-    &lt;span class="nd"&gt;@Override&lt;/span&gt;
-    &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;onCreate&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Bundle&lt;/span&gt; &lt;span class="n"&gt;savedInstanceState&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
-        &lt;span class="kd"&gt;super&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;onCreate&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;savedInstanceState&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
-        &lt;span class="n"&gt;setContentView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;layout&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;activity_gallery&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
-        &lt;span class="n"&gt;ButterKnife&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;inject&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
-
-        &lt;span class="n"&gt;_images&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ArrayList&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;String&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;)&lt;/span&gt; &lt;span class="n"&gt;getIntent&lt;/span&gt;&lt;span class="o"&gt;().&lt;/span&gt;&lt;span class="na"&gt;getSerializableExtra&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;EXTRA_NAME&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
-        &lt;span class="n"&gt;Assert&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;assertNotNull&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_images&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
-
-        &lt;span class="n"&gt;_adapter&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;GalleryPagerAdapter&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
-        &lt;span class="n"&gt;_pager&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setAdapter&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_adapter&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
-        &lt;span class="n"&gt;_pager&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setOffscreenPageLimit&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;// how many images to load into memory&lt;/span&gt;
-
-        &lt;span class="n"&gt;_closeButton&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setOnClickListener&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;View&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;OnClickListener&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
-            &lt;span class="nd"&gt;@Override&lt;/span&gt;
-            &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;onClick&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;View&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
-                &lt;span class="n"&gt;Log&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;d&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TAG&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"Close clicked"&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
-                &lt;span class="n"&gt;finish&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
-            &lt;span class="o"&gt;}&lt;/span&gt;
-        &lt;span class="o"&gt;});&lt;/span&gt;
-    &lt;span class="o"&gt;}&lt;/span&gt;
-
-    &lt;span class="kd"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;GalleryPagerAdapter&lt;/span&gt; &lt;span class="kd"&gt;extends&lt;/span&gt; &lt;span class="n"&gt;PagerAdapter&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
-
-        &lt;span class="n"&gt;Context&lt;/span&gt; &lt;span class="n"&gt;_context&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-        &lt;span class="n"&gt;LayoutInflater&lt;/span&gt; &lt;span class="n"&gt;_inflater&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-
-        &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="n"&gt;GalleryPagerAdapter&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Context&lt;/span&gt; &lt;span class="n"&gt;context&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
-            &lt;span class="n"&gt;_context&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;context&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-            &lt;span class="n"&gt;_inflater&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;LayoutInflater&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;_context&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;getSystemService&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Context&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;LAYOUT_INFLATER_SERVICE&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
-        &lt;span class="o"&gt;}&lt;/span&gt;
-
-        &lt;span class="nd"&gt;@Override&lt;/span&gt;
-        &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;getCount&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
-            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;_images&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;size&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
-        &lt;span class="o"&gt;}&lt;/span&gt;
-
-        &lt;span class="nd"&gt;@Override&lt;/span&gt;
-        &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;boolean&lt;/span&gt; &lt;span class="n"&gt;isViewFromObject&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;View&lt;/span&gt; &lt;span class="n"&gt;view&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Object&lt;/span&gt; &lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
-            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;view&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="o"&gt;((&lt;/span&gt;&lt;span class="n"&gt;LinearLayout&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
-        &lt;span class="o"&gt;}&lt;/span&gt;
-
-        &lt;span class="nd"&gt;@Override&lt;/span&gt;
-        &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="n"&gt;Object&lt;/span&gt; &lt;span class="n"&gt;instantiateItem&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ViewGroup&lt;/span&gt; &lt;span class="n"&gt;container&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="kd"&gt;final&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;position&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
-            &lt;span class="n"&gt;View&lt;/span&gt; &lt;span class="n"&gt;itemView&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;_inflater&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;inflate&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;layout&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;pager_gallery_item&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;container&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
-            &lt;span class="n"&gt;container&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;addView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;itemView&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
-
-            &lt;span class="c1"&gt;// Get the border size to show around each image&lt;/span&gt;
-            &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;borderSize&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;_thumbnails&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;getPaddingTop&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
-            
-            &lt;span class="c1"&gt;// Get the size of the actual thumbnail image&lt;/span&gt;
-            &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;thumbnailSize&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;((&lt;/span&gt;&lt;span class="n"&gt;FrameLayout&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;LayoutParams&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
-                    &lt;span class="n"&gt;_pager&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;getLayoutParams&lt;/span&gt;&lt;span class="o"&gt;()).&lt;/span&gt;&lt;span class="na"&gt;bottomMargin&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;borderSize&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
-            
-            &lt;span class="c1"&gt;// Set the thumbnail layout parameters. Adjust as required&lt;/span&gt;
-            &lt;span class="n"&gt;LinearLayout&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;LayoutParams&lt;/span&gt; &lt;span class="n"&gt;params&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;LinearLayout&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;LayoutParams&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;thumbnailSize&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;thumbnailSize&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
-            &lt;span class="n"&gt;params&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setMargins&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;borderSize&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
-
-            &lt;span class="c1"&gt;// You could also set like so to remove borders&lt;/span&gt;
-            &lt;span class="c1"&gt;//ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(&lt;/span&gt;
-            &lt;span class="c1"&gt;//        ViewGroup.LayoutParams.WRAP_CONTENT,&lt;/span&gt;
-            &lt;span class="c1"&gt;//        ViewGroup.LayoutParams.WRAP_CONTENT);&lt;/span&gt;
-            
-            &lt;span class="kd"&gt;final&lt;/span&gt; &lt;span class="n"&gt;ImageView&lt;/span&gt; &lt;span class="n"&gt;thumbView&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;ImageView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_context&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
-            &lt;span class="n"&gt;thumbView&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setScaleType&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ImageView&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;ScaleType&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;CENTER_CROP&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
-            &lt;span class="n"&gt;thumbView&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setLayoutParams&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;params&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
-            &lt;span class="n"&gt;thumbView&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setOnClickListener&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;View&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;OnClickListener&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
-                &lt;span class="nd"&gt;@Override&lt;/span&gt;
-                &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;onClick&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;View&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
-                    &lt;span class="n"&gt;Log&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;d&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TAG&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"Thumbnail clicked"&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
-
-                    &lt;span class="c1"&gt;// Set the pager position when thumbnail clicked&lt;/span&gt;
-                    &lt;span class="n"&gt;_pager&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setCurrentItem&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;position&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
-                &lt;span class="o"&gt;}&lt;/span&gt;
-            &lt;span class="o"&gt;});&lt;/span&gt;
-            &lt;span class="n"&gt;_thumbnails&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;addView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;thumbView&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
-
-            &lt;span class="kd"&gt;final&lt;/span&gt; &lt;span class="n"&gt;SubsamplingScaleImageView&lt;/span&gt; &lt;span class="n"&gt;imageView&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;
-                    &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;SubsamplingScaleImageView&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;itemView&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;findViewById&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;id&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;image&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
-
-            &lt;span class="c1"&gt;// Asynchronously load the image and set the thumbnail and pager view&lt;/span&gt;
-            &lt;span class="n"&gt;Glide&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;with&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_context&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
-                    &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;load&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_images&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;get&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;position&lt;/span&gt;&lt;span class="o"&gt;))&lt;/span&gt;
-                    &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;asBitmap&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt;
-                    &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;into&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;SimpleTarget&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Bitmap&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
-                        &lt;span class="nd"&gt;@Override&lt;/span&gt;
-                        &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;onResourceReady&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Bitmap&lt;/span&gt; &lt;span class="n"&gt;bitmap&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;GlideAnimation&lt;/span&gt; &lt;span class="n"&gt;anim&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
-                            &lt;span class="n"&gt;imageView&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setImage&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ImageSource&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;bitmap&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;bitmap&lt;/span&gt;&lt;span class="o"&gt;));&lt;/span&gt;
-                            &lt;span class="n"&gt;thumbView&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setImageBitmap&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;bitmap&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
-                        &lt;span class="o"&gt;}&lt;/span&gt;
-                    &lt;span class="o"&gt;});&lt;/span&gt;
-
-            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;itemView&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-        &lt;span class="o"&gt;}&lt;/span&gt;
-
-        &lt;span class="nd"&gt;@Override&lt;/span&gt;
-        &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;destroyItem&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ViewGroup&lt;/span&gt; &lt;span class="n"&gt;container&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;position&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Object&lt;/span&gt; &lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
-            &lt;span class="n"&gt;container&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;removeView&lt;/span&gt;&lt;span class="o"&gt;((&lt;/span&gt;&lt;span class="n"&gt;LinearLayout&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
-        &lt;span class="o"&gt;}&lt;/span&gt;
-    &lt;span class="o"&gt;}&lt;/span&gt;
-&lt;span class="o"&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;The layout consists of two items, one for the activity, and one for the pager items.&lt;/p&gt;
-
-&lt;h4 id="reslayoutactivitygalleryxml"&gt;res/layout/activity_gallery.xml&lt;/h4&gt;
-
-&lt;pre class="highlight xml"&gt;&lt;code&gt;&lt;span class="cp"&gt;&amp;lt;?xml version="1.0" encoding="utf-8"?&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;FrameLayout&lt;/span&gt; &lt;span class="na"&gt;xmlns:android=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res/android"&lt;/span&gt;
-    &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
-    &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
-    &lt;span class="na"&gt;android:background=&lt;/span&gt;&lt;span class="s"&gt;"@color/black"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-
-    &lt;span class="nt"&gt;&amp;lt;android.support.v4.view.ViewPager&lt;/span&gt;
-        &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/pager"&lt;/span&gt;
-        &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
-        &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
-        &lt;span class="na"&gt;android:layout_marginBottom=&lt;/span&gt;&lt;span class="s"&gt;"72dp"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;/android.support.v4.view.ViewPager&amp;gt;&lt;/span&gt;
-
-    &lt;span class="nt"&gt;&amp;lt;ImageButton&lt;/span&gt;
-        &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/btn_close"&lt;/span&gt;
-        &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"?attr/actionBarSize"&lt;/span&gt;
-        &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"?attr/actionBarSize"&lt;/span&gt;
-        &lt;span class="na"&gt;android:layout_gravity=&lt;/span&gt;&lt;span class="s"&gt;"top|right"&lt;/span&gt;
-        &lt;span class="na"&gt;android:src=&lt;/span&gt;&lt;span class="s"&gt;"@drawable/ic_close_grey600_24dp"&lt;/span&gt;
-        &lt;span class="na"&gt;android:scaleType=&lt;/span&gt;&lt;span class="s"&gt;"fitCenter"&lt;/span&gt;
-        &lt;span class="na"&gt;style=&lt;/span&gt;&lt;span class="s"&gt;"@style/Widget.AppCompat.ActionButton"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
-
-    &lt;span class="nt"&gt;&amp;lt;HorizontalScrollView&lt;/span&gt;
-        &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
-        &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"72dp"&lt;/span&gt;
-        &lt;span class="na"&gt;android:layout_gravity=&lt;/span&gt;&lt;span class="s"&gt;"bottom"&lt;/span&gt;
-        &lt;span class="na"&gt;android:background=&lt;/span&gt;&lt;span class="s"&gt;"@color/black"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-        &lt;span class="nt"&gt;&amp;lt;LinearLayout&lt;/span&gt;
-            &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/thumbnails"&lt;/span&gt;
-            &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"wrap_content"&lt;/span&gt;
-            &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
-            &lt;span class="na"&gt;android:gravity=&lt;/span&gt;&lt;span class="s"&gt;"center_vertical"&lt;/span&gt;
-            &lt;span class="na"&gt;android:orientation=&lt;/span&gt;&lt;span class="s"&gt;"horizontal"&lt;/span&gt;
-            &lt;span class="na"&gt;android:paddingTop=&lt;/span&gt;&lt;span class="s"&gt;"2dp"&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;/HorizontalScrollView&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;/FrameLayout&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4 id="reslayoutpagergalleryitemxml"&gt;res/layout/pager_gallery_item.xml&lt;/h4&gt;
-
-&lt;pre class="highlight xml"&gt;&lt;code&gt;&lt;span class="cp"&gt;&amp;lt;?xml version="1.0" encoding="utf-8"?&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;LinearLayout&lt;/span&gt; &lt;span class="na"&gt;xmlns:android=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res/android"&lt;/span&gt;
-    &lt;span class="na"&gt;xmlns:app=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res-auto"&lt;/span&gt;
-    &lt;span class="na"&gt;android:orientation=&lt;/span&gt;&lt;span class="s"&gt;"vertical"&lt;/span&gt;
-    &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
-    &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView&lt;/span&gt;
-        &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
-        &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
-        &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/image"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;/LinearLayout&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id="configuration"&gt;Configuration&lt;/h2&gt;
-
-&lt;p&gt;In order to make everything work we need to add a couple of dependencies to the &lt;code&gt;build.gradle&lt;/code&gt; file in your &lt;code&gt;app&lt;/code&gt; directory. ButterKnife is optional, but we like to use it to clean up our Java code a bit.&lt;/p&gt;
-
-&lt;pre class="highlight plaintext"&gt;&lt;code&gt;dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.2.0'
-    compile 'com.github.bumptech.glide:glide:3.6.0'
-    compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.1.3'
-    compile 'com.jakewharton:butterknife:6.1.0'
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Next add the necessary Activity declarations to your AndroidManifest. I have posted the complete AndroidManifest.xml for clarity.&lt;/p&gt;
-
-&lt;pre class="highlight xml"&gt;&lt;code&gt;&lt;span class="cp"&gt;&amp;lt;?xml version="1.0" encoding="utf-8"?&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;manifest&lt;/span&gt; &lt;span class="na"&gt;xmlns:android=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res/android"&lt;/span&gt;
-    &lt;span class="na"&gt;package=&lt;/span&gt;&lt;span class="s"&gt;"com.sourcey.imagegallerydemo"&lt;/span&gt; &lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-
-    &lt;span class="nt"&gt;&amp;lt;uses-permission&lt;/span&gt; &lt;span class="na"&gt;android:name=&lt;/span&gt;&lt;span class="s"&gt;"android.permission.INTERNET"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
-    
-    &lt;span class="nt"&gt;&amp;lt;application&lt;/span&gt;
-        &lt;span class="na"&gt;android:allowBackup=&lt;/span&gt;&lt;span class="s"&gt;"true"&lt;/span&gt;
-        &lt;span class="na"&gt;android:icon=&lt;/span&gt;&lt;span class="s"&gt;"@mipmap/ic_launcher"&lt;/span&gt;
-        &lt;span class="na"&gt;android:label=&lt;/span&gt;&lt;span class="s"&gt;"@string/app_name"&lt;/span&gt;
-        &lt;span class="na"&gt;android:theme=&lt;/span&gt;&lt;span class="s"&gt;"@style/AppTheme"&lt;/span&gt; &lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-        &lt;span class="nt"&gt;&amp;lt;activity&lt;/span&gt;
-            &lt;span class="na"&gt;android:name=&lt;/span&gt;&lt;span class="s"&gt;".MainActivity"&lt;/span&gt;
-            &lt;span class="na"&gt;android:label=&lt;/span&gt;&lt;span class="s"&gt;"@string/app_name"&lt;/span&gt; &lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-            &lt;span class="nt"&gt;&amp;lt;intent-filter&amp;gt;&lt;/span&gt;
-                &lt;span class="nt"&gt;&amp;lt;action&lt;/span&gt; &lt;span class="na"&gt;android:name=&lt;/span&gt;&lt;span class="s"&gt;"android.intent.action.MAIN"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
-
-                &lt;span class="nt"&gt;&amp;lt;category&lt;/span&gt; &lt;span class="na"&gt;android:name=&lt;/span&gt;&lt;span class="s"&gt;"android.intent.category.LAUNCHER"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
-            &lt;span class="nt"&gt;&amp;lt;/intent-filter&amp;gt;&lt;/span&gt;
-        &lt;span class="nt"&gt;&amp;lt;/activity&amp;gt;&lt;/span&gt;
-        &lt;span class="nt"&gt;&amp;lt;activity&lt;/span&gt; &lt;span class="na"&gt;android:name=&lt;/span&gt;&lt;span class="s"&gt;".GalleryActivity"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;/application&amp;gt;&lt;/span&gt;
-
-&lt;span class="nt"&gt;&amp;lt;/manifest&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;When everything is setup you can instantiate the Gallery like so:&lt;/p&gt;
-
-&lt;pre class="highlight plaintext"&gt;&lt;code&gt;public void startGalleryActivity() {
-    ArrayList&amp;lt;String&amp;gt; images = new ArrayList&amp;lt;String&amp;gt;();
-    images.add("http://sourcey.com/images/stock/salvador-dali-metamorphosis-of-narcissus.jpg");
-    images.add("http://sourcey.com/images/stock/salvador-dali-the-dream.jpg");
-    images.add("http://sourcey.com/images/stock/salvador-dali-persistance-of-memory.jpg");
-    images.add("http://sourcey.com/images/stock/simpsons-persistance-of-memory.jpg");
-    images.add("http://sourcey.com/images/stock/salvador-dali-the-great-masturbator.jpg");
-    Intent intent = new Intent(MainActivity.this, GalleryActivity.class);
-    intent.putStringArrayListExtra(GalleryActivity.EXTRA_NAME, images);
-    startActivity(intent);
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;The current code takes an array of image URLs and renders them asynchronously with &lt;code&gt;Glide&lt;/code&gt;, but if you want to modify the code to display local resources, or even exchange Glide with another rendering library, then it should be fairly straight forward as the implementation is very simple.&lt;/p&gt;
-
-&lt;p&gt;I hope you’ve found this article useful, so drop me a shout if it’s saved you some precious development hours. As usual, the full source code is up on Github:&lt;/p&gt;
-
-&lt;center&gt;
-&lt;p&gt;&lt;a class="action-button button radius" target="_blank" href="https://github.com/sourcey/imagegallerydemo" title="Get the Code on Github"&gt;Get the Code on Github&lt;/a&gt;&lt;/p&gt;
-&lt;/center&gt;
 </content>
   </entry>
   <entry>
@@ -1114,6 +1265,295 @@ sudo -i
 </content>
   </entry>
   <entry>
+    <title>Android Hotizontally Scrolling Pan Scan and Zoom Image Gallery</title>
+    <link rel="alternate" href="http://sourcey.com/android-horizontally-scrolling-pan-scan-and-zoom-image-gallery/"/>
+    <id>http://sourcey.com/android-horizontally-scrolling-pan-scan-and-zoom-image-gallery/</id>
+    <published>2015-06-18T00:00:00Z</published>
+    <updated>2015-06-23T07:53:05+10:00</updated>
+    <author>
+      <name>Kam Low</name>
+    </author>
+    <content type="html">&lt;p&gt;Since the depreciation of the Android Gallery module there has been no clear way to implement image galleries on Android, so I’m sharing my own Gallery implementation in order to fill the need.&lt;/p&gt;
+
+&lt;p class="width-75 center"&gt;&lt;img alt="Android Gallery Demo" title="Android Gallery Demo" src="/android-horizontally-scrolling-pan-scan-and-zoom-image-gallery/screenshot-gallery.jpg" /&gt;&lt;/p&gt;
+
+&lt;p&gt;The implementation is a horizontal scrolling image gallery that consists of &lt;code&gt;ViewPager&lt;/code&gt; element, and a &lt;code&gt;HorizontalScrollView&lt;/code&gt; for displaying selectable thumbnails. Inside the &lt;code&gt;ViewPager&lt;/code&gt; view there is a modified &lt;code&gt;ImageView&lt;/code&gt; that allows for panning, scanning and zooming of the main image.&lt;/p&gt;
+
+&lt;p&gt;Horizontal galleries are ideal for displaying smaller amounts of images (&amp;lt;10), although if you need to display lots of images then you might be better served with a &lt;code&gt;GridView&lt;/code&gt; based implementation.&lt;/p&gt;
+
+&lt;center&gt;
+&lt;p&gt;&lt;a class="action-button button radius" target="_blank" href="https://github.com/sourcey/imagegallerydemo" title="Get the Code on Github"&gt;Get the Code&lt;/a&gt;&lt;/p&gt;
+&lt;/center&gt;
+
+&lt;h4 id="galleryactivityjava"&gt;GalleryActivity.java:&lt;/h4&gt;
+
+&lt;pre class="highlight java"&gt;&lt;code&gt;&lt;span class="kn"&gt;package&lt;/span&gt; &lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;sourcey&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;imagegallerydemo&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.content.Context&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.graphics.Bitmap&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.os.Bundle&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.support.v4.view.PagerAdapter&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.support.v7.app.AppCompatActivity&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.support.v4.view.ViewPager&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.util.Log&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.view.LayoutInflater&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.view.View&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.view.ViewGroup&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.widget.FrameLayout&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.widget.ImageButton&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.widget.ImageView&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;android.widget.LinearLayout&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;com.bumptech.glide.Glide&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;com.bumptech.glide.request.animation.GlideAnimation&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;com.bumptech.glide.request.target.SimpleTarget&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;com.davemorrissey.labs.subscaleview.ImageSource&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;junit.framework.Assert&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;java.util.ArrayList&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;butterknife.ButterKnife&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;butterknife.InjectView&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+&lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;GalleryActivity&lt;/span&gt; &lt;span class="kd"&gt;extends&lt;/span&gt; &lt;span class="n"&gt;AppCompatActivity&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+    &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;static&lt;/span&gt; &lt;span class="kd"&gt;final&lt;/span&gt; &lt;span class="n"&gt;String&lt;/span&gt; &lt;span class="n"&gt;TAG&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"GalleryActivity"&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+    &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;static&lt;/span&gt; &lt;span class="kd"&gt;final&lt;/span&gt; &lt;span class="n"&gt;String&lt;/span&gt; &lt;span class="n"&gt;EXTRA_NAME&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;"images"&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+    &lt;span class="kd"&gt;private&lt;/span&gt; &lt;span class="n"&gt;ArrayList&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;String&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;_images&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+    &lt;span class="kd"&gt;private&lt;/span&gt; &lt;span class="n"&gt;GalleryPagerAdapter&lt;/span&gt; &lt;span class="n"&gt;_adapter&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+    &lt;span class="nd"&gt;@InjectView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;id&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;pager&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;ViewPager&lt;/span&gt; &lt;span class="n"&gt;_pager&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+    &lt;span class="nd"&gt;@InjectView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;id&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;thumbnails&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;LinearLayout&lt;/span&gt; &lt;span class="n"&gt;_thumbnails&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+    &lt;span class="nd"&gt;@InjectView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;id&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;btn_close&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;ImageButton&lt;/span&gt; &lt;span class="n"&gt;_closeButton&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+    &lt;span class="nd"&gt;@Override&lt;/span&gt;
+    &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;onCreate&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Bundle&lt;/span&gt; &lt;span class="n"&gt;savedInstanceState&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+        &lt;span class="kd"&gt;super&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;onCreate&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;savedInstanceState&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;setContentView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;layout&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;activity_gallery&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;ButterKnife&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;inject&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+
+        &lt;span class="n"&gt;_images&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ArrayList&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;String&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;)&lt;/span&gt; &lt;span class="n"&gt;getIntent&lt;/span&gt;&lt;span class="o"&gt;().&lt;/span&gt;&lt;span class="na"&gt;getSerializableExtra&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;EXTRA_NAME&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;Assert&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;assertNotNull&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_images&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+
+        &lt;span class="n"&gt;_adapter&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;GalleryPagerAdapter&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;_pager&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setAdapter&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_adapter&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;_pager&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setOffscreenPageLimit&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;// how many images to load into memory&lt;/span&gt;
+
+        &lt;span class="n"&gt;_closeButton&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setOnClickListener&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;View&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;OnClickListener&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="nd"&gt;@Override&lt;/span&gt;
+            &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;onClick&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;View&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+                &lt;span class="n"&gt;Log&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;d&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TAG&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"Close clicked"&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+                &lt;span class="n"&gt;finish&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+            &lt;span class="o"&gt;}&lt;/span&gt;
+        &lt;span class="o"&gt;});&lt;/span&gt;
+    &lt;span class="o"&gt;}&lt;/span&gt;
+
+    &lt;span class="kd"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;GalleryPagerAdapter&lt;/span&gt; &lt;span class="kd"&gt;extends&lt;/span&gt; &lt;span class="n"&gt;PagerAdapter&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+
+        &lt;span class="n"&gt;Context&lt;/span&gt; &lt;span class="n"&gt;_context&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;LayoutInflater&lt;/span&gt; &lt;span class="n"&gt;_inflater&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+        &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="n"&gt;GalleryPagerAdapter&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Context&lt;/span&gt; &lt;span class="n"&gt;context&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;_context&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;context&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+            &lt;span class="n"&gt;_inflater&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;LayoutInflater&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;_context&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;getSystemService&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Context&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;LAYOUT_INFLATER_SERVICE&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="o"&gt;}&lt;/span&gt;
+
+        &lt;span class="nd"&gt;@Override&lt;/span&gt;
+        &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;getCount&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;_images&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;size&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+        &lt;span class="o"&gt;}&lt;/span&gt;
+
+        &lt;span class="nd"&gt;@Override&lt;/span&gt;
+        &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;boolean&lt;/span&gt; &lt;span class="n"&gt;isViewFromObject&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;View&lt;/span&gt; &lt;span class="n"&gt;view&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Object&lt;/span&gt; &lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;view&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="o"&gt;((&lt;/span&gt;&lt;span class="n"&gt;LinearLayout&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="o"&gt;}&lt;/span&gt;
+
+        &lt;span class="nd"&gt;@Override&lt;/span&gt;
+        &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="n"&gt;Object&lt;/span&gt; &lt;span class="n"&gt;instantiateItem&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ViewGroup&lt;/span&gt; &lt;span class="n"&gt;container&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="kd"&gt;final&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;position&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;View&lt;/span&gt; &lt;span class="n"&gt;itemView&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;_inflater&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;inflate&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;layout&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;pager_gallery_item&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;container&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+            &lt;span class="n"&gt;container&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;addView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;itemView&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+
+            &lt;span class="c1"&gt;// Get the border size to show around each image&lt;/span&gt;
+            &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;borderSize&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;_thumbnails&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;getPaddingTop&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+            
+            &lt;span class="c1"&gt;// Get the size of the actual thumbnail image&lt;/span&gt;
+            &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;thumbnailSize&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;((&lt;/span&gt;&lt;span class="n"&gt;FrameLayout&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;LayoutParams&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+                    &lt;span class="n"&gt;_pager&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;getLayoutParams&lt;/span&gt;&lt;span class="o"&gt;()).&lt;/span&gt;&lt;span class="na"&gt;bottomMargin&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;borderSize&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+            
+            &lt;span class="c1"&gt;// Set the thumbnail layout parameters. Adjust as required&lt;/span&gt;
+            &lt;span class="n"&gt;LinearLayout&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;LayoutParams&lt;/span&gt; &lt;span class="n"&gt;params&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;LinearLayout&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;LayoutParams&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;thumbnailSize&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;thumbnailSize&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+            &lt;span class="n"&gt;params&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setMargins&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;borderSize&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+
+            &lt;span class="c1"&gt;// You could also set like so to remove borders&lt;/span&gt;
+            &lt;span class="c1"&gt;//ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(&lt;/span&gt;
+            &lt;span class="c1"&gt;//        ViewGroup.LayoutParams.WRAP_CONTENT,&lt;/span&gt;
+            &lt;span class="c1"&gt;//        ViewGroup.LayoutParams.WRAP_CONTENT);&lt;/span&gt;
+            
+            &lt;span class="kd"&gt;final&lt;/span&gt; &lt;span class="n"&gt;ImageView&lt;/span&gt; &lt;span class="n"&gt;thumbView&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;ImageView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_context&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+            &lt;span class="n"&gt;thumbView&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setScaleType&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ImageView&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;ScaleType&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;CENTER_CROP&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+            &lt;span class="n"&gt;thumbView&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setLayoutParams&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;params&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+            &lt;span class="n"&gt;thumbView&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setOnClickListener&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;View&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;OnClickListener&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+                &lt;span class="nd"&gt;@Override&lt;/span&gt;
+                &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;onClick&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;View&lt;/span&gt; &lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+                    &lt;span class="n"&gt;Log&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;d&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TAG&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="s"&gt;"Thumbnail clicked"&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+
+                    &lt;span class="c1"&gt;// Set the pager position when thumbnail clicked&lt;/span&gt;
+                    &lt;span class="n"&gt;_pager&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setCurrentItem&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;position&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+                &lt;span class="o"&gt;}&lt;/span&gt;
+            &lt;span class="o"&gt;});&lt;/span&gt;
+            &lt;span class="n"&gt;_thumbnails&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;addView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;thumbView&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+
+            &lt;span class="kd"&gt;final&lt;/span&gt; &lt;span class="n"&gt;SubsamplingScaleImageView&lt;/span&gt; &lt;span class="n"&gt;imageView&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;
+                    &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;SubsamplingScaleImageView&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;itemView&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;findViewById&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;id&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;image&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+
+            &lt;span class="c1"&gt;// Asynchronously load the image and set the thumbnail and pager view&lt;/span&gt;
+            &lt;span class="n"&gt;Glide&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;with&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_context&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+                    &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;load&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_images&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;get&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;position&lt;/span&gt;&lt;span class="o"&gt;))&lt;/span&gt;
+                    &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;asBitmap&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt;
+                    &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;into&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;SimpleTarget&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;Bitmap&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+                        &lt;span class="nd"&gt;@Override&lt;/span&gt;
+                        &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;onResourceReady&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Bitmap&lt;/span&gt; &lt;span class="n"&gt;bitmap&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;GlideAnimation&lt;/span&gt; &lt;span class="n"&gt;anim&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+                            &lt;span class="n"&gt;imageView&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setImage&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ImageSource&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;bitmap&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;bitmap&lt;/span&gt;&lt;span class="o"&gt;));&lt;/span&gt;
+                            &lt;span class="n"&gt;thumbView&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setImageBitmap&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;bitmap&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+                        &lt;span class="o"&gt;}&lt;/span&gt;
+                    &lt;span class="o"&gt;});&lt;/span&gt;
+
+            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;itemView&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+        &lt;span class="o"&gt;}&lt;/span&gt;
+
+        &lt;span class="nd"&gt;@Override&lt;/span&gt;
+        &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;destroyItem&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ViewGroup&lt;/span&gt; &lt;span class="n"&gt;container&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;position&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Object&lt;/span&gt; &lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;container&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;removeView&lt;/span&gt;&lt;span class="o"&gt;((&lt;/span&gt;&lt;span class="n"&gt;LinearLayout&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;object&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+        &lt;span class="o"&gt;}&lt;/span&gt;
+    &lt;span class="o"&gt;}&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The layout consists of two items, one for the activity, and one for the pager items.&lt;/p&gt;
+
+&lt;h4 id="reslayoutactivitygalleryxml"&gt;res/layout/activity_gallery.xml&lt;/h4&gt;
+
+&lt;pre class="highlight xml"&gt;&lt;code&gt;&lt;span class="cp"&gt;&amp;lt;?xml version="1.0" encoding="utf-8"?&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;FrameLayout&lt;/span&gt; &lt;span class="na"&gt;xmlns:android=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res/android"&lt;/span&gt;
+    &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+    &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+    &lt;span class="na"&gt;android:background=&lt;/span&gt;&lt;span class="s"&gt;"@color/black"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+
+    &lt;span class="nt"&gt;&amp;lt;android.support.v4.view.ViewPager&lt;/span&gt;
+        &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/pager"&lt;/span&gt;
+        &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+        &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+        &lt;span class="na"&gt;android:layout_marginBottom=&lt;/span&gt;&lt;span class="s"&gt;"72dp"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;/android.support.v4.view.ViewPager&amp;gt;&lt;/span&gt;
+
+    &lt;span class="nt"&gt;&amp;lt;ImageButton&lt;/span&gt;
+        &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/btn_close"&lt;/span&gt;
+        &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"?attr/actionBarSize"&lt;/span&gt;
+        &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"?attr/actionBarSize"&lt;/span&gt;
+        &lt;span class="na"&gt;android:layout_gravity=&lt;/span&gt;&lt;span class="s"&gt;"top|right"&lt;/span&gt;
+        &lt;span class="na"&gt;android:src=&lt;/span&gt;&lt;span class="s"&gt;"@drawable/ic_close_grey600_24dp"&lt;/span&gt;
+        &lt;span class="na"&gt;android:scaleType=&lt;/span&gt;&lt;span class="s"&gt;"fitCenter"&lt;/span&gt;
+        &lt;span class="na"&gt;style=&lt;/span&gt;&lt;span class="s"&gt;"@style/Widget.AppCompat.ActionButton"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+
+    &lt;span class="nt"&gt;&amp;lt;HorizontalScrollView&lt;/span&gt;
+        &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+        &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"72dp"&lt;/span&gt;
+        &lt;span class="na"&gt;android:layout_gravity=&lt;/span&gt;&lt;span class="s"&gt;"bottom"&lt;/span&gt;
+        &lt;span class="na"&gt;android:background=&lt;/span&gt;&lt;span class="s"&gt;"@color/black"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;LinearLayout&lt;/span&gt;
+            &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/thumbnails"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"wrap_content"&lt;/span&gt;
+            &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+            &lt;span class="na"&gt;android:gravity=&lt;/span&gt;&lt;span class="s"&gt;"center_vertical"&lt;/span&gt;
+            &lt;span class="na"&gt;android:orientation=&lt;/span&gt;&lt;span class="s"&gt;"horizontal"&lt;/span&gt;
+            &lt;span class="na"&gt;android:paddingTop=&lt;/span&gt;&lt;span class="s"&gt;"2dp"&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;/HorizontalScrollView&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/FrameLayout&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id="reslayoutpagergalleryitemxml"&gt;res/layout/pager_gallery_item.xml&lt;/h4&gt;
+
+&lt;pre class="highlight xml"&gt;&lt;code&gt;&lt;span class="cp"&gt;&amp;lt;?xml version="1.0" encoding="utf-8"?&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;LinearLayout&lt;/span&gt; &lt;span class="na"&gt;xmlns:android=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res/android"&lt;/span&gt;
+    &lt;span class="na"&gt;xmlns:app=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res-auto"&lt;/span&gt;
+    &lt;span class="na"&gt;android:orientation=&lt;/span&gt;&lt;span class="s"&gt;"vertical"&lt;/span&gt;
+    &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+    &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView&lt;/span&gt;
+        &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+        &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
+        &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/image"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/LinearLayout&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id="configuration"&gt;Configuration&lt;/h2&gt;
+
+&lt;p&gt;In order to make everything work we need to add a couple of dependencies to the &lt;code&gt;build.gradle&lt;/code&gt; file in your &lt;code&gt;app&lt;/code&gt; directory. ButterKnife is optional, but we like to use it to clean up our Java code a bit.&lt;/p&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.github.bumptech.glide:glide:3.6.0'
+    compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.1.3'
+    compile 'com.jakewharton:butterknife:6.1.0'
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Next add the necessary Activity declarations to your AndroidManifest. I have posted the complete AndroidManifest.xml for clarity.&lt;/p&gt;
+
+&lt;pre class="highlight xml"&gt;&lt;code&gt;&lt;span class="cp"&gt;&amp;lt;?xml version="1.0" encoding="utf-8"?&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;manifest&lt;/span&gt; &lt;span class="na"&gt;xmlns:android=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res/android"&lt;/span&gt;
+    &lt;span class="na"&gt;package=&lt;/span&gt;&lt;span class="s"&gt;"com.sourcey.imagegallerydemo"&lt;/span&gt; &lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+
+    &lt;span class="nt"&gt;&amp;lt;uses-permission&lt;/span&gt; &lt;span class="na"&gt;android:name=&lt;/span&gt;&lt;span class="s"&gt;"android.permission.INTERNET"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+    
+    &lt;span class="nt"&gt;&amp;lt;application&lt;/span&gt;
+        &lt;span class="na"&gt;android:allowBackup=&lt;/span&gt;&lt;span class="s"&gt;"true"&lt;/span&gt;
+        &lt;span class="na"&gt;android:icon=&lt;/span&gt;&lt;span class="s"&gt;"@mipmap/ic_launcher"&lt;/span&gt;
+        &lt;span class="na"&gt;android:label=&lt;/span&gt;&lt;span class="s"&gt;"@string/app_name"&lt;/span&gt;
+        &lt;span class="na"&gt;android:theme=&lt;/span&gt;&lt;span class="s"&gt;"@style/AppTheme"&lt;/span&gt; &lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;activity&lt;/span&gt;
+            &lt;span class="na"&gt;android:name=&lt;/span&gt;&lt;span class="s"&gt;".MainActivity"&lt;/span&gt;
+            &lt;span class="na"&gt;android:label=&lt;/span&gt;&lt;span class="s"&gt;"@string/app_name"&lt;/span&gt; &lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class="nt"&gt;&amp;lt;intent-filter&amp;gt;&lt;/span&gt;
+                &lt;span class="nt"&gt;&amp;lt;action&lt;/span&gt; &lt;span class="na"&gt;android:name=&lt;/span&gt;&lt;span class="s"&gt;"android.intent.action.MAIN"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+
+                &lt;span class="nt"&gt;&amp;lt;category&lt;/span&gt; &lt;span class="na"&gt;android:name=&lt;/span&gt;&lt;span class="s"&gt;"android.intent.category.LAUNCHER"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+            &lt;span class="nt"&gt;&amp;lt;/intent-filter&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;/activity&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;activity&lt;/span&gt; &lt;span class="na"&gt;android:name=&lt;/span&gt;&lt;span class="s"&gt;".GalleryActivity"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;/application&amp;gt;&lt;/span&gt;
+
+&lt;span class="nt"&gt;&amp;lt;/manifest&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;When everything is setup you can instantiate the Gallery like so:&lt;/p&gt;
+
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;public void startGalleryActivity() {
+    ArrayList&amp;lt;String&amp;gt; images = new ArrayList&amp;lt;String&amp;gt;();
+    images.add("http://sourcey.com/images/stock/salvador-dali-metamorphosis-of-narcissus.jpg");
+    images.add("http://sourcey.com/images/stock/salvador-dali-the-dream.jpg");
+    images.add("http://sourcey.com/images/stock/salvador-dali-persistance-of-memory.jpg");
+    images.add("http://sourcey.com/images/stock/simpsons-persistance-of-memory.jpg");
+    images.add("http://sourcey.com/images/stock/salvador-dali-the-great-masturbator.jpg");
+    Intent intent = new Intent(MainActivity.this, GalleryActivity.class);
+    intent.putStringArrayListExtra(GalleryActivity.EXTRA_NAME, images);
+    startActivity(intent);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The current code takes an array of image URLs and renders them asynchronously with &lt;code&gt;Glide&lt;/code&gt;, but if you want to modify the code to display local resources, or even exchange Glide with another rendering library, then it should be fairly straight forward as the implementation is very simple.&lt;/p&gt;
+
+&lt;p&gt;I hope you’ve found this article useful, so drop me a shout if it’s saved you some precious development hours. As usual, the full source code is up on Github:&lt;/p&gt;
+
+&lt;center&gt;
+&lt;p&gt;&lt;a class="action-button button radius" target="_blank" href="https://github.com/sourcey/imagegallerydemo" title="Get the Code on Github"&gt;Get the Code on Github&lt;/a&gt;&lt;/p&gt;
+&lt;/center&gt;
+</content>
+  </entry>
+  <entry>
     <title>Simple Social Sharing Buttons Without JavaScript APIs</title>
     <link rel="alternate" href="http://sourcey.com/simple-social-sharing-buttons-without-javascript-apis/"/>
     <id>http://sourcey.com/simple-social-sharing-buttons-without-javascript-apis/</id>
@@ -1220,248 +1660,6 @@ sudo -i
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Have fun!&lt;/p&gt;
-
-</content>
-  </entry>
-  <entry>
-    <title>Recliner.js</title>
-    <link rel="alternate" href="http://sourcey.com/recliner/"/>
-    <id>http://sourcey.com/recliner/</id>
-    <published>2015-02-09T00:58:07Z</published>
-    <updated>2015-06-18T23:31:26+10:00</updated>
-    <author>
-      <name/>
-    </author>
-    <content type="html">&lt;div class="sidebar-section toc"&gt;
-  &lt;h4 class="no_toc" id="contents"&gt;Contents&lt;/h4&gt;
-
-&lt;ul id="markdown-toc"&gt;
-  &lt;li&gt;&lt;a id="markdown-toc-usage" href="#usage"&gt;Usage&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a id="markdown-toc-images" href="#images"&gt;Images&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a id="markdown-toc-iframes" href="#iframes"&gt;IFrames&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a id="markdown-toc-ajax" href="#ajax"&gt;AJAX&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a id="markdown-toc-callbacks" href="#callbacks"&gt;Callbacks&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a id="markdown-toc-lazyload" href="#lazyload"&gt;lazyload&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a id="markdown-toc-lazyshow" href="#lazyshow"&gt;lazyshow&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a id="markdown-toc-styling" href="#styling"&gt;Styling&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a id="markdown-toc-demo" href="#demo"&gt;Demo&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a id="markdown-toc-contributing" href="#contributing"&gt;Contributing&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a id="markdown-toc-issues" href="#issues"&gt;Issues&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;/div&gt;
-
-&lt;dl class="status"&gt;
-  &lt;dt&gt;Repository&lt;/dt&gt;
-  &lt;dd&gt;&lt;a href="https://github.com/sourcey/recliner"&gt;https://github.com/sourcey/recliner&lt;/a&gt;&lt;/dd&gt;
-  &lt;dt&gt;Licence&lt;/dt&gt;
-  &lt;dd&gt;MIT&lt;/dd&gt;
-  &lt;dt&gt;Dependencies&lt;/dt&gt;
-  &lt;dd&gt;jQuery&lt;/dd&gt;
-&lt;/dl&gt;
-
-&lt;p&gt;Recliner is a super lightweight (1KB), jQuery plugin for lazy loading images, iframes and other dynamic (AJAX) content.&lt;/p&gt;
-
-&lt;p&gt;The script was born out of necessity when one of our clients was experiencing massive scroll lag on the mobile version of one of their media heavy news sites. It turned out that &lt;code&gt;lazy-load-xt&lt;/code&gt; was the culprit, so we tested the other lazy load scripts out there but &lt;strong&gt;none&lt;/strong&gt; of them meet our simple criteria:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Lightweight&lt;/li&gt;
-  &lt;li&gt;Sets stateful CSS classes on elements&lt;/li&gt;
-  &lt;li&gt;Ability to override event callbacks for custom behaviour&lt;/li&gt;
-  &lt;li&gt;Can load &lt;em&gt;any&lt;/em&gt; dynamic content (images, iframes, AJAX)&lt;/li&gt;
-  &lt;li&gt;Mobile friendly&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Recliner is currently used on some very high traffic sites, so it’s well tested and production ready. Being lazy never felt so good, just hook it up, and start sippin’ your margaritas!&lt;/p&gt;
-
-&lt;center&gt;
-&lt;a href="#demo" class="action-button button info radius"&gt;view the demo&lt;/a&gt;
-&lt;/center&gt;
-
-&lt;h2 id="usage"&gt;Usage&lt;/h2&gt;
-
-&lt;p&gt;Add jQuery (2.x or 1.x) and Recliner to your HTML source:&lt;/p&gt;
-
-&lt;pre class="highlight html"&gt;&lt;code&gt;&lt;span class="nt"&gt;&amp;lt;script &lt;/span&gt;&lt;span class="na"&gt;src=&lt;/span&gt;&lt;span class="s"&gt;"//code.jquery.com/jquery-1.11.2.min.js"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;script &lt;/span&gt;&lt;span class="na"&gt;src=&lt;/span&gt;&lt;span class="s"&gt;"recliner.min.js"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Instantiate Recliner on elements with the &lt;code&gt;.lazy&lt;/code&gt; class on document load:&lt;/p&gt;
-
-&lt;pre class="highlight javascript"&gt;&lt;code&gt;&lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;".lazy"&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;recliner&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
-        &lt;span class="na"&gt;attrib&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;"data-src"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="c1"&gt;// selector for attribute containing the media src&lt;/span&gt;
-        &lt;span class="na"&gt;throttle&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;300&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;      &lt;span class="c1"&gt;// millisecond interval at which to process events&lt;/span&gt;
-        &lt;span class="na"&gt;threshold&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;     &lt;span class="c1"&gt;// scroll distance from element before its loaded&lt;/span&gt;
-        &lt;span class="na"&gt;live&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;true&lt;/span&gt;          &lt;span class="c1"&gt;// auto bind lazy loading to ajax loaded elements&lt;/span&gt;
-    &lt;span class="p"&gt;});&lt;/span&gt;
-&lt;span class="p"&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;You can also progrmatically trigger an update to check for new elements to be loaded (this may be necessary in some egde cases):&lt;/p&gt;
-
-&lt;pre class="highlight javascript"&gt;&lt;code&gt;&lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;window&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;trigger&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"lazyupdate"&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;You can use Recliner to load a range of different dynamic content.&lt;/p&gt;
-
-&lt;div class="panel callout radius"&gt;
-  &lt;p&gt;Note: It’s good practice to manually specify image dimensions so your page height doesn’t go berserk as lazy content is loading.&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;h4 id="images"&gt;Images&lt;/h4&gt;
-
-&lt;pre class="highlight html"&gt;&lt;code&gt;&lt;span class="nt"&gt;&amp;lt;img&lt;/span&gt; &lt;span class="na"&gt;src=&lt;/span&gt;&lt;span class="s"&gt;"some-placeholder-image.png"&lt;/span&gt; &lt;span class="na"&gt;data-src=&lt;/span&gt;&lt;span class="s"&gt;"image-to-lazy-load.png"&lt;/span&gt; &lt;span class="na"&gt;width=&lt;/span&gt;&lt;span class="s"&gt;"333"&lt;/span&gt; &lt;span class="na"&gt;height=&lt;/span&gt;&lt;span class="s"&gt;"333"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt; 
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4 id="iframes"&gt;IFrames&lt;/h4&gt;
-
-&lt;pre class="highlight html"&gt;&lt;code&gt;&lt;span class="nt"&gt;&amp;lt;iframe&lt;/span&gt; &lt;span class="na"&gt;data-src=&lt;/span&gt;&lt;span class="s"&gt;"http://sourcey.com"&lt;/span&gt; &lt;span class="na"&gt;width=&lt;/span&gt;&lt;span class="s"&gt;"333"&lt;/span&gt; &lt;span class="na"&gt;height=&lt;/span&gt;&lt;span class="s"&gt;"333"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/iframe&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4 id="ajax"&gt;AJAX&lt;/h4&gt;
-
-&lt;pre class="highlight html"&gt;&lt;code&gt;&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;data-src=&lt;/span&gt;&lt;span class="s"&gt;"http://sourcey.com"&lt;/span&gt; &lt;span class="na"&gt;style=&lt;/span&gt;&lt;span class="s"&gt;"width:333px;height:333px"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-    Loading, be patient damnit!
-&lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id="callbacks"&gt;Callbacks&lt;/h2&gt;
-
-&lt;p&gt;Recliner uses a simple event based API for implementing custom behaviour:&lt;/p&gt;
-
-&lt;h4 id="lazyload"&gt;lazyload&lt;/h4&gt;
-
-&lt;p&gt;The &lt;code&gt;lazyload&lt;/code&gt; event will be triggered on elements that are about to be loaded.&lt;/p&gt;
-
-&lt;pre class="highlight javascript"&gt;&lt;code&gt;&lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;document&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;on&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'lazyload'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'.lazy'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;$e&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-    &lt;span class="c1"&gt;// do something with the element to be loaded...&lt;/span&gt;
-    &lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'lazyload'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;$e&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;span class="p"&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4 id="lazyshow"&gt;lazyshow&lt;/h4&gt;
-
-&lt;p&gt;The &lt;code&gt;lazyshow&lt;/code&gt; event will be triggered on elements after they have been loaded.&lt;/p&gt;
-
-&lt;pre class="highlight javascript"&gt;&lt;code&gt;&lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;document&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;on&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'lazyshow'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'.lazy'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;$e&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-    &lt;span class="c1"&gt;// do something with the loaded element...&lt;/span&gt;
-    &lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'lazyshow'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;$e&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;span class="p"&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id="styling"&gt;Styling&lt;/h2&gt;
-
-&lt;p&gt;Recliner will set the following stateful CSS classes of your elements:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code&gt;lazy-loading&lt;/code&gt;: The element is currently being loaded&lt;/li&gt;
-  &lt;li&gt;&lt;code&gt;lazy-loaded&lt;/code&gt;: The element has loaded&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Using the stateful classes you can add some fancy transitions to your images:&lt;/p&gt;
-
-&lt;pre class="highlight css"&gt;&lt;code&gt;&lt;span class="nt"&gt;img&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-  &lt;span class="nl"&gt;opacity&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="nl"&gt;transition&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;opacity&lt;/span&gt; &lt;span class="m"&gt;.333s&lt;/span&gt; &lt;span class="n"&gt;ease-in&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-
-&lt;span class="nt"&gt;img&lt;/span&gt;&lt;span class="nc"&gt;.lazy-loaded&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-  &lt;span class="nl"&gt;opacity&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt; 
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id="demo"&gt;Demo&lt;/h2&gt;
-
-&lt;h5 id="image-1"&gt;Image #1&lt;/h5&gt;
-&lt;div class="lazy-container"&gt;
-  &lt;p&gt;&lt;img class="lazy" data-src="/images/stock/xiao-feng-lsd-320x200.jpg" /&gt;&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;h5 id="image-2"&gt;Image #2&lt;/h5&gt;
-&lt;div class="lazy-container"&gt;
-  &lt;p&gt;&lt;img class="lazy" data-src="/images/stock/xiao-feng-dmt-320x200.jpg" /&gt;&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;h5 id="image-3"&gt;Image #3&lt;/h5&gt;
-&lt;div class="lazy-container"&gt;
-  &lt;p&gt;&lt;img class="lazy" data-src="/images/stock/miyamoto-musashi-320x200.jpg" /&gt;&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;h5 id="image-4"&gt;Image #4&lt;/h5&gt;
-&lt;div class="lazy-container"&gt;
-  &lt;p&gt;&lt;img class="lazy" data-src="/images/stock/logic-vs-art-320x200.jpg" /&gt;&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;h5 id="ajax-element"&gt;AJAX Element&lt;/h5&gt;
-&lt;div class="lazy-container"&gt;
-  &lt;div class="lazy" data-src="/recliner/randomcontent"&gt;&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;h5 id="iframe-element"&gt;IFrame Element&lt;/h5&gt;
-&lt;div class="lazy-container"&gt;
-  &lt;iframe class="lazy" data-src="/recliner/randomcontent" frameborder="0" vspace="0" hspace="0"&gt;&lt;/iframe&gt;
-&lt;/div&gt;
-
-&lt;!--&lt;script src="//code.jquery.com/jquery-1.11.2.min.js"&gt;&lt;/script&gt;--&gt;
-&lt;script src="/javascripts/recliner.min.js"&gt;&lt;/script&gt;
-
-&lt;script&gt;
-    $(function() {
-        // instantiate recliner
-        $('.lazy').recliner({
-            attrib: "data-src", // selector for attribute containing the media src
-            throttle: 300,      // millisecond interval at which to process events
-            threshold: 100,     // scroll distance from element before its loaded
-            live: true          // auto bind lazy loading to ajax loaded elements          
-        });
-    });
-&lt;/script&gt;
-
-&lt;style&gt;
-    .lazy-container {
-        padding: 15px;
-        background: #eee;
-        margin-bottom: 30px;
-        border-radius: 3px;
-    }
-    .lazy-container p {
-        margin-bottom: 0px;
-    }
-    .lazy {
-        margin: 0 auto !important;
-        width: 320px !important;
-        height: 200px !important;
-        outline: 0 !important;
-        border: none !important;
-        display: block !important;
-        box-shadow: 0px 2px 4px #999 !important;
-        background: url(/images/loader.gif) no-repeat center;
-    }
-    .lazy-loaded {
-        background-image: none;
-    }
-&lt;/style&gt;
-
-&lt;h2 id="contributing"&gt;Contributing&lt;/h2&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Fork it&lt;/li&gt;
-  &lt;li&gt;Create your feature branch (&lt;code&gt;git checkout -b my-new-feature&lt;/code&gt;)&lt;/li&gt;
-  &lt;li&gt;Commit your changes (&lt;code&gt;git commit -am 'Add some feature'&lt;/code&gt;)&lt;/li&gt;
-  &lt;li&gt;Push to the branch (&lt;code&gt;git push origin my-new-feature&lt;/code&gt;)&lt;/li&gt;
-  &lt;li&gt;Create new Pull Request&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id="issues"&gt;Issues&lt;/h2&gt;
-
-&lt;p&gt;If you find any bugs please use the &lt;a href="https://github.com/sourcey/recliner/issues"&gt;Github issue tracker&lt;/a&gt;.&lt;/p&gt;
 
 </content>
   </entry>
