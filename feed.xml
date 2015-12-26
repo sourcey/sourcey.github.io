@@ -11,7 +11,7 @@
     <link rel="alternate" href="http://sourcey.com/building-a-complete-rails-5-api-guide/"/>
     <id>http://sourcey.com/building-a-complete-rails-5-api-guide/</id>
     <published>2015-12-26T00:00:00Z</published>
-    <updated>2015-12-26T23:23:47+10:00</updated>
+    <updated>2015-12-26T23:31:44+10:00</updated>
     <author>
       <name>Kam Low</name>
     </author>
@@ -27,58 +27,51 @@
 
 &lt;p&gt;According to the &lt;a href="http://edgeguides.rubyonrails.org/api_app.html"&gt;Rails guide&lt;/a&gt; you will be able to generate an API app using the following command:&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;bash
-rails new api_app_name --api
-&lt;/code&gt;&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;rails new api_app_name --api
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;However as Rails 5 isn’t officially released yet so we have to generate our Rails API app using the latest version. Simply clone the master branch from the Rails repo:&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;bash
-git clone git@github.com:rails/rails.git
-&lt;/code&gt;&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;git clone git@github.com:rails/rails.git
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Now we generate new Rails API application by passing the &lt;code&gt;--api&lt;/code&gt; directive to the rails new command:&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;bash
-bundle exec railties/exe/rails new &amp;lt;parent-folder-path&amp;gt;/api_app_name --api --edge
-&lt;/code&gt;&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;bundle &lt;span class="nb"&gt;exec &lt;/span&gt;railties/exe/rails new &amp;lt;parent-folder-path&amp;gt;/api_app_name --api --edge
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Nice! Now you have a shiny new API only Rails 5 project to play with.&lt;/p&gt;
 
 &lt;p&gt;The next thing is to run &lt;code&gt;bundle&lt;/code&gt; and &lt;code&gt;rake&lt;/code&gt; to install the default gems and setup the database:&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;bash
-cd  &amp;lt;parent-folder-path&amp;gt;/api_app_name
+&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="nb"&gt;cd&lt;/span&gt;  &amp;lt;parent-folder-path&amp;gt;/api_app_name
 bundle install
 bin/rake db:setup
-&lt;/code&gt;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;h2 id="using-rspec-for-testing"&gt;Using RSpec For Testing&lt;/h2&gt;
 
 &lt;p&gt;Let’s setup RSpec for testing your application before we start generating any resources. To do this, go ahead and add the &lt;a href="https://github.com/rspec/rspec-rails"&gt;rspec-rails&lt;/a&gt; gem to your Gemfile in the &lt;code&gt;:development, :test&lt;/code&gt; group:&lt;/p&gt;
 
-&lt;p&gt;```ruby
-group :development, :test do&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;group&lt;/span&gt; &lt;span class="ss"&gt;:development&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:test&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
 
-&lt;p&gt;# Use RSpec for specs
-  gem ‘rspec-rails’, ‘3.1.0’&lt;/p&gt;
+  &lt;span class="c1"&gt;# Use RSpec for specs&lt;/span&gt;
+  &lt;span class="n"&gt;gem&lt;/span&gt; &lt;span class="s1"&gt;'rspec-rails'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'3.1.0'&lt;/span&gt;
 
-&lt;p&gt;# Use Factory Girl for generating random test data
-  gem ‘factory_girl_rails’
-end
-```&lt;/p&gt;
+  &lt;span class="c1"&gt;# Use Factory Girl for generating random test data&lt;/span&gt;
+  &lt;span class="n"&gt;gem&lt;/span&gt; &lt;span class="s1"&gt;'factory_girl_rails'&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Update your bundle:&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;bash
-bundle
-&lt;/code&gt;&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;bundle
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Run the RSpec installer:&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;bash
-bin/rails g rspec:install  
-&lt;/code&gt;&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;bin/rails g rspec:install  
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Finally, you can get rid of the &lt;code&gt;test&lt;/code&gt; directory in Rails, since we won’t be writing unit tests, but specifications instead.&lt;/p&gt;
 
@@ -88,14 +81,12 @@ bin/rails g rspec:install
 
 &lt;p&gt;When an app is created with the &lt;code&gt;--api&lt;/code&gt; flag you can use the scaffold generators to generate your API resources as normal, without the need for any special arguments.&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;bash
-bin/rails g scaffold user name email
-&lt;/code&gt;&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;bin/rails g scaffold user name email
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;This will generate the following file structure:&lt;/p&gt;
 
-&lt;p&gt;```bash
-      invoke  active_record
+&lt;pre class="highlight shell"&gt;&lt;code&gt;      invoke  active_record
    identical    db/migrate/20151222022044_create_users.rb
    identical    app/models/user.rb
       invoke    rspec
@@ -110,18 +101,17 @@ bin/rails g scaffold user name email
       create      spec/controllers/users_controller_spec.rb
       create      spec/routing/users_routing_spec.rb
       invoke      rspec
-      create        spec/requests/users_spec.rb&lt;/p&gt;
+      create        spec/requests/users_spec.rb
 
-&lt;p&gt;```&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Now all that’s left is to migrate and run the app:&lt;/p&gt;
 
-&lt;p&gt;```bash
-bin/rake db:migrate&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;bin/rake db:migrate
 
-&lt;h1 id="run-the-default-server-on-port-3000"&gt;run the default server on port 3000&lt;/h1&gt;
-&lt;p&gt;bin/rails s
-```&lt;/p&gt;
+&lt;span class="c"&gt;# run the default server on port 3000&lt;/span&gt;
+bin/rails s
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Your new API is now up and running on &lt;a href="http://localhost:3000"&gt;http://localhost:3000&lt;/a&gt;. Sweet!&lt;/p&gt;
 
@@ -138,49 +128,43 @@ but since we’ve disabled views in our super awesome streamlined API app, that�
 
 &lt;p&gt;Go ahead and add the &lt;code&gt;active_model_serializers&lt;/code&gt; dependency to your Gemfile:&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;ruby
-gem 'active_model_serializers'
-&lt;/code&gt;&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;gem&lt;/span&gt; &lt;span class="s1"&gt;'active_model_serializers'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Update your bundle:&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;bash
-bundle
-&lt;/code&gt;&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;bundle
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Now lets create a serializer for our User model:&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;bash
-rails g serializer user
-&lt;/code&gt;&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;rails g serializer user
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;In &lt;code&gt;app/serializers/user_serializer.rb&lt;/code&gt;, we find this code:&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;ruby
-class UserSerializer &amp;lt; ActiveModel::Serializer
-  attributes :id
-end
-&lt;/code&gt;&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;UserSerializer&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;ActiveModel&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Serializer&lt;/span&gt;
+  &lt;span class="n"&gt;attributes&lt;/span&gt; &lt;span class="ss"&gt;:id&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Go ahead and add the &lt;code&gt;:name&lt;/code&gt; and &lt;code&gt;:email&lt;/code&gt; attributes to the serializer:&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;ruby
-class UserSerializer &amp;lt; ActiveModel::Serializer
-  attributes :id, :name, :email
-end
-&lt;/code&gt;&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;UserSerializer&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;ActiveModel&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Serializer&lt;/span&gt;
+  &lt;span class="n"&gt;attributes&lt;/span&gt; &lt;span class="ss"&gt;:id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:email&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p class="panel callout radius"&gt;If your model has relationships just add them to the serializer as you would an attributes to be serialized in the output.&lt;/p&gt;
 
 &lt;p&gt;You may also need to include the &lt;code&gt;ActionController::Serialization&lt;/code&gt; dependency in your controller like so:&lt;/p&gt;
 
-&lt;p&gt;```ruby
-class ApplicationController &amp;lt; ActionController::API
-  include ActionController::Serialization&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;ApplicationController&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;ActionController&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;API&lt;/span&gt;
+  &lt;span class="kp"&gt;include&lt;/span&gt; &lt;span class="no"&gt;ActionController&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Serialization&lt;/span&gt;
 
-&lt;p&gt;# …
-end
-```&lt;/p&gt;
+  &lt;span class="c1"&gt;# ...&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Now when you hit and User related API endpoint only the attributes in the &lt;code&gt;UserSerializer&lt;/code&gt; will be rendered. Nice!&lt;/p&gt;
 
@@ -190,35 +174,31 @@ end
 
 &lt;p&gt;This is made very simple by the &lt;code&gt;rack-cors&lt;/code&gt; gem. Just stick it in your Gemfile like so:&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;ruby
-gem 'rack-cors'
-&lt;/code&gt;&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;gem&lt;/span&gt; &lt;span class="s1"&gt;'rack-cors'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Update your bundle:&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;bash
-bundle
-&lt;/code&gt;&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;bundle
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;And put something like the code below in &lt;code&gt;config/application.rb&lt;/code&gt; of your Rails application. For example, this will allow GET, POST or OPTIONS requests from any origin on any resource.&lt;/p&gt;
 
-&lt;p&gt;```ruby
-module YourApp
-  class Application &amp;lt; Rails::Application&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;YourApp&lt;/span&gt;
+  &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Application&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;Rails&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Application&lt;/span&gt;
 
-&lt;pre class="highlight plaintext"&gt;&lt;code&gt;# ...
+    &lt;span class="c1"&gt;# ...&lt;/span&gt;
 
-config.middleware.insert_before 0, "Rack::Cors" do
-  allow do
-    origins '*'
-    resource '*', :headers =&amp;gt; :any, :methods =&amp;gt; [:get, :post, :options]
-  end
-end
+    &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;middleware&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;insert_before&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;"Rack::Cors"&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+      &lt;span class="n"&gt;allow&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+        &lt;span class="n"&gt;origins&lt;/span&gt; &lt;span class="s1"&gt;'*'&lt;/span&gt;
+        &lt;span class="n"&gt;resource&lt;/span&gt; &lt;span class="s1"&gt;'*'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:headers&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="ss"&gt;:any&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:methods&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:get&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:post&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:options&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;end
-end
-```&lt;/p&gt;
 
 &lt;p&gt;For more detailed configuration options please see the gem documentation: https://github.com/cyu/rack-cors&lt;/p&gt;
 
@@ -230,63 +210,57 @@ so that you can maintain backwards compatibility for existing clients whenever y
 
 &lt;p&gt;This guide will show you how to setup versioning with the following URL format:&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;
-GET http://api.mysite.com/v1/users/
-&lt;/code&gt;&lt;/p&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;GET http://api.mysite.com/v1/users/
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Using a subdomain instead of something like &lt;code&gt;/api/v1/users/&lt;/code&gt; is just a preference, although both are easy to accomplish in Rails.&lt;/p&gt;
 
 &lt;p&gt;We can use a directory structure like this to keep our controller code clean by defining all our &lt;code&gt;v1&lt;/code&gt; controllers within the &lt;code&gt;Api::V1&lt;/code&gt; namespace:&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;
-app/controllers/
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;app/controllers/
 .
 |-- api
 |   `-- v1
 |       |-- api_controller.rb
 |       `-- users_controller.rb
 |-- application_controller.rb
-&lt;/code&gt;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Here’s what the controllers look like:&lt;/p&gt;
 
-&lt;p&gt;```ruby
-# app/controllers/api/v1/api_controller.rb&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="c1"&gt;# app/controllers/api/v1/api_controller.rb&lt;/span&gt;
 
-&lt;p&gt;module Api::V1
-  class ApiController &amp;lt; ApplicationController
-    # Generic API stuff here
-  end
-end
-```&lt;/p&gt;
-
-&lt;p&gt;```ruby
-# app/controllers/api/v1/users_controller.rb&lt;/p&gt;
-
-&lt;p&gt;module Api::V1
-  class UsersController &amp;lt; ApiController&lt;/p&gt;
-
-&lt;pre class="highlight plaintext"&gt;&lt;code&gt;# GET /v1/users
-def index
-  render json: User.all
-end
+&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;Api::V1&lt;/span&gt;
+  &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;ApiController&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;ApplicationController&lt;/span&gt;
+    &lt;span class="c1"&gt;# Generic API stuff here&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;end
-end
-```&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="c1"&gt;# app/controllers/api/v1/users_controller.rb&lt;/span&gt;
+
+&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;Api::V1&lt;/span&gt;
+  &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;UsersController&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;ApiController&lt;/span&gt;
+
+    &lt;span class="c1"&gt;# GET /v1/users&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;index&lt;/span&gt;
+      &lt;span class="n"&gt;render&lt;/span&gt; &lt;span class="ss"&gt;json: &lt;/span&gt;&lt;span class="no"&gt;User&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;all&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Now let’s setup our &lt;code&gt;config/routes.rb&lt;/code&gt; to tie everything together:&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;ruby
-constraints subdomain: 'api' do
-  scope module: 'api' do
-    namespace :v1 do
-      resources :users
-    end
-  end
-end
-&lt;/code&gt;&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;constraints&lt;/span&gt; &lt;span class="ss"&gt;subdomain: &lt;/span&gt;&lt;span class="s1"&gt;'api'&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+  &lt;span class="n"&gt;scope&lt;/span&gt; &lt;span class="ss"&gt;module: &lt;/span&gt;&lt;span class="s1"&gt;'api'&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="n"&gt;namespace&lt;/span&gt; &lt;span class="ss"&gt;:v1&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+      &lt;span class="n"&gt;resources&lt;/span&gt; &lt;span class="ss"&gt;:users&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;The &lt;code&gt;scope module: 'api'&lt;/code&gt; bit lets us route to controllers in the API module without explicitly including it in the URL. However, the version &lt;code&gt;v1/&lt;/code&gt; is part of the URL, and we also want to route to the V1 module, so we use &lt;code&gt;namespace&lt;/code&gt;.&lt;/p&gt;
 
@@ -305,63 +279,58 @@ end
 
 &lt;p&gt;Get started by adding the dependency to your Gemfile:&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;ruby
-gem 'rack-attack'
-&lt;/code&gt;&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;gem&lt;/span&gt; &lt;span class="s1"&gt;'rack-attack'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Update your bundle:&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;bash
-bundle
-&lt;/code&gt;&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;bundle
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Now update your &lt;code&gt;config/application.rb&lt;/code&gt; file to include it into your middleware stack:&lt;/p&gt;
 
-&lt;p&gt;```ruby
-module YourApp
-  class Application &amp;lt; Rails::Application&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;YourApp&lt;/span&gt;
+  &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Application&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;Rails&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Application&lt;/span&gt;
 
-&lt;pre class="highlight plaintext"&gt;&lt;code&gt;# ...
+    &lt;span class="c1"&gt;# ...&lt;/span&gt;
 
-config.middleware.use Rack::Attack
+    &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;middleware&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;use&lt;/span&gt; &lt;span class="no"&gt;Rack&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Attack&lt;/span&gt;
+
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;end
-end
-```&lt;/p&gt;
 
 &lt;p&gt;Create a new initializer file in &lt;code&gt;config/initializers/rack_attack.rb&lt;/code&gt; to configure your &lt;code&gt;Rack::Attack&lt;/code&gt; rules.
 The example below is very basic, and you might have different requirements altogether,
 but it should give a good starting point.&lt;/p&gt;
 
-&lt;p&gt;```ruby
-class Rack::Attack&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Rack&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Attack&lt;/span&gt;
 
-&lt;p&gt;# &lt;code&gt;Rack::Attack&lt;/code&gt; is configured to use the &lt;code&gt;Rails.cache&lt;/code&gt; value by default,
-  # but you can override that by setting the &lt;code&gt;Rack::Attack.cache.store&lt;/code&gt; value
-  Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new&lt;/p&gt;
+  &lt;span class="c1"&gt;# `Rack::Attack` is configured to use the `Rails.cache` value by default,&lt;/span&gt;
+  &lt;span class="c1"&gt;# but you can override that by setting the `Rack::Attack.cache.store` value&lt;/span&gt;
+  &lt;span class="no"&gt;Rack&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Attack&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;cache&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;store&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;ActiveSupport&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Cache&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;MemoryStore&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;new&lt;/span&gt;
 
-&lt;p&gt;# Allow all local traffic
-  whitelist(‘allow-localhost’) do |req|
-    ‘127.0.0.1’ == req.ip || ‘::1’ == req.ip
-  end&lt;/p&gt;
+  &lt;span class="c1"&gt;# Allow all local traffic&lt;/span&gt;
+  &lt;span class="n"&gt;whitelist&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'allow-localhost'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;req&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+    &lt;span class="s1"&gt;'127.0.0.1'&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;req&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;ip&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="s1"&gt;'::1'&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;req&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;ip&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
 
-&lt;p&gt;# Allow an IP address to make 5 requests every 5 seconds
-  throttle(‘req/ip’, limit: 5, period: 5) do |req|
-    req.ip
-  end&lt;/p&gt;
+  &lt;span class="c1"&gt;# Allow an IP address to make 5 requests every 5 seconds&lt;/span&gt;
+  &lt;span class="n"&gt;throttle&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'req/ip'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;limit: &lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;period: &lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;req&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+    &lt;span class="n"&gt;req&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;ip&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
 
-&lt;p&gt;# Send the following response to throttled clients
-  self.throttled_response = -&amp;gt;(env) {
-    retry_after = (env[‘rack.attack.match_data’] || {})[:period]
-    [
-      429,
-      {‘Content-Type’ =&amp;gt; ‘application/json’, ‘Retry-After’ =&amp;gt; retry_after.to_s},
-      [{error: “Throttle limit reached. Retry later.”}.to_json]
-    ]
-  }
-end
-```&lt;/p&gt;
+  &lt;span class="c1"&gt;# Send the following response to throttled clients&lt;/span&gt;
+  &lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;throttled_response&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;retry_after&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;env&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'rack.attack.match_data'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="p"&gt;{})[&lt;/span&gt;&lt;span class="ss"&gt;:period&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="p"&gt;[&lt;/span&gt;
+      &lt;span class="mi"&gt;429&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;'Content-Type'&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="s1"&gt;'application/json'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'Retry-After'&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;retry_after&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;to_s&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
+      &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="ss"&gt;error: &lt;/span&gt;&lt;span class="s2"&gt;"Throttle limit reached. Retry later."&lt;/span&gt;&lt;span class="p"&gt;}.&lt;/span&gt;&lt;span class="nf"&gt;to_json&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="p"&gt;]&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;For a full list of configuration options check the &lt;a href="https://github.com/kickstarter/rack-attack"&gt;Rack::Attack&lt;/a&gt; gem homepage.&lt;/p&gt;
 
@@ -377,65 +346,60 @@ end
 
 &lt;p&gt;A good way of authenticating API requests is using token based authentication, which involves clients including a API key of some sort in the HTTP headers of each request, like so:&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;
-Authorization: Token token="WCZZYjnOQFUYfJIN2ShH1iD24UHo58A6TI"
-&lt;/code&gt;&lt;/p&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;Authorization: Token token="WCZZYjnOQFUYfJIN2ShH1iD24UHo58A6TI"
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;First let’s update create a migration to add the &lt;code&gt;api_key&lt;/code&gt; attribute to our &lt;code&gt;User&lt;/code&gt; model:&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;ruby
-rails g migration AddApiKeyToUsers api_key:string
-&lt;/code&gt;&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;rails&lt;/span&gt; &lt;span class="n"&gt;g&lt;/span&gt; &lt;span class="n"&gt;migration&lt;/span&gt; &lt;span class="no"&gt;AddApiKeyToUsers&lt;/span&gt; &lt;span class="n"&gt;api_key&lt;/span&gt;&lt;span class="ss"&gt;:string&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Now update the &lt;code&gt;User&lt;/code&gt; model and include the following methods:&lt;/p&gt;
 
-&lt;p&gt;```ruby
-class User &amp;lt; ActiveRecord::Base&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;User&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;ActiveRecord&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Base&lt;/span&gt;
 
-&lt;p&gt;# Assign an API key on create
-  before_create do |user|
-    user.api_key = user.generate_api_key
-  end&lt;/p&gt;
+  &lt;span class="c1"&gt;# Assign an API key on create&lt;/span&gt;
+  &lt;span class="n"&gt;before_create&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+    &lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;api_key&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;generate_api_key&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
 
-&lt;p&gt;# Generate a unique API key
-  def generate_api_key
-    loop do
-      token = SecureRandom.base64.tr(‘+/=’, ‘Qrt’)
-      break token unless User.exists?(api_key: token).any?
-    end
-  end
-end
-```&lt;/p&gt;
+  &lt;span class="c1"&gt;# Generate a unique API key&lt;/span&gt;
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;generate_api_key&lt;/span&gt;
+    &lt;span class="kp"&gt;loop&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+      &lt;span class="n"&gt;token&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;SecureRandom&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;base64&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;tr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'+/='&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'Qrt'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="k"&gt;break&lt;/span&gt; &lt;span class="n"&gt;token&lt;/span&gt; &lt;span class="k"&gt;unless&lt;/span&gt; &lt;span class="no"&gt;User&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;exists?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;api_key: &lt;/span&gt;&lt;span class="n"&gt;token&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;any?&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;On the controller side we can implement the authentication using the built in &lt;code&gt;authenticate_or_request_with_http_token&lt;/code&gt; Rails method.&lt;/p&gt;
 
-&lt;p&gt;```ruby
-class Api::ApiController &amp;lt; ActionController::Base&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Api&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;ApiController&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;ActionController&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Base&lt;/span&gt;
 
-&lt;p&gt;# Add a before_action to authenticate all requests.
-  # Move this to subclassed controllers if you only
-  # want to authenticate certain methods.
-  before_action :authenticate&lt;/p&gt;
+  &lt;span class="c1"&gt;# Add a before_action to authenticate all requests.&lt;/span&gt;
+  &lt;span class="c1"&gt;# Move this to subclassed controllers if you only&lt;/span&gt;
+  &lt;span class="c1"&gt;# want to authenticate certain methods.&lt;/span&gt;
+  &lt;span class="n"&gt;before_action&lt;/span&gt; &lt;span class="ss"&gt;:authenticate&lt;/span&gt;
 
-&lt;p&gt;# Expose &lt;code&gt;current_user&lt;/code&gt; to subclassed controllers
-  helper_method :current_user&lt;/p&gt;
+  &lt;span class="c1"&gt;# Expose `current_user` to subclassed controllers&lt;/span&gt;
+  &lt;span class="n"&gt;helper_method&lt;/span&gt; &lt;span class="ss"&gt;:current_user&lt;/span&gt;
 
-&lt;p&gt;private&lt;/p&gt;
+  &lt;span class="kp"&gt;private&lt;/span&gt;
 
-&lt;p&gt;# Authenticate the user with token based authentication
-  def authenticate
-    authenticate_or_request_with_http_token do |token, options|
-      @current_user = User.where(api_key: token).first
-    end
-  end
-end
-```&lt;/p&gt;
+  &lt;span class="c1"&gt;# Authenticate the user with token based authentication&lt;/span&gt;
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;authenticate&lt;/span&gt;
+    &lt;span class="n"&gt;authenticate_or_request_with_http_token&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;token&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+      &lt;span class="vi"&gt;@current_user&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;User&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;where&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;api_key: &lt;/span&gt;&lt;span class="n"&gt;token&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;first&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Now we can test our authenticated API using &lt;code&gt;curl&lt;/code&gt;:&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;bash
-curl -H "Authorization: Token token=PsmmvKBqQDOaWwEsPpOCYMsy" http://localhost:3000/users
-&lt;/code&gt;&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;curl -H &lt;span class="s2"&gt;"Authorization: Token token=PsmmvKBqQDOaWwEsPpOCYMsy"&lt;/span&gt; http://localhost:3000/users
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;h2 id="conclusion"&gt;Conclusion&lt;/h2&gt;
 
