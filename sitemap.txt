@@ -384,6 +384,9 @@ http://sourcey.com/rails-5-api-guide/
 http://sourcey.com/darkly-pygments-css-theme/
 
 
+http://sourcey.com/building-a-complete-rails-5-api-guide/
+
+
 http://sourcey.com/understanding-psychedelics/
 
 

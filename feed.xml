@@ -11,7 +11,7 @@
     <link rel="alternate" href="http://sourcey.com/rails-5-api-guide/"/>
     <id>http://sourcey.com/rails-5-api-guide/</id>
     <published>2015-12-26T00:00:00Z</published>
-    <updated>2015-12-27T21:33:53+10:00</updated>
+    <updated>2015-12-27T21:43:52+10:00</updated>
     <author>
       <name>Kam Low</name>
     </author>
@@ -419,7 +419,7 @@ so that you can maintain backwards compatibility for existing clients whenever y
 
 &lt;p&gt;Now you have the keys to the castle, and all the basics for building an API the Rails way.&lt;/p&gt;
 
-&lt;p&gt;Hopefully then guide was helpful for you, and if you want any points clarified or just want to say thanks then please use the comments below.&lt;/p&gt;
+&lt;p&gt;Hopefully then guide was helpful for you, and if you want any points clarified or just want to say thanks then feel free to use the comments below.&lt;/p&gt;
 
 &lt;p&gt;Cheers, and happy coding!&lt;/p&gt;
 </content>
