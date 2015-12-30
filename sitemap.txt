@@ -60,6 +60,9 @@ http://sourcey.com/engineering-the-mind/
 http://sourcey.com/building-a-simple-cpp-cross-platform-plugin-system/
 
 
+http://sourcey.com/building-a-complete-rails-5-api-guide/
+
+
 http://sourcey.com/javascript-object-to-flash-swf-externalinterface-bridge/
 
 

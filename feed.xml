@@ -7,11 +7,11 @@
   <link href="http://sourcey.com/feed.xml" rel="self"/>
   <updated>2015-12-26T00:00:00Z</updated>
   <entry>
-    <title>The Ultimate Rails 5 API Guide</title>
+    <title>Building a Complete Rails 5 API Only App</title>
     <link rel="alternate" href="http://sourcey.com/rails-5-api-guide/"/>
     <id>http://sourcey.com/rails-5-api-guide/</id>
     <published>2015-12-26T00:00:00Z</published>
-    <updated>2015-12-27T21:43:52+10:00</updated>
+    <updated>2015-12-30T14:23:35+10:00</updated>
     <author>
       <name>Kam Low</name>
     </author>
@@ -19,7 +19,7 @@
 
 &lt;p&gt;Until now, arguably the best option for creating APIs in Ruby has been Grape, and while Grape is still a brilliant option (especially if you like to DIY), there are some great advantages to using Rails 5 in API mode, such as; ActiveRecord by default, a strong developer community, and having the asset pipeline and front end features available should you need them as your project evolves.&lt;/p&gt;
 
-&lt;p&gt;This guide is designed to help you get started the right way building your Rails 5 API, and comprises of the following sections:&lt;/p&gt;
+&lt;p&gt;This guide will help you get started the right way when building your first Rails 5 API only app, and comprises of the following sections:&lt;/p&gt;
 
 &lt;ul id="markdown-toc"&gt;
   &lt;li&gt;&lt;a id="markdown-toc-setting-up-rails-5" href="#setting-up-rails-5"&gt;Setting up Rails 5&lt;/a&gt;&lt;/li&gt;
@@ -41,7 +41,7 @@
 &lt;pre class="highlight shell"&gt;&lt;code&gt;rails new api_app_name --api
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;However, as Rails 5 isn’t officially released yet things aren’t quite that simple, and we need to generate our Rails API app using the latest version on Github. Simply clone the master branch from the Rails repo:&lt;/p&gt;
+&lt;p&gt;However, as Rails 5 hasn’t been officially released yet things aren’t quite that simple, and we need to generate our Rails API app using the latest version on Github. Simply clone the master branch from the Rails repo:&lt;/p&gt;
 
 &lt;pre class="highlight shell"&gt;&lt;code&gt;git clone git@github.com:rails/rails.git
 &lt;/code&gt;&lt;/pre&gt;
