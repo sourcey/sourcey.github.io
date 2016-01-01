@@ -258,6 +258,9 @@ http://sourcey.com/making-the-world-a-better-place/
 http://sourcey.com/
 
 
+http://sourcey.com/building-the-prefect-rails-5-api-only-app/
+
+
 
 
 
@@ -379,9 +382,6 @@ http://sourcey.com/precompiling-assets-for-large-rails-deployments-with-capistra
 
 
 
-
-
-http://sourcey.com/rails-5-api-guide/
 
 
 http://sourcey.com/darkly-pygments-css-theme/

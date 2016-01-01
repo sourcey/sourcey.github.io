@@ -7,11 +7,11 @@
   <link href="http://sourcey.com/feed.xml" rel="self"/>
   <updated>2015-12-26T00:00:00Z</updated>
   <entry>
-    <title>Building a Complete Rails 5 API Only App</title>
-    <link rel="alternate" href="http://sourcey.com/rails-5-api-guide/"/>
-    <id>http://sourcey.com/rails-5-api-guide/</id>
+    <title>Building the Perfect Rails 5 API Only App</title>
+    <link rel="alternate" href="http://sourcey.com/building-the-prefect-rails-5-api-only-app/"/>
+    <id>http://sourcey.com/building-the-prefect-rails-5-api-only-app/</id>
     <published>2015-12-26T00:00:00Z</published>
-    <updated>2015-12-30T14:23:35+10:00</updated>
+    <updated>2016-01-01T18:38:18+10:00</updated>
     <author>
       <name>Kam Low</name>
     </author>
@@ -19,7 +19,7 @@
 
 &lt;p&gt;Until now, arguably the best option for creating APIs in Ruby has been Grape, and while Grape is still a brilliant option (especially if you like to DIY), there are some great advantages to using Rails 5 in API mode, such as; ActiveRecord by default, a strong developer community, and having the asset pipeline and front end features available should you need them as your project evolves.&lt;/p&gt;
 
-&lt;p&gt;This guide will help you get started the right way when building your first Rails 5 API only app, and comprises of the following sections:&lt;/p&gt;
+&lt;p&gt;This how-to guide aims to help you get started the right way using Rails 5 to build the perfect API, and it comprises of the following sections:&lt;/p&gt;
 
 &lt;ul id="markdown-toc"&gt;
   &lt;li&gt;&lt;a id="markdown-toc-setting-up-rails-5" href="#setting-up-rails-5"&gt;Setting up Rails 5&lt;/a&gt;&lt;/li&gt;
@@ -381,7 +381,7 @@ so that you can maintain backwards compatibility for existing clients whenever y
   &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;generate_api_key&lt;/span&gt;
     &lt;span class="kp"&gt;loop&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
       &lt;span class="n"&gt;token&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;SecureRandom&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;base64&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;tr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'+/='&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'Qrt'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="k"&gt;break&lt;/span&gt; &lt;span class="n"&gt;token&lt;/span&gt; &lt;span class="k"&gt;unless&lt;/span&gt; &lt;span class="no"&gt;User&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;exists?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;api_key: &lt;/span&gt;&lt;span class="n"&gt;token&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;any?&lt;/span&gt;
+      &lt;span class="k"&gt;break&lt;/span&gt; &lt;span class="n"&gt;token&lt;/span&gt; &lt;span class="k"&gt;unless&lt;/span&gt; &lt;span class="no"&gt;User&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;exists?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;api_key: &lt;/span&gt;&lt;span class="n"&gt;token&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     &lt;span class="k"&gt;end&lt;/span&gt;
   &lt;span class="k"&gt;end&lt;/span&gt;
 &lt;span class="k"&gt;end&lt;/span&gt;
@@ -389,23 +389,30 @@ so that you can maintain backwards compatibility for existing clients whenever y
 
 &lt;p&gt;On the controller side we can implement the authentication using the built in &lt;code&gt;authenticate_or_request_with_http_token&lt;/code&gt; Rails method.&lt;/p&gt;
 
-&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Api&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;ApiController&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;ActionController&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Base&lt;/span&gt;
+&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;ApplicationController&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;ActionController&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Base&lt;/span&gt;
+  &lt;span class="kp"&gt;include&lt;/span&gt; &lt;span class="no"&gt;ActionController&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;HttpAuthentication&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Token&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;ControllerMethods&lt;/span&gt;
 
   &lt;span class="c1"&gt;# Add a before_action to authenticate all requests.&lt;/span&gt;
   &lt;span class="c1"&gt;# Move this to subclassed controllers if you only&lt;/span&gt;
   &lt;span class="c1"&gt;# want to authenticate certain methods.&lt;/span&gt;
   &lt;span class="n"&gt;before_action&lt;/span&gt; &lt;span class="ss"&gt;:authenticate&lt;/span&gt;
 
-  &lt;span class="c1"&gt;# Expose `current_user` to subclassed controllers&lt;/span&gt;
-  &lt;span class="n"&gt;helper_method&lt;/span&gt; &lt;span class="ss"&gt;:current_user&lt;/span&gt;
-
-  &lt;span class="kp"&gt;private&lt;/span&gt;
+  &lt;span class="kp"&gt;protected&lt;/span&gt;
 
   &lt;span class="c1"&gt;# Authenticate the user with token based authentication&lt;/span&gt;
   &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;authenticate&lt;/span&gt;
-    &lt;span class="n"&gt;authenticate_or_request_with_http_token&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;token&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
-      &lt;span class="vi"&gt;@current_user&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;User&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;where&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;api_key: &lt;/span&gt;&lt;span class="n"&gt;token&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nf"&gt;first&lt;/span&gt;
+    &lt;span class="n"&gt;authenticate_token&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="n"&gt;render_unauthorized&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;authenticate_token&lt;/span&gt;
+    &lt;span class="n"&gt;authenticate_with_http_token&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;token&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;options&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+      &lt;span class="vi"&gt;@current_user&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;User&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;find_by&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;api_key: &lt;/span&gt;&lt;span class="n"&gt;token&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     &lt;span class="k"&gt;end&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;render_unauthorized&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;realm&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"Application"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;headers&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"WWW-Authenticate"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="sx"&gt;%(Token realm="#{realm.gsub(/"/, "")}")&lt;/span&gt;
+    &lt;span class="n"&gt;render&lt;/span&gt; &lt;span class="ss"&gt;json: &lt;/span&gt;&lt;span class="s1"&gt;'Bad credentials'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;status: :unauthorized&lt;/span&gt;
   &lt;span class="k"&gt;end&lt;/span&gt;
 &lt;span class="k"&gt;end&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
