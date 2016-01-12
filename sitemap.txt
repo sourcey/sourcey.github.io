@@ -24,6 +24,9 @@ http://sourcey.com/combining-multiple-rss-feeds/
 http://sourcey.com/rails-4-omniauth-using-devise-with-twitter-facebook-and-linkedin/
 
 
+http://sourcey.com/spectacle/
+
+
 http://sourcey.com/middleman-automated-github-pages-deployments-with-rake/
 
 

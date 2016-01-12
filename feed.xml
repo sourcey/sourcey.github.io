@@ -5,13 +5,128 @@
   <id>http://sourcey.com</id>
   <link href="http://sourcey.com"/>
   <link href="http://sourcey.com/feed.xml" rel="self"/>
-  <updated>2015-12-26T00:00:00Z</updated>
+  <updated>2016-01-12T00:00:00Z</updated>
+  <entry>
+    <title>Spectacle</title>
+    <link rel="alternate" href="http://sourcey.com/spectacle/"/>
+    <id>http://sourcey.com/spectacle/</id>
+    <published>2016-01-12T00:00:00Z</published>
+    <updated>2016-01-12T20:34:15+10:00</updated>
+    <author>
+      <name/>
+    </author>
+    <content type="html">&lt;div class="sidebar-section toc"&gt;
+  &lt;h4 class="no_toc" id="contents"&gt;Contents&lt;/h4&gt;
+
+&lt;ul id="markdown-toc"&gt;
+  &lt;li&gt;&lt;a id="markdown-toc-getting-started" href="#getting-started"&gt;Getting Started&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a id="markdown-toc-configuration-options" href="#configuration-options"&gt;Configuration Options&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a id="markdown-toc-custom-builds" href="#custom-builds"&gt;Custom Builds&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/div&gt;
+
+&lt;dl&gt;
+  &lt;dt&gt;Repository&lt;/dt&gt;
+  &lt;dd&gt;&lt;a href="https://github.com/sourcey/spectacle"&gt;https://github.com/sourcey/spectacle&lt;/a&gt;&lt;/dd&gt;
+  &lt;dt&gt;Licence&lt;/dt&gt;
+  &lt;dd&gt;MIT&lt;/dd&gt;
+&lt;/dl&gt;
+
+&lt;p&gt;Spectacle is a static documentation generator that lets you autogenerate your documentation from a OpenAPI/Swagger 2.0 JSON specification file. With Spectacle you can have beautiful HTML5 documentation for your API ready to be deployed in a matter of minutes.&lt;/p&gt;
+
+&lt;p&gt;Here’s what Spectacle features:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;OpenAPI/Swagger 2.0 support&lt;/li&gt;
+  &lt;li&gt;Mobile friendly responsive HTML5 and CSS3 grid layout&lt;/li&gt;
+  &lt;li&gt;Modern and readable design&lt;/li&gt;
+  &lt;li&gt;Embedded option to generate docs without a layout for convenient integration with your own website&lt;/li&gt;
+  &lt;li&gt;Development mode with file watcher and live reload for regenerating docs when your spec is updated&lt;/li&gt;
+  &lt;li&gt;Simple and extendable Handlebars templates and SCSS styles&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id="getting-started"&gt;Getting Started&lt;/h2&gt;
+
+&lt;p&gt;Simply install Spectacle from &lt;code&gt;npm&lt;/code&gt; like so:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;bash
+npm install spectacle-docs
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Next pass your &lt;code&gt;swagger.json&lt;/code&gt; document use the CLI to generate your documentation.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;bash
+spectacle your_swagger_api.json
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Your documentation will be located in the &lt;code&gt;/public&lt;/code&gt; directory. You can either copy the generated HTML to your web server, or view your docs by starting the internal web server like so:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;bash
+spectacle -s
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Now point your browser to &lt;a href="http://localhost:4400/"&gt;http://localhost:4400/&lt;/a&gt; in order to view your docs.&lt;/p&gt;
+
+&lt;h2 id="configuration-options"&gt;Configuration Options&lt;/h2&gt;
+
+&lt;p&gt;The basic CLI options are detailed below:&lt;/p&gt;
+
+&lt;p&gt;```bash
+$ spectacle -h&lt;/p&gt;
+
+&lt;p&gt;Usage: cli spactacle [options] &lt;specfile&gt;&lt;/specfile&gt;&lt;/p&gt;
+
+&lt;p&gt;Options:&lt;/p&gt;
+
+&lt;p&gt;-h, –help              output usage information
+   -V, –version           output the version number
+   -A, –skip-assets       omit CSS and JavaScript generation (default: false)
+   -e, –embeddable        omit the HTML &amp;lt;body/&amp;gt; and generate the documentation content only (default: false)
+   -d, –development-mode  start HTTP server with the file watcher and live reload (default: false)
+   -s, –start-server      start the HTTP server without any development features
+   -p, –port &lt;dir&gt;        the port number for the HTTP server to listen on (default: 4400)
+   -a, --app-dir &lt;dir&gt;     the application source directory (default: ./app)
+   -t, --target-dir &lt;dir&gt;  the target build directory (default: ./public)
+```&lt;/dir&gt;&lt;/dir&gt;&lt;/dir&gt;&lt;/p&gt;
+
+&lt;p&gt;Most options are self explanatory, but the following options warrant some further explanation:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;–development-mode&lt;/strong&gt;: This option starts a development server with a file watcher and live reload, and will automatically regenerate your docs when any of your spec or app files change.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;**–start-server **: This option starts a production server without any development options enabled that serves the contents of your &lt;code&gt;--target-dir&lt;/code&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;–embeddable&lt;/strong&gt;: This option lets you build a minimal version of the documentation without the HTML &lt;code&gt;&amp;lt;body&amp;gt;&lt;/code&gt; tags, so you can embed Spectacle into your own website template. More info on &lt;a href="#custom-builds"&gt;custom builds&lt;/a&gt; here.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;–app-dir&lt;/strong&gt;: This option overrides the default directory which contains all the Handlebars templates, SCSS, and JavaScript source files. This option is useful for development because you can copy the contents of &lt;code&gt;app&lt;/code&gt; to a remote location or a separate repo for custom builds.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;–target-dir&lt;/strong&gt;: This option specifies where the generated documentation HTML files will be output.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id="custom-builds"&gt;Custom Builds&lt;/h2&gt;
+
+&lt;p&gt;The best option for building your own custom functionality into Spectacle is to &lt;a href="https://help.github.com/articles/fork-a-repo/"&gt;fork Spectacle on GitHub&lt;/a&gt;, and make your own modifications in source. This way you can keep up to date by merging changes from the &lt;code&gt;master&lt;/code&gt; branch, and your can also contribute your updates back to &lt;code&gt;master&lt;/code&gt; by creating a &lt;a href="https://help.github.com/articles/creating-a-pull-request/"&gt;Pull Request&lt;/a&gt; if you think they improve Spectacle somehow.&lt;/p&gt;
+
+&lt;p&gt;To fork Spectacle go to &lt;a href="https://github.com/sourcey/spectacle"&gt;https://github.com/sourcey/spectacle&lt;/a&gt;, and press the ‘Fork’ button. Now you can &lt;code&gt;git clone git@github.com:&amp;lt;yourname&amp;gt;/spectacle.git&lt;/code&gt; to make your own changes.&lt;/p&gt;
+
+&lt;p&gt;Alternatively, you can just copy the contents of &lt;code&gt;app&lt;/code&gt; from the main repo which contains all the source files such as templates, stylesheets and JavaScripts. Now just pass the path to your custom &lt;code&gt;app&lt;/code&gt; path to the CLI like so: &lt;code&gt;spectacle -a /path/to/your/app your_swagger_api.json&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Good luck and enjoy Spectacle!&lt;/p&gt;
+</content>
+  </entry>
   <entry>
     <title>Building the Perfect Rails 5 API Only App</title>
     <link rel="alternate" href="http://sourcey.com/building-the-prefect-rails-5-api-only-app/"/>
     <id>http://sourcey.com/building-the-prefect-rails-5-api-only-app/</id>
     <published>2015-12-26T00:00:00Z</published>
-    <updated>2016-01-01T18:38:18+10:00</updated>
+    <updated>2016-01-01T18:47:54+10:00</updated>
     <author>
       <name>Kam Low</name>
     </author>
@@ -62,7 +177,7 @@ bin/rake db:setup
 
 &lt;h2 id="using-rspec-for-testing"&gt;Using RSpec for Testing&lt;/h2&gt;
 
-&lt;p&gt;Before doing anything else let’s setup &lt;a href="http://rspec.info"&gt;RSpec&lt;/a&gt; for testing our application. By setting up Rspec first we can make the most of the RSpec Rails generators, which will auto generate default specs for us each time we use &lt;code&gt;rails generate&lt;/code&gt; to generate resources. To do this, go ahead and add the &lt;a href="https://github.com/rspec/rspec-rails"&gt;rspec-rails&lt;/a&gt; gem to your Gemfile in the &lt;code&gt;:development, :test&lt;/code&gt; group:&lt;/p&gt;
+&lt;p&gt;Before going any further let’s setup &lt;a href="http://rspec.info"&gt;RSpec&lt;/a&gt; for spec testing our application. The reason why it’s good to setup RSpec first is that we can save a bit of time using the built-in RSpec generators to auto generate default model and controller specs for us each time we use &lt;code&gt;rails generate scaffold&lt;/code&gt; to generate resources later on. To install RSpec, go ahead and add the &lt;a href="https://github.com/rspec/rspec-rails"&gt;rspec-rails&lt;/a&gt; gem to your Gemfile in the &lt;code&gt;:development, :test&lt;/code&gt; group:&lt;/p&gt;
 
 &lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;group&lt;/span&gt; &lt;span class="ss"&gt;:development&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:test&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
 
@@ -84,11 +199,11 @@ bin/rake db:setup
 &lt;pre class="highlight shell"&gt;&lt;code&gt;bin/rails g rspec:install  
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Finally, you can get rid of the &lt;code&gt;test&lt;/code&gt; directory in Rails, since we won’t be writing unit tests, but specifications instead.&lt;/p&gt;
+&lt;p&gt;Finally, you can get rid of the &lt;code&gt;test&lt;/code&gt; directory in Rails, since we won’t be writing unit tests, but writing specifications instead.&lt;/p&gt;
 
 &lt;h2 id="bulding-your-api"&gt;Bulding Your API&lt;/h2&gt;
 
-&lt;p&gt;Now is the time to start building out our API controllers.&lt;/p&gt;
+&lt;p&gt;Lets start building out our API controllers.&lt;/p&gt;
 
 &lt;p&gt;When an app is created with the &lt;code&gt;--api&lt;/code&gt; flag you can use the default scaffold generators to generate your API resources as normal, without the need for any special arguments.&lt;/p&gt;
 
@@ -1536,116 +1651,6 @@ sudo -i
 &lt;center&gt;
 &lt;p&gt;&lt;a class="action-button button radius" target="_blank" href="https://github.com/sourcey/materiallogindemo" title="Get the Code on Github"&gt;Get the Code on Github&lt;/a&gt;&lt;/p&gt;
 &lt;/center&gt;
-</content>
-  </entry>
-  <entry>
-    <title>Simple Social Sharing Buttons Without JavaScript APIs</title>
-    <link rel="alternate" href="http://sourcey.com/simple-social-sharing-buttons-without-javascript-apis/"/>
-    <id>http://sourcey.com/simple-social-sharing-buttons-without-javascript-apis/</id>
-    <published>2015-05-18T00:00:00Z</published>
-    <updated>2015-05-18T21:31:59+10:00</updated>
-    <author>
-      <name>Kam Low</name>
-    </author>
-    <content type="html">&lt;p&gt;So you want to implement simple social sharing buttons on your site or application, but you don’t want the performance hit or resultant bloat from including each social network API just for these buttons. Good move!&lt;/p&gt;
-
-&lt;p&gt;The following code works with the glorious Foundation 5 and &lt;a href="http://zurb.com/playground/foundation-icon-fonts-3"&gt;Foundation Icons&lt;/a&gt; to display the buttons in a Reveal Modal. Alternatively, you can just remove the modal code to use the buttons without any JavaScript at all.&lt;/p&gt;
-
-&lt;p&gt;To implement the code on your site just replace the variables in curly brackets with your own data.&lt;/p&gt;
-
-&lt;center&gt;
-&lt;p&gt;&lt;a href="#" class="action-button button radius" target="_blank" data-reveal-id="share-buttons-modal" title="Share the Love"&gt;Try it out&lt;/a&gt;&lt;/p&gt;
-&lt;/center&gt;
-
-&lt;div id="share-buttons-modal" class="reveal-modal" data-reveal="" aria-hidden="true" role="dialog"&gt;
-  &lt;p&gt;&lt;a href="https://www.facebook.com/sharer/sharer.php?u={PAGEURL}&amp;amp;t={PAGETITLE}" target="_blank" title="Share on Facebook"&gt;&lt;i class="fi fi-social-facebook"&gt;&lt;/i&gt;&lt;/a&gt;
-  &lt;a href="https://twitter.com/intent/tweet?source={PAGEURL}&amp;amp;text={PAGETITLE}:{PAGEURL}&amp;amp;via={TWITTERUSERNAME}" target="_blank" title="Tweet"&gt;&lt;i class="fi fi-social-twitter"&gt;&lt;/i&gt;&lt;/a&gt;
-  &lt;a href="https://plus.google.com/share?url={PAGEURL}" target="_blank" title="Share on Google+"&gt;&lt;i class="fi fi-social-google-plus"&gt;&lt;/i&gt;&lt;/a&gt;
-  &lt;a href="http://pinterest.com/pin/create/button/?url={PAGEURL}&amp;amp;media={PAGEIMAGEURL}&amp;amp;description={PAGEDESCRIPTION}" target="_blank" title="Pin it"&gt;&lt;i class="fi fi-social-pinterest"&gt;&lt;/i&gt;&lt;/a&gt;
-  &lt;a href="mailto:?subject={PAGETITLE}&amp;amp;body={PAGEDESCRIPTION}:{PAGEURL}" target="_blank" title="Email"&gt;&lt;i class="fi fi-mail"&gt;&lt;/i&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;style&gt;
-#share-buttons-modal {
-  width: 375px;
-  border-radius: 3px;
-  
-  /* below definitions override Foundation responsive modal code */
-  min-height: initial;
-  margin: 0 auto;
-  padding: 0;
-  top: 100px;
-  left: 0;
-  right: 0;
-}
-#share-buttons-modal a {
-  border-right: 1px solid #eee;
-  height: 75px;
-  width: 20%; /* fix subpixel rendering issue */
-  float: left;
-  font-size: 60px;
-  line-height: 75px;
-  color: #c00;
-  text-align: center;
-  border-radius: 3px;
-}
-#share-buttons-modal a:hover {
-  background: #f6f6f6;
-}
-#share-buttons-modal a:focus {
-  background: #c00;
-  color: white;
-}
-#share-buttons-modal a:last-child {
-  border-right: none;
-}
-&lt;/style&gt;
-
-&lt;pre class="highlight html"&gt;&lt;code&gt;&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;id=&lt;/span&gt;&lt;span class="s"&gt;"share-buttons-modal"&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;"reveal-modal"&lt;/span&gt; &lt;span class="na"&gt;data-reveal&lt;/span&gt; &lt;span class="na"&gt;aria-hidden=&lt;/span&gt;&lt;span class="s"&gt;"true"&lt;/span&gt; &lt;span class="na"&gt;role=&lt;/span&gt;&lt;span class="s"&gt;"dialog"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;"https://www.facebook.com/sharer/sharer.php?u={PAGEURL}&amp;amp;t={PAGETITLE}"&lt;/span&gt; &lt;span class="na"&gt;target=&lt;/span&gt;&lt;span class="s"&gt;"_blank"&lt;/span&gt; &lt;span class="na"&gt;title=&lt;/span&gt;&lt;span class="s"&gt;"Share on Facebook"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;i&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;"fi fi-social-facebook"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/i&amp;gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;"https://twitter.com/intent/tweet?source={PAGEURL}&amp;amp;text={PAGETITLE}:{PAGEURL}&amp;amp;via={TWITTERUSERNAME}"&lt;/span&gt; &lt;span class="na"&gt;target=&lt;/span&gt;&lt;span class="s"&gt;"_blank"&lt;/span&gt; &lt;span class="na"&gt;title=&lt;/span&gt;&lt;span class="s"&gt;"Tweet"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;i&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;"fi fi-social-twitter"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/i&amp;gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;"https://plus.google.com/share?url={PAGEURL}"&lt;/span&gt; &lt;span class="na"&gt;target=&lt;/span&gt;&lt;span class="s"&gt;"_blank"&lt;/span&gt; &lt;span class="na"&gt;title=&lt;/span&gt;&lt;span class="s"&gt;"Share on Google+"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;i&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;"fi fi-social-google-plus"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/i&amp;gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;"http://pinterest.com/pin/create/button/?url={PAGEURL}&amp;amp;media={PAGEIMAGEURL}&amp;amp;description={PAGEDESCRIPTION}"&lt;/span&gt; &lt;span class="na"&gt;target=&lt;/span&gt;&lt;span class="s"&gt;"_blank"&lt;/span&gt; &lt;span class="na"&gt;title=&lt;/span&gt;&lt;span class="s"&gt;"Pin it"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;i&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;"fi fi-social-pinterest"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/i&amp;gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;"mailto:?subject={PAGETITLE}&amp;amp;body={PAGEDESCRIPTION}:{PAGEURL}"&lt;/span&gt; &lt;span class="na"&gt;target=&lt;/span&gt;&lt;span class="s"&gt;"_blank"&lt;/span&gt; &lt;span class="na"&gt;title=&lt;/span&gt;&lt;span class="s"&gt;"Email"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;i&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;"fi fi-mail"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/i&amp;gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre class="highlight css"&gt;&lt;code&gt;&lt;span class="nf"&gt;#share-buttons-modal&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-  &lt;span class="nl"&gt;width&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;375px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  
-  &lt;span class="c"&gt;/* below definitions override Foundation responsive modal code */&lt;/span&gt;
-  &lt;span class="nl"&gt;min-height&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;initial&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="nl"&gt;margin&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt; &lt;span class="nb"&gt;auto&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="nl"&gt;padding&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="nl"&gt;top&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;100px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="nl"&gt;left&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="nl"&gt;right&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="nf"&gt;#share-buttons-modal&lt;/span&gt; &lt;span class="nt"&gt;a&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-  &lt;span class="nl"&gt;border-right&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;1px&lt;/span&gt; &lt;span class="nb"&gt;solid&lt;/span&gt; &lt;span class="m"&gt;#eee&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="nl"&gt;height&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;75px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="nl"&gt;width&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;20%&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c"&gt;/* fix subpixel rendering issue */&lt;/span&gt;
-  &lt;span class="nl"&gt;float&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;left&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="nl"&gt;font-size&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;60px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="nl"&gt;line-height&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;75px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="nl"&gt;color&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#c00&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="nl"&gt;text-align&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;center&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="nl"&gt;border-radius&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;3px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="nf"&gt;#share-buttons-modal&lt;/span&gt; &lt;span class="nt"&gt;a&lt;/span&gt;&lt;span class="nd"&gt;:hover&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-  &lt;span class="nl"&gt;background&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#f6f6f6&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="nf"&gt;#share-buttons-modal&lt;/span&gt; &lt;span class="nt"&gt;a&lt;/span&gt;&lt;span class="nd"&gt;:focus&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-  &lt;span class="nl"&gt;background&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#c00&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="nl"&gt;color&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="no"&gt;white&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="nf"&gt;#share-buttons-modal&lt;/span&gt; &lt;span class="nt"&gt;a&lt;/span&gt;&lt;span class="nd"&gt;:last-child&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-  &lt;span class="nl"&gt;border-right&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;none&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Have fun!&lt;/p&gt;
-
 </content>
   </entry>
 </feed>
