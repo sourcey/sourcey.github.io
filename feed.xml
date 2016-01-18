@@ -11,7 +11,7 @@
     <link rel="alternate" href="http://sourcey.com/spectacle/"/>
     <id>http://sourcey.com/spectacle/</id>
     <published>2016-01-12T00:00:00Z</published>
-    <updated>2016-01-12T20:34:15+10:00</updated>
+    <updated>2016-01-19T00:56:45+10:00</updated>
     <author>
       <name/>
     </author>
@@ -19,9 +19,13 @@
   &lt;h4 class="no_toc" id="contents"&gt;Contents&lt;/h4&gt;
 
 &lt;ul id="markdown-toc"&gt;
+  &lt;li&gt;&lt;a id="markdown-toc-live-demo" href="#live-demo"&gt;Live Demo&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a id="markdown-toc-features" href="#features"&gt;Features:&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a id="markdown-toc-getting-started" href="#getting-started"&gt;Getting Started&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a id="markdown-toc-configuration-options" href="#configuration-options"&gt;Configuration Options&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a id="markdown-toc-custom-builds" href="#custom-builds"&gt;Custom Builds&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a id="markdown-toc-optimizing-your-workflow" href="#optimizing-your-workflow"&gt;Optimizing Your Workflow&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a id="markdown-toc-more-information" href="#more-information"&gt;More Information&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;/div&gt;
@@ -33,80 +37,100 @@
   &lt;dd&gt;MIT&lt;/dd&gt;
 &lt;/dl&gt;
 
-&lt;p&gt;Spectacle is a static documentation generator that lets you autogenerate your documentation from a OpenAPI/Swagger 2.0 JSON specification file. With Spectacle you can have beautiful HTML5 documentation for your API ready to be deployed in a matter of minutes.&lt;/p&gt;
+&lt;p&gt;Spectacle generates beautiful static HTML5 documentation from &lt;a href="https://openapis.org"&gt;OpenAPI&lt;/a&gt;/&lt;a href="http://swagger.io"&gt;Swagger&lt;/a&gt; 2.0 API specifications.&lt;/p&gt;
 
-&lt;p&gt;Here’s what Spectacle features:&lt;/p&gt;
+&lt;!--
+With Spectacle you can have beautiful HTML5 documentation for your API ready to be deployed in a matter of minutes.
+--&gt;
+
+&lt;p&gt;The goal of Spectacle is help you “save time and look good” by using a well written spec to automatically generate your API docs. Using an API spec to generate your docs has a number of great advantages:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;OpenAPI/Swagger 2.0 support&lt;/li&gt;
-  &lt;li&gt;Mobile friendly responsive HTML5 and CSS3 grid layout&lt;/li&gt;
-  &lt;li&gt;Modern and readable design&lt;/li&gt;
-  &lt;li&gt;Embedded option to generate docs without a layout for convenient integration with your own website&lt;/li&gt;
-  &lt;li&gt;Development mode with file watcher and live reload for regenerating docs when your spec is updated&lt;/li&gt;
-  &lt;li&gt;Simple and extendable Handlebars templates and SCSS styles&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Maintain a single source&lt;/strong&gt;: Save time by removing the need to maintain a separate API spec and API documentation.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;No more out-of-date documentation&lt;/strong&gt;: Your documentation will always be up-to-date with your API spec.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Be a better developer&lt;/strong&gt;: Your entire API system will be more stable and robust when built around your spec as a single source of truth.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Documentation is just the beginning&lt;/strong&gt;: Generate your API system from your spec, including; tests, client implementations, and server code. See also &lt;a href="#optimizing-your-workflow"&gt;Optimizing Your Workflow&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id="live-demo"&gt;Live Demo&lt;/h2&gt;
+
+&lt;p&gt;See a demo of Spectacle in action here: http://cheesestore.github.io&lt;/p&gt;
+
+&lt;h2 id="features"&gt;Features:&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;OpenAPI/Swagger 2.0 support&lt;/strong&gt;: Support for the latest OpenAPI/Swagger specification - the new standard for documenting REST APIs.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Clean responsive design&lt;/strong&gt;: Spectacle features a responsive HTML5 and CSS3 layout built with &lt;a href="http://foundation.zurb.com/sites.html"&gt;Foundation 6&lt;/a&gt; that looks great on all devices and screen sizes.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Embed into your existing website&lt;/strong&gt;: Spectacle features an embedded option that lets you generate docs without a HTML &lt;code&gt;&amp;lt;body&amp;gt;&lt;/code&gt; layout for convenient integration into your existing website.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Live preview developer mode&lt;/strong&gt;: Spectacle comes with a development mode that starts a local HTTP server with a file watcher and live reload so you can preview changes to your live documentation in your browser as you write your spec.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Configurable templates and styles&lt;/strong&gt;: Spectacle is built with easily configurable Handlebars templates and SCSS styles so you can add your own flavor. See &lt;a href="#custom-builds"&gt;Custom Builds&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h2 id="getting-started"&gt;Getting Started&lt;/h2&gt;
 
 &lt;p&gt;Simply install Spectacle from &lt;code&gt;npm&lt;/code&gt; like so:&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;bash
-npm install spectacle-docs
-&lt;/code&gt;&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;npm install -g spectacle-docs
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Next pass your &lt;code&gt;swagger.json&lt;/code&gt; document use the CLI to generate your documentation.&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;bash
-spectacle your_swagger_api.json
-&lt;/code&gt;&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;spectacle your_swagger_api.json
 
-&lt;p&gt;Your documentation will be located in the &lt;code&gt;/public&lt;/code&gt; directory. You can either copy the generated HTML to your web server, or view your docs by starting the internal web server like so:&lt;/p&gt;
+&lt;span class="c"&gt;# Or use the cheese.json example to test it out&lt;/span&gt;
+&lt;span class="c"&gt;# spectacle test/fixtures/cheese.json&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;code&gt;bash
-spectacle -s
-&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Your generated documentation will be located in the &lt;code&gt;/public&lt;/code&gt; directory. You can either copy the generated HTML to your web server, or view your docs by starting the internal web server like so:&lt;/p&gt;
 
-&lt;p&gt;Now point your browser to &lt;a href="http://localhost:4400/"&gt;http://localhost:4400/&lt;/a&gt; in order to view your docs.&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;spectacle -s
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now point your browser to &lt;a href="http://localhost:4400/"&gt;http://localhost:4400/&lt;/a&gt; and presto - sexy docs for your API!&lt;/p&gt;
 
 &lt;h2 id="configuration-options"&gt;Configuration Options&lt;/h2&gt;
 
 &lt;p&gt;The basic CLI options are detailed below:&lt;/p&gt;
 
-&lt;p&gt;```bash
-$ spectacle -h&lt;/p&gt;
+&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;spectacle -h
 
-&lt;p&gt;Usage: cli spactacle [options] &lt;specfile&gt;&lt;/specfile&gt;&lt;/p&gt;
+  Usage: cli spactacle &lt;span class="o"&gt;[&lt;/span&gt;options] &amp;lt;specfile&amp;gt;
 
-&lt;p&gt;Options:&lt;/p&gt;
+  Options:
 
-&lt;p&gt;-h, –help              output usage information
-   -V, –version           output the version number
-   -A, –skip-assets       omit CSS and JavaScript generation (default: false)
-   -e, –embeddable        omit the HTML &amp;lt;body/&amp;gt; and generate the documentation content only (default: false)
-   -d, –development-mode  start HTTP server with the file watcher and live reload (default: false)
-   -s, –start-server      start the HTTP server without any development features
-   -p, –port &lt;dir&gt;        the port number for the HTTP server to listen on (default: 4400)
-   -a, --app-dir &lt;dir&gt;     the application source directory (default: ./app)
-   -t, --target-dir &lt;dir&gt;  the target build directory (default: ./public)
-```&lt;/dir&gt;&lt;/dir&gt;&lt;/dir&gt;&lt;/p&gt;
+  -h, --help                output usage information
+  -V, --version             output the version number
+  -C, --disable-css         omit CSS generation &lt;span class="o"&gt;(&lt;/span&gt;default: &lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+  -J, --disable-js          omit JavaScript generation &lt;span class="o"&gt;(&lt;/span&gt;default: &lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+  -e, --embeddable          omit the HTML &amp;lt;body/&amp;gt; and generate the documentation content only &lt;span class="o"&gt;(&lt;/span&gt;default: &lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+  -d, --development-mode    start HTTP server with the file watcher and live reload &lt;span class="o"&gt;(&lt;/span&gt;default: &lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+  -s, --start-server        start the HTTP server without any development features
+  -p, --port &amp;lt;dir&amp;gt;          the port number &lt;span class="k"&gt;for &lt;/span&gt;the HTTP server to listen on &lt;span class="o"&gt;(&lt;/span&gt;default: 4400&lt;span class="o"&gt;)&lt;/span&gt;
+  -t, --target-dir &amp;lt;dir&amp;gt;    the target build directory &lt;span class="o"&gt;(&lt;/span&gt;default: ./public&lt;span class="o"&gt;)&lt;/span&gt;
+  -f, --target-file &amp;lt;file&amp;gt;  the target build HTML file &lt;span class="o"&gt;(&lt;/span&gt;default: index.html&lt;span class="o"&gt;)&lt;/span&gt;
+  -a, --app-dir &amp;lt;dir&amp;gt;       the application &lt;span class="nb"&gt;source &lt;/span&gt;directory &lt;span class="o"&gt;(&lt;/span&gt;default: ./app&lt;span class="o"&gt;)&lt;/span&gt;
+  -i, --cache-dir &amp;lt;dir&amp;gt;     the intermediate build cache directory &lt;span class="o"&gt;(&lt;/span&gt;default: ./.cache&lt;span class="o"&gt;)&lt;/span&gt;
+  -l, --logo-file &amp;lt;file&amp;gt;    specify a custom logo file &lt;span class="o"&gt;(&lt;/span&gt;default: null&lt;span class="o"&gt;)&lt;/span&gt;
+  -c, --config-file &amp;lt;file&amp;gt;  specify a custom configuration file &lt;span class="o"&gt;(&lt;/span&gt;default: ./app/lib/config.js&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Most options are self explanatory, but the following options warrant some further explanation:&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;–development-mode&lt;/strong&gt;: This option starts a development server with a file watcher and live reload, and will automatically regenerate your docs when any of your spec or app files change.&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;–development-mode&lt;/strong&gt; &lt;code&gt;-d&lt;/code&gt;: This option starts a development server with a file watcher and live reload, and will automatically regenerate your docs when any of your spec or app files change.&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;**–start-server **: This option starts a production server without any development options enabled that serves the contents of your &lt;code&gt;--target-dir&lt;/code&gt;.&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;–start-server&lt;/strong&gt; &lt;code&gt;-s&lt;/code&gt;: This option starts a production server without any development options enabled that serves the contents of your &lt;code&gt;--target-dir&lt;/code&gt;.&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;–embeddable&lt;/strong&gt;: This option lets you build a minimal version of the documentation without the HTML &lt;code&gt;&amp;lt;body&amp;gt;&lt;/code&gt; tags, so you can embed Spectacle into your own website template. More info on &lt;a href="#custom-builds"&gt;custom builds&lt;/a&gt; here.&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;–embeddable&lt;/strong&gt; &lt;code&gt;-e&lt;/code&gt;: This option lets you build a minimal version of the documentation without the HTML &lt;code&gt;&amp;lt;body&amp;gt;&lt;/code&gt; tags, so you can embed Spectacle into your own website template. More info on &lt;a href="#custom-builds"&gt;custom builds&lt;/a&gt; here.&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;–app-dir&lt;/strong&gt;: This option overrides the default directory which contains all the Handlebars templates, SCSS, and JavaScript source files. This option is useful for development because you can copy the contents of &lt;code&gt;app&lt;/code&gt; to a remote location or a separate repo for custom builds.&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;–app-dir&lt;/strong&gt; &lt;code&gt;-a&lt;/code&gt;: This option overrides the default directory which contains all the Handlebars templates, SCSS, and JavaScript source files. This option is useful for development because you can copy the contents of &lt;code&gt;app&lt;/code&gt; to a remote location or a separate repo for custom builds.&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;–target-dir&lt;/strong&gt;: This option specifies where the generated documentation HTML files will be output.&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;–target-dir&lt;/strong&gt; &lt;code&gt;-t&lt;/code&gt;: This option specifies where the generated documentation HTML files will be output.&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
@@ -114,9 +138,28 @@ $ spectacle -h&lt;/p&gt;
 
 &lt;p&gt;The best option for building your own custom functionality into Spectacle is to &lt;a href="https://help.github.com/articles/fork-a-repo/"&gt;fork Spectacle on GitHub&lt;/a&gt;, and make your own modifications in source. This way you can keep up to date by merging changes from the &lt;code&gt;master&lt;/code&gt; branch, and your can also contribute your updates back to &lt;code&gt;master&lt;/code&gt; by creating a &lt;a href="https://help.github.com/articles/creating-a-pull-request/"&gt;Pull Request&lt;/a&gt; if you think they improve Spectacle somehow.&lt;/p&gt;
 
-&lt;p&gt;To fork Spectacle go to &lt;a href="https://github.com/sourcey/spectacle"&gt;https://github.com/sourcey/spectacle&lt;/a&gt;, and press the ‘Fork’ button. Now you can &lt;code&gt;git clone git@github.com:&amp;lt;yourname&amp;gt;/spectacle.git&lt;/code&gt; to make your own changes.&lt;/p&gt;
+&lt;p&gt;To fork Spectacle go to &lt;code&gt;https://github.com/sourcey/spectacle&lt;/code&gt;, and press the ‘Fork’ button. Now you can &lt;code&gt;git clone git@github.com:&amp;lt;yourname&amp;gt;/spectacle.git&lt;/code&gt; to make your own changes.&lt;/p&gt;
 
 &lt;p&gt;Alternatively, you can just copy the contents of &lt;code&gt;app&lt;/code&gt; from the main repo which contains all the source files such as templates, stylesheets and JavaScripts. Now just pass the path to your custom &lt;code&gt;app&lt;/code&gt; path to the CLI like so: &lt;code&gt;spectacle -a /path/to/your/app your_swagger_api.json&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id="optimizing-your-workflow"&gt;Optimizing Your Workflow&lt;/h2&gt;
+
+&lt;p&gt;If you’re a developer you are always looking for ways to optimize your workflow. The great thing about the Swagger spec is that it enables you to use your API spec as a source for automating and generating all parts of your API system, such as:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Inline Code Generators&lt;/strong&gt;: Generate your Swagger JSON or YAML from your source code comments.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Automate Testing&lt;/strong&gt;: Automate testing for all your API endpoints.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Code Generation&lt;/strong&gt;: Automatically generate client and server code from your spec.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Generate Documentation&lt;/strong&gt;: Really?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;For a list of open source libraries in many languages check here: http://swagger.io/open-source-integrations/&lt;/p&gt;
+
+&lt;h2 id="more-information"&gt;More Information&lt;/h2&gt;
+
+&lt;p&gt;Please use the &lt;a href="https://github.com/sourcey/spectacle/issues"&gt;GitHub issue tracker&lt;/a&gt; if you have any ideas or bugs to report.&lt;/p&gt;
+
+&lt;p&gt;All contributions are welcome.&lt;/p&gt;
 
 &lt;p&gt;Good luck and enjoy Spectacle!&lt;/p&gt;
 </content>
