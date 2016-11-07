@@ -209,7 +209,7 @@ With Spectacle you can have beautiful HTML5 documentation for your API ready to 
     <link rel="alternate" href="http://sourcey.com/building-the-prefect-rails-5-api-only-app/"/>
     <id>http://sourcey.com/building-the-prefect-rails-5-api-only-app/</id>
     <published>2015-12-26T00:00:00Z</published>
-    <updated>2016-10-31T13:49:19+01:00</updated>
+    <updated>2016-11-01T10:52:05+01:00</updated>
     <author>
       <name>Kam Low</name>
     </author>
@@ -217,7 +217,7 @@ With Spectacle you can have beautiful HTML5 documentation for your API ready to 
   &lt;h4 class="no_toc" id="contents"&gt;Contents&lt;/h4&gt;
 
 &lt;ul id="markdown-toc"&gt;
-  &lt;li&gt;&lt;a id="markdown-toc-installing-up-rails-5" href="#installing-up-rails-5"&gt;Installing up Rails 5&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a id="markdown-toc-installing-rails-5" href="#installing-rails-5"&gt;Installing Rails 5&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a id="markdown-toc-using-rspec-for-testing" href="#using-rspec-for-testing"&gt;Using RSpec for Testing&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a id="markdown-toc-bulding-your-api" href="#bulding-your-api"&gt;Bulding Your API&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a id="markdown-toc-serializing-api-output" href="#serializing-api-output"&gt;Serializing API Output&lt;/a&gt;&lt;/li&gt;
@@ -229,23 +229,18 @@ With Spectacle you can have beautiful HTML5 documentation for your API ready to 
 
 &lt;/div&gt;
 
-&lt;p&gt;Thanks to the new &lt;code&gt;rails-api&lt;/code&gt; gem that ships as part of the Rails 5 core, Rails is now an ideal candidate for building streamlined APIs quickly and easily.&lt;/p&gt;
+&lt;p&gt;This how-to guide aims to help you get started the right way using Rails 5 to build the perfect API.
+Thanks to the new &lt;code&gt;rails-api&lt;/code&gt; gem that ships as part of the Rails 5 core, Rails is now an ideal candidate for building streamlined APIs quickly and easily.&lt;/p&gt;
 
 &lt;p&gt;Until now, arguably the best option for creating APIs in Ruby has been Grape, and while Grape is still a brilliant option (especially if you like to DIY), there are some great advantages to using Rails 5 in API mode, such as; ActiveRecord by default, a strong developer community, and having the asset pipeline and front end features available should you need them as your project evolves.&lt;/p&gt;
 
-&lt;p&gt;This how-to guide aims to help you get started the right way using Rails 5 to build the perfect API, and it comprises of the following sections:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;ToC&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id="installing-up-rails-5"&gt;Installing up Rails 5&lt;/h2&gt;
+&lt;h2 id="installing-rails-5"&gt;Installing Rails 5&lt;/h2&gt;
 
 &lt;p&gt;First, make sure you are running Ruby 2.2.2+ or newer as it’s required by Rails 5, then go ahead an install the Rails gem:&lt;/p&gt;
 
 &lt;pre class="highlight shell"&gt;&lt;code&gt;gem install rails
 
-&lt;span class="c"&gt;# The output should be &amp;gt;= Rails 5.0.0&lt;/span&gt;
+&lt;span class="c"&gt;# version should be &amp;gt;= Rails 5.0.0&lt;/span&gt;
 rails --version
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;According to the official &lt;a href="http://edgeguides.rubyonrails.org/api_app.html"&gt;Rails guide&lt;/a&gt; all we need to do to create an API only Rails app is to pass the &lt;code&gt;--api&lt;/code&gt; option at the command line when creating a new Rails app, like so:&lt;/p&gt;
