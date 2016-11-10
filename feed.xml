@@ -11,7 +11,7 @@
     <link rel="alternate" href="http://sourcey.com/generating-beautiful-markdown-documentation-with-moxygen/"/>
     <id>http://sourcey.com/generating-beautiful-markdown-documentation-with-moxygen/</id>
     <published>2016-11-10T00:00:00Z</published>
-    <updated>2016-11-10T20:34:14+01:00</updated>
+    <updated>2016-11-10T20:38:18+01:00</updated>
     <author>
       <name>Kam Low</name>
     </author>
@@ -99,29 +99,25 @@
   &lt;li&gt;Run &lt;code&gt;moxygen&lt;/code&gt; providing the folder location of the XML documentation as the first argument ie. &lt;code&gt;{OUTPUT_DIRECTORY}/xml&lt;/code&gt;.&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;```
-Usage: moxygen [options] &lt;doxygen directory=""&gt;&lt;/doxygen&gt;&lt;/p&gt;
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;Usage: moxygen [options] &amp;lt;doxygen directory&amp;gt;
 
-&lt;p&gt;Options:&lt;/p&gt;
+Options:
 
-&lt;p&gt;-h, –help             output usage information
-  -V, –version          output the version number
-  -v, –verbose          verbose mode
-  -a, –anchors          add anchors to internal links
-  -g, –modules          output doxygen modules into separate files
-  -l, –language &lt;lang&gt;  programming language
-  -t, --templates &lt;dir&gt;  custom templates directory
-  -o, --output &lt;file&gt;    output file (must contain %s when using modules)
-```&lt;/file&gt;&lt;/dir&gt;&lt;/lang&gt;&lt;/p&gt;
-
+  -h, --help             output usage information
+  -V, --version          output the version number
+  -v, --verbose          verbose mode
+  -a, --anchors          add anchors to internal links
+  -g, --modules          output doxygen modules into separate files
+  -l, --language &amp;lt;lang&amp;gt;  programming language
+  -t, --templates &amp;lt;dir&amp;gt;  custom templates directory
+  -o, --output &amp;lt;file&amp;gt;    output file (must contain %s when using modules)
+&lt;/code&gt;&lt;/pre&gt;
 &lt;h3 id="single-page-output"&gt;Single Page Output&lt;/h3&gt;
 
 &lt;p&gt;If you want single page Markdown output the you can run Moxygen like so:&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;
-moxygen --anchors --output api.md /path/to/doxygen/xml
-&lt;/code&gt;&lt;/p&gt;
-
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;moxygen --anchors --output api.md /path/to/doxygen/xml
+&lt;/code&gt;&lt;/pre&gt;
 &lt;h3 id="multi-page-output"&gt;Multi Page Output&lt;/h3&gt;
 
 &lt;p&gt;Moxygen supports the doxygen &lt;a href="http://www.stack.nl/~dimitri/doxygen/manual/grouping.html#modules"&gt;modules&lt;/a&gt; syntax for generating multi page documentation.&lt;/p&gt;
@@ -130,10 +126,8 @@ moxygen --anchors --output api.md /path/to/doxygen/xml
 
 &lt;p&gt;Example:&lt;/p&gt;
 
-&lt;p&gt;&lt;code&gt;
-moxygen --anchors --modules --output api-%s.md /path/to/doxygen/xml
-&lt;/code&gt;&lt;/p&gt;
-
+&lt;pre class="highlight plaintext"&gt;&lt;code&gt;moxygen --anchors --modules --output api-%s.md /path/to/doxygen/xml
+&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id="hosting-your-documentation"&gt;Hosting Your Documentation&lt;/h2&gt;
 
 &lt;p&gt;We use a combination of GitBook and Middleman for &lt;a href="http://sourcey.com/libsourcey/"&gt;LibSourcey&lt;/a&gt;. It’s very easy to setup; the GitBook is located in the &lt;code&gt;doc&lt;/code&gt; folder of the &lt;a href="https://github.com/sourcey/libsourcey/tree/master/doc"&gt;repository&lt;/a&gt;, with symlinks to the main README and LICENSE files so they can be reused in the book. Next the static GitBook HTML is copied across to out Middleman website and deployed using GitHub pages. All in all a very convenient (and cost effective!) solution.&lt;/p&gt;
@@ -142,7 +136,7 @@ moxygen --anchors --modules --output api-%s.md /path/to/doxygen/xml
 
 &lt;h2 id="conclusion"&gt;Conclusion&lt;/h2&gt;
 
-&lt;p&gt;It’s my hope that with Moxygen, C++ developers now have a way to generate more aesthetically pleasing and readable documentation. Since we only ever look at the docs when we absolutely have to, let’s make the process as enjoyable as possible! :)&lt;/p&gt;
+&lt;p&gt;It’s my hope that with Moxygen, C++ developers will now have a way to generate more aesthetically pleasing and readable documentation. Since we only ever look at the docs when we absolutely have to, let’s make the process as enjoyable as possible! :)&lt;/p&gt;
 </content>
   </entry>
   <entry>
