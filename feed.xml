@@ -11,7 +11,7 @@
     <link rel="alternate" href="http://sourcey.com/generating-beautiful-markdown-documentation-with-moxygen/"/>
     <id>http://sourcey.com/generating-beautiful-markdown-documentation-with-moxygen/</id>
     <published>2016-11-10T00:00:00Z</published>
-    <updated>2016-11-10T20:30:31+01:00</updated>
+    <updated>2016-11-10T20:34:14+01:00</updated>
     <author>
       <name>Kam Low</name>
     </author>
@@ -96,22 +96,24 @@
   &lt;li&gt;Add &lt;code&gt;GENERATE_XML=YES&lt;/code&gt; to your &lt;code&gt;Doxyfile&lt;/code&gt;.&lt;/li&gt;
   &lt;li&gt;Run &lt;code&gt;doxygen&lt;/code&gt; to generate the XML documentation.&lt;/li&gt;
   &lt;li&gt;Install &lt;code&gt;moxygen&lt;/code&gt; like so: &lt;code&gt;npm install moxygen -g&lt;/code&gt;.&lt;/li&gt;
-  &lt;li&gt;Run &lt;code&gt;moxygen&lt;/code&gt; providing the folder location of the XML documentation as the first argument ie. &lt;code&gt;{OUTPUT_DIRECTORY}/xml&lt;/code&gt;.&lt;br /&gt;
-  ```
-  Usage: moxygen [options] &lt;doxygen directory=""&gt;&lt;/doxygen&gt;&lt;/li&gt;
+  &lt;li&gt;Run &lt;code&gt;moxygen&lt;/code&gt; providing the folder location of the XML documentation as the first argument ie. &lt;code&gt;{OUTPUT_DIRECTORY}/xml&lt;/code&gt;.&lt;/li&gt;
 &lt;/ol&gt;
+
+&lt;p&gt;```
+Usage: moxygen [options] &lt;doxygen directory=""&gt;&lt;/doxygen&gt;&lt;/p&gt;
 
 &lt;p&gt;Options:&lt;/p&gt;
 
-&lt;pre class="highlight plaintext"&gt;&lt;code&gt;-h, --help             output usage information
--V, --version          output the version number
--v, --verbose          verbose mode
--a, --anchors          add anchors to internal links
--g, --modules          output doxygen modules into separate files
--l, --language &amp;lt;lang&amp;gt;  programming language
--t, --templates &amp;lt;dir&amp;gt;  custom templates directory
--o, --output &amp;lt;file&amp;gt;    output file (must contain %s when using modules)   ```
-&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;-h, –help             output usage information
+  -V, –version          output the version number
+  -v, –verbose          verbose mode
+  -a, –anchors          add anchors to internal links
+  -g, –modules          output doxygen modules into separate files
+  -l, –language &lt;lang&gt;  programming language
+  -t, --templates &lt;dir&gt;  custom templates directory
+  -o, --output &lt;file&gt;    output file (must contain %s when using modules)
+```&lt;/file&gt;&lt;/dir&gt;&lt;/lang&gt;&lt;/p&gt;
+
 &lt;h3 id="single-page-output"&gt;Single Page Output&lt;/h3&gt;
 
 &lt;p&gt;If you want single page Markdown output the you can run Moxygen like so:&lt;/p&gt;
