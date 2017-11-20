@@ -36,6 +36,8 @@ http://sourcey.com/rails-4-omniauth-using-devise-with-twitter-facebook-and-linke
 http://sourcey.com/spectacle/
 
 
+
+
 http://sourcey.com/pinterest-api-pinit-button-callback-tracking/
 
 
@@ -371,10 +373,16 @@ http://sourcey.com/the-art-of-the-internet/
 http://sourcey.com/android-horizontally-scrolling-pan-scan-and-zoom-image-gallery/
 
 
+http://sourcey.com/precompiled-webrtc-libraries/
+
+
 http://sourcey.com/html5-video-is-finally-ready/
 
 
 http://sourcey.com/anionu/
+
+
+http://sourcey.com/precompiled-webrtc-for-windows/
 
 
 http://sourcey.com/webrtc-custom-opencv-video-capture/
@@ -456,6 +464,9 @@ http://sourcey.com/automatic-escaping-of-html-tags-in-code-elements-for-wordpres
 http://sourcey.com/webrtc-port-forwarding-pseudo-turn-proxy/
 
 
+http://sourcey.com/webrtc-precompiled-builds/manifest.json
+
+
 http://sourcey.com/agile-peer-code-reviews-with-codebrag/
 
 
@@ -520,9 +531,6 @@ http://sourcey.com/sitemap.txt
 
 
 http://sourcey.com/precompiling-assets-for-large-rails-deployments-with-capistrano/
-
-
-http://sourcey.com/precompiled-webrtc-for-windows/
 
 
 http://sourcey.com/generating-website-thumbnails-in-rails-4-using-dragonfly-and-wkhtmltoimage/

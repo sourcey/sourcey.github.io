@@ -142,74 +142,209 @@ ninja &lt;span class="nt"&gt;-C&lt;/span&gt; out/x64/Release boringssl field_tri
 </content>
   </entry>
   <entry>
-    <title>Pre-compiled WebRTC Libraries for Windows</title>
-    <link rel="alternate" href="https://sourcey.com/precompiled-webrtc-for-windows/"/>
-    <id>https://sourcey.com/precompiled-webrtc-for-windows/</id>
-    <published>2017-03-29T00:00:00Z</published>
-    <updated>2017-03-29T20:07:44+02:00</updated>
+    <title>Precompiled WebRTC Libraries</title>
+    <link rel="alternate" href="https://sourcey.com/precompiled-webrtc-libraries/"/>
+    <id>https://sourcey.com/precompiled-webrtc-libraries/</id>
+    <published>2017-04-17T00:00:00Z</published>
+    <updated>2017-11-20T12:43:31+01:00</updated>
     <author>
       <name/>
     </author>
-    <content type="html">&lt;!-- &lt;div class="sidebar-section toc"&gt;
+    <content type="html">&lt;!-- 
+&lt;div class="sidebar-section toc"&gt;
 #### Contents
 {:.no_toc}
 
 * ToC
 {:toc}
-&lt;/div&gt; --&gt;
+&lt;/div&gt;
+--&gt;
+&lt;!-- subtitle: Latest builds for Linux and Windows --&gt;
+&lt;!-- ![WebRTC](logos/webrtc-250x250.png "WebRTC"){: .align-left} --&gt;
+&lt;!-- ## Downloads --&gt;
 
-&lt;p&gt;&lt;img alt="WebRTC" title="WebRTC" class="align-left" src="/images/logos/webrtc-250x250.png" /&gt;
-After a number of requests from frustrated developers we’ve started providing precompiled WebRTC native libraries and headers for Windows. There’s no need to compile anything or jump through any hoops, just download the packages and extract them to get started.&lt;/p&gt;
+&lt;div class="row"&gt;
+  &lt;div class="columns medium-3 show-for-medium-up text-center"&gt;
+    &lt;p&gt;&lt;img alt="WebRTC" title="WebRTC" class="no-style" src="/images/logos/webrtc-250x250.png" width="185" /&gt;&lt;/p&gt;
+  &lt;/div&gt;
 
-&lt;p&gt;Weighing in at over &lt;strong&gt;6gb&lt;/strong&gt;, the WebRTC repository is an absolute monster with a myriad of dependencies that no developer without a fat paycheck from Google should have to mess with. However, once the fat was trimmed we managed to get the archived file size down to about &lt;strong&gt;2.3mb&lt;/strong&gt; for all required dev headers, and &lt;strong&gt;72.3mb&lt;/strong&gt; for pre-compiled Debug and Release libraries.&lt;/p&gt;
+  &lt;div class="columns medium-9"&gt;
+    &lt;p&gt;Save yourself the tears and frustration — precompiled native WebRTC libraries and development headers are available for download here. Linux and Windows &lt;code&gt;Debug&lt;/code&gt; and &lt;code&gt;Release&lt;/code&gt; builds are provided for &lt;code&gt;x86&lt;/code&gt; and &lt;code&gt;x64&lt;/code&gt; architectures. &lt;a href="#usage"&gt;Usage instructions are below&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;These libraries are provided for use with &lt;a href="/libsourcey"&gt;LibSourcey&lt;/a&gt;, but can be used by anyone. Builds are not nightly just yet, but we will update the build for every major release and important bugfix.&lt;/p&gt;
+    &lt;div id="webrtc-filters" class="row collapse"&gt;
+      &lt;div class="columns small-4" style="padding-right: 0.9375rem"&gt;
+        &lt;p&gt;&lt;button data-dropdown="filter-platform" class="small secondary radius button dropdown expand no-margin" aria-expanded="false" aria-controls="filter-platform"&gt;Platform&lt;/button&gt;&lt;/p&gt;
+        &lt;ul id="filter-platform" data-dropdown-content="" class="f-dropdown" aria-hidden="true" tabindex="-1"&gt;
+  &lt;li&gt;&lt;a href="#" data-filter="platform" data-value="linux"&gt;Linux&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#" data-filter="platform" data-value="win"&gt;Windows&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+      &lt;/div&gt;
+      &lt;div class="columns small-4"&gt;
+        &lt;p&gt;&lt;button data-dropdown="filter-arch" class="small secondary radius button dropdown expand no-margin" aria-expanded="false" aria-controls="filter-arch"&gt;Architecture&lt;/button&gt;&lt;/p&gt;
+        &lt;ul id="filter-arch" data-dropdown-content="" class="f-dropdown" aria-hidden="true" tabindex="-1"&gt;
+  &lt;li&gt;&lt;a href="#" data-filter="arch" data-value="x64"&gt;x64&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#" data-filter="arch" data-value="x86"&gt;x86&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+      &lt;/div&gt;
+      &lt;div class="columns small-4" style="padding-left: 0.9375rem"&gt;
+        &lt;p&gt;&lt;button data-dropdown="filter-branch" class="small secondary radius button dropdown expand no-margin" aria-expanded="false" aria-controls="filter-version"&gt;Version&lt;/button&gt;&lt;/p&gt;
+        &lt;ul id="filter-branch" data-dropdown-content="" class="f-dropdown" aria-hidden="true" tabindex="-1"&gt;
+  &lt;!--   
+  &lt;li&gt;&lt;a href="#" data-filter="branch" data-value="branch-heads/58"&gt;branch-heads/58&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#" data-filter="branch" data-value="branch-heads/57"&gt;branch-heads/57&lt;/a&gt;&lt;/li&gt; 
+  --&gt;
+&lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
 
-&lt;h2 id="downloads"&gt;Downloads&lt;/h2&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
 
-&lt;p&gt;Libraries have been compiled with Visual Studio 2015 Update 2 on Windows 10, with both &lt;code&gt;Debug&lt;/code&gt; and &lt;code&gt;Release&lt;/code&gt; versions provided for &lt;code&gt;x86&lt;/code&gt; and &lt;code&gt;x64&lt;/code&gt; architectures. You will need &lt;a href="http://www.7-zip.org/download.html"&gt;7-Zip&lt;/a&gt; to extract the archives.&lt;/p&gt;
-
-&lt;h4 id="master-0e22a4cfd--feb-23-071132-2017"&gt;master (0e22a4cfd) — Feb 23 07:11:32 2017&lt;/h4&gt;
-
-&lt;table width="100%"&gt;
-  &lt;tr&gt;
-    &lt;th&gt;File&lt;/th&gt;
-    &lt;!-- &lt;th&gt;Type&lt;/th&gt; --&gt;
-&lt;!--     &lt;th&gt;Version&lt;/th&gt;  — Feb 23 07:11:32 2017--&gt;
-    &lt;th&gt;Size&lt;/th&gt;
-    &lt;th&gt;Description&lt;/th&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;&lt;a href="https://github.com/sourcey/webrtc-windows-builds/raw/master/webrtc-master-0e22a4cfd-headers.7z"&gt;webrtc-master-0e22a4cfd-headers.7z&lt;/a&gt;&lt;/td&gt;
-    &lt;!-- &lt;td&gt;7-Zip `lzma2`&lt;/td&gt; --&gt;
-&lt;!--     &lt;td&gt;master (0e22a4cfd)&lt;/td&gt; --&gt;
-    &lt;td&gt;2.3mb&lt;/td&gt;
-    &lt;td&gt;Development headers&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;&lt;a href="https://github.com/sourcey/webrtc-windows-builds/raw/master/webrtc-master-0e22a4cfd-vs2015-x64.7z"&gt;webrtc-master-0e22a4cfd-vs2015-x64.7z&lt;/a&gt;&lt;/td&gt;
-    &lt;!-- &lt;td&gt;7-Zip `lzma2`&lt;/td&gt; --&gt;
-&lt;!--     &lt;td&gt;master (0e22a4cfd)&lt;/td&gt; --&gt;
-    &lt;td&gt;72.3mb&lt;/td&gt;
-    &lt;td&gt;Windows 64-bit (x64) Debug and Release libraries&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td&gt;&lt;a href="https://github.com/sourcey/webrtc-windows-builds/raw/master/webrtc-master-0e22a4cfd-vs2015-x86.7z"&gt;webrtc-master-0e22a4cfd-vs2015-x86.7z&lt;/a&gt;&lt;/td&gt;
-    &lt;!-- &lt;td&gt;7-Zip `lzma2`&lt;/td&gt; --&gt;
-&lt;!--     &lt;td&gt;master (0e22a4cfd)&lt;/td&gt; --&gt;
-    &lt;td&gt;57.9mb&lt;/td&gt;
-    &lt;td&gt;Windows 32-bit (x86) Debug and Release libraries&lt;/td&gt;
-  &lt;/tr&gt;
+&lt;table id="webrtc-builds" width="100%"&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;File&lt;/th&gt;
+      &lt;th&gt;Platform&lt;/th&gt;
+      &lt;th&gt;Version&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+  &lt;/tbody&gt;
 &lt;/table&gt;
 
-&lt;h2 id="compile-options"&gt;Compile options&lt;/h2&gt;
+&lt;script&gt;
+var $root = $('#webrtc-builds tbody');
 
-&lt;p&gt;Debug builds have been created with all debug symbols enabled, and release builds have been optimized for for maximum performance. The exact build options used are as follows:&lt;/p&gt;
+// $.getJSON("/webrtc-precompiled-builds/manifest.json", function(data) {
+$.getJSON("https://raw.githubusercontent.com/sourcey/webrtc-precompiled-builds/master/manifest.json", function(data) {
+  console.log('Loaded manifest', data)
+
+  var builds = [];
+  $.each(data, function(key, val) {
+    $root.append(
+      '&lt;tr data-platform="' + val.target_os + '" data-arch="' + val.target_cpu + '" data-branch="' + val.branch + '"&gt;' +
+        '&lt;td&gt;' + 
+          '&lt;a href="https://github.com/sourcey/webrtc-precompiled-builds/raw/master/' + val.file + '"&gt;' + val.file + '&lt;/a&gt;' +
+          '&lt;small&gt;CRC: ' + val.crc + '&lt;/small&gt;' + 
+        '&lt;/td&gt;' +
+        '&lt;td&gt;' + (val.target_os == 'linux' ? 'Linux' : 'Windows') + ' ' + val.target_cpu + '&lt;/td&gt;' +
+        '&lt;td&gt;' + 
+          (val.latest ? '&lt;span class="success round label right"&gt;Latest&lt;/span&gt;' : ''
+) + 
+          val.date + 
+          // '&lt;small&gt;SHA: ' + val.sha + '&lt;/small&gt;' +
+          '&lt;small&gt;Branch: ' + val.branch + '&lt;/small&gt;' +
+          '&lt;small&gt;Revision: ' + val.revision + '&lt;/small&gt;' +
+        '&lt;/td&gt;' +
+      '&lt;/tr&gt;');
+
+    if (builds.indexOf(val.branch) === -1)
+        builds.push(val.branch);
+  });
+
+  for (var i = 0; i &lt; builds.length; i++) { 
+    $('#filter-branch').append(
+      '&lt;li&gt;&lt;a href="#" data-filter="branch" data-value="' + builds[i] + '"&gt;' + builds[i] + '&lt;/a&gt;&lt;/li&gt;');
+  }
+});
+
+function updateVisibleEntries() {
+  var filters = $('#webrtc-filters li.active').map(function() {
+    var $a = $(this).find('a');
+    return { name: $a.data('filter'), value: $a.data('value') };
+  }).get();
+  // console.log(filters)
+
+  $root.find('tr').show();
+  for (var i = 0; i &lt; filters.length; i++) { 
+    var filter = filters[i];
+    console.log('tr[data-' + filter.name + '!="' + filter.value + '"]')
+    $root.find('tr[data-' + filter.name + '!="' + filter.value + '"]').hide();
+  }
+}
+
+$('#webrtc-filters').on('click', 'li a', function() {
+  event.preventDefault();
+  var $link = $(this)
+    , $list = $link.parents('ul:first')
+    , $button = $list.parent('div').find('button');
+  $list.find('li').removeClass('active');
+  $link.parents('li:first').addClass('active');
+  $button.text($link.text());
+  $(document).click();
+  updateVisibleEntries();
+})
+&lt;/script&gt;
+
+&lt;style&gt;
+/*#main .content img.align-left {
+  max-width: 150px;
+  margin-bottom: 20px;  
+}*/
+
+#webrtc-filters {
+  margin-top: 25px;    
+  padding-top: 0.9375rem;
+
+  border-top: 1px solid #f0f0f2;
+}
+#webrtc-filters p {
+  margin-bottom: 0.9375rem;  
+
+}
+#webrtc-filters .button {
+  padding-left: 0.9375rem;
+  text-align: left;
+}
+
+#webrtc-builds {
+  margin-bottom: 35px;
+}
+#webrtc-builds a {
+  font-weight: bold;
+}
+#webrtc-builds small {
+  font-size: 80%;
+  color: #888;
+  display: block;
+}
+&lt;/style&gt;
+
+&lt;h2 id="about"&gt;About&lt;/h2&gt;
+
+&lt;p&gt;After a number of requests we’ve started providing WebRTC builds to assist &lt;a href="/libsourcey"&gt;LibSourcey&lt;/a&gt; developers. All the libraries and headers required for native WebRTC development on Windows and Linux are included in the builds, and although the builds are designed for LibSourcey developers, they are completely portable and can be used by all.&lt;/p&gt;
+
+&lt;p&gt;The WebRTC repository is a monster weighing in at over &lt;strong&gt;10gb&lt;/strong&gt; with a myriad of dependencies that no developer without a fat paycheck from Google should ever have to mess with. However, once the excess fat has been trimmed it’s possible to get the archived build size down to about &lt;code&gt;50mb&lt;/code&gt; including all static libraries and headers. Jenny Craig would be proud!&lt;/p&gt;
+
+&lt;h2 id="usage"&gt;Usage&lt;/h2&gt;
+
+&lt;p&gt;Download the packages for your platform and architecture, extract them, and link them with your project - there’s no need to compile anything or jump through any hoops.&lt;/p&gt;
+
+&lt;p&gt;On Windows you will need &lt;a href="http://www.7-zip.org/download.html"&gt;7-Zip&lt;/a&gt; to extract the archives, and on Linux the archives are in &lt;code&gt;.tar.gz&lt;/code&gt; format. All static WebRTC libraries have meen merged into a single library for convenience (&lt;code&gt;libwebrtc_full.lib&lt;/code&gt; on Windows and &lt;code&gt;libwebrtc_full.a&lt;/code&gt; on Linux), so you just need to link this one library with your project to include all WebRTC components.&lt;/p&gt;
+
+&lt;p&gt;The folder structure is setup so you can extract both the &lt;code&gt;x64&lt;/code&gt; and &lt;code&gt;x86&lt;/code&gt; archives from the same build version into a single root directory:&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;webrtc-build/
+├── third_party/      &amp;lt;&lt;span class="nt"&gt;--&lt;/span&gt; webrtc dependency headers
+├── webrtc/           &amp;lt;&lt;span class="nt"&gt;--&lt;/span&gt; webrtc core headers
+└── lib/
+    ├── x64/
+    │   ├── Debug     &amp;lt;&lt;span class="nt"&gt;--&lt;/span&gt; x64 debug libraries
+    │   ├── Release   &amp;lt;&lt;span class="nt"&gt;--&lt;/span&gt; x64 release libraries
+    ├── x86/
+    │   ├── Debug     &amp;lt;&lt;span class="nt"&gt;--&lt;/span&gt; x86 debug libraries
+    │   ├── Release   &amp;lt;&lt;span class="nt"&gt;--&lt;/span&gt; x86 release libraries
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id="build-details"&gt;Build details&lt;/h2&gt;
+
+&lt;p&gt;Windows libraries are compiled with Visual Studio 2015 Update 3, while Linux builds are compiled with &lt;code&gt;gcc&lt;/code&gt; on Ubuntu 16.10.&lt;/p&gt;
+
+&lt;p&gt;Debug builds have been created with all debug symbols enabled, and release builds have been optimized for for maximum performance. The exact &lt;code&gt;gn&lt;/code&gt; build options used are as follows:&lt;/p&gt;
 
 &lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;gn gen out/x86/Debug &lt;span class="nt"&gt;--args&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"is_debug=true rtc_include_tests=false target_cpu=&lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="s2"&gt;x86&lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-gn gen out/x86/Release &lt;span class="nt"&gt;--args&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"is_debug=false rtc_include_tests=false target_cpu=&lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="s2"&gt;x86&lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="s2"&gt; is_component_build=true symbol_level=0 enable_nacl=false"&lt;/span&gt;
+gn gen out/x86/Release &lt;span class="nt"&gt;--args&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"is_debug=false rtc_include_tests=false target_cpu=&lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="s2"&gt;x86&lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="s2"&gt; symbol_level=0 enable_nacl=false"&lt;/span&gt;
 gn gen out/x64/Debug &lt;span class="nt"&gt;--args&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"is_debug=true rtc_include_tests=false target_cpu=&lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="s2"&gt;x64&lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
-gn gen out/x64/Release &lt;span class="nt"&gt;--args&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"is_debug=false rtc_include_tests=false target_cpu=&lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="s2"&gt;x64&lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="s2"&gt; is_component_build=true symbol_level=0 enable_nacl=false"&lt;/span&gt;
+gn gen out/x64/Release &lt;span class="nt"&gt;--args&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"is_debug=false rtc_include_tests=false target_cpu=&lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="s2"&gt;x64&lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="s2"&gt; symbol_level=0 enable_nacl=false"&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content>
   </entry>
   <entry>
@@ -394,7 +529,7 @@ Options:
     <link rel="alternate" href="https://sourcey.com/spectacle/"/>
     <id>https://sourcey.com/spectacle/</id>
     <published>2016-01-12T00:00:00Z</published>
-    <updated>2017-03-29T20:07:44+02:00</updated>
+    <updated>2017-11-20T12:43:31+01:00</updated>
     <author>
       <name/>
     </author>
@@ -402,9 +537,8 @@ Options:
   &lt;h4 class="no_toc" id="contents"&gt;Contents&lt;/h4&gt;
 
 &lt;ul id="markdown-toc"&gt;
-  &lt;li&gt;&lt;a id="markdown-toc-live-demo" href="#live-demo"&gt;Live Demo&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a id="markdown-toc-features" href="#features"&gt;Features&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a id="markdown-toc-getting-started" href="#getting-started"&gt;Getting Started&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a id="markdown-toc-usage" href="#usage"&gt;Usage&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a id="markdown-toc-configuration-options" href="#configuration-options"&gt;Configuration Options&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a id="markdown-toc-custom-builds" href="#custom-builds"&gt;Custom Builds&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a id="markdown-toc-optimizing-your-workflow" href="#optimizing-your-workflow"&gt;Optimizing Your Workflow&lt;/a&gt;&lt;/li&gt;
@@ -413,43 +547,38 @@ Options:
 
 &lt;/div&gt;
 
-&lt;dl&gt;
-  &lt;dt&gt;Repository&lt;/dt&gt;
-  &lt;dd&gt;&lt;a href="https://github.com/sourcey/spectacle"&gt;https://github.com/sourcey/spectacle&lt;/a&gt;&lt;/dd&gt;
-  &lt;dt&gt;Licence&lt;/dt&gt;
-  &lt;dd&gt;MIT&lt;/dd&gt;
-&lt;/dl&gt;
-
 &lt;p&gt;Spectacle generates beautiful static HTML5 documentation from &lt;a href="https://openapis.org"&gt;OpenAPI&lt;/a&gt;/&lt;a href="http://swagger.io"&gt;Swagger&lt;/a&gt; 2.0 API specifications.&lt;/p&gt;
 
+&lt;p&gt;The goal of Spectacle is help you “save time and look good” by providing an extensible platform for auto generating your REST API docs. The default layout is a three column single page, similar to those
+employed by &lt;a href="https://stripe.com/docs/api"&gt;Stripe&lt;/a&gt; and &lt;a href="https://developers.intercom.com/reference"&gt;Intercom&lt;/a&gt;.&lt;/p&gt;
+
+&lt;!-- Spectacle generates beautiful static HTML5 documentation from [OpenAPI](https://openapis.org)/[Swagger](http://swagger.io) 2.0 API specifications.
+ --&gt;
 &lt;!--
 With Spectacle you can have beautiful HTML5 documentation for your API ready to be deployed in a matter of minutes.
+---
 --&gt;
 
-&lt;p&gt;The goal of Spectacle is help you “save time and look good” by using a well written spec to automatically generate your API docs. Using an API spec to generate your docs has a number of great advantages:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Demo Screenshot" src="/spectacle/screenshot.jpg" /&gt;&lt;/p&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Maintain a single source&lt;/strong&gt;: Save time by removing the need to maintain a separate API spec and API documentation.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;No more out-of-date documentation&lt;/strong&gt;: Your documentation will always be up-to-date with your API spec.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Be a better developer&lt;/strong&gt;: Your entire API system will be more stable and robust when built around your spec as a single source of truth.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Documentation is just the beginning&lt;/strong&gt;: Generate your API system from your spec, including; tests, client implementations, and server code. See also &lt;a href="#optimizing-your-workflow"&gt;Optimizing Your Workflow&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;See a demo of Spectacle in action: &lt;a href="http://cheesestore.github.io"&gt;http://cheesestore.github.io&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&lt;h2 id="live-demo"&gt;Live Demo&lt;/h2&gt;
-
-&lt;p&gt;See a demo of Spectacle in action here: &lt;a href="http://cheesestore.github.io"&gt;http://cheesestore.github.io&lt;/a&gt;&lt;/p&gt;
+&lt;hr /&gt;
 
 &lt;h2 id="features"&gt;Features&lt;/h2&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;OpenAPI/Swagger 2.0 support&lt;/strong&gt;: Support for the latest OpenAPI/Swagger specification - the new standard for documenting REST APIs.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Clean responsive design&lt;/strong&gt;: Spectacle features a responsive HTML5 and CSS3 layout built with &lt;a href="http://foundation.zurb.com/sites.html"&gt;Foundation 6&lt;/a&gt; that looks great on all devices and screen sizes.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Embed into your existing website&lt;/strong&gt;: Spectacle features an embedded option that lets you generate docs without a HTML &lt;code&gt;&amp;lt;body&amp;gt;&lt;/code&gt; layout for convenient integration into your existing website.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Live preview developer mode&lt;/strong&gt;: Spectacle comes with a development mode that starts a local HTTP server with a file watcher and live reload so you can preview changes to your live documentation in your browser as you write your spec.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Configurable templates and styles&lt;/strong&gt;: Spectacle is built with easily configurable Handlebars templates and SCSS styles so you can add your own flavor. See &lt;a href="#custom-builds"&gt;Custom Builds&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;OpenAPI/Swagger 2.0 support&lt;/strong&gt;: Support for the latest OpenAPI/Swagger specification.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Highly configurable&lt;/strong&gt;: Easily configurable Handlebars templates and SCSS styles so you can add your own design and flavour without going bald. See &lt;a href="#custom-builds"&gt;Custom Builds&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Markdown support&lt;/strong&gt;: Render markdown written in any of your API descriptions.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Clean responsive design&lt;/strong&gt;: Responsive HTML5 and CSS3 layout built with &lt;a href="http://foundation.zurb.com/sites.html"&gt;Foundation 6&lt;/a&gt; that looks great on all devices and screen sizes.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Embed into your existing website&lt;/strong&gt;: An embedded option so that generate partial docs without a HTML &lt;code&gt;&amp;lt;body&amp;gt;&lt;/code&gt; for convenient integration into your existing website.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Live preview developer mode&lt;/strong&gt;: Development mode that starts a local HTTP server with a file watcher and live reload so you can preview live changes in your browser as you update your spec.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id="getting-started"&gt;Getting Started&lt;/h2&gt;
+&lt;h2 id="usage"&gt;Usage&lt;/h2&gt;
 
 &lt;p&gt;Simply install Spectacle from &lt;code&gt;npm&lt;/code&gt; like so:&lt;/p&gt;
 
@@ -457,16 +586,12 @@ With Spectacle you can have beautiful HTML5 documentation for your API ready to 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Next pass your &lt;code&gt;swagger.json&lt;/code&gt; document use the CLI to generate your documentation.&lt;/p&gt;
 
-&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;spectacle your_swagger_api.json
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;spectacle &lt;span class="nt"&gt;-d&lt;/span&gt; your_swagger_api.json
 
 &lt;span class="c"&gt;# Or use the cheese.json example to test it out&lt;/span&gt;
-&lt;span class="c"&gt;# spectacle test/fixtures/cheese.json&lt;/span&gt;
+&lt;span class="c"&gt;# spectacle -d -l test/fixtures/cheese.png test/fixtures/cheese.json&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Your generated documentation will be located in the &lt;code&gt;/public&lt;/code&gt; directory. You can either copy the generated HTML to your web server, or view your docs by starting the internal web server like so:&lt;/p&gt;
-
-&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;spectacle &lt;span class="nt"&gt;-s&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Now point your browser to &lt;a href="http://localhost:4400/"&gt;http://localhost:4400/&lt;/a&gt; and presto - sexy docs for your API!&lt;/p&gt;
+&lt;p&gt;Your generated documentation will be located in the &lt;code&gt;public&lt;/code&gt; directory by default. You can either copy the generated HTML to your web server, or view your docs by pointing your browser to &lt;a href="http://localhost:4400/"&gt;http://localhost:4400/&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h2 id="configuration-options"&gt;Configuration Options&lt;/h2&gt;
 
@@ -474,24 +599,23 @@ With Spectacle you can have beautiful HTML5 documentation for your API ready to 
 
 &lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;spectacle &lt;span class="nt"&gt;-h&lt;/span&gt;
 
-  Usage: cli spactacle &lt;span class="o"&gt;[&lt;/span&gt;options] &amp;lt;specfile&amp;gt;
+  Usage: spectacle spactacle &lt;span class="o"&gt;[&lt;/span&gt;options] &amp;lt;specfile&amp;gt;
 
   Options:
 
-  &lt;span class="nt"&gt;-h&lt;/span&gt;, &lt;span class="nt"&gt;--help&lt;/span&gt;                output usage information
-  &lt;span class="nt"&gt;-V&lt;/span&gt;, &lt;span class="nt"&gt;--version&lt;/span&gt;             output the version number
-  &lt;span class="nt"&gt;-C&lt;/span&gt;, &lt;span class="nt"&gt;--disable-css&lt;/span&gt;         omit CSS generation &lt;span class="o"&gt;(&lt;/span&gt;default: &lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
-  &lt;span class="nt"&gt;-J&lt;/span&gt;, &lt;span class="nt"&gt;--disable-js&lt;/span&gt;          omit JavaScript generation &lt;span class="o"&gt;(&lt;/span&gt;default: &lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
-  &lt;span class="nt"&gt;-e&lt;/span&gt;, &lt;span class="nt"&gt;--embeddable&lt;/span&gt;          omit the HTML &amp;lt;body/&amp;gt; and generate the documentation content only &lt;span class="o"&gt;(&lt;/span&gt;default: &lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
-  &lt;span class="nt"&gt;-d&lt;/span&gt;, &lt;span class="nt"&gt;--development-mode&lt;/span&gt;    start HTTP server with the file watcher and live reload &lt;span class="o"&gt;(&lt;/span&gt;default: &lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
-  &lt;span class="nt"&gt;-s&lt;/span&gt;, &lt;span class="nt"&gt;--start-server&lt;/span&gt;        start the HTTP server without any development features
-  &lt;span class="nt"&gt;-p&lt;/span&gt;, &lt;span class="nt"&gt;--port&lt;/span&gt; &amp;lt;dir&amp;gt;          the port number &lt;span class="k"&gt;for &lt;/span&gt;the HTTP server to listen on &lt;span class="o"&gt;(&lt;/span&gt;default: 4400&lt;span class="o"&gt;)&lt;/span&gt;
-  &lt;span class="nt"&gt;-t&lt;/span&gt;, &lt;span class="nt"&gt;--target-dir&lt;/span&gt; &amp;lt;dir&amp;gt;    the target build directory &lt;span class="o"&gt;(&lt;/span&gt;default: ./public&lt;span class="o"&gt;)&lt;/span&gt;
-  &lt;span class="nt"&gt;-f&lt;/span&gt;, &lt;span class="nt"&gt;--target-file&lt;/span&gt; &amp;lt;file&amp;gt;  the target build HTML file &lt;span class="o"&gt;(&lt;/span&gt;default: index.html&lt;span class="o"&gt;)&lt;/span&gt;
-  &lt;span class="nt"&gt;-a&lt;/span&gt;, &lt;span class="nt"&gt;--app-dir&lt;/span&gt; &amp;lt;dir&amp;gt;       the application &lt;span class="nb"&gt;source &lt;/span&gt;directory &lt;span class="o"&gt;(&lt;/span&gt;default: ./app&lt;span class="o"&gt;)&lt;/span&gt;
-  &lt;span class="nt"&gt;-i&lt;/span&gt;, &lt;span class="nt"&gt;--cache-dir&lt;/span&gt; &amp;lt;dir&amp;gt;     the intermediate build cache directory &lt;span class="o"&gt;(&lt;/span&gt;default: ./.cache&lt;span class="o"&gt;)&lt;/span&gt;
-  &lt;span class="nt"&gt;-l&lt;/span&gt;, &lt;span class="nt"&gt;--logo-file&lt;/span&gt; &amp;lt;file&amp;gt;    specify a custom logo file &lt;span class="o"&gt;(&lt;/span&gt;default: null&lt;span class="o"&gt;)&lt;/span&gt;
-  &lt;span class="nt"&gt;-c&lt;/span&gt;, &lt;span class="nt"&gt;--config-file&lt;/span&gt; &amp;lt;file&amp;gt;  specify a custom configuration file &lt;span class="o"&gt;(&lt;/span&gt;default: ./app/lib/config.js&lt;span class="o"&gt;)&lt;/span&gt;
+    &lt;span class="nt"&gt;-h&lt;/span&gt;, &lt;span class="nt"&gt;--help&lt;/span&gt;                output usage information
+    &lt;span class="nt"&gt;-V&lt;/span&gt;, &lt;span class="nt"&gt;--version&lt;/span&gt;             output the version number
+    &lt;span class="nt"&gt;-C&lt;/span&gt;, &lt;span class="nt"&gt;--disable-css&lt;/span&gt;         omit CSS generation &lt;span class="o"&gt;(&lt;/span&gt;default: &lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+    &lt;span class="nt"&gt;-J&lt;/span&gt;, &lt;span class="nt"&gt;--disable-js&lt;/span&gt;          omit JavaScript generation &lt;span class="o"&gt;(&lt;/span&gt;default: &lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+    &lt;span class="nt"&gt;-e&lt;/span&gt;, &lt;span class="nt"&gt;--embeddable&lt;/span&gt;          omit the HTML &amp;lt;body/&amp;gt; and generate the documentation content only &lt;span class="o"&gt;(&lt;/span&gt;default: &lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+    &lt;span class="nt"&gt;-d&lt;/span&gt;, &lt;span class="nt"&gt;--development-mode&lt;/span&gt;    start HTTP server with the file watcher and live reload &lt;span class="o"&gt;(&lt;/span&gt;default: &lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+    &lt;span class="nt"&gt;-s&lt;/span&gt;, &lt;span class="nt"&gt;--start-server&lt;/span&gt;        start the HTTP server without any development features
+    &lt;span class="nt"&gt;-p&lt;/span&gt;, &lt;span class="nt"&gt;--port&lt;/span&gt; &amp;lt;dir&amp;gt;          the port number &lt;span class="k"&gt;for &lt;/span&gt;the HTTP server to listen on &lt;span class="o"&gt;(&lt;/span&gt;default: 4400&lt;span class="o"&gt;)&lt;/span&gt;
+    &lt;span class="nt"&gt;-t&lt;/span&gt;, &lt;span class="nt"&gt;--target-dir&lt;/span&gt; &amp;lt;dir&amp;gt;    the target build directory &lt;span class="o"&gt;(&lt;/span&gt;default: public&lt;span class="o"&gt;)&lt;/span&gt;
+    &lt;span class="nt"&gt;-f&lt;/span&gt;, &lt;span class="nt"&gt;--target-file&lt;/span&gt; &amp;lt;file&amp;gt;  the target build HTML file &lt;span class="o"&gt;(&lt;/span&gt;default: index.html&lt;span class="o"&gt;)&lt;/span&gt;
+    &lt;span class="nt"&gt;-a&lt;/span&gt;, &lt;span class="nt"&gt;--app-dir&lt;/span&gt; &amp;lt;dir&amp;gt;       the application &lt;span class="nb"&gt;source &lt;/span&gt;directory &lt;span class="o"&gt;(&lt;/span&gt;default: app&lt;span class="o"&gt;)&lt;/span&gt;
+    &lt;span class="nt"&gt;-l&lt;/span&gt;, &lt;span class="nt"&gt;--logo-file&lt;/span&gt; &amp;lt;file&amp;gt;    specify a custom logo file &lt;span class="o"&gt;(&lt;/span&gt;default: null&lt;span class="o"&gt;)&lt;/span&gt;
+    &lt;span class="nt"&gt;-c&lt;/span&gt;, &lt;span class="nt"&gt;--config-file&lt;/span&gt; &amp;lt;file&amp;gt;  specify a custom configuration file &lt;span class="o"&gt;(&lt;/span&gt;default: app/lib/config.js&lt;span class="o"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Most options are self explanatory, but the following options warrant some further explanation:&lt;/p&gt;
 
@@ -523,7 +647,15 @@ With Spectacle you can have beautiful HTML5 documentation for your API ready to 
 
 &lt;h2 id="optimizing-your-workflow"&gt;Optimizing Your Workflow&lt;/h2&gt;
 
-&lt;p&gt;If you’re a developer you are always looking for ways to optimize your workflow. The great thing about the Swagger spec is that it enables you to use your API spec as a source for automating and generating all parts of your API system, such as:&lt;/p&gt;
+&lt;p&gt;Using an API spec to generate your docs has a number of great advantages, such as:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Maintain a single source&lt;/strong&gt;: Save time by removing the need to maintain a separate API spec and API documentation.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;No more out-of-date documentation&lt;/strong&gt;: Your documentation will always be up-to-date with your API spec.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Be a better developer&lt;/strong&gt;: Your entire API system will be more stable and robust when built around your spec as a single source of truth.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;As developer we’re always looking for ways to improve and optimize our workflow, and documentation is just the beginning. With a well written Swagger you can automate and generate many parts of your API system, such as:&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;&lt;strong&gt;Inline Code Generators&lt;/strong&gt;: Generate your Swagger JSON or YAML from your source code comments.&lt;/li&gt;
@@ -532,15 +664,28 @@ With Spectacle you can have beautiful HTML5 documentation for your API ready to 
   &lt;li&gt;&lt;strong&gt;Generate Documentation&lt;/strong&gt;: Really?&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;For a list of open source libraries in many languages check here: http://swagger.io/open-source-integrations/&lt;/p&gt;
+&lt;p&gt;For a list of open source Swagger based libraries in many languages check here: http://swagger.io/open-source-integrations/&lt;/p&gt;
 
 &lt;h2 id="more-information"&gt;More Information&lt;/h2&gt;
+
+&lt;p&gt;More info is available on the &lt;a href="http://sourcey.com/spectacle"&gt;Spectacle homepage&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Please use the &lt;a href="https://github.com/sourcey/spectacle/issues"&gt;GitHub issue tracker&lt;/a&gt; if you have any ideas or bugs to report.&lt;/p&gt;
 
 &lt;p&gt;All contributions are welcome.&lt;/p&gt;
 
 &lt;p&gt;Good luck and enjoy Spectacle!&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;dl&gt;
+  &lt;dt&gt;Repository&lt;/dt&gt;
+  &lt;dd&gt;&lt;a href="https://github.com/sourcey/spectacle"&gt;https://github.com/sourcey/spectacle&lt;/a&gt;&lt;/dd&gt;
+  &lt;dt&gt;Licence&lt;/dt&gt;
+  &lt;dd&gt;MIT&lt;/dd&gt;
+  &lt;dt&gt;Tests&lt;/dt&gt;
+  &lt;dd&gt;&lt;a href="https://circleci.com/gh/sourcey/spectacle"&gt;&lt;img alt="CircleCI" src="https://circleci.com/gh/sourcey/spectacle.svg?style=svg" /&gt;&lt;/a&gt;&lt;/dd&gt;
+&lt;/dl&gt;
 </content>
   </entry>
   <entry>

@@ -237,11 +237,19 @@
     <lastmod>2017-11-20T00:00:00+01:00</lastmod>
   </url>
   <url>
+    <loc>http://sourcey.com/precompiled-webrtc-libraries/</loc>
+    <lastmod>2017-11-20T00:00:00+01:00</lastmod>
+  </url>
+  <url>
     <loc>http://sourcey.com/html5-video-is-finally-ready/</loc>
     <lastmod>2017-11-20T00:00:00+01:00</lastmod>
   </url>
   <url>
     <loc>http://sourcey.com/anionu/</loc>
+    <lastmod>2017-11-20T00:00:00+01:00</lastmod>
+  </url>
+  <url>
+    <loc>http://sourcey.com/precompiled-webrtc-for-windows/</loc>
     <lastmod>2017-11-20T00:00:00+01:00</lastmod>
   </url>
   <url>
@@ -337,6 +345,10 @@
     <lastmod>2017-11-20T00:00:00+01:00</lastmod>
   </url>
   <url>
+    <loc>http://sourcey.com/webrtc-precompiled-builds/manifest.json</loc>
+    <lastmod>2017-11-20T00:00:00+01:00</lastmod>
+  </url>
+  <url>
     <loc>http://sourcey.com/agile-peer-code-reviews-with-codebrag/</loc>
     <lastmod>2017-11-20T00:00:00+01:00</lastmod>
   </url>
@@ -374,10 +386,6 @@
   </url>
   <url>
     <loc>http://sourcey.com/precompiling-assets-for-large-rails-deployments-with-capistrano/</loc>
-    <lastmod>2017-11-20T00:00:00+01:00</lastmod>
-  </url>
-  <url>
-    <loc>http://sourcey.com/precompiled-webrtc-for-windows/</loc>
     <lastmod>2017-11-20T00:00:00+01:00</lastmod>
   </url>
   <url>

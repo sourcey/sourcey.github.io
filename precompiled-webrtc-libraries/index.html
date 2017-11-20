@@ -1,0 +1,119 @@
+<!doctype html> <html class=no-js lang=en> <head> <title>Precompiled WebRTC Libraries | Sourcey</title> <meta charset=utf-8 /> <meta name=viewport content="width=device-width, initial-scale=1.0"/> <meta name=google-site-verification content=lC7-hHwqtiRqo7YTHc1fJ6t8ie-Hs7J4o5u3XRIF9Vw /> <link rel=alternate type="application/atom+xml" title="Atom Feed" href="/feed.xml"/> <link href="/stylesheets/app.css" media=screen rel=stylesheet /> <script src="/javascripts/all.js"></script> <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-836728-7', 'sourcey.com');
+      ga('send', 'pageview');
+    </script> </head> <body class="page precompiled-webrtc-libraries precompiled-webrtc-libraries_index"> <nav class=top-bar data-topbar=""> <div class=top-bar-inner> <div id=social> <a rel="nofollow" href="https://github.com/sourcey"><i class=fi-social-github></i></a> <a href="https://twitter.com/sourceydevel"><i class=fi-social-twitter></i></a> <a href="https://plus.google.com/+SourceyDevel"><i class=fi-social-google-plus></i></a> <a href="https://facebook.com/sourceydevel"><i class=fi-social-facebook></i></a> </div> <ul class=title-area> <li class=name></li> <li class="toggle-topbar menu-icon"><a href="#" class=left></a></li> </ul> <section class=top-bar-section style="left: 0%;"> <ul class=left> <li class=home><a href="/">Home</a></li> <li class=has-dropdown><a href="/#projects">Projects</a> <ul class=dropdown><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li> <li> <a href="/libsourcey"><b>LibSourcey</b><small>C++ networking evolved</small></a> </li> <li> <a href="/symple"><b>Symple</b><small>Messaging made Symple</small></a> </li> <li> <a href="/precompiled-webrtc-libraries"><b>WebRTC Builds</b><small>Precompiled WebRTC libraries</small></a> </li> <li> <a href="/anionu"><b>Anionu</b><small>Cloud video surveillance</small></a> </li> <li> <a href="http://stompstart.com"><b>StompStart</b><small>Promote your startup</small></a> </li> <li> <a href="/mesh"><b>Mesh</b><small>Elegant, modern design</small></a> </li> <li> <a href="/pacm"><b>Pacm</b><small>Redistributable package manager</small></a> </li> <li> <a href="/pluga"><b>Pluga</b><small>C++ plugin system</small></a> </li> <li> <a href="http://artzine.com"><b>Artzine</b><small>European Art Gallery and Marketplace</small></a> </li> <li> <a href="/recliner"><b>Recliner.js</b><small>Flexible lazy loading</small></a> </li> </ul> </li> <li class=has-dropdown><a href="/#articles">Articles</a> <ul class=dropdown> <li><a href="/archives">Archives</a></li> <li><a href="/feed.xml">Feed</a></li> </ul> </li> <li><a href="mailto:hello@sourcey.com">Contact</a></li> <li class=divider></li> </ul> </section> </div> </nav> <div id=main role=main> <article> <header class=article-header> <h1>Precompiled WebRTC Libraries</h1> </header> <div class="article-wrap row"> <div class=content> <div class=row> <div class="columns medium-3 show-for-medium-up text-center"> <p><img alt=WebRTC title=WebRTC class=no-style src="/images/logos/webrtc-250x250.png" width=185 /></p> </div> <div class="columns medium-9"> <p>Save yourself the tears and frustration — precompiled native WebRTC libraries and development headers are available for download here. Linux and Windows <code>Debug</code> and <code>Release</code> builds are provided for <code>x86</code> and <code>x64</code> architectures. <a href="#usage">Usage instructions are below</a></p> <div id=webrtc-filters class="row collapse"> <div class="columns small-4" style="padding-right: 0.9375rem"> <p><button data-dropdown=filter-platform class="small secondary radius button dropdown expand no-margin" aria-expanded=false aria-controls=filter-platform>Platform</button></p> <ul id=filter-platform data-dropdown-content="" class=f-dropdown aria-hidden=true tabindex=-1> <li><a href="#" data-filter=platform data-value=linux>Linux</a></li> <li><a href="#" data-filter=platform data-value=win>Windows</a></li> </ul> </div> <div class="columns small-4"> <p><button data-dropdown=filter-arch class="small secondary radius button dropdown expand no-margin" aria-expanded=false aria-controls=filter-arch>Architecture</button></p> <ul id=filter-arch data-dropdown-content="" class=f-dropdown aria-hidden=true tabindex=-1> <li><a href="#" data-filter=arch data-value=x64>x64</a></li> <li><a href="#" data-filter=arch data-value=x86>x86</a></li> </ul> </div> <div class="columns small-4" style="padding-left: 0.9375rem"> <p><button data-dropdown=filter-branch class="small secondary radius button dropdown expand no-margin" aria-expanded=false aria-controls=filter-version>Version</button></p> <ul id=filter-branch data-dropdown-content="" class=f-dropdown aria-hidden=true tabindex=-1> </ul> </div> </div> </div> </div> <table id=webrtc-builds width="100%"> <thead> <tr> <th>File</th> <th>Platform</th> <th>Version</th> </tr> </thead> <tbody> </tbody> </table> <script>
+var $root = $('#webrtc-builds tbody');
+
+// $.getJSON("/webrtc-precompiled-builds/manifest.json", function(data) {
+$.getJSON("https://raw.githubusercontent.com/sourcey/webrtc-precompiled-builds/master/manifest.json", function(data) {
+  console.log('Loaded manifest', data)
+
+  var builds = [];
+  $.each(data, function(key, val) {
+    $root.append(
+      '<tr data-platform="' + val.target_os + '" data-arch="' + val.target_cpu + '" data-branch="' + val.branch + '">' +
+        '<td>' + 
+          '<a rel="nofollow" href="https://github.com/sourcey/webrtc-precompiled-builds/raw/master/' + val.file + '">' + val.file + '</a>' +
+          '<small>CRC: ' + val.crc + '</small>' + 
+        '</td>' +
+        '<td>' + (val.target_os == 'linux' ? 'Linux' : 'Windows') + ' ' + val.target_cpu + '</td>' +
+        '<td>' + 
+          (val.latest ? '<span class="success round label right">Latest</span>' : ''
+) + 
+          val.date + 
+          // '<small>SHA: ' + val.sha + '</small>' +
+          '<small>Branch: ' + val.branch + '</small>' +
+          '<small>Revision: ' + val.revision + '</small>' +
+        '</td>' +
+      '</tr>');
+
+    if (builds.indexOf(val.branch) === -1)
+        builds.push(val.branch);
+  });
+
+  for (var i = 0; i < builds.length; i++) { 
+    $('#filter-branch').append(
+      '<li><a href="#" data-filter="branch" data-value="' + builds[i] + '">' + builds[i] + '</a></li>');
+  }
+});
+
+function updateVisibleEntries() {
+  var filters = $('#webrtc-filters li.active').map(function() {
+    var $a = $(this).find('a');
+    return { name: $a.data('filter'), value: $a.data('value') };
+  }).get();
+  // console.log(filters)
+
+  $root.find('tr').show();
+  for (var i = 0; i < filters.length; i++) { 
+    var filter = filters[i];
+    console.log('tr[data-' + filter.name + '!="' + filter.value + '"]')
+    $root.find('tr[data-' + filter.name + '!="' + filter.value + '"]').hide();
+  }
+}
+
+$('#webrtc-filters').on('click', 'li a', function() {
+  event.preventDefault();
+  var $link = $(this)
+    , $list = $link.parents('ul:first')
+    , $button = $list.parent('div').find('button');
+  $list.find('li').removeClass('active');
+  $link.parents('li:first').addClass('active');
+  $button.text($link.text());
+  $(document).click();
+  updateVisibleEntries();
+})
+</script> <style>
+/*#main .content img.align-left {
+  max-width: 150px;
+  margin-bottom: 20px;  
+}*/
+
+#webrtc-filters {
+  margin-top: 25px;    
+  padding-top: 0.9375rem;
+
+  border-top: 1px solid #f0f0f2;
+}
+#webrtc-filters p {
+  margin-bottom: 0.9375rem;  
+
+}
+#webrtc-filters .button {
+  padding-left: 0.9375rem;
+  text-align: left;
+}
+
+#webrtc-builds {
+  margin-bottom: 35px;
+}
+#webrtc-builds a {
+  font-weight: bold;
+}
+#webrtc-builds small {
+  font-size: 80%;
+  color: #888;
+  display: block;
+}
+</style> <h2 id=about>About</h2> <p>After a number of requests we’ve started providing WebRTC builds to assist <a href="/libsourcey">LibSourcey</a> developers. All the libraries and headers required for native WebRTC development on Windows and Linux are included in the builds, and although the builds are designed for LibSourcey developers, they are completely portable and can be used by all.</p> <p>The WebRTC repository is a monster weighing in at over <strong>10gb</strong> with a myriad of dependencies that no developer without a fat paycheck from Google should ever have to mess with. However, once the excess fat has been trimmed it’s possible to get the archived build size down to about <code>50mb</code> including all static libraries and headers. Jenny Craig would be proud!</p> <h2 id=usage>Usage</h2> <p>Download the packages for your platform and architecture, extract them, and link them with your project - there’s no need to compile anything or jump through any hoops.</p> <p>On Windows you will need <a href="http://www.7-zip.org/download.html">7-Zip</a> to extract the archives, and on Linux the archives are in <code>.tar.gz</code> format. All static WebRTC libraries have meen merged into a single library for convenience (<code>libwebrtc_full.lib</code> on Windows and <code>libwebrtc_full.a</code> on Linux), so you just need to link this one library with your project to include all WebRTC components.</p> <p>The folder structure is setup so you can extract both the <code>x64</code> and <code>x86</code> archives from the same build version into a single root directory:</p> <div class=highlight><pre class="highlight shell"><code>webrtc-build/
+├── third_party/      &lt;<span class="nt">--</span> webrtc dependency headers
+├── webrtc/           &lt;<span class="nt">--</span> webrtc core headers
+└── lib/
+    ├── x64/
+    │   ├── Debug     &lt;<span class="nt">--</span> x64 debug libraries
+    │   ├── Release   &lt;<span class="nt">--</span> x64 release libraries
+    ├── x86/
+    │   ├── Debug     &lt;<span class="nt">--</span> x86 debug libraries
+    │   ├── Release   &lt;<span class="nt">--</span> x86 release libraries
+</code></pre></div> <h2 id=build-details>Build details</h2> <p>Windows libraries are compiled with Visual Studio 2015 Update 3, while Linux builds are compiled with <code>gcc</code> on Ubuntu 16.10.</p> <p>Debug builds have been created with all debug symbols enabled, and release builds have been optimized for for maximum performance. The exact <code>gn</code> build options used are as follows:</p> <div class=highlight><pre class="highlight shell"><code>gn gen out/x86/Debug <span class="nt">--args</span><span class="o">=</span><span class="s2">"is_debug=true rtc_include_tests=false target_cpu=</span><span class="se">\"</span><span class="s2">x86</span><span class="se">\"</span><span class="s2">"</span>
+gn gen out/x86/Release <span class="nt">--args</span><span class="o">=</span><span class="s2">"is_debug=false rtc_include_tests=false target_cpu=</span><span class="se">\"</span><span class="s2">x86</span><span class="se">\"</span><span class="s2"> symbol_level=0 enable_nacl=false"</span>
+gn gen out/x64/Debug <span class="nt">--args</span><span class="o">=</span><span class="s2">"is_debug=true rtc_include_tests=false target_cpu=</span><span class="se">\"</span><span class="s2">x64</span><span class="se">\"</span><span class="s2">"</span>
+gn gen out/x64/Release <span class="nt">--args</span><span class="o">=</span><span class="s2">"is_debug=false rtc_include_tests=false target_cpu=</span><span class="se">\"</span><span class="s2">x64</span><span class="se">\"</span><span class="s2"> symbol_level=0 enable_nacl=false"</span>
+</code></pre></div> </div> </div> </article> </div> <footer id=footer> <div class="row show-for-large-up"> <div class="ad ad-720x90 text-center"> <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> <ins class=adsbygoogle style="display:inline-block;width:728px;height:90px" data-ad-client=ca-pub-1397369873900370 data-ad-slot=8042301285></ins> <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+          </script> </div> </div> <p> As with all business minded artists, we have fought the inevitable battle of conformity vs expression, and have emerged victorious with sanity intact to plunder the digiverse in search of new and interesting challenges. For more information, or a quote, drop us an email and tell us what you're working on. </p> <p>&copy; 2016 Sourcey<p> </footer> </body> </html>
