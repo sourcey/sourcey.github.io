@@ -2,16 +2,222 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Sourcey</title>
   <subtitle>Developers of code and websites for forward-thinking technology startups.</subtitle>
-  <id>http://sourcey.com</id>
-  <link href="http://sourcey.com"/>
-  <link href="http://sourcey.com/feed.xml" rel="self"/>
-  <updated>2016-11-10T00:00:00Z</updated>
+  <id>https://sourcey.com</id>
+  <link href="https://sourcey.com"/>
+  <link href="https://sourcey.com/feed.xml" rel="self"/>
+  <updated>2017-09-01T00:00:00Z</updated>
+  <entry>
+    <title>Building and Installing WebRTC on Windows</title>
+    <link rel="alternate" href="https://sourcey.com/building-and-installing-webrtc-on-windows/"/>
+    <id>https://sourcey.com/building-and-installing-webrtc-on-windows/</id>
+    <published>2017-09-01T00:00:00Z</published>
+    <updated>2017-09-01T17:21:22+02:00</updated>
+    <author>
+      <name>Kam Low</name>
+    </author>
+    <content type="html">&lt;div class="sidebar-section toc"&gt;
+  &lt;h4 class="no_toc" id="contents"&gt;Contents&lt;/h4&gt;
+
+&lt;ul id="markdown-toc"&gt;
+  &lt;li&gt;&lt;a id="markdown-toc-install-visual-studio" href="#install-visual-studio"&gt;Install Visual Studio&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a id="markdown-toc-install-the-chromium-depot-tools" href="#install-the-chromium-depot-tools"&gt;Install the Chromium depot tools&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a id="markdown-toc-download-the-source-code" href="#download-the-source-code"&gt;Download the source code&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a id="markdown-toc-update-your-checkout" href="#update-your-checkout"&gt;Update your checkout&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a id="markdown-toc-building-webrtc-library" href="#building-webrtc-library"&gt;Building WebRTC library&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/div&gt;
+
+&lt;p&gt;&lt;img alt="WebRTC" title="WebRTC" class="align-left" src="/images/logos/webrtc-250x250.png" /&gt;
+Installing WebRTC has left many a good developer balder than at the outset, but hopefully this guide will see you through unscathed.&lt;/p&gt;
+
+&lt;p&gt;This guide is written specificaly for 64-bit Windows 10 to build WebRTC &lt;code&gt;branch-head/60&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id="install-visual-studio"&gt;Install Visual Studio&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Install Visual Studio 2015 Update 3 or later. The Community Edition should work if its license is appropriate for you. Use the Custom Install option and select:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;Visual C++, which will select three sub-categories including MFC&lt;/li&gt;
+      &lt;li&gt;Universal Windows Apps Development Tools &amp;gt; Tools&lt;/li&gt;
+      &lt;li&gt;Universal Windows Apps Development Tools &amp;gt; Windows 10 SDK (10.0.10586)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id="install-the-chromium-depot-tools"&gt;Install the Chromium depot tools&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Download &lt;a href="https://storage.googleapis.com/chrome-infra/depot_tools.zip"&gt;depot_tools.zip&lt;/a&gt; and decompress it.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Add depot_tools to the end of your PATH:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;With Administrator access:
+        &lt;ul&gt;
+          &lt;li&gt;&lt;code&gt;Control Panel &amp;gt; System and Security &amp;gt; System &amp;gt; Advanced system settings&lt;/code&gt;&lt;/li&gt;
+          &lt;li&gt;Modify the PATH system variable to include depot_tools&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;Without Administrator access:
+        &lt;ul&gt;
+          &lt;li&gt;&lt;code&gt;Control Panel &amp;gt; User Accounts &amp;gt; User Accounts &amp;gt; Change my environment variables&lt;/code&gt;&lt;/li&gt;
+          &lt;li&gt;Add a PATH user variable: &lt;code&gt;%PATH%;C:\path\to\depot_tools&lt;/code&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Run &lt;code&gt;gclient&lt;/code&gt; from the cmd shell. The first time it is run, it will install its own copy various tools.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id="download-the-source-code"&gt;Download the source code&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Create a working directory, enter it, and run fetch WebRTC. This guide assumes a specific working folder structure. This operation starts from a base directory, eg., workspace and proceeds from there.&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;mkdir webrtc-checkout
+&lt;span class="nb"&gt;cd &lt;/span&gt;webrtc-checkout
+fetch &lt;span class="nt"&gt;--nohooks&lt;/span&gt; webrtc
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Choose the stable release 60 rather than the most recent release by entering:&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="nb"&gt;cd &lt;/span&gt;src
+git branch &lt;span class="nt"&gt;-r&lt;/span&gt;
+git checkout branch-heads/60
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Download the code&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;gclient sync
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; &lt;em&gt;The download will take a while. Do not interrupt this step or you may need to start all over again (a new &lt;code&gt;gclient sync&lt;/code&gt; may be enough, but you might also need wipe your &lt;code&gt;webrtc_checkout\src&lt;/code&gt; folder and start over).&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id="update-your-checkout"&gt;Update your checkout&lt;/h2&gt;
+
+&lt;p&gt;To update an existing checkout, you can run:&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;git rebase-update
+gclient sync
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The first command updates the primary Chromium source repository and rebases any of your local branches on top of tip-of-tree (aka the Git branch &lt;code&gt;origin/master&lt;/code&gt;). If you don’t want to use this script, you can also just use git pull or other common Git commands to update the repo.&lt;/p&gt;
+
+&lt;p&gt;The second command syncs the subrepositories to the appropriate versions and re-runs the hooks as needed.&lt;/p&gt;
+
+&lt;h2 id="building-webrtc-library"&gt;Building WebRTC library&lt;/h2&gt;
+
+&lt;p&gt;After you downloading the code, you can start the build from the &lt;code&gt;webrtc_checkout\src&lt;/code&gt; folder.&lt;/p&gt;
+
+&lt;p&gt;The default configuration is for a 64-bit debug build:&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;gn gen out/x64/Debug &lt;span class="nt"&gt;--args&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"is_debug=true use_rtti=true target_cpu=&lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="s2"&gt;x64&lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+ninja &lt;span class="nt"&gt;-C&lt;/span&gt; out/x64/Debug boringssl field_trial_default protobuf_full p2p
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;To create a 64-bit release build you must add &lt;code&gt;is_debug=true&lt;/code&gt; to the GN args&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;gn gen out/x64/Release--args&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"is_debug=false use_rtti=true target_cpu=&lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="s2"&gt;x64&lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+ninja &lt;span class="nt"&gt;-C&lt;/span&gt; out/x64/Release boringssl field_trial_default protobuf_full p2p
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;For a fully optimized release build you can omit symbols and tests like by adding the following arguments &lt;code&gt;symbol_level=0 enable_nacl=false&lt;/code&gt;.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;These instructions are derived from following links:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href="https://webrtc.org/native-code/development/"&gt;https://webrtc.org/native-code/development/&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://webrtc.org/native-code/development/prerequisite-sw/"&gt;https://webrtc.org/native-code/development/prerequisite-sw/&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="http://dev.chromium.org/developers/how-tos/install-depot-tools"&gt;http://dev.chromium.org/developers/how-tos/install-depot-tools&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://chromium.googlesource.com/chromium/src/+/master/docs/windows_build_instructions.md"&gt;https://chromium.googlesource.com/chromium/src/+/master/docs/windows_build_instructions.md&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="https://chromium.googlesource.com/chromium/src/+/master/tools/gn/docs/quick_start.md"&gt;https://chromium.googlesource.com/chromium/src/+/master/tools/gn/docs/quick_start.md&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+  </entry>
+  <entry>
+    <title>Pre-compiled WebRTC Libraries for Windows</title>
+    <link rel="alternate" href="https://sourcey.com/precompiled-webrtc-for-windows/"/>
+    <id>https://sourcey.com/precompiled-webrtc-for-windows/</id>
+    <published>2017-03-29T00:00:00Z</published>
+    <updated>2017-03-29T20:07:44+02:00</updated>
+    <author>
+      <name/>
+    </author>
+    <content type="html">&lt;!-- &lt;div class="sidebar-section toc"&gt;
+#### Contents
+{:.no_toc}
+
+* ToC
+{:toc}
+&lt;/div&gt; --&gt;
+
+&lt;p&gt;&lt;img alt="WebRTC" title="WebRTC" class="align-left" src="/images/logos/webrtc-250x250.png" /&gt;
+After a number of requests from frustrated developers we’ve started providing precompiled WebRTC native libraries and headers for Windows. There’s no need to compile anything or jump through any hoops, just download the packages and extract them to get started.&lt;/p&gt;
+
+&lt;p&gt;Weighing in at over &lt;strong&gt;6gb&lt;/strong&gt;, the WebRTC repository is an absolute monster with a myriad of dependencies that no developer without a fat paycheck from Google should have to mess with. However, once the fat was trimmed we managed to get the archived file size down to about &lt;strong&gt;2.3mb&lt;/strong&gt; for all required dev headers, and &lt;strong&gt;72.3mb&lt;/strong&gt; for pre-compiled Debug and Release libraries.&lt;/p&gt;
+
+&lt;p&gt;These libraries are provided for use with &lt;a href="/libsourcey"&gt;LibSourcey&lt;/a&gt;, but can be used by anyone. Builds are not nightly just yet, but we will update the build for every major release and important bugfix.&lt;/p&gt;
+
+&lt;h2 id="downloads"&gt;Downloads&lt;/h2&gt;
+
+&lt;p&gt;Libraries have been compiled with Visual Studio 2015 Update 2 on Windows 10, with both &lt;code&gt;Debug&lt;/code&gt; and &lt;code&gt;Release&lt;/code&gt; versions provided for &lt;code&gt;x86&lt;/code&gt; and &lt;code&gt;x64&lt;/code&gt; architectures. You will need &lt;a href="http://www.7-zip.org/download.html"&gt;7-Zip&lt;/a&gt; to extract the archives.&lt;/p&gt;
+
+&lt;h4 id="master-0e22a4cfd--feb-23-071132-2017"&gt;master (0e22a4cfd) — Feb 23 07:11:32 2017&lt;/h4&gt;
+
+&lt;table width="100%"&gt;
+  &lt;tr&gt;
+    &lt;th&gt;File&lt;/th&gt;
+    &lt;!-- &lt;th&gt;Type&lt;/th&gt; --&gt;
+&lt;!--     &lt;th&gt;Version&lt;/th&gt;  — Feb 23 07:11:32 2017--&gt;
+    &lt;th&gt;Size&lt;/th&gt;
+    &lt;th&gt;Description&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;&lt;a href="https://github.com/sourcey/webrtc-windows-builds/raw/master/webrtc-master-0e22a4cfd-headers.7z"&gt;webrtc-master-0e22a4cfd-headers.7z&lt;/a&gt;&lt;/td&gt;
+    &lt;!-- &lt;td&gt;7-Zip `lzma2`&lt;/td&gt; --&gt;
+&lt;!--     &lt;td&gt;master (0e22a4cfd)&lt;/td&gt; --&gt;
+    &lt;td&gt;2.3mb&lt;/td&gt;
+    &lt;td&gt;Development headers&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;&lt;a href="https://github.com/sourcey/webrtc-windows-builds/raw/master/webrtc-master-0e22a4cfd-vs2015-x64.7z"&gt;webrtc-master-0e22a4cfd-vs2015-x64.7z&lt;/a&gt;&lt;/td&gt;
+    &lt;!-- &lt;td&gt;7-Zip `lzma2`&lt;/td&gt; --&gt;
+&lt;!--     &lt;td&gt;master (0e22a4cfd)&lt;/td&gt; --&gt;
+    &lt;td&gt;72.3mb&lt;/td&gt;
+    &lt;td&gt;Windows 64-bit (x64) Debug and Release libraries&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;&lt;a href="https://github.com/sourcey/webrtc-windows-builds/raw/master/webrtc-master-0e22a4cfd-vs2015-x86.7z"&gt;webrtc-master-0e22a4cfd-vs2015-x86.7z&lt;/a&gt;&lt;/td&gt;
+    &lt;!-- &lt;td&gt;7-Zip `lzma2`&lt;/td&gt; --&gt;
+&lt;!--     &lt;td&gt;master (0e22a4cfd)&lt;/td&gt; --&gt;
+    &lt;td&gt;57.9mb&lt;/td&gt;
+    &lt;td&gt;Windows 32-bit (x86) Debug and Release libraries&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;h2 id="compile-options"&gt;Compile options&lt;/h2&gt;
+
+&lt;p&gt;Debug builds have been created with all debug symbols enabled, and release builds have been optimized for for maximum performance. The exact build options used are as follows:&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;gn gen out/x86/Debug &lt;span class="nt"&gt;--args&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"is_debug=true rtc_include_tests=false target_cpu=&lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="s2"&gt;x86&lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+gn gen out/x86/Release &lt;span class="nt"&gt;--args&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"is_debug=false rtc_include_tests=false target_cpu=&lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="s2"&gt;x86&lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="s2"&gt; is_component_build=true symbol_level=0 enable_nacl=false"&lt;/span&gt;
+gn gen out/x64/Debug &lt;span class="nt"&gt;--args&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"is_debug=true rtc_include_tests=false target_cpu=&lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="s2"&gt;x64&lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+gn gen out/x64/Release &lt;span class="nt"&gt;--args&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"is_debug=false rtc_include_tests=false target_cpu=&lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="s2"&gt;x64&lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="s2"&gt; is_component_build=true symbol_level=0 enable_nacl=false"&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content>
+  </entry>
   <entry>
     <title>Generating Beautiful C++ Markdown Documentation with Moxygen</title>
-    <link rel="alternate" href="http://sourcey.com/generating-beautiful-markdown-documentation-with-moxygen/"/>
-    <id>http://sourcey.com/generating-beautiful-markdown-documentation-with-moxygen/</id>
+    <link rel="alternate" href="https://sourcey.com/generating-beautiful-markdown-documentation-with-moxygen/"/>
+    <id>https://sourcey.com/generating-beautiful-markdown-documentation-with-moxygen/</id>
     <published>2016-11-10T00:00:00Z</published>
-    <updated>2016-11-10T20:38:18+01:00</updated>
+    <updated>2017-03-29T20:11:01+02:00</updated>
     <author>
       <name>Kam Low</name>
     </author>
@@ -99,7 +305,7 @@
   &lt;li&gt;Run &lt;code&gt;moxygen&lt;/code&gt; providing the folder location of the XML documentation as the first argument ie. &lt;code&gt;{OUTPUT_DIRECTORY}/xml&lt;/code&gt;.&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;pre class="highlight plaintext"&gt;&lt;code&gt;Usage: moxygen [options] &amp;lt;doxygen directory&amp;gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;Usage: moxygen [options] &amp;lt;doxygen directory&amp;gt;
 
 Options:
 
@@ -111,13 +317,13 @@ Options:
   -l, --language &amp;lt;lang&amp;gt;  programming language
   -t, --templates &amp;lt;dir&amp;gt;  custom templates directory
   -o, --output &amp;lt;file&amp;gt;    output file (must contain %s when using modules)
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;h3 id="single-page-output"&gt;Single Page Output&lt;/h3&gt;
 
 &lt;p&gt;If you want single page Markdown output the you can run Moxygen like so:&lt;/p&gt;
 
-&lt;pre class="highlight plaintext"&gt;&lt;code&gt;moxygen --anchors --output api.md /path/to/doxygen/xml
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;moxygen --anchors --output api.md /path/to/doxygen/xml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;h3 id="multi-page-output"&gt;Multi Page Output&lt;/h3&gt;
 
 &lt;p&gt;Moxygen supports the doxygen &lt;a href="http://www.stack.nl/~dimitri/doxygen/manual/grouping.html#modules"&gt;modules&lt;/a&gt; syntax for generating multi page documentation.&lt;/p&gt;
@@ -126,8 +332,8 @@ Options:
 
 &lt;p&gt;Example:&lt;/p&gt;
 
-&lt;pre class="highlight plaintext"&gt;&lt;code&gt;moxygen --anchors --modules --output api-%s.md /path/to/doxygen/xml
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;moxygen --anchors --modules --output api-%s.md /path/to/doxygen/xml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;h2 id="hosting-your-documentation"&gt;Hosting Your Documentation&lt;/h2&gt;
 
 &lt;p&gt;We use a combination of GitBook and Middleman for &lt;a href="http://sourcey.com/libsourcey/"&gt;LibSourcey&lt;/a&gt;. It’s very easy to setup; the GitBook is located in the &lt;code&gt;doc&lt;/code&gt; folder of the &lt;a href="https://github.com/sourcey/libsourcey/tree/master/doc"&gt;repository&lt;/a&gt;, with symlinks to the main README and LICENSE files so they can be reused in the book. Next the static GitBook HTML is copied across to out Middleman website and deployed using GitHub pages. All in all a very convenient (and cost effective!) solution.&lt;/p&gt;
@@ -141,10 +347,10 @@ Options:
   </entry>
   <entry>
     <title>Recording Native WebRTC Streams with LibSourcey and FFmpeg</title>
-    <link rel="alternate" href="http://sourcey.com/recording-native-webrtc-streams-with-libsourcey-and-ffmpeg/"/>
-    <id>http://sourcey.com/recording-native-webrtc-streams-with-libsourcey-and-ffmpeg/</id>
+    <link rel="alternate" href="https://sourcey.com/recording-native-webrtc-streams-with-libsourcey-and-ffmpeg/"/>
+    <id>https://sourcey.com/recording-native-webrtc-streams-with-libsourcey-and-ffmpeg/</id>
     <published>2016-10-31T00:00:00Z</published>
-    <updated>2016-10-31T12:57:18+01:00</updated>
+    <updated>2017-03-29T20:07:44+02:00</updated>
     <author>
       <name>Kam Low</name>
     </author>
@@ -185,10 +391,10 @@ Options:
   </entry>
   <entry>
     <title>Spectacle</title>
-    <link rel="alternate" href="http://sourcey.com/spectacle/"/>
-    <id>http://sourcey.com/spectacle/</id>
+    <link rel="alternate" href="https://sourcey.com/spectacle/"/>
+    <id>https://sourcey.com/spectacle/</id>
     <published>2016-01-12T00:00:00Z</published>
-    <updated>2016-01-18T16:07:53+01:00</updated>
+    <updated>2017-03-29T20:07:44+02:00</updated>
     <author>
       <name/>
     </author>
@@ -247,46 +453,46 @@ With Spectacle you can have beautiful HTML5 documentation for your API ready to 
 
 &lt;p&gt;Simply install Spectacle from &lt;code&gt;npm&lt;/code&gt; like so:&lt;/p&gt;
 
-&lt;pre class="highlight shell"&gt;&lt;code&gt;npm install -g spectacle-docs
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;npm install &lt;span class="nt"&gt;-g&lt;/span&gt; spectacle-docs
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Next pass your &lt;code&gt;swagger.json&lt;/code&gt; document use the CLI to generate your documentation.&lt;/p&gt;
 
-&lt;pre class="highlight shell"&gt;&lt;code&gt;spectacle your_swagger_api.json
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;spectacle your_swagger_api.json
 
 &lt;span class="c"&gt;# Or use the cheese.json example to test it out&lt;/span&gt;
 &lt;span class="c"&gt;# spectacle test/fixtures/cheese.json&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Your generated documentation will be located in the &lt;code&gt;/public&lt;/code&gt; directory. You can either copy the generated HTML to your web server, or view your docs by starting the internal web server like so:&lt;/p&gt;
 
-&lt;pre class="highlight shell"&gt;&lt;code&gt;spectacle -s
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;spectacle &lt;span class="nt"&gt;-s&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Now point your browser to &lt;a href="http://localhost:4400/"&gt;http://localhost:4400/&lt;/a&gt; and presto - sexy docs for your API!&lt;/p&gt;
 
 &lt;h2 id="configuration-options"&gt;Configuration Options&lt;/h2&gt;
 
 &lt;p&gt;The basic CLI options are detailed below:&lt;/p&gt;
 
-&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;spectacle -h
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;spectacle &lt;span class="nt"&gt;-h&lt;/span&gt;
 
   Usage: cli spactacle &lt;span class="o"&gt;[&lt;/span&gt;options] &amp;lt;specfile&amp;gt;
 
   Options:
 
-  -h, --help                output usage information
-  -V, --version             output the version number
-  -C, --disable-css         omit CSS generation &lt;span class="o"&gt;(&lt;/span&gt;default: &lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
-  -J, --disable-js          omit JavaScript generation &lt;span class="o"&gt;(&lt;/span&gt;default: &lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
-  -e, --embeddable          omit the HTML &amp;lt;body/&amp;gt; and generate the documentation content only &lt;span class="o"&gt;(&lt;/span&gt;default: &lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
-  -d, --development-mode    start HTTP server with the file watcher and live reload &lt;span class="o"&gt;(&lt;/span&gt;default: &lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
-  -s, --start-server        start the HTTP server without any development features
-  -p, --port &amp;lt;dir&amp;gt;          the port number &lt;span class="k"&gt;for &lt;/span&gt;the HTTP server to listen on &lt;span class="o"&gt;(&lt;/span&gt;default: 4400&lt;span class="o"&gt;)&lt;/span&gt;
-  -t, --target-dir &amp;lt;dir&amp;gt;    the target build directory &lt;span class="o"&gt;(&lt;/span&gt;default: ./public&lt;span class="o"&gt;)&lt;/span&gt;
-  -f, --target-file &amp;lt;file&amp;gt;  the target build HTML file &lt;span class="o"&gt;(&lt;/span&gt;default: index.html&lt;span class="o"&gt;)&lt;/span&gt;
-  -a, --app-dir &amp;lt;dir&amp;gt;       the application &lt;span class="nb"&gt;source &lt;/span&gt;directory &lt;span class="o"&gt;(&lt;/span&gt;default: ./app&lt;span class="o"&gt;)&lt;/span&gt;
-  -i, --cache-dir &amp;lt;dir&amp;gt;     the intermediate build cache directory &lt;span class="o"&gt;(&lt;/span&gt;default: ./.cache&lt;span class="o"&gt;)&lt;/span&gt;
-  -l, --logo-file &amp;lt;file&amp;gt;    specify a custom logo file &lt;span class="o"&gt;(&lt;/span&gt;default: null&lt;span class="o"&gt;)&lt;/span&gt;
-  -c, --config-file &amp;lt;file&amp;gt;  specify a custom configuration file &lt;span class="o"&gt;(&lt;/span&gt;default: ./app/lib/config.js&lt;span class="o"&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
+  &lt;span class="nt"&gt;-h&lt;/span&gt;, &lt;span class="nt"&gt;--help&lt;/span&gt;                output usage information
+  &lt;span class="nt"&gt;-V&lt;/span&gt;, &lt;span class="nt"&gt;--version&lt;/span&gt;             output the version number
+  &lt;span class="nt"&gt;-C&lt;/span&gt;, &lt;span class="nt"&gt;--disable-css&lt;/span&gt;         omit CSS generation &lt;span class="o"&gt;(&lt;/span&gt;default: &lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+  &lt;span class="nt"&gt;-J&lt;/span&gt;, &lt;span class="nt"&gt;--disable-js&lt;/span&gt;          omit JavaScript generation &lt;span class="o"&gt;(&lt;/span&gt;default: &lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+  &lt;span class="nt"&gt;-e&lt;/span&gt;, &lt;span class="nt"&gt;--embeddable&lt;/span&gt;          omit the HTML &amp;lt;body/&amp;gt; and generate the documentation content only &lt;span class="o"&gt;(&lt;/span&gt;default: &lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+  &lt;span class="nt"&gt;-d&lt;/span&gt;, &lt;span class="nt"&gt;--development-mode&lt;/span&gt;    start HTTP server with the file watcher and live reload &lt;span class="o"&gt;(&lt;/span&gt;default: &lt;span class="nb"&gt;false&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+  &lt;span class="nt"&gt;-s&lt;/span&gt;, &lt;span class="nt"&gt;--start-server&lt;/span&gt;        start the HTTP server without any development features
+  &lt;span class="nt"&gt;-p&lt;/span&gt;, &lt;span class="nt"&gt;--port&lt;/span&gt; &amp;lt;dir&amp;gt;          the port number &lt;span class="k"&gt;for &lt;/span&gt;the HTTP server to listen on &lt;span class="o"&gt;(&lt;/span&gt;default: 4400&lt;span class="o"&gt;)&lt;/span&gt;
+  &lt;span class="nt"&gt;-t&lt;/span&gt;, &lt;span class="nt"&gt;--target-dir&lt;/span&gt; &amp;lt;dir&amp;gt;    the target build directory &lt;span class="o"&gt;(&lt;/span&gt;default: ./public&lt;span class="o"&gt;)&lt;/span&gt;
+  &lt;span class="nt"&gt;-f&lt;/span&gt;, &lt;span class="nt"&gt;--target-file&lt;/span&gt; &amp;lt;file&amp;gt;  the target build HTML file &lt;span class="o"&gt;(&lt;/span&gt;default: index.html&lt;span class="o"&gt;)&lt;/span&gt;
+  &lt;span class="nt"&gt;-a&lt;/span&gt;, &lt;span class="nt"&gt;--app-dir&lt;/span&gt; &amp;lt;dir&amp;gt;       the application &lt;span class="nb"&gt;source &lt;/span&gt;directory &lt;span class="o"&gt;(&lt;/span&gt;default: ./app&lt;span class="o"&gt;)&lt;/span&gt;
+  &lt;span class="nt"&gt;-i&lt;/span&gt;, &lt;span class="nt"&gt;--cache-dir&lt;/span&gt; &amp;lt;dir&amp;gt;     the intermediate build cache directory &lt;span class="o"&gt;(&lt;/span&gt;default: ./.cache&lt;span class="o"&gt;)&lt;/span&gt;
+  &lt;span class="nt"&gt;-l&lt;/span&gt;, &lt;span class="nt"&gt;--logo-file&lt;/span&gt; &amp;lt;file&amp;gt;    specify a custom logo file &lt;span class="o"&gt;(&lt;/span&gt;default: null&lt;span class="o"&gt;)&lt;/span&gt;
+  &lt;span class="nt"&gt;-c&lt;/span&gt;, &lt;span class="nt"&gt;--config-file&lt;/span&gt; &amp;lt;file&amp;gt;  specify a custom configuration file &lt;span class="o"&gt;(&lt;/span&gt;default: ./app/lib/config.js&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Most options are self explanatory, but the following options warrant some further explanation:&lt;/p&gt;
 
 &lt;ul&gt;
@@ -339,8 +545,8 @@ With Spectacle you can have beautiful HTML5 documentation for your API ready to 
   </entry>
   <entry>
     <title>Building the Perfect Rails 5 API Only App</title>
-    <link rel="alternate" href="http://sourcey.com/building-the-prefect-rails-5-api-only-app/"/>
-    <id>http://sourcey.com/building-the-prefect-rails-5-api-only-app/</id>
+    <link rel="alternate" href="https://sourcey.com/building-the-prefect-rails-5-api-only-app/"/>
+    <id>https://sourcey.com/building-the-prefect-rails-5-api-only-app/</id>
     <published>2015-12-26T00:00:00Z</published>
     <updated>2016-11-01T10:52:05+01:00</updated>
     <author>
@@ -371,28 +577,28 @@ Thanks to the new &lt;code&gt;rails-api&lt;/code&gt; gem that ships as part of t
 
 &lt;p&gt;First, make sure you are running Ruby 2.2.2+ or newer as it’s required by Rails 5, then go ahead an install the Rails gem:&lt;/p&gt;
 
-&lt;pre class="highlight shell"&gt;&lt;code&gt;gem install rails
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;gem install rails
 
 &lt;span class="c"&gt;# version should be &amp;gt;= Rails 5.0.0&lt;/span&gt;
-rails --version
-&lt;/code&gt;&lt;/pre&gt;
+rails &lt;span class="nt"&gt;--version&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;According to the official &lt;a href="http://edgeguides.rubyonrails.org/api_app.html"&gt;Rails guide&lt;/a&gt; all we need to do to create an API only Rails app is to pass the &lt;code&gt;--api&lt;/code&gt; option at the command line when creating a new Rails app, like so:&lt;/p&gt;
 
-&lt;pre class="highlight shell"&gt;&lt;code&gt;rails new api_app_name --api
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;rails new api_app_name &lt;span class="nt"&gt;--api&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;The next thing is to run &lt;code&gt;bundle&lt;/code&gt; and &lt;code&gt;rake&lt;/code&gt; inside our app directory to install the default gems and setup the database:&lt;/p&gt;
 
-&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="nb"&gt;cd&lt;/span&gt;  &amp;lt;parent-folder-path&amp;gt;/api_app_name
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="nb"&gt;cd&lt;/span&gt;  &amp;lt;parent-folder-path&amp;gt;/api_app_name
 bundle install
 bin/rake db:setup
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Now we have a shiny new API only Rails app without any of the incumbent front end bloat, and all of the inherent Railsy goodness. Nice!&lt;/p&gt;
 
 &lt;h2 id="using-rspec-for-testing"&gt;Using RSpec for Testing&lt;/h2&gt;
 
 &lt;p&gt;Before going any further let’s setup &lt;a href="http://rspec.info"&gt;RSpec&lt;/a&gt; for spec testing our application. The reason why it’s good to setup RSpec first is that we can save a bit of time using the built-in RSpec generators to auto generate default model and controller specs for us each time we use &lt;code&gt;rails generate scaffold&lt;/code&gt; to generate resources later on. To install RSpec, go ahead and add the &lt;a href="https://github.com/rspec/rspec-rails"&gt;rspec-rails&lt;/a&gt; gem to your Gemfile in the &lt;code&gt;:development, :test&lt;/code&gt; group:&lt;/p&gt;
 
-&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;group&lt;/span&gt; &lt;span class="ss"&gt;:development&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:test&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;group&lt;/span&gt; &lt;span class="ss"&gt;:development&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:test&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
 
   &lt;span class="c1"&gt;# Use RSpec for specs&lt;/span&gt;
   &lt;span class="n"&gt;gem&lt;/span&gt; &lt;span class="s1"&gt;'rspec-rails'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'&amp;gt;= 3.5.0'&lt;/span&gt;
@@ -400,15 +606,15 @@ bin/rake db:setup
   &lt;span class="c1"&gt;# Use Factory Girl for generating random test data&lt;/span&gt;
   &lt;span class="n"&gt;gem&lt;/span&gt; &lt;span class="s1"&gt;'factory_girl_rails'&lt;/span&gt;
 &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Update your bundle:&lt;/p&gt;
 
-&lt;pre class="highlight shell"&gt;&lt;code&gt;bundle
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;bundle
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Run the RSpec installer:&lt;/p&gt;
 
-&lt;pre class="highlight shell"&gt;&lt;code&gt;bin/rails g rspec:install  
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;bin/rails g rspec:install  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Finally, you can get rid of the &lt;code&gt;test&lt;/code&gt; directory in Rails, since we won’t be writing unit tests, but writing specifications instead.&lt;/p&gt;
 
 &lt;h2 id="bulding-your-api"&gt;Bulding Your API&lt;/h2&gt;
@@ -417,11 +623,11 @@ bin/rake db:setup
 
 &lt;p&gt;When an app is created with the &lt;code&gt;--api&lt;/code&gt; flag you can use the default scaffold generators to generate your API resources as normal, without the need for any special arguments.&lt;/p&gt;
 
-&lt;pre class="highlight shell"&gt;&lt;code&gt;bin/rails g scaffold user name email
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;bin/rails g scaffold user name email
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;This will generate the following file structure:&lt;/p&gt;
 
-&lt;pre class="highlight shell"&gt;&lt;code&gt;      invoke  active_record
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;      invoke  active_record
    identical    db/migrate/20151222022044_create_users.rb
    identical    app/models/user.rb
       invoke    rspec
@@ -438,16 +644,16 @@ bin/rake db:setup
       invoke      rspec
       create        spec/requests/users_spec.rb
 
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Note that no views are created since we are running in API mode.&lt;/p&gt;
 
 &lt;p&gt;Go ahead and repeat the process with as many resources as you like, and once you’re done you can migrate and run the app:&lt;/p&gt;
 
-&lt;pre class="highlight shell"&gt;&lt;code&gt;bin/rake db:migrate
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;bin/rake db:migrate
 
 &lt;span class="c"&gt;# run the default server on port 3000&lt;/span&gt;
 bin/rails s
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Your new API is now up and running on &lt;a href="http://localhost:3000"&gt;http://localhost:3000&lt;/a&gt;. Sweet!&lt;/p&gt;
 
 &lt;p&gt;You’re not done yet though, there are still a bunch of important points for consideration…&lt;/p&gt;
@@ -463,39 +669,39 @@ but since we’re not using views in our super streamlined API app, that’s not
 
 &lt;p&gt;Go ahead and add the &lt;code&gt;active_model_serializers&lt;/code&gt; gem to your Gemfile:&lt;/p&gt;
 
-&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;gem&lt;/span&gt; &lt;span class="s1"&gt;'active_model_serializers'&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;gem&lt;/span&gt; &lt;span class="s1"&gt;'active_model_serializers'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Update your bundle:&lt;/p&gt;
 
-&lt;pre class="highlight shell"&gt;&lt;code&gt;bundle
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;bundle
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Now lets create a default serializer for our User model:&lt;/p&gt;
 
-&lt;pre class="highlight shell"&gt;&lt;code&gt;rails g serializer user
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;rails g serializer user
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;In &lt;code&gt;app/serializers/user_serializer.rb&lt;/code&gt;, we find this code:&lt;/p&gt;
 
-&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;UserSerializer&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;ActiveModel&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Serializer&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;UserSerializer&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;ActiveModel&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Serializer&lt;/span&gt;
   &lt;span class="n"&gt;attributes&lt;/span&gt; &lt;span class="ss"&gt;:id&lt;/span&gt;
 &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Note that only the &lt;code&gt;:id&lt;/code&gt; attribute is added by default. That’s not going to be much use to us, so
 go ahead and add the &lt;code&gt;:name&lt;/code&gt; and &lt;code&gt;:email&lt;/code&gt; attributes to the serializer:&lt;/p&gt;
 
-&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;UserSerializer&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;ActiveModel&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Serializer&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;UserSerializer&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;ActiveModel&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Serializer&lt;/span&gt;
   &lt;span class="n"&gt;attributes&lt;/span&gt; &lt;span class="ss"&gt;:id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:email&lt;/span&gt;
 &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p class="panel callout radius"&gt;If your model has relationships just declare them on the serializer as you would any other attributes to be serialized in the output.&lt;/p&gt;
 
 &lt;p&gt;You may also need to include the &lt;code&gt;ActionController::Serialization&lt;/code&gt; dependency in your controller like so:&lt;/p&gt;
 
-&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;ApplicationController&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;ActionController&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;API&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;ApplicationController&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;ActionController&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;API&lt;/span&gt;
   &lt;span class="kp"&gt;include&lt;/span&gt; &lt;span class="no"&gt;ActionController&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Serialization&lt;/span&gt;
 
   &lt;span class="c1"&gt;# ...&lt;/span&gt;
 &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Now when you hit and User related API endpoint only the attributes in the &lt;code&gt;UserSerializer&lt;/code&gt; will be rendered. Nice!&lt;/p&gt;
 
 &lt;p&gt;Check the &lt;a href="https://github.com/rails-api/active_model_serializers"&gt;active_model_serializers&lt;/a&gt; gem homepage for more detailed configuration options.&lt;/p&gt;
@@ -506,15 +712,15 @@ go ahead and add the &lt;code&gt;:name&lt;/code&gt; and &lt;code&gt;:email&lt;/c
 
 &lt;p&gt;This is made very simple by the &lt;code&gt;rack-cors&lt;/code&gt; gem. Just stick it in your Gemfile like so:&lt;/p&gt;
 
-&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;gem&lt;/span&gt; &lt;span class="s1"&gt;'rack-cors'&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;gem&lt;/span&gt; &lt;span class="s1"&gt;'rack-cors'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Update your bundle:&lt;/p&gt;
 
-&lt;pre class="highlight shell"&gt;&lt;code&gt;bundle
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;bundle
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;And put something like the code below in &lt;code&gt;config/application.rb&lt;/code&gt; of your Rails application. For example, this will allow GET, POST or OPTIONS requests from any origin on any resource.&lt;/p&gt;
 
-&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;YourApp&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;YourApp&lt;/span&gt;
   &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Application&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;Rails&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Application&lt;/span&gt;
 
     &lt;span class="c1"&gt;# ...&lt;/span&gt;
@@ -528,7 +734,7 @@ go ahead and add the &lt;code&gt;:name&lt;/code&gt; and &lt;code&gt;:email&lt;/c
 
   &lt;span class="k"&gt;end&lt;/span&gt;
 &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;For more detailed configuration options please see the gem documentation: https://github.com/cyu/rack-cors&lt;/p&gt;
 
 &lt;h2 id="versioning-your-api"&gt;Versioning Your API&lt;/h2&gt;
@@ -539,31 +745,31 @@ so that you can maintain backwards compatibility for existing clients whenever y
 
 &lt;p&gt;This guide will show you how to setup versioning with the following URL format:&lt;/p&gt;
 
-&lt;pre class="highlight plaintext"&gt;&lt;code&gt;GET http://api.mysite.com/v1/users/
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;GET http://api.mysite.com/v1/users/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Using a subdomain instead of something like &lt;code&gt;/api/v1/users/&lt;/code&gt; is just a preference, although both are easy to accomplish in Rails.&lt;/p&gt;
 
 &lt;p&gt;We can use a directory structure like this to keep our controller code clean by defining all our &lt;code&gt;v1&lt;/code&gt; controllers within the &lt;code&gt;Api::V1&lt;/code&gt; namespace:&lt;/p&gt;
 
-&lt;pre class="highlight plaintext"&gt;&lt;code&gt;app/controllers/
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;app/controllers/
 .
 |-- api
 |   `-- v1
 |       |-- api_controller.rb
 |       `-- users_controller.rb
 |-- application_controller.rb
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Here’s what the controllers look like:&lt;/p&gt;
 
-&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="c1"&gt;# app/controllers/api/v1/api_controller.rb&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="c1"&gt;# app/controllers/api/v1/api_controller.rb&lt;/span&gt;
 
 &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;Api::V1&lt;/span&gt;
   &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;ApiController&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;ApplicationController&lt;/span&gt;
     &lt;span class="c1"&gt;# Generic API stuff here&lt;/span&gt;
   &lt;span class="k"&gt;end&lt;/span&gt;
 &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="c1"&gt;# app/controllers/api/v1/users_controller.rb&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="c1"&gt;# app/controllers/api/v1/users_controller.rb&lt;/span&gt;
 
 &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;Api::V1&lt;/span&gt;
   &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;UsersController&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;ApiController&lt;/span&gt;
@@ -575,17 +781,17 @@ so that you can maintain backwards compatibility for existing clients whenever y
 
   &lt;span class="k"&gt;end&lt;/span&gt;
 &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Now let’s setup our &lt;code&gt;config/routes.rb&lt;/code&gt; to tie everything together:&lt;/p&gt;
 
-&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;constraints&lt;/span&gt; &lt;span class="ss"&gt;subdomain: &lt;/span&gt;&lt;span class="s1"&gt;'api'&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;constraints&lt;/span&gt; &lt;span class="ss"&gt;subdomain: &lt;/span&gt;&lt;span class="s1"&gt;'api'&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
   &lt;span class="n"&gt;scope&lt;/span&gt; &lt;span class="ss"&gt;module: &lt;/span&gt;&lt;span class="s1"&gt;'api'&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
     &lt;span class="n"&gt;namespace&lt;/span&gt; &lt;span class="ss"&gt;:v1&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
       &lt;span class="n"&gt;resources&lt;/span&gt; &lt;span class="ss"&gt;:users&lt;/span&gt;
     &lt;span class="k"&gt;end&lt;/span&gt;
   &lt;span class="k"&gt;end&lt;/span&gt;
 &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;The &lt;code&gt;scope module: 'api'&lt;/code&gt; bit lets us route to controllers in the API module without explicitly including it in the URL. However, the version &lt;code&gt;v1/&lt;/code&gt; is part of the URL, and we also want to route to the V1 module, so we use &lt;code&gt;namespace&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;Now you’re API routes are looking pretty sharp!&lt;/p&gt;
@@ -603,15 +809,15 @@ so that you can maintain backwards compatibility for existing clients whenever y
 
 &lt;p&gt;Get started by adding the dependency to your Gemfile:&lt;/p&gt;
 
-&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;gem&lt;/span&gt; &lt;span class="s1"&gt;'rack-attack'&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;gem&lt;/span&gt; &lt;span class="s1"&gt;'rack-attack'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Update your bundle:&lt;/p&gt;
 
-&lt;pre class="highlight shell"&gt;&lt;code&gt;bundle
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;bundle
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Now update your &lt;code&gt;config/application.rb&lt;/code&gt; file to include it into your middleware stack:&lt;/p&gt;
 
-&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;YourApp&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;YourApp&lt;/span&gt;
   &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Application&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;Rails&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Application&lt;/span&gt;
 
     &lt;span class="c1"&gt;# ...&lt;/span&gt;
@@ -620,10 +826,10 @@ so that you can maintain backwards compatibility for existing clients whenever y
 
   &lt;span class="k"&gt;end&lt;/span&gt;
 &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Create a new initializer file in &lt;code&gt;config/initializers/rack_attack.rb&lt;/code&gt; to configure your &lt;code&gt;Rack::Attack&lt;/code&gt; rules. The example below is very basic, and it should give a good starting point although you may have different requirements altogether.&lt;/p&gt;
 
-&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Rack&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Attack&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Rack&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Attack&lt;/span&gt;
 
   &lt;span class="c1"&gt;# `Rack::Attack` is configured to use the `Rails.cache` value by default,&lt;/span&gt;
   &lt;span class="c1"&gt;# but you can override that by setting the `Rack::Attack.cache.store` value&lt;/span&gt;
@@ -649,7 +855,7 @@ so that you can maintain backwards compatibility for existing clients whenever y
     &lt;span class="p"&gt;]&lt;/span&gt;
   &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;For a full list of configuration options check the &lt;a href="https://github.com/kickstarter/rack-attack"&gt;Rack::Attack&lt;/a&gt; gem homepage.&lt;/p&gt;
 
 &lt;p&gt;Now that your API is safe from brute force attacks and bad client code you can sleep a little better at night!&lt;/p&gt;
@@ -664,15 +870,15 @@ so that you can maintain backwards compatibility for existing clients whenever y
 
 &lt;p&gt;A good way of authenticating API requests is using HTTP token based authentication, which involves clients including a API key of some sort in the HTTP &lt;code&gt;Authorization&lt;/code&gt; header of each request, like so:&lt;/p&gt;
 
-&lt;pre class="highlight plaintext"&gt;&lt;code&gt;Authorization: Token token="WCZZYjnOQFUYfJIN2ShH1iD24UHo58A6TI"
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;Authorization: Token token="WCZZYjnOQFUYfJIN2ShH1iD24UHo58A6TI"
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;First let’s update create a migration to add the &lt;code&gt;api_key&lt;/code&gt; attribute to our &lt;code&gt;User&lt;/code&gt; model:&lt;/p&gt;
 
-&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;rails&lt;/span&gt; &lt;span class="n"&gt;g&lt;/span&gt; &lt;span class="n"&gt;migration&lt;/span&gt; &lt;span class="no"&gt;AddApiKeyToUsers&lt;/span&gt; &lt;span class="n"&gt;api_key&lt;/span&gt;&lt;span class="ss"&gt;:string&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;rails&lt;/span&gt; &lt;span class="n"&gt;g&lt;/span&gt; &lt;span class="n"&gt;migration&lt;/span&gt; &lt;span class="no"&gt;AddApiKeyToUsers&lt;/span&gt; &lt;span class="n"&gt;api_key&lt;/span&gt;&lt;span class="ss"&gt;:string&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Now update the &lt;code&gt;User&lt;/code&gt; model to include the following methods:&lt;/p&gt;
 
-&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;User&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;ActiveRecord&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Base&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;User&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;ActiveRecord&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Base&lt;/span&gt;
 
   &lt;span class="c1"&gt;# Assign an API key on create&lt;/span&gt;
   &lt;span class="n"&gt;before_create&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
@@ -687,10 +893,10 @@ so that you can maintain backwards compatibility for existing clients whenever y
     &lt;span class="k"&gt;end&lt;/span&gt;
   &lt;span class="k"&gt;end&lt;/span&gt;
 &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;On the controller side we can implement the authentication using the built in &lt;code&gt;authenticate_or_request_with_http_token&lt;/code&gt; Rails method.&lt;/p&gt;
 
-&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;ApplicationController&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;ActionController&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Base&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;ApplicationController&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;ActionController&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Base&lt;/span&gt;
   &lt;span class="kp"&gt;include&lt;/span&gt; &lt;span class="no"&gt;ActionController&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;HttpAuthentication&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Token&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;ControllerMethods&lt;/span&gt;
 
   &lt;span class="c1"&gt;# Add a before_action to authenticate all requests.&lt;/span&gt;
@@ -716,11 +922,11 @@ so that you can maintain backwards compatibility for existing clients whenever y
     &lt;span class="n"&gt;render&lt;/span&gt; &lt;span class="ss"&gt;json: &lt;/span&gt;&lt;span class="s1"&gt;'Bad credentials'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;status: :unauthorized&lt;/span&gt;
   &lt;span class="k"&gt;end&lt;/span&gt;
 &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Now we can test our authenticated API using &lt;code&gt;curl&lt;/code&gt;:&lt;/p&gt;
 
-&lt;pre class="highlight shell"&gt;&lt;code&gt;curl -H &lt;span class="s2"&gt;"Authorization: Token token=PsmmvKBqQDOaWwEsPpOCYMsy"&lt;/span&gt; http://localhost:3000/users
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;curl &lt;span class="nt"&gt;-H&lt;/span&gt; &lt;span class="s2"&gt;"Authorization: Token token=PsmmvKBqQDOaWwEsPpOCYMsy"&lt;/span&gt; http://localhost:3000/users
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;h2 class="no_toc" id="conclusion"&gt;Conclusion&lt;/h2&gt;
 
 &lt;p&gt;Now you have the keys to the castle, and all the basics for building an API the Rails way.&lt;/p&gt;
@@ -728,292 +934,6 @@ so that you can maintain backwards compatibility for existing clients whenever y
 &lt;p&gt;Hopefully then guide was helpful for you, and if you want any points clarified or just want to say thanks then feel free to use the comments below.&lt;/p&gt;
 
 &lt;p&gt;Cheers, and happy coding!&lt;/p&gt;
-</content>
-  </entry>
-  <entry>
-    <title>Android Custom Centered ActionBar with Material Design</title>
-    <link rel="alternate" href="http://sourcey.com/android-custom-centered-actionbar-with-material-design/"/>
-    <id>http://sourcey.com/android-custom-centered-actionbar-with-material-design/</id>
-    <published>2015-07-11T00:00:00Z</published>
-    <updated>2015-11-25T04:56:14+01:00</updated>
-    <author>
-      <name>Kam Low</name>
-    </author>
-    <content type="html">&lt;p&gt;The Android ActionBar is now easier to customise than ever, due to the fact that the old &lt;code&gt;ActionBar&lt;/code&gt; element has been replaced with the more versitile &lt;code&gt;Toolbar&lt;/code&gt;. Since &lt;code&gt;Toolbar&lt;/code&gt; inherits directly from &lt;code&gt;ViewGroup&lt;/code&gt;, you can essentially style or add any element you want to the ActionBar. That is, with the exception of a few gotchas, but you’re in luck because this article is here so you don’t get got!&lt;/p&gt;
-
-&lt;p&gt;Just a foreward to say that this article makes the assumption that you are using the support library - and if you’re not then you’re only targeting about 10% of devices which is more than a little strange.&lt;/p&gt;
-
-&lt;p&gt;OK, let’s code.&lt;/p&gt;
-
-&lt;p&gt;Below is the completed &lt;code&gt;Toolbar&lt;/code&gt; layout. Go ahead and add it to your project, and you can make changes from there.&lt;/p&gt;
-
-&lt;h4 id="reslayouttoolbarxml"&gt;/res/layout/toolbar.xml&lt;/h4&gt;
-&lt;pre class="highlight xml"&gt;&lt;code&gt;&lt;span class="cp"&gt;&amp;lt;?xml version="1.0" encoding="utf-8"?&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;android.support.v7.widget.Toolbar&lt;/span&gt;
-    &lt;span class="na"&gt;xmlns:android=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res/android"&lt;/span&gt;
-    &lt;span class="na"&gt;xmlns:app=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res-auto"&lt;/span&gt;
-    &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/toolbar"&lt;/span&gt;
-    &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
-    &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"?attr/actionBarSize"&lt;/span&gt;
-    &lt;span class="na"&gt;android:background=&lt;/span&gt;&lt;span class="s"&gt;"?attr/colorPrimary"&lt;/span&gt;
-    &lt;span class="na"&gt;app:popupTheme=&lt;/span&gt;&lt;span class="s"&gt;"@style/ThemeOverlay.AppCompat.Light"&lt;/span&gt;
-    &lt;span class="na"&gt;app:layout_scrollFlags=&lt;/span&gt;&lt;span class="s"&gt;"scroll|enterAlways"&lt;/span&gt;
-    &lt;span class="na"&gt;app:layout_collapseMode=&lt;/span&gt;&lt;span class="s"&gt;"pin"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;FrameLayout&lt;/span&gt;
-        &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
-        &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-
-        &lt;span class="c"&gt;&amp;lt;!-- This is a centered logo --&amp;gt;&lt;/span&gt;
-        &lt;span class="nt"&gt;&amp;lt;ImageView&lt;/span&gt;
-            &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/toolbar_logo"&lt;/span&gt;
-            &lt;span class="na"&gt;android:src=&lt;/span&gt;&lt;span class="s"&gt;"@drawable/logo"&lt;/span&gt;
-            &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"wrap_content"&lt;/span&gt;
-            &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"fill_parent"&lt;/span&gt;
-            &lt;span class="na"&gt;android:layout_marginRight=&lt;/span&gt;&lt;span class="s"&gt;"?attr/actionBarSize"&lt;/span&gt;
-            &lt;span class="na"&gt;android:layout_marginTop=&lt;/span&gt;&lt;span class="s"&gt;"4dp"&lt;/span&gt;
-            &lt;span class="na"&gt;android:layout_marginBottom=&lt;/span&gt;&lt;span class="s"&gt;"4dp"&lt;/span&gt;
-            &lt;span class="na"&gt;android:layout_gravity=&lt;/span&gt;&lt;span class="s"&gt;"center"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
-
-        &lt;span class="c"&gt;&amp;lt;!-- This is a centered title --&amp;gt;&lt;/span&gt;
-        &lt;span class="c"&gt;&amp;lt;!--
-        &amp;lt;TextView
-            android:id="@+id/toolbar_title"
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_marginRight="?attr/actionBarSize"
-            android:layout_gravity="center"
-            android:gravity="center_vertical"
-            android:visibility="gone"
-            android:text="@string/app_name"
-            android:textColor="@color/white"
-            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse"
-            /&amp;gt;
-            --&amp;gt;&lt;/span&gt;
-
-        &lt;span class="c"&gt;&amp;lt;!-- This is a custom left side button --&amp;gt;&lt;/span&gt;
-        &lt;span class="c"&gt;&amp;lt;!--
-        &amp;lt;ImageButton
-            android:id="@+id/btn_settings"
-            android:layout_width="?attr/actionBarSize"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_marginRight="?attr/actionBarSize"
-            android:layout_gravity="start|center_vertical"
-            android:visibility="invisible"
-            android:src="@drawable/ic_settings_white_24dp"
-            style="@style/Widget.AppCompat.ActionButton" /&amp;gt;
-            --&amp;gt;&lt;/span&gt;
-
-        &lt;span class="c"&gt;&amp;lt;!-- This is a custom right side button --&amp;gt;&lt;/span&gt;
-        &lt;span class="c"&gt;&amp;lt;!--
-        &amp;lt;ImageButton
-            android:id="@+id/btn_search"
-            android:layout_width="?attr/actionBarSize"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_gravity="end"
-            android:src="@drawable/ic_magnify_white_24dp"
-            style="@style/Widget.AppCompat.ActionButton" /&amp;gt;
-            --&amp;gt;&lt;/span&gt;
-
-    &lt;span class="nt"&gt;&amp;lt;/FrameLayout&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;/android.support.v7.widget.Toolbar&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Below is a very minimal &lt;code&gt;MainActivity.java&lt;/code&gt; class which shows how to override the default ActionBar as simple as possible, and outlines some options that can be used to configure how the ActionBar behaves.&lt;/p&gt;
-
-&lt;h4 id="mainactivityjava"&gt;MainActivity.java&lt;/h4&gt;
-&lt;pre class="highlight java"&gt;&lt;code&gt;&lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;MainActivity&lt;/span&gt; &lt;span class="kd"&gt;extends&lt;/span&gt; &lt;span class="n"&gt;AppCompatActivity&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
-    &lt;span class="nd"&gt;@Override&lt;/span&gt;
-    &lt;span class="kd"&gt;protected&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;onCreate&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Bundle&lt;/span&gt; &lt;span class="n"&gt;savedInstanceState&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
-        &lt;span class="kd"&gt;super&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;onCreate&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;savedInstanceState&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
-        &lt;span class="n"&gt;setContentView&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;layout&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;activity_main&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;// an example activity_main.xml is provided below&lt;/span&gt;
-
-        &lt;span class="c1"&gt;// Always cast your custom Toolbar here, and set it as the ActionBar.&lt;/span&gt;
-        &lt;span class="n"&gt;Toolbar&lt;/span&gt; &lt;span class="n"&gt;tb&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Toolbar&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;findViewById&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;id&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;toolbar&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
-        &lt;span class="n"&gt;setSupportActionBar&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tb&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
-
-        &lt;span class="c1"&gt;// Get the ActionBar here to configure the way it behaves.&lt;/span&gt;
-        &lt;span class="kd"&gt;final&lt;/span&gt; &lt;span class="n"&gt;ActionBar&lt;/span&gt; &lt;span class="n"&gt;ab&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;getSupportActionBar&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
-        &lt;span class="c1"&gt;//ab.setHomeAsUpIndicator(R.drawable.ic_menu); // set a custom icon for the default home button&lt;/span&gt;
-        &lt;span class="n"&gt;ab&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setDisplayShowHomeEnabled&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;// show or hide the default home button&lt;/span&gt;
-        &lt;span class="n"&gt;ab&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setDisplayHomeAsUpEnabled&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
-        &lt;span class="n"&gt;ab&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setDisplayShowCustomEnabled&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;// enable overriding the default toolbar layout&lt;/span&gt;
-        &lt;span class="n"&gt;ab&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;setDisplayShowTitleEnabled&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt; &lt;span class="c1"&gt;// disable the default title element here (for centered title)&lt;/span&gt;
-    &lt;span class="o"&gt;}&lt;/span&gt;
-&lt;span class="o"&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id="centering-the-title-or-logo"&gt;Centering the Title or Logo&lt;/h2&gt;
-
-&lt;p&gt;Our custom ActionBar layout uses a centered title element by default (or logo depending on your preference of text or image as a title). This deviates from the Android stardard a little, which is to left align the title text and position it just to the right of the home button. Many apps still opt for the centered title design though, probably because it has been made popular on iOS.&lt;/p&gt;
-
-&lt;p&gt;A common gotcha here is that if we are aligning the title element with center gravity, and we are using any of the default toolbar buttons, then our custom toolbar will be pushed to the side of the default buttons, causing our title centering will be off by the width of the default button (unless of course you are using the default buttons on either side, in which case our cusorm toolbar will still be centered). To counter this, just add &lt;code&gt;android:layout_marginLeft|Right="?attr/actionBarSize"&lt;/code&gt;to the custom &lt;code&gt;TextView&lt;/code&gt; or &lt;code&gt;ImageView&lt;/code&gt; that’s acting as the centered title. Easy.&lt;/p&gt;
-
-&lt;p&gt;If you don’t want a centered title and would prefer to use the default left aligned ActionBar title, then just remove the &lt;code&gt;toolbar_logo&lt;/code&gt; and &lt;code&gt;toolbar_logo&lt;/code&gt; elements from the &lt;code&gt;toolbar.xml&lt;/code&gt; file, and remove the call to &lt;code&gt;ab.setDisplayShowTitleEnabled(false);&lt;/code&gt; from your &lt;code&gt;MainActivity.java&lt;/code&gt;.&lt;/p&gt;
-
-&lt;h2 id="material-design-buttons"&gt;Material Design Buttons&lt;/h2&gt;
-
-&lt;p&gt;To make your custom buttons play nicely inside the ActionBar and have transparent ripple effects just add the &lt;code&gt;Widget.AppCompat.ActionButton&lt;/code&gt; style to each &lt;code&gt;ImageButton&lt;/code&gt;, like so:&lt;/p&gt;
-
-&lt;pre class="highlight xml"&gt;&lt;code&gt;&lt;span class="nt"&gt;&amp;lt;ImageButton&lt;/span&gt;
-    &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/btn_search"&lt;/span&gt;
-    &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"?attr/actionBarSize"&lt;/span&gt;
-    &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"?attr/actionBarSize"&lt;/span&gt;
-    &lt;span class="na"&gt;android:src=&lt;/span&gt;&lt;span class="s"&gt;"@drawable/ic_magnify_white_24dp"&lt;/span&gt;
-    &lt;span class="na"&gt;style=&lt;/span&gt;&lt;span class="s"&gt;"@style/Widget.AppCompat.ActionButton"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;A m ore complete example has already been provided in the &lt;code&gt;toolbar.xml&lt;/code&gt; file above.&lt;/p&gt;
-
-&lt;p&gt;Obviously, if you wanted to extend the default &lt;code&gt;Widget.AppCompat.ActionButton&lt;/code&gt; style, you could do so via &lt;code&gt;styles.xml&lt;/code&gt;:&lt;/p&gt;
-
-&lt;pre class="highlight xml"&gt;&lt;code&gt;    &lt;span class="nt"&gt;&amp;lt;style&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;"AppTheme.ActionButton"&lt;/span&gt; &lt;span class="na"&gt;parent=&lt;/span&gt;&lt;span class="s"&gt;"Widget.AppCompat.ActionButton"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-        &lt;span class="c"&gt;&amp;lt;!-- Your custom styles here --&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;/style&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;To enable your custom style just replace &lt;code&gt;style="@style/Widget.AppCompat.ActionButton"&lt;/code&gt; with &lt;code&gt;style="@style/AppTheme.ActionButton"&lt;/code&gt;.&lt;/p&gt;
-
-&lt;h2 id="using-appbarlayout-with-the-coordinatorlayout"&gt;Using AppBarLayout with the CoordinatorLayout&lt;/h2&gt;
-
-&lt;p&gt;If you’re going for a real Material Design interface, then you will probably want to utilise the &lt;code&gt;CoordinatorLayout&lt;/code&gt; class, and wrap your custom toolbar inside an &lt;code&gt;AppBarLayout&lt;/code&gt;. The &lt;code&gt;CoordinatorLayout&lt;/code&gt; lets you sprinkle some magic UX powder into your app by intelligently positioning and interacting with elements based on current scroll position. In the context of the &lt;code&gt;ActionBar&lt;/code&gt;, the &lt;code&gt;CoordinatorLayout&lt;/code&gt; provides the ability to automaticly expand and collapse the toolbar with parralax background images.&lt;/p&gt;
-
-&lt;p&gt;An example layout would look like so:&lt;/p&gt;
-
-&lt;h4 id="reslayoutappbarxml"&gt;/res/layout/appbar.xml&lt;/h4&gt;
-&lt;pre class="highlight xml"&gt;&lt;code&gt;&lt;span class="cp"&gt;&amp;lt;?xml version="1.0" encoding="utf-8"?&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;android.support.design.widget.AppBarLayout&lt;/span&gt;
-    &lt;span class="na"&gt;xmlns:android=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res/android"&lt;/span&gt;
-    &lt;span class="na"&gt;xmlns:app=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res-auto"&lt;/span&gt;
-    &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/appbar"&lt;/span&gt;
-    &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
-    &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"wrap_content"&lt;/span&gt;
-    &lt;span class="na"&gt;android:theme=&lt;/span&gt;&lt;span class="s"&gt;"@style/ThemeOverlay.AppCompat.Dark.ActionBar"&lt;/span&gt;
-    &lt;span class="na"&gt;android:fitsSystemWindows=&lt;/span&gt;&lt;span class="s"&gt;"true"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-
-    &lt;span class="c"&gt;&amp;lt;!--
-      Make your toolbar expandable with CollapsingToolbarLayout
-      Note that a centered ActionBar won't play nicely with the CollapsingToolbarLayout
-    --&amp;gt;&lt;/span&gt;
-    &lt;span class="c"&gt;&amp;lt;!--
-    &amp;lt;android.support.design.widget.CollapsingToolbarLayout
-        android:id="@+id/collapsing_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_scrollFlags="scroll|exitUntilCollapsed"
-        android:fitsSystemWindows="true"
-        app:contentScrim="?attr/colorPrimary"
-        app:expandedTitleMarginStart="48dp"
-        app:expandedTitleMarginEnd="64dp"&amp;gt;
-        --&amp;gt;&lt;/span&gt;
-
-        &lt;span class="c"&gt;&amp;lt;!-- Add a parallax background image if using CollapsingToolbarLayout --&amp;gt;&lt;/span&gt;
-        &lt;span class="c"&gt;&amp;lt;!--
-        &amp;lt;ImageView
-            android:id="@+id/backdrop"
-            android:src="@drawable/backdrop"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            app:layout_collapseMode="parallax" /&amp;gt;
-            --&amp;gt;&lt;/span&gt;
-
-        &lt;span class="c"&gt;&amp;lt;!-- Include our custom Toolbar --&amp;gt;&lt;/span&gt;
-        &lt;span class="nt"&gt;&amp;lt;include&lt;/span&gt; &lt;span class="na"&gt;layout=&lt;/span&gt;&lt;span class="s"&gt;"@layout/toolbar"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
-
-    &lt;span class="c"&gt;&amp;lt;!--
-    &amp;lt;/android.support.design.widget.CollapsingToolbarLayout&amp;gt;
-    --&amp;gt;&lt;/span&gt;
-
-&lt;span class="nt"&gt;&amp;lt;/android.support.design.widget.AppBarLayout&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h4 id="reslayoutmainactivityxml"&gt;/res/layout/main_activity.xml&lt;/h4&gt;
-&lt;pre class="highlight xml"&gt;&lt;code&gt;&lt;span class="cp"&gt;&amp;lt;?xml version="1.0" encoding="utf-8"?&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;android.support.design.widget.CoordinatorLayout&lt;/span&gt;
-    &lt;span class="na"&gt;xmlns:android=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res/android"&lt;/span&gt;
-    &lt;span class="na"&gt;xmlns:app=&lt;/span&gt;&lt;span class="s"&gt;"http://schemas.android.com/apk/res-auto"&lt;/span&gt;
-    &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/coordinator"&lt;/span&gt;
-    &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
-    &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
-    &lt;span class="na"&gt;android:fitsSystemWindows=&lt;/span&gt;&lt;span class="s"&gt;"true"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-
-    &lt;span class="c"&gt;&amp;lt;!-- Include the AppBarLayout --&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;include&lt;/span&gt; &lt;span class="na"&gt;layout=&lt;/span&gt;&lt;span class="s"&gt;"@layout/appbar"&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
-
-    &lt;span class="nt"&gt;&amp;lt;FrameLayout&lt;/span&gt;
-        &lt;span class="na"&gt;android:id=&lt;/span&gt;&lt;span class="s"&gt;"@+id/main_fragment"&lt;/span&gt;
-        &lt;span class="na"&gt;android:layout_width=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
-        &lt;span class="na"&gt;android:layout_height=&lt;/span&gt;&lt;span class="s"&gt;"match_parent"&lt;/span&gt;
-        &lt;span class="na"&gt;app:layout_behavior=&lt;/span&gt;&lt;span class="s"&gt;"@string/appbar_scrolling_view_behavior"&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-
-        &lt;span class="c"&gt;&amp;lt;!-- Add you content here --&amp;gt;&lt;/span&gt;
-
-    &lt;span class="nt"&gt;&amp;lt;/FrameLayout&amp;gt;&lt;/span&gt;
-
-&lt;span class="nt"&gt;&amp;lt;/android.support.design.widget.CoordinatorLayout&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;That should get you started. Please drop a line if you have anything to add, or just want to say thanks. Now go fourth and create!&lt;/p&gt;
-
-&lt;h2 id="watch-the-video"&gt;Watch the Video&lt;/h2&gt;
-
-&lt;p&gt;The guys and gals over at &lt;a href="https://www.webucator.com/programming/android-training.cfm"&gt;Webucator&lt;/a&gt; have created a video tutorial from this post. Check it out:&lt;/p&gt;
-
-&lt;iframe width="640" height="360" src="https://www.youtube.com/embed/kUIn8NJTEhk" frameborder="0" allowfullscreen=""&gt;&lt;/iframe&gt;
-</content>
-  </entry>
-  <entry>
-    <title>Flash Android Sony Xperia on Linux</title>
-    <link rel="alternate" href="http://sourcey.com/flash-android-sony-xperia-on-linux/"/>
-    <id>http://sourcey.com/flash-android-sony-xperia-on-linux/</id>
-    <published>2015-06-29T00:00:00Z</published>
-    <updated>2015-06-29T12:11:00+02:00</updated>
-    <author>
-      <name>Kam Low</name>
-    </author>
-    <content type="html">&lt;p&gt;So your shiny Xperia Z3 has decided to shit itself, and is now a $600 brick. Perhaps is is stuck in a reboot loop, perhaps it just decided it just doesn’t want to switch on anymore. The time has come to Flash your device, and this is the guide that will help you do it on Linux without having to find a Windoze machine.&lt;/p&gt;
-
-&lt;p&gt;First thing we need to do is add some udev.d rules so our USB device can be recognised:&lt;/p&gt;
-
-&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="c"&gt;# run as root&lt;/span&gt;
-sudo -i
-
-&lt;span class="c"&gt;# add the ruled&lt;/span&gt;
-&lt;span class="nb"&gt;cd&lt;/span&gt; /etc/udev/rules.d
-&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s1"&gt;'SUBSYSTEM=="usb", ACTION=="add", SYSFS{idVendor}=="0fce", SYSFS{idProduct}=="*", MODE="0777"'&lt;/span&gt; &amp;gt; 63-sonyxperia.rules
-
-&lt;span class="c"&gt;# reload udev rules&lt;/span&gt;
-udevadm control --reload-rules
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Next grab the FlashTool app from (http://www.flashtool.net/downloads.php)[http://www.flashtool.net/downloads.php] and unzip it somewhere. There will be a couple of dependencies to grab in order to get this running, so go ahead and install them if need be:&lt;/p&gt;
-
-&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="c"&gt;# 7Zip for extracting the package&lt;/span&gt;
-sudo apt-get install p7zip-full
-
-&lt;span class="c"&gt;# Java to run the program&lt;/span&gt;
-&lt;span class="c"&gt;# http://openjdk.java.net/install/&lt;/span&gt;
-sudo apt-get install openjdk-7-jre
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;You will also need to download the latest firmware update from Sony, which will weigh in at about 1.5GB. A good source is &lt;a href="http://xperiafirmware.com"&gt;http://xperiafirmware.com&lt;/a&gt;, but there are others. Just make sure you find an official/trusted source.&lt;/p&gt;
-
-&lt;p&gt;Next thing is to open the FlashTool GUI and begin flashing the device.&lt;/p&gt;
-
-&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="c"&gt;# run as root&lt;/span&gt;
-sudo -i
-
-&lt;span class="c"&gt;# navigate to the FlashTool directory and run it&lt;/span&gt;
-&lt;span class="nb"&gt;cd&lt;/span&gt; /etc/udev/rules.d
-./FlashTool
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The FlashTool is straight forward, just follow these steps.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Turn your phone off (hold the power key and back button(or volume down) simultaneously)&lt;/li&gt;
-  &lt;li&gt;Click the “Flash” icon and select “Flashmode”&lt;/li&gt;
-  &lt;li&gt;Check the “Source folder” to where you downloaded the firmware update (*.ftf file)&lt;/li&gt;
-  &lt;li&gt;Configure and options, or leave everything as default&lt;/li&gt;
-  &lt;li&gt;Click the “Flash” button!&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;The FlashTool will ask you to start your phone in Flash mode, so go ahead and do that. The flash process might take a minute or two, after which you should have a shiny updated phone. If not, you may have an issue with the drivers (re-examine the udev steps), or a more serious issue with your device which I’m afraid I don’t have a magic wand for.&lt;/p&gt;
-
-&lt;p&gt;Good luck, and drop a line if something important was omitted, or this tutorial was useful to you.&lt;/p&gt;
-
 </content>
   </entry>
 </feed>
